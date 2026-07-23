@@ -119,6 +119,32 @@
   --color-sidebar-ring: var(--sidebar-ring);
 }
 
+/**
+ * Per-service accent theme, applied via a `data-theme="..."` attribute on a
+ * page's root element. Keys mirror ServiceThemeKey in
+ * src/app/constants/theme.ts and must stay in sync with those hex values.
+ */
+[data-theme="cleaning"],
+[data-theme="residential-cleaning"],
+[data-theme="commercial-cleaning"],
+[data-theme="auto-detailing"] {
+  --service-primary: #14304A;
+  --service-accent: #E8A830;
+}
+
+[data-theme="junk-removal"],
+[data-theme="landscaping"],
+[data-theme="bin-cleaning"] {
+  --service-primary: #0d382c;
+  --service-accent: #f5b82e;
+}
+
+[data-theme="power-washing"],
+[data-theme="window-cleaning"] {
+  --service-primary: #1A2F4A;
+  --service-accent: #2BA8E0;
+}
+
 @keyframes marquee {
   from { transform: translateX(0); }
   to { transform: translateX(-50%); }

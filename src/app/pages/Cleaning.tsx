@@ -19,10 +19,9 @@ import HowItWorks from "../components/HowItWorks";
 import ServiceAreaSection from "../components/ServiceAreaSection";
 import FaqSection from "../components/FaqSection";
 import ContactStrip from "../components/common/ContactStrip";
+import { SERVICE_THEMES } from "../constants/theme";
 
-const PRIMARY = "#14304A";
-const ACCENT = "#E8A830";
-const BG = "#F1EBD9";
+const { primary: PRIMARY, accent: ACCENT, bg: BG } = SERVICE_THEMES.cleaning;
 
 const SERVICES = [
   {
@@ -121,7 +120,7 @@ export default function Cleaning() {
         <meta property="og:description" content="Professional residential and commercial cleaning. Deep cleaning, move-in/out, and recurring services with eco-friendly products." />
         <meta property="og:type" content="website" />
       </Helmet>
-      <div className="font-sans-modern min-h-screen" style={{ backgroundColor: BG, color: PRIMARY }}>
+      <div data-theme="cleaning" className="font-sans-modern min-h-screen" style={{ backgroundColor: BG, color: PRIMARY }}>
       <ServiceHero
         badge="#1 Cleaning Company in Kansas City"
         titleContent={<>We Clean <span className="italic" style={{ color: ACCENT }}>Everything.</span> <br />So You Don't Have To.</>}

@@ -10,10 +10,9 @@ import HowItWorks from "../../components/HowItWorks";
 import ServiceAreaSection from "../../components/ServiceAreaSection";
 import FaqSection from "../../components/FaqSection";
 import ContactStrip from "../../components/common/ContactStrip";
+import { SERVICE_THEMES } from "../../constants/theme";
 
-const PRIMARY = "#0d382c";
-const ACCENT = "#f5b82e";
-const BG = "#F1EBD9";
+const { primary: PRIMARY, accent: ACCENT, bg: BG } = SERVICE_THEMES["bin-cleaning"];
 
 const PACKAGES = [
   { title: "Monthly Service", price: "$28/mo", desc: "One clean per month after your regular trash pickup day. Most popular plan." },
@@ -79,7 +78,7 @@ const HOW_IT_WORKS_STEPS = [
 
 export default function BinCleaning() {
   return (
-    <div className="font-sans-modern min-h-screen" style={{ backgroundColor: BG, color: PRIMARY }}>
+    <div data-theme="bin-cleaning" className="font-sans-modern min-h-screen" style={{ backgroundColor: BG, color: PRIMARY }}>
       <ServiceHero
         badge="KC's Curbside Trash Bin Cleaning Service"
         titleContent={<><span className="italic" style={{ color: ACCENT }}>Sanitized</span> Bins. <br />No More Stench.</>}

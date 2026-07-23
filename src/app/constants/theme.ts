@@ -1,46 +1,27 @@
-// Colors
-export const COLORS = {
-  // Global
-  bg: '#F1EBD9',       // cream background for all pages
-  headerDark: '#0E202F',
-  accent: '#3C312A',
+/**
+ * Single source of truth for each service page's accent theme.
+ * Values here must stay in sync with the CSS custom properties defined
+ * for the matching `[data-theme="..."]` selector in src/styles/theme.css.
+ */
+export interface ServiceTheme {
+  primary: string;
+  accent: string;
+  bg: string;
+}
 
-  // Landscaping
-  landscaping: {
-    primary: '#0d382c',   // deep green
-    accent: '#f5b82e',    // yellow
-  },
-  // Hauling / Junk Removal
-  hauling: {
-    primary: '#1E1B15',   // dark brown
-    accent: '#E9702B',    // orange
-  },
-  // Car Detailing
-  carDetailing: {
-    primary: '#52737E',   // dust blue
-    accent: '#E38765',    // coral
-  },
-  // Window Cleaning
-  windowCleaning: {
-    primary: '#456F30',   // forest green
-    accent: '#105750',    // mirror green
-  },
-  // Power Washing
-  powerWashing: {
-    primary: '#1B2B7A',   // smoke blue
-    accent: '#2A4BDD',    // bright blue
-  },
-  // Bin Cleaning
-  binCleaning: {
-    primary: '#346A59',   // green
-    accent: '#645956',    // light brown
-  },
-  // Cleaning / Commercial Cleaning
-  cleaning: {
-    primary: '#3731C0',   // blue
-    accent: '#F6C52E',    // yellow
-  },
-};
+export const SERVICE_THEMES = {
+  cleaning: { primary: "#14304A", accent: "#E8A830", bg: "#F1EBD9" },
+  "residential-cleaning": { primary: "#14304A", accent: "#E8A830", bg: "#F1EBD9" },
+  "commercial-cleaning": { primary: "#14304A", accent: "#E8A830", bg: "#F1EBD9" },
+  "auto-detailing": { primary: "#14304A", accent: "#E8A830", bg: "#F1EBD9" },
+  "junk-removal": { primary: "#0d382c", accent: "#f5b82e", bg: "#F1EBD9" },
+  landscaping: { primary: "#0d382c", accent: "#f5b82e", bg: "#F1EBD9" },
+  "bin-cleaning": { primary: "#0d382c", accent: "#f5b82e", bg: "#F1EBD9" },
+  "power-washing": { primary: "#1A2F4A", accent: "#2BA8E0", bg: "#F1EBD9" },
+  "window-cleaning": { primary: "#1A2F4A", accent: "#2BA8E0", bg: "#F1EBD9" },
+} as const satisfies Record<string, ServiceTheme>;
+
+export type ServiceThemeKey = keyof typeof SERVICE_THEMES;
 
 // Typography
 export const TYPE = {

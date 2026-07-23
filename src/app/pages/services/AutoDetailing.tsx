@@ -10,10 +10,9 @@ import HowItWorks from "../../components/HowItWorks";
 import ServiceAreaSection from "../../components/ServiceAreaSection";
 import FaqSection from "../../components/FaqSection";
 import ContactStrip from "../../components/common/ContactStrip";
+import { SERVICE_THEMES } from "../../constants/theme";
 
-const PRIMARY = "#14304A";
-const ACCENT = "#E8A830";
-const BG = "#F1EBD9";
+const { primary: PRIMARY, accent: ACCENT, bg: BG } = SERVICE_THEMES["auto-detailing"];
 
 const PACKAGES = [
   { title: "Exterior Wash & Dry", price: "From $50", desc: "Hand wash, dry, and wheel clean for a quick refresh between details." },
@@ -79,7 +78,7 @@ const HOW_IT_WORKS_STEPS = [
 
 export default function AutoDetailing() {
   return (
-    <div className="font-sans-modern min-h-screen" style={{ backgroundColor: BG, color: PRIMARY }}>
+    <div data-theme="auto-detailing" className="font-sans-modern min-h-screen" style={{ backgroundColor: BG, color: PRIMARY }}>
       <ServiceHero
         badge="KC's Mobile Auto Detailing Service"
         titleContent={<>Your Car, <span className="italic" style={{ color: ACCENT }}>Detailed</span> <br />At Your Doorstep.</>}

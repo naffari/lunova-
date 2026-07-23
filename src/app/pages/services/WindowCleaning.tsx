@@ -10,10 +10,9 @@ import HowItWorks from "../../components/HowItWorks";
 import ServiceAreaSection from "../../components/ServiceAreaSection";
 import FaqSection from "../../components/FaqSection";
 import ContactStrip from "../../components/common/ContactStrip";
+import { SERVICE_THEMES } from "../../constants/theme";
 
-const PRIMARY = "#1A2F4A";
-const ACCENT = "#2BA8E0";
-const BG = "#F1EBD9";
+const { primary: PRIMARY, accent: ACCENT, bg: BG } = SERVICE_THEMES["window-cleaning"];
 
 const PACKAGES = [
   { title: "Interior Window Wash", price: "From $80", desc: "Clean interior glass surfaces, wipe frames, and remove smudges and fingerprints." },
@@ -79,7 +78,7 @@ const HOW_IT_WORKS_STEPS = [
 
 export default function WindowCleaning() {
   return (
-    <div className="font-sans-modern min-h-screen" style={{ backgroundColor: BG, color: PRIMARY }}>
+    <div data-theme="window-cleaning" className="font-sans-modern min-h-screen" style={{ backgroundColor: BG, color: PRIMARY }}>
       <ServiceHero
         badge="Window Cleaning by Lunova"
         titleContent={<><span className="italic" style={{ color: ACCENT }}>Streak-Free</span> Windows. <br />Inside and Out.</>}

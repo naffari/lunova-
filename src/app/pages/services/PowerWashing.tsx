@@ -11,10 +11,9 @@ import HowItWorks from "../../components/HowItWorks";
 import ServiceAreaSection from "../../components/ServiceAreaSection";
 import FaqSection from "../../components/FaqSection";
 import ContactStrip from "../../components/common/ContactStrip";
+import { SERVICE_THEMES } from "../../constants/theme";
 
-const PRIMARY = "#1A2F4A";
-const ACCENT = "#2BA8E0";
-const BG = "#F1EBD9";
+const { primary: PRIMARY, accent: ACCENT, bg: BG } = SERVICE_THEMES["power-washing"];
 
 const PACKAGES = [
   {
@@ -92,7 +91,7 @@ const HOW_IT_WORKS_STEPS = [
 
 export default function PowerWashing() {
   return (
-    <div className="font-sans-modern min-h-screen" style={{ backgroundColor: BG, color: PRIMARY }}>
+    <div data-theme="power-washing" className="font-sans-modern min-h-screen" style={{ backgroundColor: BG, color: PRIMARY }}>
       <ServiceHero
         badge="Power Washing by Lunova"
         titleContent={<>Exterior Cleaning<br />for Homes &amp; <span className="italic" style={{ color: ACCENT }}>Businesses.</span></>}

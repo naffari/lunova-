@@ -13,10 +13,9 @@ import HowItWorks from "../../components/HowItWorks";
 import ServiceAreaSection from "../../components/ServiceAreaSection";
 import FaqSection from "../../components/FaqSection";
 import ContactStrip from "../../components/common/ContactStrip";
+import { SERVICE_THEMES } from "../../constants/theme";
 
-const PRIMARY = "#14304A";
-const ACCENT = "#E8A830";
-const BG = "#F1EBD9";
+const { primary: PRIMARY, accent: ACCENT, bg: BG } = SERVICE_THEMES["commercial-cleaning"];
 const DARK = "#0C1F30";
 
 const PACKAGES = [
@@ -85,7 +84,7 @@ const HOW_IT_WORKS_STEPS = [
 
 export default function CommercialCleaning() {
   return (
-    <div className="font-sans-modern min-h-screen" style={{ backgroundColor: BG, color: DARK }}>
+    <div data-theme="commercial-cleaning" className="font-sans-modern min-h-screen" style={{ backgroundColor: BG, color: DARK }}>
       <ServiceHero
         badge="Now Accepting Commercial Contracts in KC"
         titleContent={<>Professional Janitorial.<br /><span style={{ color: ACCENT }} className="italic">Every Night. On Time.</span></>}

@@ -11,10 +11,9 @@ import HowItWorks from "../components/HowItWorks";
 import ServiceAreaSection from "../components/ServiceAreaSection";
 import FaqSection from "../components/FaqSection";
 import ContactStrip from "../components/common/ContactStrip";
+import { SERVICE_THEMES } from "../constants/theme";
 
-const PRIMARY = "#0d382c";
-const ACCENT = "#f5b82e";
-const BG = "#F1EBD9";
+const { primary: PRIMARY, accent: ACCENT, bg: BG } = SERVICE_THEMES.landscaping;
 
 const PACKAGES = [
   {
@@ -104,7 +103,7 @@ const HOW_IT_WORKS_STEPS = [
 
 export default function Landscaping() {
   return (
-    <div className="font-sans-modern min-h-screen" style={{ backgroundColor: BG, color: PRIMARY }}>
+    <div data-theme="landscaping" className="font-sans-modern min-h-screen" style={{ backgroundColor: BG, color: PRIMARY }}>
       <ServiceHero
         badge="No. 1 Lawn & Landscaping Company in KC"
         titleContent={<>We're Growing Better <br /><span className="italic" style={{ color: ACCENT }}>Neighborhoods</span> One <br />Yard At A Time</>}

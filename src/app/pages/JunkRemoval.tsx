@@ -11,10 +11,9 @@ import HowItWorks from "../components/HowItWorks";
 import ServiceAreaSection from "../components/ServiceAreaSection";
 import FaqSection from "../components/FaqSection";
 import ContactStrip from "../components/common/ContactStrip";
+import { SERVICE_THEMES } from "../constants/theme";
 
-const PRIMARY = "#0d382c";
-const ACCENT = "#f5b82e";
-const BG = "#F1EBD9";
+const { primary: PRIMARY, accent: ACCENT, bg: BG } = SERVICE_THEMES["junk-removal"];
 
 const PACKAGES = [
   { title: "Minimum / Single Item", price: "$99", desc: "Single small item or minimum trip fee. Great for one piece of furniture or appliance." },
@@ -80,7 +79,7 @@ const HOW_IT_WORKS_STEPS = [
 
 export default function JunkRemoval() {
   return (
-    <div className="font-sans-modern min-h-screen" style={{ backgroundColor: BG, color: PRIMARY }}>
+    <div data-theme="junk-removal" className="font-sans-modern min-h-screen" style={{ backgroundColor: BG, color: PRIMARY }}>
       <ServiceHero
         badge="KC's #1 Junk Removal & Hauling Service"
         titleContent={<>We Haul So <br />You <span className="italic" style={{ color: ACCENT }}>Don't</span> Have To.</>}
