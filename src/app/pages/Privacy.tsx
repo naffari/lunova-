@@ -39,11 +39,12 @@ export default function Privacy() {
           </section>
 
           <section>
-            <h2 className="text-xl font-bold mb-2" style={{ color: PRIMARY }}>Cookies &amp; Analytics</h2>
+            <h2 className="text-xl font-bold mb-2" style={{ color: PRIMARY }}>Analytics</h2>
             <p>
-              This site may use cookies to remember your preferences and to understand, in aggregate, how visitors use
-              our site so we can improve it. You can accept or decline non-essential cookies from the banner shown on
-              your first visit, and change your choice at any time by clearing your browser's site data.
+              With your consent, we use Umami, a privacy-focused analytics service, to understand in aggregate how
+              visitors use our site so we can improve it. Umami does not use tracking cookies and does not collect
+              personally identifiable information. You can accept or decline this from the banner shown on your first
+              visit, and change your choice at any time by clearing your browser's site data.
             </p>
           </section>
 

@@ -7,6 +7,7 @@ import Footer from "./components/Footer";
 import PageLoader from "./components/common/PageLoader";
 import MobileCTABar from "./components/common/MobileCTABar";
 import CookieConsent from "./components/common/CookieConsent";
+import Analytics from "./components/common/Analytics";
 import { PHONE, PHONE_DISPLAY } from "./constants/contact";
 
 const HIDE_MOBILE_CTA_PATHS = ["/book", "/quote", "/book/success", "/quote/success"];
@@ -112,6 +113,7 @@ export default function Root() {
       <Footer />
       {!hideMobileCTA && <MobileCTABar />}
       <CookieConsent mobileCtaVisible={!hideMobileCTA} />
+      <Analytics />
     </div>
   );
 }

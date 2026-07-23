@@ -43,7 +43,7 @@ export default function CookieConsent({ mobileCtaVisible }: CookieConsentProps) 
       <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center gap-4">
         <Cookie size={22} className="shrink-0 hidden sm:block" style={{ color: "#c8960e" }} />
         <p className="text-xs sm:text-sm text-center sm:text-left flex-1" style={{ color: "#E8E4DC" }}>
-          We use cookies to run this site and understand how it's used. See our{" "}
+          We use privacy-friendly analytics to understand how this site is used. See our{" "}
           <Link to="/privacy" className="underline font-semibold">
             Privacy Policy
           </Link>{" "}
