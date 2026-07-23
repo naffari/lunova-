@@ -77,7 +77,7 @@ export default function BlogPost() {
 
         <article className="max-w-3xl mx-auto px-4 sm:px-6 py-14">
           <div className="rounded-2xl overflow-hidden mb-10 shadow-lg">
-            <img src={post.image} alt={post.imageAlt} className="w-full h-[320px] sm:h-[420px] object-cover" />
+            <img src={post.image} alt={post.imageAlt} className="w-full h-[320px] sm:h-[420px] object-cover" loading="lazy" />
           </div>
           <div className="space-y-6">
             {post.body.map((paragraph, idx) => (

@@ -181,6 +181,7 @@ export default function Cleaning() {
                       src={item.img}
                       alt={item.title}
                       className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+                      loading="lazy"
                     />
                   </div>
 

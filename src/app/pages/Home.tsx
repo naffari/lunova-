@@ -142,6 +142,8 @@ export default function Home() {
                 src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&h=1000&fit=crop&auto=format"
                 alt="Lunova home services team"
                 className="w-full h-full object-cover"
+                loading="eager"
+                fetchPriority="high"
               />
               <div
                 className="absolute bottom-6 left-6 right-6 backdrop-blur-md p-5 rounded-2xl flex items-center justify-between"
@@ -193,6 +195,7 @@ export default function Home() {
               src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=1400&h=700&fit=crop&auto=format"
               alt="Lunova professional team"
               className="w-full h-full object-cover"
+              loading="lazy"
             />
             <div className="absolute inset-0 flex items-end p-8" style={{ background: `linear-gradient(to top, ${PRIMARY}cc, transparent)` }}>
               <p className="font-serif-display text-2xl sm:text-3xl max-w-xl text-white">
@@ -249,6 +252,7 @@ export default function Home() {
                       src={svc.img}
                       alt={svc.title}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      loading="lazy"
                     />
                     <div className="absolute top-3 right-3 text-xs font-bold px-3 py-1 rounded-full" style={{ backgroundColor: ACCENT, color: PRIMARY }}>
                       {svc.price}

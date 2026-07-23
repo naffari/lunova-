@@ -81,7 +81,7 @@ export default function BeforeAfterSlider({
       onPointerCancel={handlePointerUp}
     >
       {/* AFTER (base layer, always full width) */}
-      <img src={afterImage} alt={afterAlt} className="absolute inset-0 w-full h-full object-cover pointer-events-none" draggable={false} />
+      <img src={afterImage} alt={afterAlt} className="absolute inset-0 w-full h-full object-cover pointer-events-none" draggable={false} loading="lazy" />
       <span className="absolute bottom-4 right-4 text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full text-white" style={{ backgroundColor: `${accentColor}` , color: '#1a1410'}}>
         {afterLabel}
       </span>
@@ -93,6 +93,7 @@ export default function BeforeAfterSlider({
         className="absolute inset-0 w-full h-full object-cover pointer-events-none"
         style={{ clipPath: `inset(0 ${100 - percent}% 0 0)` }}
         draggable={false}
+        loading="lazy"
       />
       <span
         className="absolute bottom-4 left-4 text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full text-white bg-black/60"

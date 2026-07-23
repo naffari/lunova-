@@ -121,6 +121,8 @@ export default function ServiceHero({
               src={heroImage}
               alt={heroImageAlt}
               className="w-full h-full object-cover"
+              loading="eager"
+              fetchPriority="high"
             />
 
             {/* Badge overlay */}

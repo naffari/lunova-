@@ -172,7 +172,7 @@ export default function CommercialCleaning() {
               className={`flex flex-col ${idx % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'} gap-10 items-center`}
             >
               <div className="w-full md:w-1/2 rounded-3xl overflow-hidden shadow-xl flex-shrink-0" style={{ height: '300px' }}>
-                <img src={svc.img} alt={svc.title} className="w-full h-full object-cover" />
+                <img src={svc.img} alt={svc.title} className="w-full h-full object-cover" loading="lazy" />
               </div>
               <div className="w-full md:w-1/2 space-y-4">
                 <span
