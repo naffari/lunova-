@@ -1,0 +1,9 @@
+# NOTE: Sitemap URL below uses the placeholder production domain defined in
+# src/app/constants/seo.ts (SITE_URL). Update both files together once the
+# real production domain is live.
+User-agent: *
+Allow: /
+Disallow: /quote/success
+Disallow: /book/success
+
+Sitemap: https://www.lunovaservices.com/sitemap.xml
