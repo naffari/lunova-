@@ -1,18 +1,20 @@
+import { lazy } from "react";
 import { createBrowserRouter } from "react-router";
 import Root from "./Root";
 import Home from "./pages/Home";
-import Cleaning from "./pages/Cleaning";
-import ResidentialCleaning from "./pages/services/ResidentialCleaning";
-import CommercialCleaning from "./pages/services/CommercialCleaning";
-import PowerWashing from "./pages/services/PowerWashing";
-import WindowCleaning from "./pages/services/WindowCleaning";
-import AutoDetailing from "./pages/services/AutoDetailing";
-import BinCleaning from "./pages/services/BinCleaning";
-import JunkRemoval from "./pages/JunkRemoval";
-import Landscaping from "./pages/Landscaping";
-import Quote from "./pages/Quote";
-import Booking from "./pages/Booking";
-import NotFound from "./pages/NotFound";
+
+const Cleaning = lazy(() => import("./pages/Cleaning"));
+const ResidentialCleaning = lazy(() => import("./pages/services/ResidentialCleaning"));
+const CommercialCleaning = lazy(() => import("./pages/services/CommercialCleaning"));
+const PowerWashing = lazy(() => import("./pages/services/PowerWashing"));
+const WindowCleaning = lazy(() => import("./pages/services/WindowCleaning"));
+const AutoDetailing = lazy(() => import("./pages/services/AutoDetailing"));
+const BinCleaning = lazy(() => import("./pages/services/BinCleaning"));
+const JunkRemoval = lazy(() => import("./pages/JunkRemoval"));
+const Landscaping = lazy(() => import("./pages/Landscaping"));
+const Quote = lazy(() => import("./pages/Quote"));
+const Booking = lazy(() => import("./pages/Booking"));
+const NotFound = lazy(() => import("./pages/NotFound"));
 
 export const router = createBrowserRouter([
   {

@@ -1,8 +1,9 @@
 import { Outlet, useLocation, Link } from "react-router";
-import { useEffect, Component } from "react";
+import { useEffect, Component, Suspense } from "react";
 import type { ReactNode } from "react";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import PageLoader from "./components/common/PageLoader";
 
 class ErrorBoundary extends Component<
   { children: ReactNode },
@@ -59,7 +60,9 @@ export default function Root() {
       <Navbar />
       <main id="main-content" className="flex-1" role="main">
         <ErrorBoundary>
-          <Outlet />
+          <Suspense fallback={<PageLoader />}>
+            <Outlet />
+          </Suspense>
         </ErrorBoundary>
       </main>
       <Footer />
