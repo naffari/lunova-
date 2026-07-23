@@ -45,7 +45,11 @@ export default function ZipValidator({
         {title}
       </h3>
       <form onSubmit={check} className="flex gap-2 mb-4">
+        <label htmlFor="zip-validator-input" className="sr-only">
+          Zip code
+        </label>
         <input
+          id="zip-validator-input"
           value={zip}
           onChange={(e) => {
             setZip(e.target.value.replace(/\D/g, "").slice(0, 5));
@@ -64,7 +68,7 @@ export default function ZipValidator({
       </form>
 
       {result === "yes" && (
-        <div className="flex items-start gap-3 rounded-lg p-4 bg-primary/10 border border-primary/20">
+        <div role="status" aria-live="polite" className="flex items-start gap-3 rounded-lg p-4 bg-primary/10 border border-primary/20">
           <Check size={16} className="text-primary mt-0.5 shrink-0" />
           <div>
             <p className="font-semibold text-sm text-foreground">
@@ -90,7 +94,7 @@ export default function ZipValidator({
       )}
 
       {result === "no" && (
-        <div className="flex items-start gap-3 rounded-lg p-4 bg-secondary border border-border">
+        <div role="status" aria-live="polite" className="flex items-start gap-3 rounded-lg p-4 bg-secondary border border-border">
           <X size={16} className="text-muted-foreground mt-0.5 shrink-0" />
           <div>
             <p className="font-semibold text-sm text-foreground">Not in our core area yet.</p>

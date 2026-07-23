@@ -20,12 +20,13 @@ export default function BookingCalendar() {
 
       <div className="grid sm:grid-cols-2 gap-4 mb-6">
         <div>
-          <label className="block text-xs font-semibold text-foreground uppercase tracking-wider mb-2">
+          <label htmlFor="booking-date" className="block text-xs font-semibold text-foreground uppercase tracking-wider mb-2">
             Preferred Date
           </label>
           <div className="relative">
             <CalendarIcon size={16} className="absolute left-3.5 top-3.5 text-muted-foreground" />
             <input
+              id="booking-date"
               type="date"
               value={date}
               onChange={(e) => setDate(e.target.value)}
@@ -35,10 +36,10 @@ export default function BookingCalendar() {
         </div>
 
         <div>
-          <label className="block text-xs font-semibold text-foreground uppercase tracking-wider mb-2">
+          <p id="booking-timeslot-label" className="block text-xs font-semibold text-foreground uppercase tracking-wider mb-2">
             Arrival Window Slot
-          </label>
-          <div className="grid grid-cols-3 gap-2">
+          </p>
+          <div className="grid grid-cols-3 gap-2" role="radiogroup" aria-labelledby="booking-timeslot-label">
             {[
               { id: "morning", label: "Morning", sub: "8am–12pm" },
               { id: "afternoon", label: "Afternoon", sub: "12pm–4pm" },
@@ -47,6 +48,8 @@ export default function BookingCalendar() {
               <button
                 key={slot.id}
                 type="button"
+                role="radio"
+                aria-checked={timeSlot === slot.id}
                 onClick={() => setTimeSlot(slot.id)}
                 className={`p-2.5 rounded-lg border text-center transition-colors ${
                   timeSlot === slot.id

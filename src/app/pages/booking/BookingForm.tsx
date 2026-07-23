@@ -40,14 +40,14 @@ export default function BookingForm() {
               1
             </span>
             <div>
-              <h2 style={{ fontFamily: "var(--font-display)" }} className="text-2xl font-bold text-foreground uppercase">
+              <h2 id="booking-select-service" style={{ fontFamily: "var(--font-display)" }} className="text-2xl font-bold text-foreground uppercase">
                 Select Service
               </h2>
               <p className="text-muted-foreground text-xs">Choose the primary work needed</p>
             </div>
           </div>
 
-          <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-3">
+          <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-3" role="radiogroup" aria-labelledby="booking-select-service">
             {PRIMARY_SERVICES.map((s) => {
               const Icon = s.icon;
               const active = primaryId === s.id;
@@ -55,6 +55,8 @@ export default function BookingForm() {
                 <button
                   key={s.id}
                   type="button"
+                  role="radio"
+                  aria-checked={active}
                   onClick={() => setPrimaryId(s.id)}
                   className={`flex flex-col p-4 rounded-xl border text-left transition-all ${
                     active
@@ -145,6 +147,12 @@ export default function BookingForm() {
                       </span>
                       <button
                         type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          toggleAddon(addon.id);
+                        }}
+                        aria-pressed={isSelected}
+                        aria-label={`${isSelected ? "Remove" : "Add"} ${addon.name}`}
                         className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition-colors ${
                           isSelected
                             ? "bg-primary text-primary-foreground border-primary"
@@ -164,7 +172,16 @@ export default function BookingForm() {
 
           {/* Rush option */}
           <div
+            role="checkbox"
+            aria-checked={rushOption}
+            tabIndex={0}
             onClick={() => setRushOption(!rushOption)}
+            onKeyDown={(e) => {
+              if (e.key === " " || e.key === "Enter") {
+                e.preventDefault();
+                setRushOption(!rushOption);
+              }
+            }}
             className={`flex items-center justify-between p-4 rounded-xl border cursor-pointer transition-all ${
               rushOption ? "border-primary bg-primary/10" : "border-border bg-secondary/30 hover:border-primary/40"
             }`}
@@ -207,26 +224,34 @@ export default function BookingForm() {
 
           <div className="grid sm:grid-cols-2 gap-4 mb-4">
             <div>
-              <label className="block text-xs font-medium text-foreground mb-1">Full Name *</label>
+              <label htmlFor="booking-name" className="block text-xs font-medium text-foreground mb-1">Full Name *</label>
               <div className="relative">
                 <User size={16} className="absolute left-3.5 top-3.5 text-muted-foreground" />
                 <input
+                  id="booking-name"
                   required
+                  aria-required="true"
+                  aria-invalid={!!errors.name}
+                  aria-describedby={errors.name ? "booking-name-error" : undefined}
                   placeholder="Jane Doe"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   className="w-full rounded-lg pl-10 pr-4 py-3 text-sm bg-secondary border border-border text-foreground focus:outline-none focus:border-primary/50"
                 />
               </div>
-              {errors.name && <p className="text-xs text-red-500 mt-1">{errors.name}</p>}
+              {errors.name && <p id="booking-name-error" className="text-xs text-red-500 mt-1">{errors.name}</p>}
             </div>
 
             <div>
-              <label className="block text-xs font-medium text-foreground mb-1">Email Address *</label>
+              <label htmlFor="booking-email" className="block text-xs font-medium text-foreground mb-1">Email Address *</label>
               <div className="relative">
                 <Mail size={16} className="absolute left-3.5 top-3.5 text-muted-foreground" />
                 <input
+                  id="booking-email"
                   required
+                  aria-required="true"
+                  aria-invalid={!!errors.email}
+                  aria-describedby={errors.email ? "booking-email-error" : undefined}
                   type="email"
                   placeholder="jane@example.com"
                   value={email}
@@ -234,15 +259,19 @@ export default function BookingForm() {
                   className="w-full rounded-lg pl-10 pr-4 py-3 text-sm bg-secondary border border-border text-foreground focus:outline-none focus:border-primary/50"
                 />
               </div>
-              {errors.email && <p className="text-xs text-red-500 mt-1">{errors.email}</p>}
+              {errors.email && <p id="booking-email-error" className="text-xs text-red-500 mt-1">{errors.email}</p>}
             </div>
 
             <div>
-              <label className="block text-xs font-medium text-foreground mb-1">Phone Number *</label>
+              <label htmlFor="booking-phone" className="block text-xs font-medium text-foreground mb-1">Phone Number *</label>
               <div className="relative">
                 <Phone size={16} className="absolute left-3.5 top-3.5 text-muted-foreground" />
                 <input
+                  id="booking-phone"
                   required
+                  aria-required="true"
+                  aria-invalid={!!errors.phone}
+                  aria-describedby={errors.phone ? "booking-phone-error" : undefined}
                   type="tel"
                   placeholder="(816) 555-0199"
                   value={phone}
@@ -250,28 +279,33 @@ export default function BookingForm() {
                   className="w-full rounded-lg pl-10 pr-4 py-3 text-sm bg-secondary border border-border text-foreground focus:outline-none focus:border-primary/50"
                 />
               </div>
-              {errors.phone && <p className="text-xs text-red-500 mt-1">{errors.phone}</p>}
+              {errors.phone && <p id="booking-phone-error" className="text-xs text-red-500 mt-1">{errors.phone}</p>}
             </div>
 
             <div>
-              <label className="block text-xs font-medium text-foreground mb-1">Zip Code *</label>
+              <label htmlFor="booking-zip" className="block text-xs font-medium text-foreground mb-1">Zip Code *</label>
               <div className="relative">
                 <MapPin size={16} className="absolute left-3.5 top-3.5 text-muted-foreground" />
                 <input
+                  id="booking-zip"
                   required
+                  aria-required="true"
+                  aria-invalid={!!errors.zip}
+                  aria-describedby={errors.zip ? "booking-zip-error" : undefined}
                   placeholder="64111"
                   value={zip}
                   onChange={(e) => setZip(e.target.value.replace(/\D/g, "").slice(0, 5))}
                   className="w-full rounded-lg pl-10 pr-4 py-3 text-sm bg-secondary border border-border text-foreground focus:outline-none focus:border-primary/50"
                 />
               </div>
-              {errors.zip && <p className="text-xs text-red-500 mt-1">{errors.zip}</p>}
+              {errors.zip && <p id="booking-zip-error" className="text-xs text-red-500 mt-1">{errors.zip}</p>}
             </div>
           </div>
 
           <div className="mb-4">
-            <label className="block text-xs font-medium text-foreground mb-1">Street Address</label>
+            <label htmlFor="booking-address" className="block text-xs font-medium text-foreground mb-1">Street Address</label>
             <input
+              id="booking-address"
               placeholder="1234 Main St, Kansas City, MO"
               value={address}
               onChange={(e) => setAddress(e.target.value)}
@@ -280,8 +314,9 @@ export default function BookingForm() {
           </div>
 
           <div>
-            <label className="block text-xs font-medium text-foreground mb-1">Access Notes or Gate Code (Optional)</label>
+            <label htmlFor="booking-notes" className="block text-xs font-medium text-foreground mb-1">Access Notes or Gate Code (Optional)</label>
             <textarea
+              id="booking-notes"
               rows={2}
               placeholder="Side gate code 1234, park in driveway..."
               value={notes}

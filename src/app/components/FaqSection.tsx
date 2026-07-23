@@ -67,6 +67,8 @@ export default function FaqSection({
       <div className="rounded-xl overflow-hidden border border-border bg-card">
         {items.map((item, i) => {
           const isOpen = open === i;
+          const buttonId = `faq-question-${i}`;
+          const panelId = `faq-panel-${i}`;
           return (
             <div
               key={i}
@@ -74,9 +76,11 @@ export default function FaqSection({
             >
               <button
                 type="button"
+                id={buttonId}
                 className="w-full flex items-center justify-between gap-4 text-left px-6 py-5 hover:bg-secondary/50 transition-colors"
                 onClick={() => setOpen(isOpen ? null : i)}
                 aria-expanded={isOpen}
+                aria-controls={panelId}
               >
                 <span className="font-medium text-sm text-foreground">{item.q}</span>
                 <ChevronDown
@@ -86,6 +90,10 @@ export default function FaqSection({
                 />
               </button>
               <div
+                id={panelId}
+                role="region"
+                aria-labelledby={buttonId}
+                aria-hidden={!isOpen}
                 style={{
                   maxHeight: isOpen ? 300 : 0,
                   overflow: "hidden",

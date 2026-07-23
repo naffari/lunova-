@@ -29,25 +29,28 @@ function ServiceDetailsStep() {
         {service === "cleaning" && (
           <>
             <div>
-              <p className="text-sm font-medium text-foreground mb-2">Home size (sq ft)</p>
+              <label htmlFor="opt-sqft" className="text-sm font-medium text-foreground mb-2 block">Home size (sq ft)</label>
               <div className="flex items-center gap-3">
                 <input
+                  id="opt-sqft"
                   type="range"
                   min={500}
                   max={4000}
                   step={100}
                   value={(opts.sqft as number) || 1000}
                   onChange={(e) => setOpts({ ...opts, sqft: Number(e.target.value) })}
+                  aria-valuetext={`${(opts.sqft as number) || 1000} square feet`}
                   className="flex-1 accent-primary"
                 />
-                <span style={{ fontFamily: "var(--font-display)" }} className="text-primary font-bold text-lg w-20 text-right">
+                <span style={{ fontFamily: "var(--font-display)" }} className="text-primary font-bold text-lg w-20 text-right" aria-hidden="true">
                   {(opts.sqft as number) || 1000} ft²
                 </span>
               </div>
             </div>
             <div>
-              <p className="text-sm font-medium text-foreground mb-2">Service type</p>
+              <p id="opt-service-type-label" className="text-sm font-medium text-foreground mb-2">Service type</p>
               <PillGroup
+                ariaLabelledBy="opt-service-type-label"
                 options={[
                   { id: "recurring", label: "Recurring" },
                   { id: "standard", label: "One-time" },
@@ -65,8 +68,9 @@ function ServiceDetailsStep() {
         {service === "junk" && (
           <>
             <div>
-              <p className="text-sm font-medium text-foreground mb-2">Load size</p>
+              <p id="opt-load-label" className="text-sm font-medium text-foreground mb-2">Load size</p>
               <PillGroup
+                ariaLabelledBy="opt-load-label"
                 options={[
                   { id: "single", label: "Single item" },
                   { id: "quarter", label: "¼ load" },
@@ -100,8 +104,9 @@ function ServiceDetailsStep() {
         {service === "power" && (
           <>
             <div>
-              <p className="text-sm font-medium text-foreground mb-2">Surface</p>
+              <p id="opt-surface-label" className="text-sm font-medium text-foreground mb-2">Surface</p>
               <PillGroup
+                ariaLabelledBy="opt-surface-label"
                 options={[
                   { id: "house", label: "House siding" },
                   { id: "driveway", label: "Driveway" },
@@ -112,18 +117,20 @@ function ServiceDetailsStep() {
               />
             </div>
             <div>
-              <p className="text-sm font-medium text-foreground mb-2">Area (sq ft)</p>
+              <label htmlFor="opt-power-sqft" className="text-sm font-medium text-foreground mb-2 block">Area (sq ft)</label>
               <div className="flex items-center gap-3">
                 <input
+                  id="opt-power-sqft"
                   type="range"
                   min={100}
                   max={3000}
                   step={50}
                   value={(opts.sqft as number) || 500}
                   onChange={(e) => setOpts({ ...opts, sqft: Number(e.target.value) })}
+                  aria-valuetext={`${(opts.sqft as number) || 500} square feet`}
                   className="flex-1 accent-primary"
                 />
-                <span style={{ fontFamily: "var(--font-display)" }} className="text-primary font-bold text-lg w-20 text-right">
+                <span style={{ fontFamily: "var(--font-display)" }} className="text-primary font-bold text-lg w-20 text-right" aria-hidden="true">
                   {(opts.sqft as number) || 500} ft²
                 </span>
               </div>
@@ -141,8 +148,9 @@ function ServiceDetailsStep() {
                   onChange={(v) => setOpts({ ...opts, count: v })}
                   min={1}
                   max={80}
+                  label="number of windows"
                 />
-                <span className="text-muted-foreground text-sm">windows</span>
+                <span className="text-muted-foreground text-sm" aria-hidden="true">windows</span>
               </div>
             </div>
             <div>
@@ -166,8 +174,9 @@ function ServiceDetailsStep() {
         {service === "auto" && (
           <>
             <div>
-              <p className="text-sm font-medium text-foreground mb-2">Package</p>
+              <p id="opt-pkg-label" className="text-sm font-medium text-foreground mb-2">Package</p>
               <PillGroup
+                ariaLabelledBy="opt-pkg-label"
                 options={[
                   { id: "exterior", label: "Exterior wash & wax" },
                   { id: "interior", label: "Interior detail" },
@@ -192,8 +201,9 @@ function ServiceDetailsStep() {
         {service === "bin" && (
           <>
             <div>
-              <p className="text-sm font-medium text-foreground mb-2">Plan (includes 2 bins)</p>
+              <p id="opt-plan-label" className="text-sm font-medium text-foreground mb-2">Plan (includes 2 bins)</p>
               <PillGroup
+                ariaLabelledBy="opt-plan-label"
                 options={[
                   { id: "onetime", label: "One-time ($55)" },
                   { id: "monthly", label: "Monthly ($28/mo)" },
@@ -212,8 +222,9 @@ function ServiceDetailsStep() {
                   onChange={(v) => setOpts({ ...opts, extraBins: v })}
                   min={0}
                   max={10}
+                  label="extra bins"
                 />
-                <span className="text-muted-foreground text-sm">extra bins</span>
+                <span className="text-muted-foreground text-sm" aria-hidden="true">extra bins</span>
               </div>
             </div>
           </>
@@ -282,7 +293,7 @@ export default function QuoteForm() {
           What do you need done?
         </h2>
         <p className="text-muted-foreground text-sm mb-6">Select a service to calculate your live estimate.</p>
-        <div className="grid sm:grid-cols-2 gap-3 mb-8">
+        <div className="grid sm:grid-cols-2 gap-3 mb-8" role="radiogroup" aria-label="Select a service">
           {SERVICES.map((s) => {
             const Icon = s.icon;
             const active = service === s.id;
@@ -290,6 +301,8 @@ export default function QuoteForm() {
               <button
                 key={s.id}
                 type="button"
+                role="radio"
+                aria-checked={active}
                 onClick={() => setService(s.id)}
                 className={`flex items-center gap-4 rounded-xl p-4 text-left border transition-all ${
                   active
@@ -346,19 +359,58 @@ export default function QuoteForm() {
 
         <div className="space-y-3 mb-6">
           <div>
-            <TextField icon={User} placeholder="Full name *" value={contact.name} onChange={(v) => setContact({ ...contact, name: v })} />
-            {errors.name && <p className="text-xs text-red-500 mt-1">{errors.name}</p>}
+            <TextField
+              id="quote-name"
+              label="Full name"
+              icon={User}
+              placeholder="Full name *"
+              value={contact.name}
+              onChange={(v) => setContact({ ...contact, name: v })}
+              required
+              error={errors.name}
+            />
+            {errors.name && <p id="quote-name-error" className="text-xs text-red-500 mt-1">{errors.name}</p>}
           </div>
           <div>
-            <TextField icon={Mail} placeholder="Email address *" value={contact.email} onChange={(v) => setContact({ ...contact, email: v })} type="email" />
-            {errors.email && <p className="text-xs text-red-500 mt-1">{errors.email}</p>}
+            <TextField
+              id="quote-email"
+              label="Email address"
+              icon={Mail}
+              placeholder="Email address *"
+              value={contact.email}
+              onChange={(v) => setContact({ ...contact, email: v })}
+              type="email"
+              required
+              error={errors.email}
+            />
+            {errors.email && <p id="quote-email-error" className="text-xs text-red-500 mt-1">{errors.email}</p>}
           </div>
           <div>
-            <TextField icon={Phone} placeholder="Phone number" value={contact.phone} onChange={(v) => setContact({ ...contact, phone: v })} type="tel" />
-            {errors.phone && <p className="text-xs text-red-500 mt-1">{errors.phone}</p>}
+            <TextField
+              id="quote-phone"
+              label="Phone number"
+              icon={Phone}
+              placeholder="Phone number"
+              value={contact.phone}
+              onChange={(v) => setContact({ ...contact, phone: v })}
+              type="tel"
+              error={errors.phone}
+            />
+            {errors.phone && <p id="quote-phone-error" className="text-xs text-red-500 mt-1">{errors.phone}</p>}
           </div>
-          <TextField icon={Calendar} placeholder="Preferred date (e.g. Next Tuesday)" value={contact.date} onChange={(v) => setContact({ ...contact, date: v })} />
+          <TextField
+            id="quote-date"
+            label="Preferred date"
+            icon={Calendar}
+            placeholder="Preferred date (e.g. Next Tuesday)"
+            value={contact.date}
+            onChange={(v) => setContact({ ...contact, date: v })}
+          />
+          <label htmlFor="quote-notes" className="sr-only">
+            Special instructions or notes (optional)
+          </label>
           <textarea
+            id="quote-notes"
             placeholder="Special instructions or notes (optional)"
             value={contact.notes}
             onChange={(e) => setContact({ ...contact, notes: e.target.value })}

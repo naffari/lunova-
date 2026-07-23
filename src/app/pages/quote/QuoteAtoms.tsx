@@ -107,12 +107,18 @@ export function PillGroup({
   onChange,
   multi = false,
   wrap = false,
+  ariaLabelledBy,
+  ariaLabel,
 }: {
   options: { id: string; label: string }[];
   value: string | string[];
   onChange: (v: string | string[]) => void;
   multi?: boolean;
   wrap?: boolean;
+  /** id of a visible label element that names this group for assistive tech. */
+  ariaLabelledBy?: string;
+  /** Accessible name for the group when no visible label element exists. */
+  ariaLabel?: string;
 }) {
   function isActive(id: string) {
     return multi ? (value as string[]).includes(id) : value === id;
@@ -123,11 +129,19 @@ export function PillGroup({
     onChange(arr.includes(id) ? arr.filter((v) => v !== id) : [...arr, id]);
   }
   return (
-    <div className={`flex gap-2 ${wrap ? "flex-wrap" : ""}`}>
+    <div
+      className={`flex gap-2 ${wrap ? "flex-wrap" : ""}`}
+      role={multi ? "group" : "radiogroup"}
+      aria-labelledby={ariaLabelledBy}
+      aria-label={ariaLabelledBy ? undefined : ariaLabel}
+    >
       {options.map((o) => (
         <button
           key={o.id}
           type="button"
+          role={multi ? undefined : "radio"}
+          aria-checked={multi ? undefined : isActive(o.id)}
+          aria-pressed={multi ? isActive(o.id) : undefined}
           onClick={() => toggle(o.id)}
           className={`rounded-lg px-4 py-2 text-sm font-medium border transition-colors ${
             isActive(o.id)
@@ -147,27 +161,37 @@ export function Stepper({
   onChange,
   min,
   max,
+  label = "quantity",
 }: {
   value: number;
   onChange: (v: number) => void;
   min: number;
   max: number;
+  /** Accessible name suffix for the increment/decrement buttons, e.g. "windows". */
+  label?: string;
 }) {
   return (
-    <div className="flex items-center gap-3">
+    <div className="flex items-center gap-3" role="group" aria-label={`${label} stepper`}>
       <button
         type="button"
         onClick={() => onChange(Math.max(min, value - 1))}
+        aria-label={`Decrease ${label}`}
         className="w-8 h-8 rounded-full border border-border text-foreground font-medium hover:border-primary/50 transition-colors"
       >
         −
       </button>
-      <span style={{ fontFamily: "var(--font-display)" }} className="text-lg font-bold text-foreground w-5 text-center">
+      <span
+        style={{ fontFamily: "var(--font-display)" }}
+        className="text-lg font-bold text-foreground w-5 text-center"
+        aria-live="polite"
+        aria-atomic="true"
+      >
         {value}
       </span>
       <button
         type="button"
         onClick={() => onChange(Math.min(max, value + 1))}
+        aria-label={`Increase ${label}`}
         className="w-8 h-8 rounded-full border border-border text-foreground font-medium hover:border-primary/50 transition-colors"
       >
         +
@@ -182,21 +206,43 @@ export function TextField({
   value,
   onChange,
   type = "text",
+  id,
+  label,
+  required,
+  error,
 }: {
   icon: ElementType;
   placeholder: string;
   value: string;
   onChange: (v: string) => void;
   type?: string;
+  /** Unique id used to associate the visually-hidden label and error message. */
+  id?: string;
+  /** Accessible name for the field. Rendered visually-hidden since the design relies on the icon + placeholder. */
+  label?: string;
+  required?: boolean;
+  /** Validation error message, if any — wired up via aria-invalid/aria-describedby. */
+  error?: string;
 }) {
+  const errorId = id && error ? `${id}-error` : undefined;
   return (
     <div className="relative">
+      {label && id && (
+        <label htmlFor={id} className="sr-only">
+          {label}
+        </label>
+      )}
       <Icon size={16} className="absolute left-3.5 top-3.5 text-muted-foreground" />
       <input
+        id={id}
         type={type}
         placeholder={placeholder}
         value={value}
         onChange={(e) => onChange(e.target.value)}
+        required={required}
+        aria-required={required || undefined}
+        aria-invalid={!!error || undefined}
+        aria-describedby={errorId}
         className="w-full rounded-lg pl-10 pr-4 py-3 text-sm bg-secondary border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/50 transition-colors"
       />
     </div>
@@ -216,6 +262,7 @@ export function CheckToggle({
     <button
       type="button"
       onClick={() => onChange(!checked)}
+      aria-pressed={checked}
       className={`flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium border transition-colors text-left w-full ${
         checked
           ? "bg-primary/10 border-primary/40 text-foreground"
