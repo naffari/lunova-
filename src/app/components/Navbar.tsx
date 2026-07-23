@@ -1,129 +1,278 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Link, useLocation } from "react-router";
-import { Phone, Mail, Menu, X, MessageSquare } from "lucide-react";
+import {
+  Phone,
+  Menu,
+  X,
+  MessageSquare,
+  ChevronDown,
+  Home,
+  Building2,
+  Droplets,
+  AppWindow,
+  Car,
+  Trash2,
+  Truck,
+  Leaf,
+  Calendar,
+} from "lucide-react";
 
-const PHONE = "8163151305";
-const PHONE_DISPLAY = "(816) 315-1305";
-const EMAIL = "naffari@myyahoo.com";
+import { PHONE, PHONE_DISPLAY } from "../constants/contact";
 
-const navLinks = [
-  { to: "/", label: "Home" },
-  { to: "/cleaning", label: "Cleaning" },
-  { to: "/junk-removal", label: "Junk Removal" },
-  { to: "/landscaping", label: "Landscaping" },
+const NAV_ACCENT = "#ffffff";
+const NAV_TEXT = "#E8E4DC";
+const NAV_MUTED = "rgba(255,255,255,0.45)";
+const NAV_BORDER = "rgba(255,255,255,0.08)";
+const NAV_BG_SOLID = "#111318";
+
+const serviceCategories = [
+  {
+    title: "Cleaning Services",
+    items: [
+      { to: "/services/residential-cleaning", label: "Residential Cleaning", icon: Home, desc: "Standard, deep clean, move-in/out" },
+      { to: "/services/commercial-cleaning", label: "Commercial Janitorial", icon: Building2, desc: "Offices, retail & facilities" },
+      { to: "/services/bin-cleaning", label: "Trash Bin Cleaning", icon: Trash2, desc: "Curbside 200° hot water wash" },
+    ],
+  },
+  {
+    title: "Exterior & Auto",
+    items: [
+      { to: "/services/power-washing", label: "Power Washing", icon: Droplets, desc: "Siding, driveways & decks" },
+      { to: "/services/window-cleaning", label: "Window Cleaning", icon: AppWindow, desc: "Streak-free interior & exterior" },
+      { to: "/services/auto-detailing", label: "Auto Detailing", icon: Car, desc: "Mobile interior & exterior wash" },
+    ],
+  },
+  {
+    title: "Hauling & Lawn Care",
+    items: [
+      { to: "/junk-removal", label: "Junk Removal", icon: Truck, desc: "Single item to full truckload" },
+      { to: "/landscaping", label: "Landscaping & Lawn", icon: Leaf, desc: "Mowing, edging & yard cleanup" },
+    ],
+  },
 ];
 
 export default function Navbar() {
   const location = useLocation();
-  const [open, setOpen] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  // Track scroll for transparent → solid transition
+  useEffect(() => {
+    function handleScroll() {
+      setScrolled(window.scrollY > 40);
+    }
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // Close dropdown on outside click
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setDropdownOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  // Close menus on route change
+  useEffect(() => {
+    setDropdownOpen(false);
+    setMobileOpen(false);
+  }, [location.pathname]);
+
+  const isServicesActive =
+    location.pathname.startsWith("/services") ||
+    location.pathname === "/cleaning" ||
+    location.pathname === "/junk-removal" ||
+    location.pathname === "/landscaping";
+
+  const showSolidBg = scrolled || mobileOpen || dropdownOpen;
 
   return (
-    <header className="sticky top-0 z-50 bg-[#070f1f]/95 backdrop-blur border-b border-border">
+    <header
+      className="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
+      style={{
+        backgroundColor: showSolidBg ? NAV_BG_SOLID : "transparent",
+        backdropFilter: showSolidBg ? "blur(12px)" : "none",
+        borderBottom: showSolidBg ? `1px solid ${NAV_BORDER}` : "1px solid transparent",
+      }}
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between h-16">
         {/* Logo */}
-        <Link to="/" className="flex items-center gap-2 shrink-0" onClick={() => setOpen(false)}>
-          <span className="w-8 h-8 rounded-full bg-primary flex items-center justify-center">
+        <Link to="/" className="flex items-center gap-2 shrink-0">
+          <span className="w-8 h-8 rounded-full flex items-center justify-center" style={{ backgroundColor: NAV_ACCENT }}>
             <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-              <path d="M9 2L14 7L9 12L4 7L9 2Z" fill="#0a1628" />
-              <path d="M5 10L9 14L13 10" stroke="#0a1628" strokeWidth="2" strokeLinecap="round" />
+              <path d="M9 2L14 7L9 12L4 7L9 2Z" fill={NAV_BG_SOLID} />
+              <path d="M5 10L9 14L13 10" stroke={NAV_BG_SOLID} strokeWidth="2" strokeLinecap="round" />
             </svg>
           </span>
-          <span style={{ fontFamily: "var(--font-display)" }} className="text-2xl font-bold text-foreground tracking-wide">
+          <span style={{ fontFamily: "var(--font-display)", color: NAV_TEXT }} className="text-2xl font-bold tracking-wide">
             LUNOVA
           </span>
         </Link>
 
-        {/* Desktop Nav */}
-        <nav className="hidden md:flex items-center gap-6">
-          {navLinks.map((link) => {
-            const active = location.pathname === link.to;
-            return (
-              <Link
-                key={link.to}
-                to={link.to}
-                className={`text-sm font-medium transition-colors relative pb-0.5 ${
-                  active
-                    ? "text-primary after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-primary after:rounded-full"
-                    : "text-muted-foreground hover:text-foreground"
-                }`}
+        {/* Desktop Nav Links */}
+        <nav aria-label="Main navigation" className="hidden md:flex items-center gap-6">
+          <Link
+            to="/"
+            className="text-sm font-medium transition-colors"
+            style={{ color: location.pathname === "/" ? NAV_ACCENT : NAV_MUTED }}
+            onMouseEnter={e => { if (location.pathname !== "/") (e.target as HTMLElement).style.color = NAV_TEXT; }}
+            onMouseLeave={e => { if (location.pathname !== "/") (e.target as HTMLElement).style.color = NAV_MUTED; }}
+          >
+            Home
+          </Link>
+
+          {/* Services Dropdown */}
+          <div className="relative" ref={dropdownRef}>
+            <button
+              onClick={() => setDropdownOpen((v) => !v)}
+              className="flex items-center gap-1 text-sm font-medium transition-colors py-2"
+              style={{ color: isServicesActive ? NAV_ACCENT : NAV_MUTED }}
+            >
+              <span>Services</span>
+              <ChevronDown size={14} className={`transition-transform duration-200 ${dropdownOpen ? "rotate-180" : ""}`} style={{ color: dropdownOpen ? NAV_ACCENT : "inherit" }} />
+            </button>
+
+            {dropdownOpen && (
+              <div
+                className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-[680px] rounded-xl shadow-2xl p-6 grid grid-cols-3 gap-6 z-50 animate-in fade-in slide-in-from-top-2 duration-150"
+                style={{ backgroundColor: NAV_BG_SOLID, border: `1px solid ${NAV_BORDER}` }}
               >
-                {link.label}
-              </Link>
-            );
-          })}
+                {serviceCategories.map((cat, idx) => (
+                  <div key={idx} className="space-y-3">
+                    <p className="text-[11px] font-bold uppercase tracking-wider pb-1.5" style={{ color: NAV_ACCENT, borderBottom: `1px solid ${NAV_BORDER}` }}>
+                      {cat.title}
+                    </p>
+                    <div className="space-y-1">
+                      {cat.items.map((item) => {
+                        const Icon = item.icon;
+                        const active = location.pathname === item.to;
+                        return (
+                          <Link
+                            key={item.to}
+                            to={item.to}
+                            className="flex items-start gap-2.5 p-2 rounded-lg transition-colors group"
+                            style={{
+                              backgroundColor: active ? `${NAV_ACCENT}18` : "transparent",
+                              color: active ? NAV_ACCENT : NAV_TEXT,
+                            }}
+                            onMouseEnter={e => { if (!active) (e.currentTarget as HTMLElement).style.backgroundColor = "rgba(255,255,255,0.06)"; }}
+                            onMouseLeave={e => { if (!active) (e.currentTarget as HTMLElement).style.backgroundColor = "transparent"; }}
+                          >
+                            <Icon size={16} style={{ color: NAV_ACCENT }} className="shrink-0 mt-0.5" />
+                            <div>
+                              <p className="text-xs font-bold leading-tight">
+                                {item.label}
+                              </p>
+                              <p className="text-[10px] mt-0.5 line-clamp-1" style={{ color: NAV_MUTED }}>
+                                {item.desc}
+                              </p>
+                            </div>
+                          </Link>
+                        );
+                      })}
+                    </div>
+                  </div>
+                ))}
+                <div
+                  className="col-span-3 pt-3 flex items-center justify-between -mx-6 -mb-6 p-4 rounded-b-xl"
+                  style={{ borderTop: `1px solid ${NAV_BORDER}`, backgroundColor: "rgba(255,255,255,0.03)" }}
+                >
+                  <span className="text-xs" style={{ color: NAV_MUTED }}>Looking for an umbrella overview?</span>
+                  <Link to="/cleaning" className="text-xs font-bold hover:underline flex items-center gap-1" style={{ color: NAV_ACCENT }}>
+                    View Services Hub →
+                  </Link>
+                </div>
+              </div>
+            )}
+          </div>
+
+          <Link
+            to="/quote"
+            className="text-sm font-medium transition-colors"
+            style={{ color: location.pathname === "/quote" ? NAV_ACCENT : NAV_MUTED }}
+            onMouseEnter={e => { if (location.pathname !== "/quote") (e.target as HTMLElement).style.color = NAV_TEXT; }}
+            onMouseLeave={e => { if (location.pathname !== "/quote") (e.target as HTMLElement).style.color = NAV_MUTED; }}
+          >
+            Instant Quote
+          </Link>
         </nav>
 
         {/* Desktop CTAs */}
-        <div className="hidden md:flex items-center gap-2">
+        <div className="hidden md:flex items-center gap-2.5">
           <a
             href={`sms:+1${PHONE}`}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-md border border-border text-sm text-muted-foreground hover:text-foreground hover:border-primary/50 transition-colors"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs transition-colors"
+            style={{ border: `1px solid ${NAV_BORDER}`, color: NAV_MUTED }}
+            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = NAV_TEXT; (e.currentTarget as HTMLElement).style.borderColor = `${NAV_ACCENT}60`; }}
+            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = NAV_MUTED; (e.currentTarget as HTMLElement).style.borderColor = NAV_BORDER; }}
           >
-            <MessageSquare size={14} />
+            <MessageSquare size={13} />
             Text Us
           </a>
-          <a
-            href={`mailto:${EMAIL}`}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-md border border-border text-sm text-muted-foreground hover:text-foreground hover:border-primary/50 transition-colors"
+
+          <Link
+            to="/book"
+            className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-md text-xs font-bold transition-colors shadow-sm"
+            style={{ backgroundColor: NAV_ACCENT, color: NAV_BG_SOLID }}
           >
-            <Mail size={14} />
-            Email
-          </a>
+            <Calendar size={13} />
+            Book Online
+          </Link>
+
           <a
             href={`tel:+1${PHONE}`}
-            className="flex items-center gap-1.5 px-4 py-1.5 rounded-md bg-primary text-primary-foreground text-sm font-semibold hover:bg-primary/90 transition-colors"
+            className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-md text-xs font-semibold transition-colors"
+            style={{ backgroundColor: "rgba(255,255,255,0.08)", border: `1px solid ${NAV_BORDER}`, color: NAV_TEXT }}
           >
-            <Phone size={14} />
+            <Phone size={13} />
             {PHONE_DISPLAY}
           </a>
         </div>
 
         {/* Mobile Menu Toggle */}
         <button
-          className="md:hidden text-foreground p-2"
-          onClick={() => setOpen((v) => !v)}
+          className="md:hidden p-2"
+          onClick={() => setMobileOpen((v) => !v)}
           aria-label="Toggle menu"
+          style={{ color: NAV_TEXT }}
         >
-          {open ? <X size={22} /> : <Menu size={22} />}
+          {mobileOpen ? <X size={22} /> : <Menu size={22} />}
         </button>
       </div>
 
-      {/* Mobile Dropdown */}
-      {open && (
-        <div className="md:hidden bg-[#070f1f] border-t border-border px-4 pb-4 pt-2 flex flex-col gap-2">
-          {navLinks.map((link) => {
-            const active = location.pathname === link.to;
-            return (
-              <Link
-                key={link.to}
-                to={link.to}
-                onClick={() => setOpen(false)}
-                className={`py-2 text-base font-medium transition-colors ${
-                  active ? "text-primary" : "text-muted-foreground"
-                }`}
-              >
-                {link.label}
-              </Link>
-            );
-          })}
-          <div className="flex flex-col gap-2 mt-2 pt-2 border-t border-border">
-            <a
-              href={`tel:+1${PHONE}`}
-              className="flex items-center justify-center gap-2 py-2.5 rounded-md bg-primary text-primary-foreground font-semibold"
-            >
+      {/* Mobile Menu */}
+      {mobileOpen && (
+        <div className="md:hidden px-4 pb-6 pt-3 flex flex-col gap-4 max-h-[85vh] overflow-y-auto" style={{ backgroundColor: NAV_BG_SOLID, borderTop: `1px solid ${NAV_BORDER}` }}>
+          <Link to="/" className="text-base font-semibold" style={{ color: NAV_TEXT }}>Home</Link>
+          <Link to="/book" className="flex items-center gap-2 py-2 px-3 rounded-lg font-bold text-sm" style={{ backgroundColor: NAV_ACCENT, color: NAV_BG_SOLID }}>
+            <Calendar size={16} /> Book Online Directly
+          </Link>
+          <Link to="/quote" className="text-sm font-semibold" style={{ color: NAV_ACCENT }}>Instant Quote Calculator</Link>
+
+          <div className="space-y-4 pt-2" style={{ borderTop: `1px solid ${NAV_BORDER}` }}>
+            <p className="text-xs font-bold uppercase tracking-wider" style={{ color: NAV_ACCENT }}>All Services</p>
+            <div className="grid grid-cols-2 gap-2 text-xs">
+              <Link to="/services/residential-cleaning" className="p-2 rounded" style={{ backgroundColor: "rgba(255,255,255,0.06)", border: `1px solid ${NAV_BORDER}`, color: NAV_TEXT }}>Residential Cleaning</Link>
+              <Link to="/services/commercial-cleaning" className="p-2 rounded" style={{ backgroundColor: "rgba(255,255,255,0.06)", border: `1px solid ${NAV_BORDER}`, color: NAV_TEXT }}>Commercial Cleaning</Link>
+              <Link to="/services/power-washing" className="p-2 rounded" style={{ backgroundColor: "rgba(255,255,255,0.06)", border: `1px solid ${NAV_BORDER}`, color: NAV_TEXT }}>Power Washing</Link>
+              <Link to="/services/window-cleaning" className="p-2 rounded" style={{ backgroundColor: "rgba(255,255,255,0.06)", border: `1px solid ${NAV_BORDER}`, color: NAV_TEXT }}>Window Cleaning</Link>
+              <Link to="/services/auto-detailing" className="p-2 rounded" style={{ backgroundColor: "rgba(255,255,255,0.06)", border: `1px solid ${NAV_BORDER}`, color: NAV_TEXT }}>Auto Detailing</Link>
+              <Link to="/services/bin-cleaning" className="p-2 rounded" style={{ backgroundColor: "rgba(255,255,255,0.06)", border: `1px solid ${NAV_BORDER}`, color: NAV_TEXT }}>Trash Bin Cleaning</Link>
+              <Link to="/junk-removal" className="p-2 rounded" style={{ backgroundColor: "rgba(255,255,255,0.06)", border: `1px solid ${NAV_BORDER}`, color: NAV_TEXT }}>Junk Removal</Link>
+              <Link to="/landscaping" className="p-2 rounded" style={{ backgroundColor: "rgba(255,255,255,0.06)", border: `1px solid ${NAV_BORDER}`, color: NAV_TEXT }}>Landscaping</Link>
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-2 pt-3" style={{ borderTop: `1px solid ${NAV_BORDER}` }}>
+            <a href={`tel:+1${PHONE}`} className="flex items-center justify-center gap-2 py-2.5 rounded-md font-semibold text-sm" style={{ backgroundColor: "rgba(255,255,255,0.08)", border: `1px solid ${NAV_BORDER}`, color: NAV_TEXT }}>
               <Phone size={16} /> {PHONE_DISPLAY}
-            </a>
-            <a
-              href={`sms:+1${PHONE}`}
-              className="flex items-center justify-center gap-2 py-2.5 rounded-md border border-border text-foreground"
-            >
-              <MessageSquare size={16} /> Text Us
-            </a>
-            <a
-              href={`mailto:${EMAIL}`}
-              className="flex items-center justify-center gap-2 py-2.5 rounded-md border border-border text-foreground"
-            >
-              <Mail size={16} /> {EMAIL}
             </a>
           </div>
         </div>

@@ -1,189 +1,231 @@
-import { CheckCircle, Phone, ArrowRight } from "lucide-react";
+import {
+  ShieldCheck,
+  Truck,
+  Calendar,
+  MapPin,
+  Star,
+} from "lucide-react";
 import { Link } from "react-router";
-import CTABanner from "../components/CTABanner";
+import ServiceHero from "../components/ServiceHero";
+import HowItWorks from "../components/HowItWorks";
+import ServiceAreaSection from "../components/ServiceAreaSection";
+import FaqSection from "../components/FaqSection";
 
-const PHONE = "8163151305";
-const PHONE_DISPLAY = "(816) 315-1305";
-const EMAIL = "naffari@myyahoo.com";
+const PRIMARY = "#0d382c";
+const ACCENT = "#f5b82e";
+const BG = "#F1EBD9";
 
-const includes = [
-  "Furniture removal (sofas, beds, dressers)",
-  "Appliance haul-away (fridges, washers, dryers)",
-  "Construction & renovation debris",
-  "Yard waste & brush removal",
-  "Estate clean-outs",
-  "Office & commercial junk",
-  "Hot tub & swing set removal",
-  "Same-day service available",
+const PACKAGES = [
+  { title: "Minimum / Single Item", price: "$99", desc: "Single small item or minimum trip fee. Great for one piece of furniture or appliance." },
+  { title: "1/4 Load", price: "$175", desc: "A truck-bed quarter load. Ideal for a few large items or a small room's worth of clutter." },
+  { title: "1/2 Load", price: "$299", desc: "Half a truckload — perfect for bedroom sets, office furniture, or moderate cleanouts." },
+  { title: "3/4 Load", price: "$425", desc: "Three-quarter load for significant estate items, garage cleanouts, or multi-room jobs." },
+  { title: "Full Truckload", price: "$550", desc: "Maximum haul — full estate cleanouts, construction debris, or commercial jobs." },
+  { title: "Same-Day Rush", price: "+$75", desc: "Emergency same-day scheduling fee. Subject to availability — call to confirm." },
 ];
 
-const loadPricing = [
-  { label: "Minimum / single item", price: "$99" },
-  { label: "1/4 load", price: "$175" },
-  { label: "1/2 load", price: "$299" },
-  { label: "3/4 load", price: "$425" },
-  { label: "Full load", price: "$550" },
+const FEATURES = [
+  {
+    icon: Truck,
+    title: "All-In-One Haul & Sweep",
+    desc: "Our team hauls away all junk AND sweeps or blows the area before packing up — leaving your space cleaner than we found it.",
+  },
+  {
+    icon: ShieldCheck,
+    title: "Eco-Responsible Disposal",
+    desc: "We sort and donate usable items, recycle electronics and metals, and minimize landfill waste on every job.",
+  },
+  {
+    icon: Calendar,
+    title: "Same-Day & Next-Day Service",
+    desc: "Book online or call. We confirm via text and show up on time with a two-man crew ready to lift anything.",
+  },
+  {
+    icon: Star,
+    title: "5.0-Star Rated Service",
+    desc: "Hundreds of satisfied KC customers — from single-item pickups to full estate cleanouts. See for yourself.",
+  },
 ];
 
-const flatRateItems = [
-  { label: "Couch / sofa", price: "$110" },
-  { label: "Mattress", price: "$95" },
-  { label: "Refrigerator / large appliance", price: "$140" },
-  { label: "Washer / dryer (each)", price: "$110" },
-  { label: "Hot tub", price: "$400" },
-  { label: "TV", price: "$65" },
+const STATS = [
+  { val: "From $99", label: "Starting Price" },
+  { val: "Same-Day", label: "Service" },
+  { val: "Eco-Friendly", label: "Disposal" },
+  { val: "Licensed", label: "& Insured" },
 ];
 
-const addOns = [
-  "Heavy item requiring 3+ people (piano, safe, gun cabinet): +$50–100",
-  "Same-day / rush service: +$30 flat or 15% premium",
-  "Stairs / long carry (2+ flights or 75 ft+): +$25–50",
-];
-
-const gallery = [
-  "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=600&h=400&fit=crop&auto=format",
-  "https://images.unsplash.com/photo-1558618047-3c8c76ca7b85?w=600&h=400&fit=crop&auto=format",
-  "https://images.unsplash.com/photo-1595079676339-1534801ad6cf?w=600&h=400&fit=crop&auto=format",
+const HOW_IT_WORKS_STEPS = [
+  {
+    step: "1",
+    title: "Photo or Call Estimate",
+    desc: "Send us a photo or describe your items over the phone — we'll give you a firm price in minutes.",
+  },
+  {
+    step: "2",
+    title: "Confirm & Schedule",
+    desc: "Pick a time that works for you — even same-day. We'll confirm via text.",
+  },
+  {
+    step: "3",
+    title: "Crew Arrives & Hauls",
+    desc: "Our two-man crew handles all lifting, carrying, and loading with zero damage to your property.",
+  },
+  {
+    step: "4",
+    title: "Sweep & Sign Off",
+    desc: "We sweep the area, confirm you're satisfied, and process payment on the spot.",
+  },
 ];
 
 export default function JunkRemoval() {
   return (
-    <div className="bg-background text-foreground">
-      {/* Hero */}
-      <section className="relative h-[60vh] flex items-center overflow-hidden">
-        <div className="absolute inset-0 z-0">
-          <img
-            src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=1600&h=700&fit=crop&auto=format"
-            alt="Junk removal truck and workers"
-            className="w-full h-full object-cover opacity-30"
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-background via-background/80 to-transparent" />
+    <div className="font-sans-modern min-h-screen" style={{ backgroundColor: BG, color: PRIMARY }}>
+      <ServiceHero
+        badge="KC's #1 Junk Removal & Hauling Service"
+        titleContent={<>We Haul So <br />You <span className="italic" style={{ color: ACCENT }}>Don't</span> Have To.</>}
+        description="Furniture, appliances, construction debris, and full estate cleanouts — our crew shows up fast, lifts everything, and leaves your space spotless."
+        primaryColor={PRIMARY}
+        accentColor={ACCENT}
+        bgColor={BG}
+        ctaLabel="Book a Haul"
+        ctaTo="/book?service=junk"
+        trustItems={["Licensed & Insured", "Same-Day Service", "Eco-Friendly Recycling"]}
+        heroImage="https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800&h=1000&fit=crop&auto=format"
+        heroImageAlt="Junk removal truck and crew"
+        badgeLabel="Lunova Hauling & Junk Removal"
+        badgeSubLabel="Fast & Reliable Crew"
+      />
+
+      {/* MARQUEE STRIP */}
+      <div style={{ backgroundColor: ACCENT, overflow: 'hidden' }} className="py-3">
+        <div style={{ display: 'flex', gap: '3rem', whiteSpace: 'nowrap', animation: 'marquee 20s linear infinite', width: 'max-content' }}>
+          {[
+            "Single-Item Pickup", "Full Truckload", "Same-Day Service", "Eco-Friendly Recycling", "Estate Cleanouts", "Licensed & Insured", "Free Estimates", "Satisfaction Guarantee",
+            "Single-Item Pickup", "Full Truckload", "Same-Day Service", "Eco-Friendly Recycling", "Estate Cleanouts", "Licensed & Insured", "Free Estimates", "Satisfaction Guarantee",
+          ].map((item, i) => (
+            <span key={i} className="text-xs font-bold uppercase tracking-widest" style={{ color: PRIMARY }}>
+              ✦ {item}
+            </span>
+          ))}
         </div>
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6">
-          <span className="text-primary text-sm font-semibold uppercase tracking-widest">Lunova Services</span>
-          <h1 style={{ fontFamily: "var(--font-display)" }} className="text-6xl md:text-8xl font-bold text-foreground uppercase leading-tight mt-2 mb-4">
-            Junk<br />Removal
-          </h1>
-          <p className="text-muted-foreground text-lg max-w-md mb-8">
-            We haul it all away — fast, affordable, no mess left behind. Same-day slots available in Kansas City.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-3">
-            <a
-              href={`tel:+1${PHONE}`}
-              className="flex items-center justify-center gap-2 px-7 py-3.5 bg-primary text-primary-foreground rounded-lg font-bold text-base hover:bg-primary/90 transition-colors"
-            >
-              <Phone size={18} /> {PHONE_DISPLAY}
-            </a>
-            <a
-              href={`mailto:${EMAIL}`}
-              className="flex items-center justify-center gap-2 px-7 py-3.5 border border-border text-foreground rounded-lg font-semibold hover:border-primary/50 hover:text-primary transition-colors"
-            >
-              Get a Quote <ArrowRight size={16} />
-            </a>
-          </div>
-        </div>
-      </section>
+      </div>
 
-      {/* What We Take + Load Pricing */}
-      <section className="py-20 px-4 sm:px-6 max-w-7xl mx-auto">
-        <div className="grid md:grid-cols-2 gap-12 items-start">
-          <div>
-            <span className="text-primary text-sm font-semibold uppercase tracking-widest">No Job Too Big</span>
-            <h2 style={{ fontFamily: "var(--font-display)" }} className="text-4xl md:text-5xl font-bold text-foreground uppercase mt-2 mb-8">
-              What We Remove
-            </h2>
-            <ul className="space-y-3 mb-8">
-              {includes.map((item) => (
-                <li key={item} className="flex items-start gap-3 text-muted-foreground text-sm">
-                  <CheckCircle size={17} className="text-primary mt-0.5 shrink-0" />
-                  {item}
-                </li>
-              ))}
-            </ul>
-            <div className="bg-primary/10 border border-primary/20 rounded-lg px-4 py-3">
-              <p className="text-primary text-sm font-medium">💡 Just had a cleanout? Book a post-removal deep clean and save 10% on both services.</p>
-            </div>
-          </div>
-
-          <div className="space-y-6">
-            {/* Load pricing */}
-            <div className="bg-card border border-border rounded-xl p-8">
-              <h3 style={{ fontFamily: "var(--font-display)" }} className="text-3xl font-bold text-foreground uppercase mb-6">Load Pricing</h3>
-              <div className="space-y-1">
-                {loadPricing.map((p) => (
-                  <div key={p.label} className="flex items-center justify-between py-3 border-b border-border last:border-0 gap-4">
-                    <p className="text-foreground font-medium text-sm">{p.label}</p>
-                    <p style={{ fontFamily: "var(--font-display)" }} className="text-2xl font-bold text-primary shrink-0">{p.price}</p>
-                  </div>
-                ))}
-              </div>
-              <a
-                href={`tel:+1${PHONE}`}
-                className="mt-6 flex items-center justify-center gap-2 w-full py-3.5 bg-primary text-primary-foreground rounded-lg font-bold hover:bg-primary/90 transition-colors"
-              >
-                <Phone size={16} /> Schedule Pickup
-              </a>
-            </div>
-
-            {/* Add-ons */}
-            <div className="bg-card border border-border rounded-xl p-6">
-              <h4 style={{ fontFamily: "var(--font-display)" }} className="text-xl font-bold text-foreground uppercase mb-4">Add-ons</h4>
-              <ul className="space-y-2">
-                {addOns.map((a) => (
-                  <li key={a} className="text-muted-foreground text-sm flex items-start gap-2">
-                    <span className="text-primary mt-0.5">+</span> {a}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Flat Rate Items */}
-      <section className="bg-secondary py-16 px-4 sm:px-6">
+      {/* SERVICE PACKAGES */}
+      <section className="py-20 px-4 sm:px-6" style={{ backgroundColor: `${PRIMARY}07`, borderTop: `1px solid ${PRIMARY}12`, borderBottom: `1px solid ${PRIMARY}12` }}>
         <div className="max-w-7xl mx-auto">
-          <span className="text-primary text-sm font-semibold uppercase tracking-widest">No Guesswork</span>
-          <h2 style={{ fontFamily: "var(--font-display)" }} className="text-4xl font-bold text-foreground uppercase mt-2 mb-8">Common Flat-Rate Items</h2>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
-            {flatRateItems.map((item) => (
-              <div key={item.label} className="bg-card border border-border rounded-xl p-4 text-center">
-                <p style={{ fontFamily: "var(--font-display)" }} className="text-2xl font-bold text-primary mb-1">{item.price}</p>
-                <p className="text-muted-foreground text-xs">{item.label}</p>
+          <div className="text-center max-w-2xl mx-auto mb-12">
+            <div className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest mb-3" style={{ color: PRIMARY }}>
+              <span className="w-6 h-0.5" style={{ backgroundColor: PRIMARY }} />
+              <span>Rates &amp; Pricing</span>
+            </div>
+            <h2 className="font-serif-display text-4xl sm:text-5xl" style={{ color: PRIMARY }}>
+              Transparent Junk Removal Rates
+            </h2>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {PACKAGES.map((item, idx) => (
+              <div key={idx} className="bg-white p-6 rounded-2xl flex flex-col justify-between shadow-sm" style={{ border: `1px solid ${PRIMARY}18` }}>
+                <div>
+                  <div className="flex justify-between items-start mb-3">
+                    <h3 className="font-serif-display text-2xl" style={{ color: PRIMARY }}>{item.title}</h3>
+                    <span className="text-xs font-bold px-3 py-1 rounded-full shrink-0 ml-2" style={{ backgroundColor: ACCENT, color: PRIMARY }}>
+                      {item.price}
+                    </span>
+                  </div>
+                  <p className="text-sm leading-relaxed mb-6" style={{ color: `${PRIMARY}99` }}>{item.desc}</p>
+                </div>
+                <Link
+                  to="/book?service=junk"
+                  className="w-full py-2.5 text-xs font-bold rounded-full text-center transition-colors block"
+                  style={{ backgroundColor: PRIMARY, color: '#ffffff' }}
+                >
+                  Book This Service →
+                </Link>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Gallery */}
-      <section className="py-20 px-4 sm:px-6 max-w-7xl mx-auto">
-        <h2 style={{ fontFamily: "var(--font-display)" }} className="text-4xl font-bold text-foreground uppercase mb-6">Before &amp; After</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          {gallery.map((src, i) => (
-            <div key={i} className="rounded-xl overflow-hidden h-52 bg-secondary">
-              <img src={src} alt={`Junk removal job ${i + 1}`} className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
+      {/* FEATURE HIGHLIGHTS */}
+      <section className="py-20 px-4 sm:px-6" style={{ backgroundColor: BG }}>
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center max-w-2xl mx-auto mb-12">
+            <div className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest mb-3" style={{ color: PRIMARY }}>
+              <span className="w-6 h-0.5" style={{ backgroundColor: PRIMARY }} />
+              <span>Why Choose Us</span>
             </div>
-          ))}
-        </div>
-      </section>
+            <h2 className="font-serif-display text-4xl sm:text-5xl" style={{ color: PRIMARY }}>
+              A Reputation Built on Muscle, Speed, and Integrity.
+            </h2>
+          </div>
 
-      {/* Other Services */}
-      <section className="bg-secondary py-12 px-4 sm:px-6 border-t border-border">
-        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-muted-foreground text-sm">Also need cleaning or landscaping?</p>
-          <div className="flex gap-3">
-            <Link to="/cleaning" className="px-4 py-2 border border-border text-sm text-foreground rounded-lg hover:border-primary/50 hover:text-primary transition-colors">
-              Cleaning →
-            </Link>
-            <Link to="/landscaping" className="px-4 py-2 border border-border text-sm text-foreground rounded-lg hover:border-primary/50 hover:text-primary transition-colors">
-              Landscaping →
-            </Link>
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {FEATURES.map((f, idx) => {
+              const Icon = f.icon;
+              return (
+                <div key={idx} className="bg-white p-6 rounded-2xl shadow-sm flex flex-col gap-4" style={{ border: `1px solid ${PRIMARY}12` }}>
+                  <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0" style={{ backgroundColor: PRIMARY, color: ACCENT }}>
+                    <Icon size={22} />
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-sm mb-1" style={{ color: PRIMARY }}>{f.title}</h4>
+                    <p className="text-sm leading-relaxed" style={{ color: `${PRIMARY}99` }}>{f.desc}</p>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>
 
-      <CTABanner heading="Clear the Clutter Today" subtext="Call or text for a free, no-obligation estimate. We show up on time and do the heavy lifting." />
+      {/* HOW IT WORKS */}
+      <HowItWorks
+        heading="Our Proven Junk Removal Process"
+        steps={HOW_IT_WORKS_STEPS}
+        primaryColor={PRIMARY}
+        accentColor={ACCENT}
+      />
+
+      {/* STATS BAR */}
+      <div className="py-12 px-4 sm:px-6" style={{ backgroundColor: PRIMARY }}>
+        <div className="max-w-4xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+          {STATS.map((stat, idx) => (
+            <div key={idx}>
+              <p className="font-serif-display text-4xl sm:text-5xl font-bold" style={{ color: ACCENT }}>{stat.val}</p>
+              <p className="text-xs mt-1 uppercase tracking-wider" style={{ color: 'rgba(255,255,255,0.5)' }}>{stat.label}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Wave transition */}
+      <div style={{ backgroundColor: PRIMARY, lineHeight: 0, marginTop: '-1px' }}>
+        <svg viewBox="0 0 1440 72" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" className="w-full block" style={{ height: '50px' }}>
+          <path d="M0,36 C180,72 360,0 540,36 C720,72 900,0 1080,36 C1260,72 1380,0 1440,36 L1440,72 L0,72 Z" fill={BG} />
+        </svg>
+      </div>
+
+      {/* SERVICE AREA */}
+      <ServiceAreaSection primaryColor={PRIMARY} accentColor={ACCENT} bgColor={BG} />
+
+      {/* FAQ SECTION */}
+      <section className="py-20 px-4 sm:px-6" style={{ backgroundColor: BG }}>
+        <div className="max-w-3xl mx-auto">
+          <FaqSection
+            items={[
+              { q: "What items can you remove?", a: "We haul almost everything — furniture, appliances, yard waste, construction debris, electronics, and more. We cannot take hazardous materials." },
+              { q: "Do I need to move items to the curb?", a: "No. Our crew does all the heavy lifting, including items inside your home, garage, or basement." },
+              { q: "How is pricing determined?", a: "Pricing is based on volume (how much space your items take up in the truck). Get an instant estimate on our quote page." },
+              { q: "How quickly can you come?", a: "We offer same-day and next-day appointments in most areas. Call or book online to check availability." },
+            ]}
+            title="Frequently Asked Questions"
+            subtitle="Everything you need to know"
+          />
+        </div>
+      </section>
+
     </div>
   );
 }

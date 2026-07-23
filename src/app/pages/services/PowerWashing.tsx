@@ -1,0 +1,325 @@
+import {
+  Phone,
+  ArrowUpRight,
+  Star,
+  ShieldCheck,
+  Droplets,
+  CheckCircle,
+  MapPin,
+} from "lucide-react";
+import { Link } from "react-router";
+import HowItWorks from "../../components/HowItWorks";
+import ServiceAreaSection from "../../components/ServiceAreaSection";
+import FaqSection from "../../components/FaqSection";
+import { PHONE, PHONE_DISPLAY } from "../../constants/contact";
+
+const PRIMARY = "#1A2F4A";
+const ACCENT = "#2BA8E0";
+const BG = "#F1EBD9";
+
+const PACKAGES = [
+  {
+    title: "Driveway & Sidewalk",
+    price: "From $100",
+    features: ["Concrete & asphalt", "Oil & rust removal", "Tire mark removal", "Rinse & inspection"],
+    highlight: false,
+  },
+  {
+    title: "House Soft Wash",
+    price: "From $180",
+    features: ["Vinyl, stucco & brick", "Mold & algae removal", "Gutter brightening", "Rinse & spot-check"],
+    highlight: true,
+  },
+  {
+    title: "Deck & Patio",
+    price: "From $120",
+    features: ["Wood & composite", "Mildew treatment", "Paver restoration", "Season prep clean"],
+    highlight: false,
+  },
+];
+
+const FEATURES = [
+  {
+    icon: Droplets,
+    title: "Licensed & Insured",
+    desc: "Full commercial liability coverage on every job. Your property is protected, no exceptions.",
+  },
+  {
+    icon: ShieldCheck,
+    title: "Soft Wash Technology",
+    desc: "We match pressure and cleaning agents to your surface — no risk of etching or damage.",
+  },
+  {
+    icon: Star,
+    title: "5.0-Star Rated Crew",
+    desc: "Trusted by KC homeowners, property managers, and HOAs across the metro since day one.",
+  },
+  {
+    icon: CheckCircle,
+    title: "Satisfaction Guaranteed",
+    desc: "If you're not happy with the results, we come back and re-clean at no additional charge.",
+  },
+];
+
+const STATS = [
+  { val: "From $175", label: "Starting Price" },
+  { val: "Same-Day", label: "Service" },
+  { val: "100%", label: "Satisfaction Guarantee" },
+  { val: "Licensed", label: "& Insured" },
+];
+
+const HOW_IT_WORKS_STEPS = [
+  {
+    step: "1",
+    title: "Free On-Site Estimate",
+    desc: "We assess your surfaces, note staining levels, and give you an upfront flat-rate price.",
+  },
+  {
+    step: "2",
+    title: "Schedule Your Service",
+    desc: "Pick a time that works for you — same-week slots available. We confirm via text.",
+  },
+  {
+    step: "3",
+    title: "Expert Pressure Wash",
+    desc: "Our crew arrives fully equipped and works systematically across all surfaces.",
+  },
+  {
+    step: "4",
+    title: "Final Rinse & Inspection",
+    desc: "We rinse down, inspect every area, and confirm you're satisfied before packing up.",
+  },
+];
+
+export default function PowerWashing() {
+  return (
+    <div className="font-sans-modern min-h-screen" style={{ backgroundColor: BG, color: PRIMARY }}>
+      {/* HERO */}
+      <section className="relative pt-[4.5rem] pb-20 px-4 sm:px-6 overflow-hidden" style={{ backgroundColor: BG }}>
+        <div className="max-w-7xl mx-auto grid lg:grid-cols-[1fr_480px] gap-12 items-center">
+          <div>
+            <div
+              className="inline-flex items-center gap-2 text-xs font-semibold px-3.5 py-1.5 rounded-full mb-6 border"
+              style={{ backgroundColor: `${PRIMARY}12`, color: PRIMARY, borderColor: `${PRIMARY}28` }}
+            >
+              <span className="w-2 h-2 rounded-full" style={{ backgroundColor: ACCENT }} />
+              <span>Power Washing by Lunova</span>
+            </div>
+
+            <h1
+              className="font-serif-display text-5xl sm:text-6xl md:text-7xl font-normal leading-[1.08] mb-6 tracking-tight"
+              style={{ color: PRIMARY }}
+            >
+              Exterior Cleaning<br />
+              for Homes &amp; <span className="italic" style={{ color: ACCENT }}>Businesses.</span>
+            </h1>
+
+            <p className="text-base sm:text-lg max-w-xl mb-8 leading-relaxed" style={{ color: `${PRIMARY}bb` }}>
+              Professional pressure washing, soft washing, gutter cleaning, and surface restoration across Kansas City. Licensed, insured, and results-guaranteed.
+            </p>
+
+            <div className="flex flex-wrap items-center gap-4">
+              <Link
+                to="/book?service=power-washing"
+                className="inline-flex items-center gap-3 font-bold px-7 py-4 rounded-full text-base transition-all shadow-md group text-white"
+                style={{ backgroundColor: ACCENT }}
+              >
+                Book a Clean
+                <span
+                  className="w-7 h-7 rounded-full flex items-center justify-center group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform"
+                  style={{ backgroundColor: PRIMARY, color: ACCENT }}
+                >
+                  <ArrowUpRight size={16} />
+                </span>
+              </Link>
+
+              <a
+                href={`tel:+1${PHONE}`}
+                className="inline-flex items-center gap-2 font-semibold px-6 py-4 rounded-full text-sm transition-colors text-white"
+                style={{ backgroundColor: PRIMARY }}
+              >
+                <Phone size={16} style={{ color: ACCENT }} />
+                Call {PHONE_DISPLAY}
+              </a>
+            </div>
+
+            <div className="mt-10 pt-8 flex items-center gap-6 text-xs" style={{ borderTop: `1px solid ${PRIMARY}20` }}>
+              <span className="font-semibold" style={{ color: PRIMARY }}>Licensed &amp; Insured</span>
+              <span style={{ color: `${PRIMARY}40` }}>•</span>
+              <span className="font-semibold" style={{ color: PRIMARY }}>Soft Wash Available</span>
+              <span style={{ color: `${PRIMARY}40` }}>•</span>
+              <span className="font-semibold" style={{ color: PRIMARY }}>Free Estimates</span>
+            </div>
+          </div>
+
+          <div className="relative flex justify-center">
+            <div className="absolute -inset-4 rounded-[40px] rotate-2 opacity-40 z-0" style={{ backgroundColor: `${ACCENT}30` }} />
+            <div className="relative z-10 w-full max-w-md h-[460px] sm:h-[520px] rounded-[36px] overflow-hidden border-4 border-white shadow-2xl" style={{ backgroundColor: PRIMARY }}>
+              <img
+                src="https://images.unsplash.com/photo-1558618047-3c8c76ca7b85?w=800&h=1000&fit=crop&auto=format"
+                alt="Power washing a driveway"
+                className="w-full h-full object-cover"
+              />
+              <div
+                className="absolute bottom-6 left-6 right-6 backdrop-blur-md p-5 rounded-2xl flex items-center justify-between"
+                style={{ backgroundColor: `${PRIMARY}e6`, border: `1px solid ${ACCENT}50` }}
+              >
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-wider" style={{ color: ACCENT }}>Power Washing by Lunova</p>
+                  <p className="font-serif-display text-xl text-white">Exterior Cleaning Experts</p>
+                </div>
+                <div className="w-10 h-10 rounded-full flex items-center justify-center font-bold text-xs text-white" style={{ backgroundColor: ACCENT }}>
+                  ★ 5.0
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* MARQUEE STRIP */}
+      <div style={{ backgroundColor: ACCENT, overflow: 'hidden' }} className="py-3">
+        <div style={{ display: 'flex', gap: '3rem', whiteSpace: 'nowrap', animation: 'marquee 20s linear infinite', width: 'max-content' }}>
+          {[
+            "Driveway Cleaning", "House Soft Wash", "Deck Restoration", "Oil & Rust Removal", "Licensed & Insured", "Soft Wash Available", "Free Estimates", "Satisfaction Guarantee",
+            "Driveway Cleaning", "House Soft Wash", "Deck Restoration", "Oil & Rust Removal", "Licensed & Insured", "Soft Wash Available", "Free Estimates", "Satisfaction Guarantee",
+          ].map((item, i) => (
+            <span key={i} className="text-xs font-bold uppercase tracking-widest" style={{ color: PRIMARY }}>
+              ✦ {item}
+            </span>
+          ))}
+        </div>
+      </div>
+
+      {/* SERVICE PACKAGES */}
+      <section className="py-20 px-4 sm:px-6" style={{ backgroundColor: `${PRIMARY}07`, borderTop: `1px solid ${PRIMARY}15`, borderBottom: `1px solid ${PRIMARY}15` }}>
+        <div className="max-w-5xl mx-auto">
+          <div className="text-center max-w-2xl mx-auto mb-12">
+            <div className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest mb-3" style={{ color: PRIMARY }}>
+              <span className="w-6 h-0.5" style={{ backgroundColor: PRIMARY }} />
+              <span>Service Rates</span>
+            </div>
+            <h2 className="font-serif-display text-4xl sm:text-5xl" style={{ color: PRIMARY }}>
+              Transparent Pricing
+            </h2>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-6 items-start">
+            {PACKAGES.map((plan, idx) => (
+              <div
+                key={idx}
+                className="rounded-3xl p-7 flex flex-col gap-5"
+                style={{
+                  backgroundColor: plan.highlight ? PRIMARY : '#ffffff',
+                  color: plan.highlight ? '#ffffff' : PRIMARY,
+                  border: plan.highlight ? 'none' : `2px solid ${PRIMARY}18`,
+                  boxShadow: plan.highlight ? `0 20px 60px ${PRIMARY}40` : '0 2px 12px rgba(0,0,0,0.05)',
+                  transform: plan.highlight ? 'scale(1.04)' : 'none',
+                }}
+              >
+                <div>
+                  <p className="text-xs font-bold uppercase tracking-widest mb-1" style={{ opacity: 0.55 }}>{plan.title}</p>
+                  <p className="font-serif-display text-4xl">{plan.price}</p>
+                </div>
+                <ul className="space-y-2.5 flex-1">
+                  {plan.features.map((f) => (
+                    <li key={f} className="flex items-center gap-2 text-sm">
+                      <CheckCircle size={14} style={{ color: ACCENT, flexShrink: 0 }} />
+                      {f}
+                    </li>
+                  ))}
+                </ul>
+                <Link
+                  to="/book?service=power-washing"
+                  className="text-center font-bold py-3 rounded-full text-sm block text-white"
+                  style={{ backgroundColor: plan.highlight ? ACCENT : PRIMARY }}
+                >
+                  Book This Service →
+                </Link>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* FEATURE HIGHLIGHTS */}
+      <section className="py-20 px-4 sm:px-6" style={{ backgroundColor: BG }}>
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center max-w-2xl mx-auto mb-12">
+            <div className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest mb-3" style={{ color: PRIMARY }}>
+              <span className="w-6 h-0.5" style={{ backgroundColor: PRIMARY }} />
+              <span>Why Choose Us</span>
+            </div>
+            <h2 className="font-serif-display text-4xl sm:text-5xl" style={{ color: PRIMARY }}>
+              KC's Most Trusted Exterior Cleaning Team
+            </h2>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {FEATURES.map((f, idx) => {
+              const Icon = f.icon;
+              return (
+                <div key={idx} className="bg-white p-6 rounded-2xl shadow-sm flex flex-col gap-4" style={{ border: `1px solid ${PRIMARY}15` }}>
+                  <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0 text-white" style={{ backgroundColor: PRIMARY }}>
+                    <Icon size={22} />
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-sm mb-1" style={{ color: PRIMARY }}>{f.title}</h4>
+                    <p className="text-sm leading-relaxed" style={{ color: `${PRIMARY}99` }}>{f.desc}</p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* HOW IT WORKS */}
+      <HowItWorks
+        heading="Our Proven Power Washing Process"
+        steps={HOW_IT_WORKS_STEPS}
+        primaryColor={PRIMARY}
+        accentColor={ACCENT}
+      />
+
+      {/* STATS BAR */}
+      <div className="py-12 px-4 sm:px-6" style={{ backgroundColor: PRIMARY }}>
+        <div className="max-w-4xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+          {STATS.map((stat, idx) => (
+            <div key={idx}>
+              <p className="font-serif-display text-4xl sm:text-5xl font-bold" style={{ color: ACCENT }}>{stat.val}</p>
+              <p className="text-xs mt-1 uppercase tracking-wider" style={{ color: 'rgba(255,255,255,0.5)' }}>{stat.label}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Wave transition */}
+      <div style={{ backgroundColor: PRIMARY, lineHeight: 0, marginTop: '-1px' }}>
+        <svg viewBox="0 0 1440 72" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" className="w-full block" style={{ height: '50px' }}>
+          <path d="M0,36 C180,72 360,0 540,36 C720,72 900,0 1080,36 C1260,72 1380,0 1440,36 L1440,72 L0,72 Z" fill={BG} />
+        </svg>
+      </div>
+
+      {/* SERVICE AREA */}
+      <ServiceAreaSection primaryColor={PRIMARY} accentColor={ACCENT} bgColor={BG} />
+
+      {/* FAQ SECTION */}
+      <section className="py-20 px-4 sm:px-6" style={{ backgroundColor: BG }}>
+        <div className="max-w-3xl mx-auto">
+          <FaqSection
+            items={[
+              { q: "What surfaces can you power wash?", a: "Driveways, sidewalks, decks, patios, siding, fences, and commercial parking lots." },
+              { q: "Is power washing safe for all surfaces?", a: "We adjust pressure for each surface. Soft washing is used for siding, roofs, and painted surfaces to prevent damage." },
+              { q: "How long before I can use the surface?", a: "Most surfaces are ready within a few hours. We'll let you know based on the specific job." },
+              { q: "Do I need to be home?", a: "Not necessarily — as long as we have access to the area and a water connection, we can complete the job." },
+            ]}
+            title="Frequently Asked Questions"
+            subtitle="Everything you need to know"
+          />
+        </div>
+      </section>
+
+    </div>
+  );
+}

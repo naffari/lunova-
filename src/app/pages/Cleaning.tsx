@@ -1,395 +1,325 @@
-import { useState } from "react";
-import { CheckCircle, Phone, ArrowRight, Home, Building2, Trash2, Car, Droplets, AppWindow } from "lucide-react";
+import {
+  ArrowUpRight,
+  ShieldCheck,
+  Sparkles,
+  CheckCircle2,
+  Calendar,
+  Home,
+  Building2,
+  Droplets,
+  AppWindow,
+  Car,
+  Trash2,
+  MapPin,
+} from "lucide-react";
 import { Link } from "react-router";
-import CTABanner from "../components/CTABanner";
+import { Helmet } from "react-helmet-async";
+import ServiceHero from "../components/ServiceHero";
+import HowItWorks from "../components/HowItWorks";
+import ServiceAreaSection from "../components/ServiceAreaSection";
+import FaqSection from "../components/FaqSection";
 
-const PHONE = "8163151305";
-const PHONE_DISPLAY = "(816) 315-1305";
-const EMAIL = "naffari@myyahoo.com";
+const PRIMARY = "#14304A";
+const ACCENT = "#E8A830";
+const BG = "#F1EBD9";
 
-type ServiceKey = "residential" | "commercial" | "bin" | "auto" | "power" | "window";
-
-const serviceNav: { key: ServiceKey; label: string; icon: React.ReactNode }[] = [
-  { key: "residential", label: "Residential", icon: <Home size={16} /> },
-  { key: "commercial", label: "Commercial", icon: <Building2 size={16} /> },
-  { key: "bin", label: "Bin Cleaning", icon: <Trash2 size={16} /> },
-  { key: "auto", label: "Auto Detailing", icon: <Car size={16} /> },
-  { key: "power", label: "Power Washing", icon: <Droplets size={16} /> },
-  { key: "window", label: "Window Cleaning", icon: <AppWindow size={16} /> },
+const SERVICES = [
+  {
+    icon: Home,
+    title: "Residential Cleaning",
+    price: "From $130",
+    desc: "Weekly, bi-weekly, or one-time deep cleans for homes of all sizes.",
+    bullets: ["Recurring & deep cleans", "Move-in/out service", "Eco-friendly supplies"],
+    link: "/services/residential-cleaning",
+    img: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&h=400&fit=crop&auto=format",
+  },
+  {
+    icon: Building2,
+    title: "Commercial Janitorial",
+    price: "From $0.10/sqft",
+    desc: "Nightly or scheduled janitorial for offices, medical, retail, and restaurants.",
+    bullets: ["After-hours scheduling", "Sanitization & restocking", "Contract pricing"],
+    link: "/services/commercial-cleaning",
+    img: "https://images.unsplash.com/photo-1497366216548-37526070297c?w=600&h=400&fit=crop&auto=format",
+  },
+  {
+    icon: Droplets,
+    title: "Power Washing",
+    price: "From $100",
+    desc: "High-pressure cleaning for driveways, siding, patios, and decks.",
+    bullets: ["Vinyl & stucco soft-wash", "Driveway grime removal", "Deck & patio refresh"],
+    link: "/services/power-washing",
+    img: "https://images.unsplash.com/photo-1558618047-3c8c76ca7b85?w=600&h=400&fit=crop&auto=format",
+  },
+  {
+    icon: AppWindow,
+    title: "Window Cleaning",
+    price: "From $140",
+    desc: "Interior & exterior streak-free window cleaning for homes and offices.",
+    bullets: ["Interior & exterior panes", "Screen & track cleaning", "Hard water treatment"],
+    link: "/services/window-cleaning",
+    img: "https://images.unsplash.com/photo-1563453392212-326f5e854473?w=600&h=400&fit=crop&auto=format",
+  },
+  {
+    icon: Car,
+    title: "Auto Detailing",
+    price: "From $95",
+    desc: "Mobile vehicle detailing brought to your home or office driveway.",
+    bullets: ["Exterior wash & wax", "Interior vacuum & steam", "Sedan, SUV & truck packages"],
+    link: "/services/auto-detailing",
+    img: "https://images.unsplash.com/photo-1520340356584-f9917d1eea6f?w=600&h=400&fit=crop&auto=format",
+  },
+  {
+    icon: Trash2,
+    title: "Trash Bin Cleaning",
+    price: "From $28/mo",
+    desc: "200° hot-water sanitization to eliminate bacteria and odors from curbside bins.",
+    bullets: ["Kills 99.9% of bacteria", "Deodorizing treatment", "Curbside route schedule"],
+    link: "/services/bin-cleaning",
+    img: "https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?w=600&h=400&fit=crop&auto=format",
+  },
 ];
 
-const services: Record<ServiceKey, {
-  headline: string;
-  subhead: string;
-  img: string;
-  alt: string;
-  includes: string[];
-  pricing: { label: string; price: string; note?: string }[];
-  pricingNote?: string;
-  crossSell?: string;
-}> = {
-  residential: {
-    headline: "Residential Cleaning",
-    subhead: "Recurring plans and one-time cleans for homes of every size. We bring everything — you just unlock the door.",
-    img: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=900&h=500&fit=crop&auto=format",
-    alt: "Clean bright living room",
-    includes: [
-      "Kitchen surfaces, appliances, sink & floors",
-      "All bathrooms scrubbed & disinfected",
-      "Bedrooms vacuumed, dusted & tidied",
-      "Living areas — furniture, baseboards, windows",
-      "Move-in / move-out deep cleans available",
-      "Weekly, bi-weekly & monthly recurring plans",
-      "Eco-friendly product options on request",
-    ],
-    pricing: [
-      { label: "Recurring (weekly / bi-weekly)", price: "$0.13/sq ft", note: "$130 minimum" },
-      { label: "Standard one-time", price: "$0.16/sq ft", note: "$150 minimum" },
-      { label: "Deep clean", price: "$0.22/sq ft", note: "$220 minimum" },
-      { label: "Move-in / move-out", price: "$0.28/sq ft", note: "$250 minimum" },
-    ],
-    crossSell: "Add bin cleaning to any residential quote — takes 10 minutes, saves you the hassle.",
+const HOW_IT_WORKS_STEPS = [
+  {
+    step: "1",
+    title: "Book Online or Call",
+    desc: "Choose your service type, pick a date, and confirm your address in minutes.",
   },
-  commercial: {
-    headline: "Commercial Cleaning",
-    subhead: "Offices, restaurants, medical facilities, and more. Consistent, professional results on your schedule.",
-    img: "https://images.unsplash.com/photo-1497366216548-37526070297c?w=900&h=500&fit=crop&auto=format",
-    alt: "Clean modern office space",
-    includes: [
-      "Standard office cleaning per visit",
-      "Recurring contract rates (2–3× per week)",
-      "Restaurant & kitchen-grade deep cleans",
-      "Medical & industrial facility cleans",
-      "After-hours scheduling available",
-      "Supplies and equipment provided",
-    ],
-    pricing: [
-      { label: "Standard office, per visit", price: "$0.10/sq ft" },
-      { label: "Recurring contract (2–3×/week)", price: "10% off", note: "Per-visit rate" },
-      { label: "Restaurant / medical / industrial", price: "Custom quote", note: "Site visit required" },
-    ],
-    pricingNote: "Commercial contracts receive priority scheduling and a dedicated account contact.",
+  {
+    step: "2",
+    title: "We Confirm & Prepare",
+    desc: "Your crew reviews your home details and arrives with all supplies included.",
   },
-  bin: {
-    headline: "Bin Cleaning",
-    subhead: "Sanitize and deodorize your trash and recycling bins. A 10-minute add-on that makes a real difference.",
-    img: "https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?w=900&h=500&fit=crop&auto=format",
-    alt: "Clean residential bins",
-    includes: [
-      "High-pressure hot water rinse",
-      "Deodorizing treatment inside & out",
-      "Handles and lids cleaned",
-      "Residue and buildup removed",
-      "Route-based scheduling — we come to you",
-      "Add more bins at a flat per-bin rate",
-    ],
-    pricing: [
-      { label: "One-time clean (2 bins)", price: "$55" },
-      { label: "Monthly subscription (2 bins)", price: "$28/mo" },
-      { label: "Quarterly subscription (2 bins)", price: "$45/quarter" },
-      { label: "Each additional bin", price: "+$8" },
-    ],
-    crossSell: "Best value when bundled with a recurring residential cleaning plan.",
+  {
+    step: "3",
+    title: "Professional Clean",
+    desc: "We work room-by-room with a detailed checklist, sanitizing every surface.",
   },
-  auto: {
-    headline: "Auto Detailing",
-    subhead: "Professional interior and exterior detailing at your home or office. Mobile service available.",
-    img: "https://images.unsplash.com/photo-1520340356584-f9917d1eea6f?w=900&h=500&fit=crop&auto=format",
-    alt: "Car being detailed",
-    includes: [
-      "Exterior hand wash, clay bar & wax",
-      "Interior vacuum, wipe-down & shampoo",
-      "Leather/vinyl conditioning",
-      "Glass cleaning inside & out",
-      "Tire and wheel detailing",
-      "Mobile service available — we come to you",
-    ],
-    pricing: [
-      { label: "Exterior wash & wax", price: "$95" },
-      { label: "Interior detail", price: "$135" },
-      { label: "Full detail (interior + exterior)", price: "$215" },
-      { label: "Full detail — SUV / truck", price: "$255" },
-      { label: "Mobile / travel fee (outside core area)", price: "+$25" },
-    ],
+  {
+    step: "4",
+    title: "Quality Check & Sign-Off",
+    desc: "A team lead does a final walkthrough and you confirm everything meets our standard.",
   },
-  power: {
-    headline: "Power Washing",
-    subhead: "Remove years of buildup from siding, driveways, decks, and more. Before-and-after results you can see.",
-    img: "https://images.unsplash.com/photo-1558618047-3c8c76ca7b85?w=900&h=500&fit=crop&auto=format",
-    alt: "Power washing a driveway",
-    includes: [
-      "House exterior siding & fascia",
-      "Driveways, sidewalks & walkways",
-      "Decks, patios & fences",
-      "Gutters exterior wash",
-      "Commercial storefronts & loading docks",
-      "Bundle discounts on multiple surfaces",
-    ],
-    pricing: [
-      { label: "House exterior (siding)", price: "$0.20/sq ft", note: "$175 minimum" },
-      { label: "Driveway", price: "$0.18/sq ft", note: "$100 minimum" },
-      { label: "Deck / patio", price: "$0.20/sq ft", note: "$120 minimum" },
-      { label: "Bundle: driveway + walkway", price: "15% off", note: "Combined total" },
-    ],
-    crossSell: "Bundle power washing with window cleaning for an additional 15% off both services.",
-  },
-  window: {
-    headline: "Window Cleaning",
-    subhead: "Streak-free windows inside and out — residential and commercial. Hard water treatment available.",
-    img: "https://images.unsplash.com/photo-1563453392212-326f5e854473?w=900&h=500&fit=crop&auto=format",
-    alt: "Clean sparkling windows",
-    includes: [
-      "Interior and exterior pane cleaning",
-      "Screen & track cleaning add-on",
-      "Hard water & mineral deposit removal",
-      "Commercial storefront glass",
-      "High-rise / ladder work available",
-      "Spotless streak-free finish guaranteed",
-    ],
-    pricing: [
-      { label: "Standard window, in & out", price: "$10/window", note: "$150 minimum" },
-      { label: "Screens / tracks add-on", price: "+$3/window" },
-      { label: "Hard water / mineral removal", price: "+$15/window" },
-      { label: "Commercial storefront", price: "$1.25/sq ft" },
-    ],
-    crossSell: "Pair with power washing for a complete exterior refresh — bundled discount applied automatically.",
-  },
-};
+];
+
+const STATS = [
+  { val: "From $130", label: "Starting Price" },
+  { val: "Eco-Friendly", label: "Products" },
+  { val: "100%", label: "Satisfaction Guarantee" },
+  { val: "Licensed", label: "& Insured" },
+];
 
 export default function Cleaning() {
-  const [active, setActive] = useState<ServiceKey>("residential");
-  const s = services[active];
-
   return (
-    <div className="bg-background text-foreground">
-      {/* Hero */}
-      <section className="relative h-[55vh] min-h-[380px] flex items-center overflow-hidden">
-        <div className="absolute inset-0 z-0">
-          <img
-            src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=1600&h=700&fit=crop&auto=format"
-            alt="Cleaning team at work"
-            className="w-full h-full object-cover opacity-25"
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-background via-background/80 to-transparent" />
-        </div>
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 w-full">
-          <span className="text-primary text-sm font-semibold uppercase tracking-widest">Lunova Services</span>
-          <h1
-            style={{ fontFamily: "var(--font-display)" }}
-            className="text-6xl md:text-8xl font-bold text-foreground uppercase leading-tight mt-2 mb-4"
-          >
-            Cleaning<br />Services
-          </h1>
-          <p className="text-muted-foreground text-lg max-w-lg mb-8">
-            Six services under one roof — from deep house cleans to auto detailing and power washing. Book one or bundle for 10% off.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-3">
-            <a
-              href={`tel:+1${PHONE}`}
-              className="flex items-center justify-center gap-2 px-7 py-3.5 bg-primary text-primary-foreground rounded-lg font-bold text-base hover:bg-primary/90 transition-colors"
-            >
-              <Phone size={18} /> {PHONE_DISPLAY}
-            </a>
-            <a
-              href={`mailto:${EMAIL}`}
-              className="flex items-center justify-center gap-2 px-7 py-3.5 border border-border text-foreground rounded-lg font-semibold hover:border-primary/50 hover:text-primary transition-colors"
-            >
-              Get a Free Quote <ArrowRight size={16} />
-            </a>
+    <>
+      <Helmet>
+        <title>Cleaning Services | Lunova Services</title>
+        <meta name="description" content="Professional residential and commercial cleaning services in Kansas City. Deep cleaning, move-in/out, and recurring cleaning with eco-friendly products." />
+        <meta property="og:title" content="Cleaning Services | Lunova Services" />
+        <meta property="og:description" content="Professional residential and commercial cleaning. Deep cleaning, move-in/out, and recurring services with eco-friendly products." />
+        <meta property="og:type" content="website" />
+      </Helmet>
+      <div className="font-sans-modern min-h-screen" style={{ backgroundColor: BG, color: PRIMARY }}>
+      <ServiceHero
+        badge="#1 Cleaning Company in Kansas City"
+        titleContent={<>We Clean <span className="italic" style={{ color: ACCENT }}>Everything.</span> <br />So You Don't Have To.</>}
+        description="From home deep cleans to commercial janitorial, power washing, and auto detailing — Lunova brings professional-grade results to every surface."
+        primaryColor={PRIMARY}
+        accentColor={ACCENT}
+        bgColor={BG}
+        ctaLabel="Book a Clean"
+        ctaTo="/book?service=cleaning"
+        trustItems={["Eco-Friendly Supplies", "Licensed & Insured", "Same-Week Slots"]}
+        heroImage="https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=800&h=1000&fit=crop&auto=format"
+        heroImageAlt="Professional Cleaning Service"
+        badgeLabel="Lunova Cleaning Services"
+        badgeSubLabel="Professional Clean Crew"
+      />
+
+      {/* SERVICES HUB GRID */}
+      <section className="py-20 px-4 sm:px-6" style={{ backgroundColor: `${PRIMARY}07`, borderTop: `1px solid ${PRIMARY}12`, borderBottom: `1px solid ${PRIMARY}12` }}>
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center max-w-2xl mx-auto mb-12">
+            <div className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest mb-3" style={{ color: PRIMARY }}>
+              <span className="w-6 h-0.5" style={{ backgroundColor: PRIMARY }} />
+              <span>Our Services</span>
+            </div>
+            <h2 className="font-serif-display text-4xl sm:text-5xl" style={{ color: PRIMARY }}>
+              Comprehensive Cleaning Services
+            </h2>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {SERVICES.map((item, idx) => {
+              const Icon = item.icon;
+              return (
+                <div
+                  key={idx}
+                  className="bg-white rounded-2xl flex flex-col shadow-sm overflow-hidden"
+                  style={{ border: `1px solid ${PRIMARY}18` }}
+                >
+                  <div className="h-48 overflow-hidden" style={{ backgroundColor: PRIMARY }}>
+                    <img
+                      src={item.img}
+                      alt={item.title}
+                      className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+                    />
+                  </div>
+
+                  <div className="p-6 flex flex-col flex-1">
+                    <div className="flex justify-between items-start mb-3">
+                      <div className="flex items-center gap-2">
+                        <div
+                          className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0"
+                          style={{ backgroundColor: `${ACCENT}22`, color: ACCENT }}
+                        >
+                          <Icon size={16} />
+                        </div>
+                        <h3 className="font-serif-display text-xl" style={{ color: PRIMARY }}>{item.title}</h3>
+                      </div>
+                      <span
+                        className="text-xs font-bold px-3 py-1 rounded-full shrink-0 ml-2"
+                        style={{ backgroundColor: ACCENT, color: PRIMARY }}
+                      >
+                        {item.price}
+                      </span>
+                    </div>
+
+                    <p className="text-sm leading-relaxed mb-4" style={{ color: `${PRIMARY}99` }}>{item.desc}</p>
+
+                    <ul className="space-y-1.5 mb-6">
+                      {item.bullets.map((bullet, bIdx) => (
+                        <li key={bIdx} className="flex items-center gap-2 text-sm" style={{ color: PRIMARY }}>
+                          <CheckCircle2 size={14} style={{ color: ACCENT }} className="shrink-0" />
+                          {bullet}
+                        </li>
+                      ))}
+                    </ul>
+
+                    <div className="mt-auto">
+                      <Link
+                        to={item.link}
+                        className="w-full py-2.5 text-xs font-bold rounded-full text-center transition-colors block"
+                        style={{ backgroundColor: PRIMARY, color: '#ffffff' }}
+                      >
+                        View Full Details →
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>
 
-      {/* Service Tab Bar */}
-      <div className="sticky top-16 z-40 bg-[#070f1f]/95 backdrop-blur border-b border-border">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="flex overflow-x-auto gap-1 py-3 scrollbar-hide">
-            {serviceNav.map((n) => (
-              <button
-                key={n.key}
-                onClick={() => setActive(n.key)}
-                className={`flex items-center gap-1.5 px-4 py-2 rounded-md text-sm font-medium whitespace-nowrap transition-colors shrink-0 ${
-                  active === n.key
-                    ? "bg-primary text-primary-foreground"
-                    : "text-muted-foreground hover:text-foreground hover:bg-secondary"
-                }`}
+      {/* WHY CHOOSE US */}
+      <section className="py-20 px-4 sm:px-6" style={{ backgroundColor: BG }}>
+        <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
+          <div>
+            <div className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest mb-3" style={{ color: PRIMARY }}>
+              <span className="w-6 h-0.5" style={{ backgroundColor: PRIMARY }} />
+              <span>Why Choose Us</span>
+            </div>
+            <h2 className="font-serif-display text-4xl sm:text-5xl leading-tight mb-6" style={{ color: PRIMARY }}>
+              A Reputation Built on Spotless Results, Every Time.
+            </h2>
+            <p className="text-sm leading-relaxed mb-8" style={{ color: `${PRIMARY}bb` }}>
+              We're not just a cleaning company — we're your trusted property care team. Background-checked crews, eco supplies, and a satisfaction guarantee on every job.
+            </p>
+
+            <div className="space-y-4 mb-8">
+              <div className="bg-white p-5 rounded-2xl flex items-start gap-4" style={{ border: `1px solid ${PRIMARY}15` }}>
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0" style={{ backgroundColor: PRIMARY, color: ACCENT }}>
+                  <Sparkles size={20} />
+                </div>
+                <div>
+                  <h4 className="font-bold text-sm mb-1" style={{ color: PRIMARY }}>Professional-Grade Eco Products</h4>
+                  <p className="text-sm leading-relaxed" style={{ color: `${PRIMARY}99` }}>
+                    We use non-toxic, EPA-registered cleaning formulas safe for kids, pets, and sensitive surfaces.
+                  </p>
+                </div>
+              </div>
+
+              <div className="bg-white p-5 rounded-2xl flex items-start gap-4" style={{ border: `1px solid ${PRIMARY}15` }}>
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0" style={{ backgroundColor: PRIMARY, color: ACCENT }}>
+                  <ShieldCheck size={20} />
+                </div>
+                <div>
+                  <h4 className="font-bold text-sm mb-1" style={{ color: PRIMARY }}>Background-Checked, Trained Crews</h4>
+                  <p className="text-sm leading-relaxed" style={{ color: `${PRIMARY}99` }}>
+                    Every team member undergoes background checks, hands-on training, and regular quality audits.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <Link
+              to="/book?service=cleaning"
+              className="inline-flex items-center gap-3 font-bold px-7 py-3.5 rounded-full text-sm transition-colors group text-white"
+              style={{ backgroundColor: PRIMARY }}
+            >
+              Get To Know Us
+              <span
+                className="w-6 h-6 rounded-full flex items-center justify-center group-hover:translate-x-0.5 transition-transform"
+                style={{ backgroundColor: ACCENT, color: PRIMARY }}
               >
-                {n.icon}
-                {n.label}
-              </button>
-            ))}
+                <ArrowUpRight size={14} />
+              </span>
+            </Link>
           </div>
+
+          <div className="relative rounded-3xl overflow-hidden h-[450px] sm:h-[520px] shadow-2xl border-4 border-white" style={{ backgroundColor: PRIMARY }}>
+            <img
+              src="https://images.unsplash.com/photo-1563453392212-326f5e854473?w=800&h=1000&fit=crop&auto=format"
+              alt="Professional window cleaning service"
+              className="w-full h-full object-cover"
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* HOW IT WORKS */}
+      <HowItWorks
+        heading="Our Proven Cleaning Process"
+        steps={HOW_IT_WORKS_STEPS}
+        primaryColor={PRIMARY}
+        accentColor={ACCENT}
+      />
+
+      {/* STATS BAR */}
+      <div className="py-12 px-4 sm:px-6" style={{ backgroundColor: PRIMARY }}>
+        <div className="max-w-4xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+          {STATS.map((stat, idx) => (
+            <div key={idx}>
+              <p className="font-serif-display text-4xl sm:text-5xl font-bold" style={{ color: ACCENT }}>{stat.val}</p>
+              <p className="text-xs mt-1 uppercase tracking-wider" style={{ color: 'rgba(255,255,255,0.5)' }}>{stat.label}</p>
+            </div>
+          ))}
         </div>
       </div>
 
-      {/* Dynamic Service Section */}
-      <section className="py-20 px-4 sm:px-6 max-w-7xl mx-auto">
-        <div className="grid md:grid-cols-2 gap-12 items-start">
-          {/* Left: info */}
-          <div>
-            <h2
-              style={{ fontFamily: "var(--font-display)" }}
-              className="text-4xl md:text-5xl font-bold text-foreground uppercase mb-3"
-            >
-              {s.headline}
-            </h2>
-            <p className="text-muted-foreground mb-8 leading-relaxed">{s.subhead}</p>
+      {/* SERVICE AREA */}
+      <ServiceAreaSection primaryColor={PRIMARY} accentColor={ACCENT} bgColor={BG} />
 
-            <div className="rounded-xl overflow-hidden h-56 bg-secondary mb-8">
-              <img
-                src={s.img}
-                alt={s.alt}
-                className="w-full h-full object-cover"
-              />
-            </div>
-
-            <ul className="space-y-3">
-              {s.includes.map((item) => (
-                <li key={item} className="flex items-start gap-3 text-muted-foreground text-sm">
-                  <CheckCircle size={17} className="text-primary mt-0.5 shrink-0" />
-                  {item}
-                </li>
-              ))}
-            </ul>
-
-            {s.crossSell && (
-              <div className="mt-6 bg-primary/10 border border-primary/20 rounded-lg px-4 py-3">
-                <p className="text-primary text-sm font-medium">💡 {s.crossSell}</p>
-              </div>
-            )}
-          </div>
-
-          {/* Right: pricing */}
-          <div className="bg-card border border-border rounded-xl p-8">
-            <h3
-              style={{ fontFamily: "var(--font-display)" }}
-              className="text-3xl font-bold text-foreground uppercase mb-6"
-            >
-              Pricing
-            </h3>
-            <div className="space-y-1 mb-6">
-              {s.pricing.map((p) => (
-                <div
-                  key={p.label}
-                  className="flex items-center justify-between py-3.5 border-b border-border last:border-0 gap-4"
-                >
-                  <div className="min-w-0">
-                    <p className="text-foreground font-medium text-sm">{p.label}</p>
-                    {p.note && <p className="text-muted-foreground text-xs mt-0.5">{p.note}</p>}
-                  </div>
-                  <p
-                    style={{ fontFamily: "var(--font-display)" }}
-                    className="text-xl font-bold text-primary shrink-0"
-                  >
-                    {p.price}
-                  </p>
-                </div>
-              ))}
-            </div>
-            {s.pricingNote && (
-              <p className="text-muted-foreground text-xs mb-6 leading-relaxed">{s.pricingNote}</p>
-            )}
-
-            <div className="space-y-3">
-              <a
-                href={`tel:+1${PHONE}`}
-                className="flex items-center justify-center gap-2 w-full py-3.5 bg-primary text-primary-foreground rounded-lg font-bold hover:bg-primary/90 transition-colors"
-              >
-                <Phone size={16} /> Call {PHONE_DISPLAY}
-              </a>
-              <a
-                href={`sms:+1${PHONE}`}
-                className="flex items-center justify-center gap-2 w-full py-3 border border-border text-foreground rounded-lg font-medium text-sm hover:border-primary/50 hover:text-primary transition-colors"
-              >
-                Text for a Quote
-              </a>
-              <a
-                href={`mailto:${EMAIL}`}
-                className="flex items-center justify-center gap-2 w-full py-3 border border-border text-foreground rounded-lg font-medium text-sm hover:border-primary/50 hover:text-primary transition-colors"
-              >
-                {EMAIL}
-              </a>
-            </div>
-          </div>
+      {/* FAQ SECTION */}
+      <section className="py-20 px-4 sm:px-6" style={{ backgroundColor: BG }}>
+        <div className="max-w-3xl mx-auto">
+          <FaqSection
+            items={[
+              { q: "Do I need to be home during the cleaning?", a: "No — many of our clients provide a key or door code. We clean while you're at work and you come home to a spotless house." },
+              { q: "Do you bring your own supplies?", a: "Yes. We bring all cleaning products and equipment. If you have preferred products, just let us know." },
+              { q: "How do I prepare for a cleaning?", a: "Just pick up personal items and clutter so our team can focus on cleaning surfaces, not organizing." },
+              { q: "What's included in a standard clean?", a: "Kitchen, bathrooms, bedrooms, living areas, dusting, vacuuming, mopping, and more. See our packages for details." },
+            ]}
+            title="Frequently Asked Questions"
+            subtitle="Everything you need to know"
+          />
         </div>
       </section>
 
-      {/* All Services Overview Strip */}
-      <section className="bg-secondary py-14 px-4 sm:px-6">
-        <div className="max-w-7xl mx-auto">
-          <h2
-            style={{ fontFamily: "var(--font-display)" }}
-            className="text-3xl font-bold text-foreground uppercase mb-8 text-center"
-          >
-            All Cleaning Services
-          </h2>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-            {serviceNav.map((n) => (
-              <button
-                key={n.key}
-                onClick={() => {
-                  setActive(n.key);
-                  window.scrollTo({ top: 0, behavior: "smooth" });
-                }}
-                className={`flex flex-col items-center gap-2 p-4 rounded-xl border text-sm font-medium transition-colors ${
-                  active === n.key
-                    ? "bg-primary text-primary-foreground border-primary"
-                    : "bg-card border-border text-muted-foreground hover:text-foreground hover:border-primary/40"
-                }`}
-              >
-                {n.icon}
-                {n.label}
-              </button>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Bundle CTA */}
-      <section className="py-16 px-4 sm:px-6 max-w-7xl mx-auto text-center">
-        <span className="text-primary text-sm font-semibold uppercase tracking-widest">Bundle &amp; Save</span>
-        <h2
-          style={{ fontFamily: "var(--font-display)" }}
-          className="text-4xl md:text-5xl font-bold text-foreground uppercase mt-2 mb-4"
-        >
-          Book 2+ Services — Save 10%
-        </h2>
-        <p className="text-muted-foreground max-w-xl mx-auto mb-8">
-          Cleaning + bin cleaning, power washing + window cleaning, or any combo you need. One call covers it all.
-        </p>
-        <a
-          href={`tel:+1${PHONE}`}
-          className="inline-flex items-center gap-2 px-8 py-4 bg-primary text-primary-foreground rounded-lg font-bold text-lg hover:bg-primary/90 transition-colors"
-        >
-          <Phone size={20} /> {PHONE_DISPLAY}
-        </a>
-      </section>
-
-      {/* Other Service Areas */}
-      <section className="bg-secondary py-10 px-4 sm:px-6 border-t border-border">
-        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-muted-foreground text-sm">Also need junk removal or yard work?</p>
-          <div className="flex gap-3">
-            <Link
-              to="/junk-removal"
-              className="px-4 py-2 border border-border text-sm text-foreground rounded-lg hover:border-primary/50 hover:text-primary transition-colors"
-            >
-              Junk Removal →
-            </Link>
-            <Link
-              to="/landscaping"
-              className="px-4 py-2 border border-border text-sm text-foreground rounded-lg hover:border-primary/50 hover:text-primary transition-colors"
-            >
-              Landscaping →
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      <CTABanner
-        heading="Let's Get You Booked"
-        subtext="Call, text, or email — we respond fast and can often schedule same-week."
-      />
     </div>
+  </>
   );
 }

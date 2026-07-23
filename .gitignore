@@ -101,6 +101,9 @@ dist-ssr
 # WebStorm / IntelliJ
 .idea/
 
+# Claude Code local settings
+.claude/settings.local.json
+
 # Local env files
 .env
 .env.local

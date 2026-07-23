@@ -2,29 +2,29 @@
 
 :root {
   --font-size: 16px;
-  --background: #0a1628;
-  --foreground: #f0f4ff;
-  --card: #111e35;
-  --card-foreground: #f0f4ff;
-  --popover: #111e35;
-  --popover-foreground: #f0f4ff;
-  --primary: #3ecf5a;
-  --primary-foreground: #0a1628;
-  --secondary: #1a2d4a;
-  --secondary-foreground: #f0f4ff;
-  --muted: #1a2d4a;
-  --muted-foreground: #8a9bbf;
-  --accent: #3ecf5a;
-  --accent-foreground: #0a1628;
+  --background: #F1EBD9;
+  --foreground: #3C312A;
+  --card: #ffffff;
+  --card-foreground: #3C312A;
+  --popover: #ffffff;
+  --popover-foreground: #3C312A;
+  --primary: #c8960e;
+  --primary-foreground: #ffffff;
+  --secondary: #E8DFD0;
+  --secondary-foreground: #3C312A;
+  --muted: #E8DFD0;
+  --muted-foreground: #7A6E60;
+  --accent: #3C312A;
+  --accent-foreground: #F1EBD9;
   --destructive: #d4183d;
   --destructive-foreground: #ffffff;
-  --border: rgba(255, 255, 255, 0.08);
+  --border: rgba(60, 49, 42, 0.12);
   --input: transparent;
-  --input-background: #1a2d4a;
-  --switch-background: #1a2d4a;
+  --input-background: #E8DFD0;
+  --switch-background: #E8DFD0;
   --font-weight-medium: 600;
   --font-weight-normal: 400;
-  --ring: #3ecf5a;
+  --ring: #c8960e;
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
@@ -119,6 +119,11 @@
   --color-sidebar-ring: var(--sidebar-ring);
 }
 
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -126,6 +131,17 @@
 
   body {
     @apply bg-background text-foreground;
+  }
+
+  a:focus-visible,
+  button:focus-visible,
+  [role="button"]:focus-visible,
+  input:focus-visible,
+  select:focus-visible,
+  textarea:focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+    border-radius: 4px;
   }
 
   /**
