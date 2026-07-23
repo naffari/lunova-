@@ -14,6 +14,7 @@ import { Link } from "react-router";
 import { Helmet } from "react-helmet-async";
 import ContactStrip from "../components/common/ContactStrip";
 import ServiceAreaSection from "../components/ServiceAreaSection";
+import FadeInSection from "../components/common/FadeInSection";
 import { PHONE, PHONE_DISPLAY, EMAIL } from "../constants/contact";
 
 const PRIMARY = "#3C312A";
@@ -153,7 +154,7 @@ export default function Home() {
 
       {/* ABOUT SECTION */}
       <section className="py-20 px-4 sm:px-6" style={{ backgroundColor: `${PRIMARY}08`, borderTop: `1px solid ${PRIMARY}15`, borderBottom: `1px solid ${PRIMARY}15` }}>
-        <div className="max-w-7xl mx-auto">
+        <FadeInSection className="max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
             <div>
               <div className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest mb-3" style={{ color: PRIMARY }}>
@@ -200,7 +201,7 @@ export default function Home() {
               </div>
             ))}
           </div>
-        </div>
+        </FadeInSection>
       </section>
 
       {/* MARQUEE STRIP */}
@@ -219,7 +220,7 @@ export default function Home() {
 
       {/* SERVICES */}
       <section className="py-20 px-4 sm:px-6" style={{ backgroundColor: BG }}>
-        <div className="max-w-7xl mx-auto">
+        <FadeInSection className="max-w-7xl mx-auto">
           <div className="text-center max-w-2xl mx-auto mb-12">
             <div className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest mb-3" style={{ color: PRIMARY }}>
               <span className="w-6 h-0.5" style={{ backgroundColor: PRIMARY }} />
@@ -271,12 +272,12 @@ export default function Home() {
               );
             })}
           </div>
-        </div>
+        </FadeInSection>
       </section>
 
       {/* HOW WE WORK */}
       <section className="py-20 px-4 sm:px-6" style={{ backgroundColor: PRIMARY }}>
-        <div className="max-w-7xl mx-auto">
+        <FadeInSection className="max-w-7xl mx-auto">
           <div className="text-center max-w-2xl mx-auto mb-16">
             <div className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest mb-3" style={{ color: ACCENT }}>
               <span className="w-6 h-0.5" style={{ backgroundColor: ACCENT }} />
@@ -328,7 +329,7 @@ export default function Home() {
               </div>
             ))}
           </div>
-        </div>
+        </FadeInSection>
       </section>
 
       {/* Wave transition */}
