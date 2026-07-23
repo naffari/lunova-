@@ -52,7 +52,7 @@ export default function ContactStrip({
 
   return (
     <section
-      className={`${isCompact ? "py-10" : "py-16"} px-4 sm:px-6 ${className}`}
+      className={`${isCompact ? "py-12" : "py-16"} px-4 sm:px-6 ${className}`}
       style={{ backgroundColor: bg }}
     >
       <div
