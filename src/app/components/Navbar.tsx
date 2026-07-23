@@ -51,12 +51,17 @@ const serviceCategories = [
   },
 ];
 
+const FOCUSABLE_SELECTOR =
+  'a[href], button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
 export default function Navbar() {
   const location = useLocation();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const mobilePanelRef = useRef<HTMLDivElement>(null);
+  const mobileToggleRef = useRef<HTMLButtonElement>(null);
 
   // Track scroll for transparent → solid transition
   useEffect(() => {
@@ -68,11 +73,19 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Close dropdown on outside click
+  // Close dropdown/mobile menu on outside click
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setDropdownOpen(false);
+      }
+      if (
+        mobilePanelRef.current &&
+        !mobilePanelRef.current.contains(event.target as Node) &&
+        mobileToggleRef.current &&
+        !mobileToggleRef.current.contains(event.target as Node)
+      ) {
+        setMobileOpen(false);
       }
     }
     document.addEventListener("mousedown", handleClickOutside);
@@ -84,6 +97,51 @@ export default function Navbar() {
     setDropdownOpen(false);
     setMobileOpen(false);
   }, [location.pathname]);
+
+  // Close menus on Escape, returning focus to the toggle button
+  useEffect(() => {
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key !== "Escape") return;
+      if (mobileOpen) {
+        setMobileOpen(false);
+        mobileToggleRef.current?.focus();
+      }
+      if (dropdownOpen) setDropdownOpen(false);
+    }
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [mobileOpen, dropdownOpen]);
+
+  // Lock background scroll and trap focus while the mobile menu is open
+  useEffect(() => {
+    if (!mobileOpen) return;
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    const panel = mobilePanelRef.current;
+    const focusables = panel?.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR);
+    focusables?.[0]?.focus();
+
+    function handleTabTrap(event: KeyboardEvent) {
+      if (event.key !== "Tab" || !focusables || focusables.length === 0) return;
+      const first = focusables[0];
+      const last = focusables[focusables.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    }
+    document.addEventListener("keydown", handleTabTrap);
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      document.removeEventListener("keydown", handleTabTrap);
+    };
+  }, [mobileOpen]);
 
   const isServicesActive =
     location.pathname.startsWith("/services") ||
@@ -238,18 +296,38 @@ export default function Navbar() {
 
         {/* Mobile Menu Toggle */}
         <button
+          ref={mobileToggleRef}
           className="md:hidden p-2"
           onClick={() => setMobileOpen((v) => !v)}
           aria-label="Toggle menu"
+          aria-expanded={mobileOpen}
+          aria-controls="mobile-menu"
           style={{ color: NAV_TEXT }}
         >
           {mobileOpen ? <X size={22} /> : <Menu size={22} />}
         </button>
       </div>
 
+      {/* Mobile Menu Backdrop */}
+      {mobileOpen && (
+        <div
+          className="md:hidden fixed inset-0 top-16 z-40 bg-black/50 animate-in fade-in duration-200"
+          aria-hidden="true"
+          onClick={() => setMobileOpen(false)}
+        />
+      )}
+
       {/* Mobile Menu */}
       {mobileOpen && (
-        <div className="md:hidden px-4 pb-6 pt-3 flex flex-col gap-4 max-h-[85vh] overflow-y-auto" style={{ backgroundColor: NAV_BG_SOLID, borderTop: `1px solid ${NAV_BORDER}` }}>
+        <div
+          id="mobile-menu"
+          ref={mobilePanelRef}
+          role="dialog"
+          aria-modal="true"
+          aria-label="Mobile navigation"
+          className="md:hidden relative z-50 px-4 pb-6 pt-3 flex flex-col gap-4 max-h-[85vh] overflow-y-auto animate-in fade-in slide-in-from-top-4 duration-200"
+          style={{ backgroundColor: NAV_BG_SOLID, borderTop: `1px solid ${NAV_BORDER}` }}
+        >
           <Link to="/" className="text-base font-semibold" style={{ color: NAV_TEXT }}>Home</Link>
           <Link to="/book" className="flex items-center gap-2 py-2 px-3 rounded-lg font-bold text-sm" style={{ backgroundColor: NAV_ACCENT, color: NAV_BG_SOLID }}>
             <Calendar size={16} /> Book Online Directly
