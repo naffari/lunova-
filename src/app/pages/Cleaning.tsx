@@ -203,7 +203,7 @@ export default function Cleaning() {
                       </span>
                     </div>
 
-                    <p className="text-sm leading-relaxed mb-4" style={{ color: `${PRIMARY}99` }}>{item.desc}</p>
+                    <p className="text-sm leading-relaxed mb-4" style={{ color: `${PRIMARY}bb` }}>{item.desc}</p>
 
                     <ul className="space-y-1.5 mb-6">
                       {item.bullets.map((bullet, bIdx) => (
@@ -253,7 +253,7 @@ export default function Cleaning() {
                 </div>
                 <div>
                   <h4 className="font-bold text-sm mb-1" style={{ color: PRIMARY }}>Professional-Grade Eco Products</h4>
-                  <p className="text-sm leading-relaxed" style={{ color: `${PRIMARY}99` }}>
+                  <p className="text-sm leading-relaxed" style={{ color: `${PRIMARY}bb` }}>
                     We use non-toxic, EPA-registered cleaning formulas safe for kids, pets, and sensitive surfaces.
                   </p>
                 </div>
@@ -265,7 +265,7 @@ export default function Cleaning() {
                 </div>
                 <div>
                   <h4 className="font-bold text-sm mb-1" style={{ color: PRIMARY }}>Background-Checked, Trained Crews</h4>
-                  <p className="text-sm leading-relaxed" style={{ color: `${PRIMARY}99` }}>
+                  <p className="text-sm leading-relaxed" style={{ color: `${PRIMARY}bb` }}>
                     Every team member undergoes background checks, hands-on training, and regular quality audits.
                   </p>
                 </div>

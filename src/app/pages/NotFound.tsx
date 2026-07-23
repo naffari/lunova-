@@ -37,7 +37,7 @@ export default function NotFound() {
           Page Not Found
         </h2>
 
-        <p className="text-base leading-relaxed mb-10" style={{ color: `${PRIMARY}99` }}>
+        <p className="text-base leading-relaxed mb-10" style={{ color: `${PRIMARY}bb` }}>
           The page you're looking for doesn't exist or has been moved. Let's get you back on track.
         </p>
 
@@ -62,7 +62,7 @@ export default function NotFound() {
         </div>
 
         <div className="pt-8" style={{ borderTop: `1px solid ${PRIMARY}20` }}>
-          <p className="text-sm mb-4" style={{ color: `${PRIMARY}70` }}>
+          <p className="text-sm mb-4" style={{ color: `${PRIMARY}bb` }}>
             Looking for a specific service?
           </p>
           <div className="grid grid-cols-2 gap-3 text-sm">

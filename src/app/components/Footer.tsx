@@ -5,7 +5,7 @@ import { PHONE, PHONE_DISPLAY, EMAIL } from "../constants/contact";
 
 const FT_BG = "#111318";
 const FT_TEXT = "#E8E4DC";
-const FT_MUTED = "rgba(255,255,255,0.45)";
+const FT_MUTED = "rgba(255,255,255,0.55)";
 const FT_ACCENT = "#ffffff";
 const FT_BORDER = "rgba(255,255,255,0.08)";
 

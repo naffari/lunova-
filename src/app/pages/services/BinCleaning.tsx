@@ -157,7 +157,7 @@ export default function BinCleaning() {
                       {item.price}
                     </span>
                   </div>
-                  <p className="text-sm leading-relaxed mb-6" style={{ color: `${PRIMARY}99` }}>{item.desc}</p>
+                  <p className="text-sm leading-relaxed mb-6" style={{ color: `${PRIMARY}bb` }}>{item.desc}</p>
                 </div>
                 <Link
                   to="/book?service=bin-cleaning"
@@ -195,7 +195,7 @@ export default function BinCleaning() {
                   </div>
                   <div>
                     <h4 className="font-bold text-sm mb-1" style={{ color: PRIMARY }}>{f.title}</h4>
-                    <p className="text-sm leading-relaxed" style={{ color: `${PRIMARY}99` }}>{f.desc}</p>
+                    <p className="text-sm leading-relaxed" style={{ color: `${PRIMARY}bb` }}>{f.desc}</p>
                   </div>
                 </div>
               );

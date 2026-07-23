@@ -13,7 +13,7 @@
   --secondary: #E8DFD0;
   --secondary-foreground: #3C312A;
   --muted: #E8DFD0;
-  --muted-foreground: #7A6E60;
+  --muted-foreground: #6B5F52;
   --accent: #3C312A;
   --accent-foreground: #F1EBD9;
   --destructive: #d4183d;
@@ -148,6 +148,19 @@
 @keyframes marquee {
   from { transform: translateX(0); }
   to { transform: translateX(-50%); }
+}
+
+/* Respect the user's OS-level motion preference: stop decorative,
+   non-essential animations (marquee strips, etc.) from playing. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 
 @layer base {

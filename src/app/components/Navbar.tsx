@@ -21,7 +21,7 @@ import { PHONE, PHONE_DISPLAY } from "../constants/contact";
 
 const NAV_ACCENT = "#ffffff";
 const NAV_TEXT = "#E8E4DC";
-const NAV_MUTED = "rgba(255,255,255,0.45)";
+const NAV_MUTED = "rgba(255,255,255,0.55)";
 const NAV_BORDER = "rgba(255,255,255,0.08)";
 const NAV_BG_SOLID = "#111318";
 

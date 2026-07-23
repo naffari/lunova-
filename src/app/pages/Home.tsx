@@ -177,7 +177,7 @@ export default function Home() {
               </h2>
             </div>
             <div className="max-w-md">
-              <p className="text-sm leading-relaxed mb-4" style={{ color: `${PRIMARY}99` }}>
+              <p className="text-sm leading-relaxed mb-4" style={{ color: `${PRIMARY}bb` }}>
                 Lunova was built to be Kansas City's most reliable home services partner — whether you need your home cleaned, your junk hauled, or your yard transformed.
               </p>
               <Link
@@ -207,7 +207,7 @@ export default function Home() {
             {STATS.map((stat, idx) => (
               <div key={idx} className="bg-white p-6 rounded-2xl" style={{ border: `1px solid ${PRIMARY}18` }}>
                 <p className="font-serif-display text-4xl sm:text-5xl font-bold" style={{ color: PRIMARY }}>{stat.val}</p>
-                <p className="text-xs font-medium mt-1 uppercase tracking-wider" style={{ color: `${PRIMARY}70` }}>{stat.label}</p>
+                <p className="text-xs font-medium mt-1 uppercase tracking-wider" style={{ color: `${PRIMARY}bb` }}>{stat.label}</p>
               </div>
             ))}
           </div>
@@ -261,10 +261,10 @@ export default function Home() {
                       <Icon size={18} style={{ color: ACCENT }} />
                       <h3 className="font-serif-display text-2xl" style={{ color: PRIMARY }}>{svc.title}</h3>
                     </div>
-                    <p className="text-sm leading-relaxed mb-4" style={{ color: `${PRIMARY}99` }}>{svc.desc}</p>
+                    <p className="text-sm leading-relaxed mb-4" style={{ color: `${PRIMARY}bb` }}>{svc.desc}</p>
                     <ul className="space-y-1.5 mb-6 mt-auto">
                       {svc.bullets.map((b, i) => (
-                        <li key={i} className="flex items-center gap-2 text-sm" style={{ color: `${PRIMARY}99` }}>
+                        <li key={i} className="flex items-center gap-2 text-sm" style={{ color: `${PRIMARY}bb` }}>
                           <Check size={13} style={{ color: ACCENT, flexShrink: 0 }} />
                           {b}
                         </li>
