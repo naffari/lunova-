@@ -1,4 +1,4 @@
-import { COMPANY_NAME, EMAIL, PHONE, PHONE_DISPLAY, SERVICE_AREA } from "../constants/contact";
+import { COMPANY_NAME, EMAIL, PHONE_DISPLAY, SERVICE_AREA } from "../constants/contact";
 import { SITE_URL } from "../constants/seo";
 
 /** A JSON-LD document. Kept loose (schema.org has no static TS types) but never `any`. */

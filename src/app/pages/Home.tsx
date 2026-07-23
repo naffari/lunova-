@@ -1,7 +1,5 @@
 import {
   Phone,
-  Mail,
-  Clock,
   ArrowUpRight,
   Star,
   Sparkles,
@@ -17,7 +15,7 @@ import FadeInSection from "../components/common/FadeInSection";
 import PhotoGallery from "../components/common/PhotoGallery";
 import TestimonialsSection from "../components/TestimonialsSection";
 import Seo from "../components/common/Seo";
-import { PHONE, PHONE_DISPLAY, EMAIL } from "../constants/contact";
+import { PHONE, PHONE_DISPLAY } from "../constants/contact";
 import { buildLocalBusinessSchema, buildOrganizationSchema } from "../utils/structuredData";
 
 const PRIMARY = "#3C312A";

@@ -1,5 +1,5 @@
 import { Link } from "react-router";
-import { Home, ArrowLeft, Search, Phone } from "lucide-react";
+import { Home, Search, Phone } from "lucide-react";
 import { PHONE, PHONE_DISPLAY } from "../constants/contact";
 import Seo from "../components/common/Seo";
 

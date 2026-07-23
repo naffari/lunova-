@@ -1,4 +1,4 @@
-import { Phone, Sparkles } from "lucide-react";
+import { Sparkles } from "lucide-react";
 import { Link, useLocation } from "react-router";
 import { PHONE } from "../constants/contact";
 import Seo from "../components/common/Seo";
