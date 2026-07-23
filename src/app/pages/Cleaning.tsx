@@ -19,6 +19,7 @@ import HowItWorks from "../components/HowItWorks";
 import ServiceAreaSection from "../components/ServiceAreaSection";
 import FaqSection from "../components/FaqSection";
 import ContactStrip from "../components/common/ContactStrip";
+import BeforeAfterSlider from "../components/common/BeforeAfterSlider";
 import { SERVICE_THEMES } from "../constants/theme";
 
 const { primary: PRIMARY, accent: ACCENT, bg: BG } = SERVICE_THEMES.cleaning;
@@ -270,13 +271,14 @@ export default function Cleaning() {
             </Link>
           </div>
 
-          <div className="relative rounded-3xl overflow-hidden h-[450px] sm:h-[520px] shadow-2xl border-4 border-white" style={{ backgroundColor: PRIMARY }}>
-            <img
-              src="https://images.unsplash.com/photo-1563453392212-326f5e854473?w=800&h=1000&fit=crop&auto=format"
-              alt="Professional window cleaning service"
-              className="w-full h-full object-cover"
-            />
-          </div>
+          <BeforeAfterSlider
+            className="rounded-3xl h-[450px] sm:h-[520px] shadow-2xl border-4 border-white"
+            beforeImage="https://images.unsplash.com/photo-1610557892470-55d587b03d0c?w=800&h=1000&fit=crop&auto=format"
+            afterImage="https://images.unsplash.com/photo-1563453392212-326f5e854473?w=800&h=1000&fit=crop&auto=format"
+            beforeAlt="Home before Lunova's cleaning service"
+            afterAlt="Home after Lunova's professional cleaning service"
+            accentColor={ACCENT}
+          />
         </div>
       </section>
 
