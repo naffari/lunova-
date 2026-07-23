@@ -2,24 +2,25 @@ import { lazy } from "react";
 import { createBrowserRouter } from "react-router";
 import Root from "./Root";
 import Home from "./pages/Home";
+import { routeModules } from "./routeModules";
 
-const Cleaning = lazy(() => import("./pages/Cleaning"));
-const ResidentialCleaning = lazy(() => import("./pages/services/ResidentialCleaning"));
-const CommercialCleaning = lazy(() => import("./pages/services/CommercialCleaning"));
-const PowerWashing = lazy(() => import("./pages/services/PowerWashing"));
-const WindowCleaning = lazy(() => import("./pages/services/WindowCleaning"));
-const AutoDetailing = lazy(() => import("./pages/services/AutoDetailing"));
-const BinCleaning = lazy(() => import("./pages/services/BinCleaning"));
-const JunkRemoval = lazy(() => import("./pages/JunkRemoval"));
-const Landscaping = lazy(() => import("./pages/Landscaping"));
-const Blog = lazy(() => import("./pages/Blog"));
-const BlogPost = lazy(() => import("./pages/BlogPost"));
-const Quote = lazy(() => import("./pages/Quote"));
-const QuoteSuccess = lazy(() => import("./pages/QuoteSuccess"));
-const Booking = lazy(() => import("./pages/Booking"));
-const BookingSuccess = lazy(() => import("./pages/BookingSuccess"));
-const Privacy = lazy(() => import("./pages/Privacy"));
-const NotFound = lazy(() => import("./pages/NotFound"));
+const Cleaning = lazy(routeModules.cleaning);
+const ResidentialCleaning = lazy(routeModules.residentialCleaning);
+const CommercialCleaning = lazy(routeModules.commercialCleaning);
+const PowerWashing = lazy(routeModules.powerWashing);
+const WindowCleaning = lazy(routeModules.windowCleaning);
+const AutoDetailing = lazy(routeModules.autoDetailing);
+const BinCleaning = lazy(routeModules.binCleaning);
+const JunkRemoval = lazy(routeModules.junkRemoval);
+const Landscaping = lazy(routeModules.landscaping);
+const Blog = lazy(routeModules.blog);
+const BlogPost = lazy(routeModules.blogPost);
+const Quote = lazy(routeModules.quote);
+const QuoteSuccess = lazy(routeModules.quoteSuccess);
+const Booking = lazy(routeModules.booking);
+const BookingSuccess = lazy(routeModules.bookingSuccess);
+const Privacy = lazy(routeModules.privacy);
+const NotFound = lazy(routeModules.notFound);
 
 export const router = createBrowserRouter([
   {

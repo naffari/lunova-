@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 
 import { PHONE, PHONE_DISPLAY } from "../constants/contact";
+import { preloadRoute } from "../routeModules";
 
 const NAV_ACCENT = "#ffffff";
 const NAV_TEXT = "#E8E4DC";
@@ -220,8 +221,9 @@ export default function Navbar() {
                               backgroundColor: active ? `${NAV_ACCENT}18` : "transparent",
                               color: active ? NAV_ACCENT : NAV_TEXT,
                             }}
-                            onMouseEnter={e => { if (!active) (e.currentTarget as HTMLElement).style.backgroundColor = "rgba(255,255,255,0.06)"; }}
+                            onMouseEnter={e => { if (!active) (e.currentTarget as HTMLElement).style.backgroundColor = "rgba(255,255,255,0.06)"; preloadRoute(item.to); }}
                             onMouseLeave={e => { if (!active) (e.currentTarget as HTMLElement).style.backgroundColor = "transparent"; }}
+                            onFocus={() => preloadRoute(item.to)}
                           >
                             <Icon size={16} style={{ color: NAV_ACCENT }} className="shrink-0 mt-0.5" />
                             <div>
@@ -243,7 +245,13 @@ export default function Navbar() {
                   style={{ borderTop: `1px solid ${NAV_BORDER}`, backgroundColor: "rgba(255,255,255,0.03)" }}
                 >
                   <span className="text-xs" style={{ color: NAV_MUTED }}>Looking for an umbrella overview?</span>
-                  <Link to="/cleaning" className="text-xs font-bold hover:underline flex items-center gap-1" style={{ color: NAV_ACCENT }}>
+                  <Link
+                    to="/cleaning"
+                    className="text-xs font-bold hover:underline flex items-center gap-1"
+                    style={{ color: NAV_ACCENT }}
+                    onMouseEnter={() => preloadRoute("/cleaning")}
+                    onFocus={() => preloadRoute("/cleaning")}
+                  >
                     View Services Hub →
                   </Link>
                 </div>
@@ -255,8 +263,9 @@ export default function Navbar() {
             to="/quote"
             className="text-sm font-medium transition-colors"
             style={{ color: location.pathname === "/quote" ? NAV_ACCENT : NAV_MUTED }}
-            onMouseEnter={e => { if (location.pathname !== "/quote") (e.target as HTMLElement).style.color = NAV_TEXT; }}
+            onMouseEnter={e => { if (location.pathname !== "/quote") (e.target as HTMLElement).style.color = NAV_TEXT; preloadRoute("/quote"); }}
             onMouseLeave={e => { if (location.pathname !== "/quote") (e.target as HTMLElement).style.color = NAV_MUTED; }}
+            onFocus={() => preloadRoute("/quote")}
           >
             Instant Quote
           </Link>
@@ -265,8 +274,9 @@ export default function Navbar() {
             to="/blog"
             className="text-sm font-medium transition-colors"
             style={{ color: location.pathname.startsWith("/blog") ? NAV_ACCENT : NAV_MUTED }}
-            onMouseEnter={e => { if (!location.pathname.startsWith("/blog")) (e.target as HTMLElement).style.color = NAV_TEXT; }}
+            onMouseEnter={e => { if (!location.pathname.startsWith("/blog")) (e.target as HTMLElement).style.color = NAV_TEXT; preloadRoute("/blog"); }}
             onMouseLeave={e => { if (!location.pathname.startsWith("/blog")) (e.target as HTMLElement).style.color = NAV_MUTED; }}
+            onFocus={() => preloadRoute("/blog")}
           >
             Blog
           </Link>
@@ -289,6 +299,8 @@ export default function Navbar() {
             to="/book"
             className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-md text-xs font-bold transition-colors shadow-sm"
             style={{ backgroundColor: NAV_ACCENT, color: NAV_BG_SOLID }}
+            onMouseEnter={() => preloadRoute("/book")}
+            onFocus={() => preloadRoute("/book")}
           >
             <Calendar size={13} />
             Book Online
@@ -339,23 +351,23 @@ export default function Navbar() {
           style={{ backgroundColor: NAV_BG_SOLID, borderTop: `1px solid ${NAV_BORDER}` }}
         >
           <Link to="/" className="text-base font-semibold" style={{ color: NAV_TEXT }}>Home</Link>
-          <Link to="/book" className="flex items-center gap-2 py-2 px-3 rounded-lg font-bold text-sm" style={{ backgroundColor: NAV_ACCENT, color: NAV_BG_SOLID }}>
+          <Link to="/book" className="flex items-center gap-2 py-2 px-3 rounded-lg font-bold text-sm" style={{ backgroundColor: NAV_ACCENT, color: NAV_BG_SOLID }} onTouchStart={() => preloadRoute("/book")}>
             <Calendar size={16} /> Book Online Directly
           </Link>
-          <Link to="/quote" className="text-sm font-semibold" style={{ color: NAV_ACCENT }}>Instant Quote Calculator</Link>
-          <Link to="/blog" className="text-sm font-semibold" style={{ color: NAV_TEXT }}>Blog</Link>
+          <Link to="/quote" className="text-sm font-semibold" style={{ color: NAV_ACCENT }} onTouchStart={() => preloadRoute("/quote")}>Instant Quote Calculator</Link>
+          <Link to="/blog" className="text-sm font-semibold" style={{ color: NAV_TEXT }} onTouchStart={() => preloadRoute("/blog")}>Blog</Link>
 
           <div className="space-y-4 pt-2" style={{ borderTop: `1px solid ${NAV_BORDER}` }}>
             <p className="text-xs font-bold uppercase tracking-wider" style={{ color: NAV_ACCENT }}>All Services</p>
             <div className="grid grid-cols-2 gap-2 text-xs">
-              <Link to="/services/residential-cleaning" className="p-2 rounded" style={{ backgroundColor: "rgba(255,255,255,0.06)", border: `1px solid ${NAV_BORDER}`, color: NAV_TEXT }}>Residential Cleaning</Link>
-              <Link to="/services/commercial-cleaning" className="p-2 rounded" style={{ backgroundColor: "rgba(255,255,255,0.06)", border: `1px solid ${NAV_BORDER}`, color: NAV_TEXT }}>Commercial Cleaning</Link>
-              <Link to="/services/power-washing" className="p-2 rounded" style={{ backgroundColor: "rgba(255,255,255,0.06)", border: `1px solid ${NAV_BORDER}`, color: NAV_TEXT }}>Power Washing</Link>
-              <Link to="/services/window-cleaning" className="p-2 rounded" style={{ backgroundColor: "rgba(255,255,255,0.06)", border: `1px solid ${NAV_BORDER}`, color: NAV_TEXT }}>Window Cleaning</Link>
-              <Link to="/services/auto-detailing" className="p-2 rounded" style={{ backgroundColor: "rgba(255,255,255,0.06)", border: `1px solid ${NAV_BORDER}`, color: NAV_TEXT }}>Auto Detailing</Link>
-              <Link to="/services/bin-cleaning" className="p-2 rounded" style={{ backgroundColor: "rgba(255,255,255,0.06)", border: `1px solid ${NAV_BORDER}`, color: NAV_TEXT }}>Trash Bin Cleaning</Link>
-              <Link to="/junk-removal" className="p-2 rounded" style={{ backgroundColor: "rgba(255,255,255,0.06)", border: `1px solid ${NAV_BORDER}`, color: NAV_TEXT }}>Junk Removal</Link>
-              <Link to="/landscaping" className="p-2 rounded" style={{ backgroundColor: "rgba(255,255,255,0.06)", border: `1px solid ${NAV_BORDER}`, color: NAV_TEXT }}>Landscaping</Link>
+              <Link to="/services/residential-cleaning" className="p-2 rounded" style={{ backgroundColor: "rgba(255,255,255,0.06)", border: `1px solid ${NAV_BORDER}`, color: NAV_TEXT }} onTouchStart={() => preloadRoute("/services/residential-cleaning")}>Residential Cleaning</Link>
+              <Link to="/services/commercial-cleaning" className="p-2 rounded" style={{ backgroundColor: "rgba(255,255,255,0.06)", border: `1px solid ${NAV_BORDER}`, color: NAV_TEXT }} onTouchStart={() => preloadRoute("/services/commercial-cleaning")}>Commercial Cleaning</Link>
+              <Link to="/services/power-washing" className="p-2 rounded" style={{ backgroundColor: "rgba(255,255,255,0.06)", border: `1px solid ${NAV_BORDER}`, color: NAV_TEXT }} onTouchStart={() => preloadRoute("/services/power-washing")}>Power Washing</Link>
+              <Link to="/services/window-cleaning" className="p-2 rounded" style={{ backgroundColor: "rgba(255,255,255,0.06)", border: `1px solid ${NAV_BORDER}`, color: NAV_TEXT }} onTouchStart={() => preloadRoute("/services/window-cleaning")}>Window Cleaning</Link>
+              <Link to="/services/auto-detailing" className="p-2 rounded" style={{ backgroundColor: "rgba(255,255,255,0.06)", border: `1px solid ${NAV_BORDER}`, color: NAV_TEXT }} onTouchStart={() => preloadRoute("/services/auto-detailing")}>Auto Detailing</Link>
+              <Link to="/services/bin-cleaning" className="p-2 rounded" style={{ backgroundColor: "rgba(255,255,255,0.06)", border: `1px solid ${NAV_BORDER}`, color: NAV_TEXT }} onTouchStart={() => preloadRoute("/services/bin-cleaning")}>Trash Bin Cleaning</Link>
+              <Link to="/junk-removal" className="p-2 rounded" style={{ backgroundColor: "rgba(255,255,255,0.06)", border: `1px solid ${NAV_BORDER}`, color: NAV_TEXT }} onTouchStart={() => preloadRoute("/junk-removal")}>Junk Removal</Link>
+              <Link to="/landscaping" className="p-2 rounded" style={{ backgroundColor: "rgba(255,255,255,0.06)", border: `1px solid ${NAV_BORDER}`, color: NAV_TEXT }} onTouchStart={() => preloadRoute("/landscaping")}>Landscaping</Link>
             </div>
           </div>
 

@@ -16,6 +16,7 @@ import PhotoGallery from "../components/common/PhotoGallery";
 import TestimonialsSection from "../components/TestimonialsSection";
 import Seo from "../components/common/Seo";
 import { PHONE, PHONE_DISPLAY } from "../constants/contact";
+import { preloadRoute } from "../routeModules";
 import { buildLocalBusinessSchema, buildOrganizationSchema } from "../utils/structuredData";
 
 const PRIMARY = "#3C312A";
@@ -291,6 +292,8 @@ export default function Home() {
                       to={svc.to}
                       className="w-full py-2.5 text-xs font-bold rounded-xl text-center transition-colors block"
                       style={{ backgroundColor: BG, color: PRIMARY, border: `1px solid ${PRIMARY}28` }}
+                      onMouseEnter={() => preloadRoute(svc.to)}
+                      onFocus={() => preloadRoute(svc.to)}
                     >
                       Explore {svc.title} →
                     </Link>
