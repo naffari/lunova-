@@ -75,6 +75,15 @@ interface TestimonialsSectionProps {
   subtitle?: string;
 }
 
+const FILTER_TABS = [
+  { id: "all", label: "All Reviews" },
+  { id: "cleaning", label: "Cleaning" },
+  { id: "junk", label: "Junk Removal" },
+  { id: "landscaping", label: "Landscaping" },
+  { id: "power", label: "Power Wash" },
+  { id: "auto", label: "Auto Detail" },
+];
+
 export default function TestimonialsSection({
   category = "all",
   showFilters = true,
@@ -82,15 +91,6 @@ export default function TestimonialsSection({
   subtitle = "Reviews",
 }: TestimonialsSectionProps) {
   const [filter, setFilter] = useState(category);
-
-  const tabs = [
-    { id: "all", label: "All Reviews" },
-    { id: "cleaning", label: "Cleaning" },
-    { id: "junk", label: "Junk Removal" },
-    { id: "landscaping", label: "Landscaping" },
-    { id: "power", label: "Power Wash" },
-    { id: "auto", label: "Auto Detail" },
-  ];
 
   const shown = filter === "all" ? TESTIMONIALS : TESTIMONIALS.filter((t) => t.tag === filter);
 
@@ -114,7 +114,7 @@ export default function TestimonialsSection({
 
       {showFilters && (
         <div className="flex flex-wrap gap-2 mb-6">
-          {tabs.map((t) => (
+          {FILTER_TABS.map((t) => (
             <button
               key={t.id}
               onClick={() => setFilter(t.id)}

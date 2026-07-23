@@ -79,6 +79,11 @@ const HOW_IT_WORKS_STEPS = [
   },
 ];
 
+const MARQUEE_ITEMS = [
+  "Single-Item Pickup", "Full Truckload", "Same-Day Service", "Eco-Friendly Recycling", "Estate Cleanouts", "Licensed & Insured", "Free Estimates", "Satisfaction Guarantee",
+  "Single-Item Pickup", "Full Truckload", "Same-Day Service", "Eco-Friendly Recycling", "Estate Cleanouts", "Licensed & Insured", "Free Estimates", "Satisfaction Guarantee",
+];
+
 const JUNK_REMOVAL_DESCRIPTION =
   "Furniture, appliances, construction debris, and full estate cleanouts — Lunova's junk removal crew shows up fast, hauls everything, and leaves your space spotless.";
 
@@ -123,10 +128,7 @@ export default function JunkRemoval() {
       {/* MARQUEE STRIP */}
       <div style={{ backgroundColor: ACCENT, overflow: 'hidden' }} className="py-3">
         <div style={{ display: 'flex', gap: '3rem', whiteSpace: 'nowrap', animation: 'marquee 20s linear infinite', width: 'max-content' }}>
-          {[
-            "Single-Item Pickup", "Full Truckload", "Same-Day Service", "Eco-Friendly Recycling", "Estate Cleanouts", "Licensed & Insured", "Free Estimates", "Satisfaction Guarantee",
-            "Single-Item Pickup", "Full Truckload", "Same-Day Service", "Eco-Friendly Recycling", "Estate Cleanouts", "Licensed & Insured", "Free Estimates", "Satisfaction Guarantee",
-          ].map((item, i) => (
+          {MARQUEE_ITEMS.map((item, i) => (
             <span key={i} className="text-xs font-bold uppercase tracking-widest" style={{ color: PRIMARY }}>
               ✦ {item}
             </span>

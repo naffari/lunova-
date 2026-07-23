@@ -69,6 +69,24 @@ const GALLERY_IMAGES = [
   { src: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600&h=600&fit=crop&auto=format", alt: "Clean patio and deck after pressure washing" },
 ];
 
+const MARQUEE_ITEMS = [
+  "Cleaning Services", "Junk Removal", "Landscaping", "Licensed & Insured", "Same-Week Slots", "100% Satisfaction", "Locally Owned", "Kansas City Metro",
+  "Cleaning Services", "Junk Removal", "Landscaping", "Licensed & Insured", "Same-Week Slots", "100% Satisfaction", "Locally Owned", "Kansas City Metro",
+];
+
+const HOW_IT_WORKS_STEPS = [
+  { step: "1", title: "Free Estimate", desc: "We assess your needs online, by photo, or on-site and give you a transparent flat-rate quote." },
+  { step: "2", title: "Scheduled Arrival", desc: "Pick a time that works for you — even same-day or next-day. We confirm via text." },
+  { step: "3", title: "Expert Service", desc: "Our licensed, background-checked crew arrives on time with all equipment and supplies." },
+  { step: "4", title: "Total Satisfaction", desc: "We do a final walkthrough together. Not happy? We make it right — guaranteed." },
+];
+
+const TRUST_BADGES = [
+  { icon: ShieldCheck, label: "Licensed, Bonded & Insured" },
+  { icon: Star, label: "5.0 Star Average Rating" },
+  { icon: Check, label: "100% Satisfaction Guarantee" },
+];
+
 export default function Home() {
   return (
     <>
@@ -218,10 +236,7 @@ export default function Home() {
       {/* MARQUEE STRIP */}
       <div style={{ backgroundColor: ACCENT, overflow: 'hidden' }} className="py-3">
         <div style={{ display: 'flex', gap: '3rem', whiteSpace: 'nowrap', animation: 'marquee 20s linear infinite', width: 'max-content' }}>
-          {[
-            "Cleaning Services", "Junk Removal", "Landscaping", "Licensed & Insured", "Same-Week Slots", "100% Satisfaction", "Locally Owned", "Kansas City Metro",
-            "Cleaning Services", "Junk Removal", "Landscaping", "Licensed & Insured", "Same-Week Slots", "100% Satisfaction", "Locally Owned", "Kansas City Metro",
-          ].map((item, i) => (
+          {MARQUEE_ITEMS.map((item, i) => (
             <span key={i} className="text-xs font-bold uppercase tracking-widest" style={{ color: PRIMARY }}>
               ✦ {item}
             </span>
@@ -301,12 +316,7 @@ export default function Home() {
           </div>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
-            {[
-              { step: "1", title: "Free Estimate", desc: "We assess your needs online, by photo, or on-site and give you a transparent flat-rate quote." },
-              { step: "2", title: "Scheduled Arrival", desc: "Pick a time that works for you — even same-day or next-day. We confirm via text." },
-              { step: "3", title: "Expert Service", desc: "Our licensed, background-checked crew arrives on time with all equipment and supplies." },
-              { step: "4", title: "Total Satisfaction", desc: "We do a final walkthrough together. Not happy? We make it right — guaranteed." },
-            ].map((s, idx) => (
+            {HOW_IT_WORKS_STEPS.map((s, idx) => (
               <div
                 key={idx}
                 className="p-6 rounded-2xl flex flex-col items-center text-center"
@@ -325,11 +335,7 @@ export default function Home() {
           </div>
 
           <div className="grid sm:grid-cols-3 gap-6 text-center pt-12" style={{ borderTop: `1px solid rgba(255,255,255,0.1)` }}>
-            {[
-              { icon: ShieldCheck, label: "Licensed, Bonded & Insured" },
-              { icon: Star, label: "5.0 Star Average Rating" },
-              { icon: Check, label: "100% Satisfaction Guarantee" },
-            ].map(({ icon: Icon, label }, idx) => (
+            {TRUST_BADGES.map(({ icon: Icon, label }, idx) => (
               <div key={idx} className="flex flex-col items-center gap-3">
                 <div
                   className="w-12 h-12 rounded-full flex items-center justify-center"
