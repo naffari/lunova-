@@ -10,6 +10,7 @@ import ServiceHero from "../components/ServiceHero";
 import HowItWorks from "../components/HowItWorks";
 import ServiceAreaSection from "../components/ServiceAreaSection";
 import FaqSection from "../components/FaqSection";
+import ContactStrip from "../components/common/ContactStrip";
 
 const PRIMARY = "#0d382c";
 const ACCENT = "#f5b82e";
@@ -249,6 +250,15 @@ export default function Landscaping() {
           />
         </div>
       </section>
+
+      <ContactStrip
+        heading="Ready for a Yard You'll Love?"
+        subtext="Book mowing, cleanup, or a full landscape refresh today — flat-rate pricing and same-week appointments across the KC metro."
+        primaryColor={PRIMARY}
+        accentColor={ACCENT}
+        ctaLabel="Book Landscaping"
+        ctaTo="/book?service=landscaping"
+      />
 
     </div>
   );

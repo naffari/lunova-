@@ -1,16 +1,15 @@
 import {
-  Phone,
-  ArrowUpRight,
   Star,
   ShieldCheck,
   Trash2,
   MapPin,
 } from "lucide-react";
 import { Link } from "react-router";
+import ServiceHero from "../../components/ServiceHero";
 import HowItWorks from "../../components/HowItWorks";
 import ServiceAreaSection from "../../components/ServiceAreaSection";
 import FaqSection from "../../components/FaqSection";
-import { PHONE, PHONE_DISPLAY } from "../../constants/contact";
+import ContactStrip from "../../components/common/ContactStrip";
 
 const PRIMARY = "#0d382c";
 const ACCENT = "#f5b82e";
@@ -81,88 +80,21 @@ const HOW_IT_WORKS_STEPS = [
 export default function BinCleaning() {
   return (
     <div className="font-sans-modern min-h-screen" style={{ backgroundColor: BG, color: PRIMARY }}>
-      {/* HERO */}
-      <section className="relative pt-[4.5rem] pb-20 px-4 sm:px-6 overflow-hidden" style={{ backgroundColor: BG }}>
-        <div className="max-w-7xl mx-auto grid lg:grid-cols-[1fr_480px] gap-12 items-center">
-          <div>
-            <div
-              className="inline-flex items-center gap-2 text-xs font-semibold px-3.5 py-1.5 rounded-full mb-6 border"
-              style={{ backgroundColor: `${PRIMARY}12`, color: PRIMARY, borderColor: `${PRIMARY}28` }}
-            >
-              <span className="w-2 h-2 rounded-full" style={{ backgroundColor: ACCENT }} />
-              <span>KC's Curbside Trash Bin Cleaning Service</span>
-            </div>
-
-            <h1
-              className="font-serif-display text-5xl sm:text-6xl md:text-7xl font-normal leading-[1.08] mb-6 tracking-tight"
-              style={{ color: PRIMARY }}
-            >
-              <span className="italic" style={{ color: ACCENT }}>Sanitized</span> Bins. <br />
-              No More Stench.
-            </h1>
-
-            <p className="text-base sm:text-lg max-w-xl mb-8 leading-relaxed" style={{ color: `${PRIMARY}bb` }}>
-              We pull up to your curb after trash day, blast your bins with 200° pressurized hot water, and apply a deodorizing treatment — no mess, no hassle.
-            </p>
-
-            <div className="flex flex-wrap items-center gap-4">
-              <Link
-                to="/book?service=bin-cleaning"
-                className="inline-flex items-center gap-3 font-bold px-7 py-4 rounded-full text-base transition-all shadow-md group text-white"
-                style={{ backgroundColor: ACCENT }}
-              >
-                Book a Clean
-                <span
-                  className="w-7 h-7 rounded-full flex items-center justify-center group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform"
-                  style={{ backgroundColor: PRIMARY, color: ACCENT }}
-                >
-                  <ArrowUpRight size={16} />
-                </span>
-              </Link>
-
-              <a
-                href={`tel:+1${PHONE}`}
-                className="inline-flex items-center gap-2 font-semibold px-6 py-4 rounded-full text-sm transition-colors text-white"
-                style={{ backgroundColor: PRIMARY }}
-              >
-                <Phone size={16} style={{ color: ACCENT }} />
-                Call {PHONE_DISPLAY}
-              </a>
-            </div>
-
-            <div className="mt-10 pt-8 flex items-center gap-6 text-xs" style={{ borderTop: `1px solid ${PRIMARY}20` }}>
-              <span className="font-semibold" style={{ color: PRIMARY }}>200° Hot Water Sanitization</span>
-              <span style={{ color: `${PRIMARY}40` }}>•</span>
-              <span className="font-semibold" style={{ color: PRIMARY }}>Kills 99.9% Bacteria</span>
-              <span style={{ color: `${PRIMARY}40` }}>•</span>
-              <span className="font-semibold" style={{ color: PRIMARY }}>Monthly Route Service</span>
-            </div>
-          </div>
-
-          <div className="relative flex justify-center">
-            <div className="absolute -inset-4 rounded-[40px] rotate-2 opacity-50 z-0" style={{ backgroundColor: `${PRIMARY}20` }} />
-            <div className="relative z-10 w-full max-w-md h-[460px] sm:h-[520px] rounded-[36px] overflow-hidden border-4 border-white shadow-2xl" style={{ backgroundColor: PRIMARY }}>
-              <img
-                src="https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?w=800&h=1000&fit=crop&auto=format"
-                alt="Curbside Bin Cleaning Service"
-                className="w-full h-full object-cover"
-              />
-              <div
-                className="absolute bottom-6 left-6 right-6 backdrop-blur-md p-5 rounded-2xl flex items-center justify-between"
-                style={{ backgroundColor: `${PRIMARY}e6`, border: `1px solid ${ACCENT}50` }}
-              >
-                <div>
-                  <p className="text-xs font-semibold uppercase tracking-wider" style={{ color: ACCENT }}>Bin Cleaning by Lunova</p>
-                  <p className="font-serif-display text-xl text-white">Monthly Route Specialists</p>
-                </div>
-                <div className="w-10 h-10 rounded-full flex items-center justify-center font-bold text-xs text-white" style={{ backgroundColor: ACCENT }}>
-                  ★ 5.0
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <ServiceHero
+        badge="KC's Curbside Trash Bin Cleaning Service"
+        titleContent={<><span className="italic" style={{ color: ACCENT }}>Sanitized</span> Bins. <br />No More Stench.</>}
+        description="We pull up to your curb after trash day, blast your bins with 200° pressurized hot water, and apply a deodorizing treatment — no mess, no hassle."
+        primaryColor={PRIMARY}
+        accentColor={ACCENT}
+        bgColor={BG}
+        ctaLabel="Book a Clean"
+        ctaTo="/book?service=bin-cleaning"
+        trustItems={["200° Hot Water Sanitization", "Kills 99.9% Bacteria", "Monthly Route Service"]}
+        heroImage="https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?w=800&h=1000&fit=crop&auto=format"
+        heroImageAlt="Curbside Bin Cleaning Service"
+        badgeLabel="Bin Cleaning by Lunova"
+        badgeSubLabel="Monthly Route Specialists"
+      />
 
       {/* MARQUEE STRIP */}
       <div style={{ backgroundColor: ACCENT, overflow: 'hidden' }} className="py-3">
@@ -293,6 +225,15 @@ export default function BinCleaning() {
           />
         </div>
       </section>
+
+      <ContactStrip
+        heading="Ready to Ditch the Stink?"
+        subtext="Join our monthly route and never scrub a filthy bin again — sanitized, deodorized, and back at your curb before you know it."
+        primaryColor={PRIMARY}
+        accentColor={ACCENT}
+        ctaLabel="Book a Clean"
+        ctaTo="/book?service=bin-cleaning"
+      />
 
     </div>
   );

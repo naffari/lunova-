@@ -18,6 +18,7 @@ import ServiceHero from "../components/ServiceHero";
 import HowItWorks from "../components/HowItWorks";
 import ServiceAreaSection from "../components/ServiceAreaSection";
 import FaqSection from "../components/FaqSection";
+import ContactStrip from "../components/common/ContactStrip";
 
 const PRIMARY = "#14304A";
 const ACCENT = "#E8A830";
@@ -318,6 +319,15 @@ export default function Cleaning() {
           />
         </div>
       </section>
+
+      <ContactStrip
+        heading="Ready for a Spotless Property?"
+        subtext="From homes to offices, driveways to vehicles — book any Lunova cleaning service today and get a flat-rate quote in minutes."
+        primaryColor={PRIMARY}
+        accentColor={ACCENT}
+        ctaLabel="Book a Clean"
+        ctaTo="/book?service=cleaning"
+      />
 
     </div>
   </>

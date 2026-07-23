@@ -1,5 +1,4 @@
 import {
-  Phone,
   ArrowUpRight,
   Star,
   CheckCircle,
@@ -9,10 +8,11 @@ import {
   MapPin,
 } from "lucide-react";
 import { Link } from "react-router";
+import ServiceHero from "../../components/ServiceHero";
 import HowItWorks from "../../components/HowItWorks";
 import ServiceAreaSection from "../../components/ServiceAreaSection";
 import FaqSection from "../../components/FaqSection";
-import { PHONE, PHONE_DISPLAY } from "../../constants/contact";
+import ContactStrip from "../../components/common/ContactStrip";
 
 const PRIMARY = "#14304A";
 const ACCENT = "#E8A830";
@@ -86,56 +86,21 @@ const HOW_IT_WORKS_STEPS = [
 export default function ResidentialCleaning() {
   return (
     <div className="font-sans-modern min-h-screen" style={{ backgroundColor: BG, color: DARK }}>
-      {/* HERO */}
-      <section className="px-4 sm:px-6 pt-[4.5rem] pb-4" style={{ backgroundColor: PRIMARY }}>
-        <div className="max-w-5xl mx-auto text-center">
-          <span
-            className="inline-block text-xs font-bold uppercase tracking-widest px-4 py-1.5 rounded-full mb-6"
-            style={{ backgroundColor: ACCENT, color: DARK }}
-          >
-            #1 Residential Cleaning in Kansas City
-          </span>
-          <span
-            className="inline-block text-xs font-bold uppercase tracking-widest px-4 py-1.5 rounded-full mb-6 ml-3"
-            style={{ backgroundColor: 'rgba(255,255,255,0.15)', color: '#ffffff', border: '1px solid rgba(255,255,255,0.3)' }}
-          >
-            Residential Cleaning by Lunova
-          </span>
-
-          <h1 className="font-serif-display text-5xl sm:text-6xl md:text-7xl font-normal text-white leading-tight mb-6">
-            Your Home, Cleaned<br />
-            <span style={{ color: ACCENT }} className="italic">Spotlessly.</span>
-          </h1>
-
-          <p className="text-white/80 text-lg max-w-xl mx-auto mb-10">
-            Standard cleans, deep cleans, and move-in/out services. We bring all supplies, arrive on time, and leave every room immaculate.
-          </p>
-
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              to="/book?service=cleaning"
-              className="inline-flex items-center justify-center gap-2 font-bold px-8 py-4 rounded-full text-base"
-              style={{ backgroundColor: ACCENT, color: DARK }}
-            >
-              Book a Clean <ArrowUpRight size={18} />
-            </Link>
-            <a
-              href={`tel:+1${PHONE}`}
-              className="inline-flex items-center justify-center gap-2 font-semibold px-8 py-4 rounded-full text-base border-2 text-white"
-              style={{ borderColor: 'rgba(255,255,255,0.4)' }}
-            >
-              <Phone size={18} /> {PHONE_DISPLAY}
-            </a>
-          </div>
-        </div>
-      </section>
-
-      {/* Wave transition */}
-      <div style={{ backgroundColor: PRIMARY, lineHeight: 0, marginTop: '-1px' }}>
-        <svg viewBox="0 0 1440 72" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" className="w-full block" style={{ height: '50px' }}>
-          <path d="M0,36 C180,72 360,0 540,36 C720,72 900,0 1080,36 C1260,72 1380,0 1440,36 L1440,72 L0,72 Z" fill={BG} />
-        </svg>
-      </div>
+      <ServiceHero
+        badge="#1 Residential Cleaning in Kansas City"
+        titleContent={<>Your Home, Cleaned<br /><span style={{ color: ACCENT }} className="italic">Spotlessly.</span></>}
+        description="Standard cleans, deep cleans, and move-in/out services. We bring all supplies, arrive on time, and leave every room immaculate."
+        primaryColor={PRIMARY}
+        accentColor={ACCENT}
+        bgColor={BG}
+        ctaLabel="Book a Clean"
+        ctaTo="/book?service=cleaning"
+        trustItems={["Fully Insured", "5.0 Rated", "Eco Products"]}
+        heroImage="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=700&h=500&fit=crop&auto=format"
+        heroImageAlt="Professional residential cleaning in a Kansas City home"
+        badgeLabel="Residential Cleaning by Lunova"
+        badgeSubLabel="Spotless Every Visit"
+      />
 
       {/* TRUST BADGES */}
       <section className="py-14 px-4 sm:px-6" style={{ backgroundColor: BG }}>
@@ -341,6 +306,15 @@ export default function ResidentialCleaning() {
 
       {/* SERVICE AREA */}
       <ServiceAreaSection primaryColor={PRIMARY} accentColor={ACCENT} bgColor={BG} />
+
+      <ContactStrip
+        heading="Ready for a Spotless Home?"
+        subtext="Book your clean today and get a flat-rate quote in minutes. Same-week slots are available across the Kansas City metro."
+        primaryColor={PRIMARY}
+        accentColor={ACCENT}
+        ctaLabel="Book a Clean"
+        ctaTo="/book?service=cleaning"
+      />
 
     </div>
   );

@@ -1,5 +1,4 @@
 import {
-  Phone,
   ArrowUpRight,
   Star,
   CheckCircle,
@@ -9,10 +8,11 @@ import {
   MapPin,
 } from "lucide-react";
 import { Link } from "react-router";
+import ServiceHero from "../../components/ServiceHero";
 import HowItWorks from "../../components/HowItWorks";
 import ServiceAreaSection from "../../components/ServiceAreaSection";
 import FaqSection from "../../components/FaqSection";
-import { PHONE, PHONE_DISPLAY } from "../../constants/contact";
+import ContactStrip from "../../components/common/ContactStrip";
 
 const PRIMARY = "#14304A";
 const ACCENT = "#E8A830";
@@ -86,56 +86,21 @@ const HOW_IT_WORKS_STEPS = [
 export default function CommercialCleaning() {
   return (
     <div className="font-sans-modern min-h-screen" style={{ backgroundColor: BG, color: DARK }}>
-      {/* HERO */}
-      <section className="px-4 sm:px-6 pt-[4.5rem] pb-4" style={{ backgroundColor: PRIMARY }}>
-        <div className="max-w-5xl mx-auto text-center">
-          <span
-            className="inline-block text-xs font-bold uppercase tracking-widest px-4 py-1.5 rounded-full mb-6"
-            style={{ backgroundColor: ACCENT, color: DARK }}
-          >
-            Now Accepting Commercial Contracts in KC
-          </span>
-          <span
-            className="inline-block text-xs font-bold uppercase tracking-widest px-4 py-1.5 rounded-full mb-6 ml-3"
-            style={{ backgroundColor: 'transparent', color: ACCENT, border: `1px solid ${ACCENT}` }}
-          >
-            Commercial Cleaning by Lunova
-          </span>
-
-          <h1 className="font-serif-display text-5xl sm:text-6xl md:text-7xl font-normal text-white leading-tight mb-6">
-            Professional Janitorial.<br />
-            <span style={{ color: ACCENT }} className="italic">Every Night. On Time.</span>
-          </h1>
-
-          <p className="text-white/80 text-lg max-w-xl mx-auto mb-10">
-            Scheduled nightly janitorial for offices, medical facilities, retail stores, and restaurants. Fully insured, contract-ready, and dedicated to your standards.
-          </p>
-
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              to="/book?service=commercial"
-              className="inline-flex items-center justify-center gap-2 font-bold px-8 py-4 rounded-full text-base"
-              style={{ backgroundColor: ACCENT, color: DARK }}
-            >
-              Book a Clean <ArrowUpRight size={18} />
-            </Link>
-            <a
-              href={`tel:+1${PHONE}`}
-              className="inline-flex items-center justify-center gap-2 font-semibold px-8 py-4 rounded-full border-2 text-white"
-              style={{ borderColor: 'rgba(255,255,255,0.4)' }}
-            >
-              <Phone size={18} /> {PHONE_DISPLAY}
-            </a>
-          </div>
-        </div>
-      </section>
-
-      {/* Wave transition */}
-      <div style={{ backgroundColor: PRIMARY, lineHeight: 0, marginTop: '-1px' }}>
-        <svg viewBox="0 0 1440 72" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" className="w-full block" style={{ height: '50px' }}>
-          <path d="M0,36 C180,72 360,0 540,36 C720,72 900,0 1080,36 C1260,72 1380,0 1440,36 L1440,72 L0,72 Z" fill={BG} />
-        </svg>
-      </div>
+      <ServiceHero
+        badge="Now Accepting Commercial Contracts in KC"
+        titleContent={<>Professional Janitorial.<br /><span style={{ color: ACCENT }} className="italic">Every Night. On Time.</span></>}
+        description="Scheduled nightly janitorial for offices, medical facilities, retail stores, and restaurants. Fully insured, contract-ready, and dedicated to your standards."
+        primaryColor={PRIMARY}
+        accentColor={ACCENT}
+        bgColor={BG}
+        ctaLabel="Book a Clean"
+        ctaTo="/book?service=commercial"
+        trustItems={["Fully Insured", "After-Hours Service", "5.0 Rated"]}
+        heroImage="https://images.unsplash.com/photo-1497366216548-37526070297c?w=700&h=500&fit=crop&auto=format"
+        heroImageAlt="Commercial janitorial team cleaning an office space in Kansas City"
+        badgeLabel="Commercial Cleaning by Lunova"
+        badgeSubLabel="Trusted by KC Businesses"
+      />
 
       {/* TRUST BADGES */}
       <section className="py-14 px-4 sm:px-6" style={{ backgroundColor: BG }}>
@@ -339,6 +304,15 @@ export default function CommercialCleaning() {
 
       {/* SERVICE AREA */}
       <ServiceAreaSection primaryColor={PRIMARY} accentColor={ACCENT} bgColor={BG} />
+
+      <ContactStrip
+        heading="Ready for a Spotless Workplace?"
+        subtext="Get a custom contract quote for your facility. After-hours crews, dedicated team leads, and no long-term lock-in required."
+        primaryColor={PRIMARY}
+        accentColor={ACCENT}
+        ctaLabel="Request a Quote"
+        ctaTo="/book?service=commercial"
+      />
 
     </div>
   );

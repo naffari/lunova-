@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 import { Link } from "react-router";
 import { Helmet } from "react-helmet-async";
-import CTABanner from "../components/CTABanner";
+import ContactStrip from "../components/common/ContactStrip";
 import ServiceAreaSection from "../components/ServiceAreaSection";
 import { PHONE, PHONE_DISPLAY, EMAIL } from "../constants/contact";
 
@@ -341,8 +341,8 @@ export default function Home() {
       {/* SERVICE AREA */}
       <ServiceAreaSection primaryColor={PRIMARY} accentColor={ACCENT} bgColor={BG} />
 
-      {/* CTA BANNER */}
-      <CTABanner
+      {/* CONTACT STRIP */}
+      <ContactStrip
         heading="Ready to Get Your Home Looking Its Best?"
         subtext="Book online or call us — same-week slots available across Kansas City."
         primaryColor={PRIMARY}

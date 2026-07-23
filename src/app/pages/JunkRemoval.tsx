@@ -10,6 +10,7 @@ import ServiceHero from "../components/ServiceHero";
 import HowItWorks from "../components/HowItWorks";
 import ServiceAreaSection from "../components/ServiceAreaSection";
 import FaqSection from "../components/FaqSection";
+import ContactStrip from "../components/common/ContactStrip";
 
 const PRIMARY = "#0d382c";
 const ACCENT = "#f5b82e";
@@ -225,6 +226,15 @@ export default function JunkRemoval() {
           />
         </div>
       </section>
+
+      <ContactStrip
+        heading="Ready to Clear the Clutter?"
+        subtext="Get a free instant estimate and same-day hauling — our crew handles the heavy lifting so you don't have to."
+        primaryColor={PRIMARY}
+        accentColor={ACCENT}
+        ctaLabel="Book a Haul"
+        ctaTo="/book?service=junk"
+      />
 
     </div>
   );

@@ -1,6 +1,4 @@
 import {
-  Phone,
-  ArrowUpRight,
   Star,
   ShieldCheck,
   Droplets,
@@ -8,10 +6,11 @@ import {
   MapPin,
 } from "lucide-react";
 import { Link } from "react-router";
+import ServiceHero from "../../components/ServiceHero";
 import HowItWorks from "../../components/HowItWorks";
 import ServiceAreaSection from "../../components/ServiceAreaSection";
 import FaqSection from "../../components/FaqSection";
-import { PHONE, PHONE_DISPLAY } from "../../constants/contact";
+import ContactStrip from "../../components/common/ContactStrip";
 
 const PRIMARY = "#1A2F4A";
 const ACCENT = "#2BA8E0";
@@ -94,88 +93,21 @@ const HOW_IT_WORKS_STEPS = [
 export default function PowerWashing() {
   return (
     <div className="font-sans-modern min-h-screen" style={{ backgroundColor: BG, color: PRIMARY }}>
-      {/* HERO */}
-      <section className="relative pt-[4.5rem] pb-20 px-4 sm:px-6 overflow-hidden" style={{ backgroundColor: BG }}>
-        <div className="max-w-7xl mx-auto grid lg:grid-cols-[1fr_480px] gap-12 items-center">
-          <div>
-            <div
-              className="inline-flex items-center gap-2 text-xs font-semibold px-3.5 py-1.5 rounded-full mb-6 border"
-              style={{ backgroundColor: `${PRIMARY}12`, color: PRIMARY, borderColor: `${PRIMARY}28` }}
-            >
-              <span className="w-2 h-2 rounded-full" style={{ backgroundColor: ACCENT }} />
-              <span>Power Washing by Lunova</span>
-            </div>
-
-            <h1
-              className="font-serif-display text-5xl sm:text-6xl md:text-7xl font-normal leading-[1.08] mb-6 tracking-tight"
-              style={{ color: PRIMARY }}
-            >
-              Exterior Cleaning<br />
-              for Homes &amp; <span className="italic" style={{ color: ACCENT }}>Businesses.</span>
-            </h1>
-
-            <p className="text-base sm:text-lg max-w-xl mb-8 leading-relaxed" style={{ color: `${PRIMARY}bb` }}>
-              Professional pressure washing, soft washing, gutter cleaning, and surface restoration across Kansas City. Licensed, insured, and results-guaranteed.
-            </p>
-
-            <div className="flex flex-wrap items-center gap-4">
-              <Link
-                to="/book?service=power-washing"
-                className="inline-flex items-center gap-3 font-bold px-7 py-4 rounded-full text-base transition-all shadow-md group text-white"
-                style={{ backgroundColor: ACCENT }}
-              >
-                Book a Clean
-                <span
-                  className="w-7 h-7 rounded-full flex items-center justify-center group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform"
-                  style={{ backgroundColor: PRIMARY, color: ACCENT }}
-                >
-                  <ArrowUpRight size={16} />
-                </span>
-              </Link>
-
-              <a
-                href={`tel:+1${PHONE}`}
-                className="inline-flex items-center gap-2 font-semibold px-6 py-4 rounded-full text-sm transition-colors text-white"
-                style={{ backgroundColor: PRIMARY }}
-              >
-                <Phone size={16} style={{ color: ACCENT }} />
-                Call {PHONE_DISPLAY}
-              </a>
-            </div>
-
-            <div className="mt-10 pt-8 flex items-center gap-6 text-xs" style={{ borderTop: `1px solid ${PRIMARY}20` }}>
-              <span className="font-semibold" style={{ color: PRIMARY }}>Licensed &amp; Insured</span>
-              <span style={{ color: `${PRIMARY}40` }}>•</span>
-              <span className="font-semibold" style={{ color: PRIMARY }}>Soft Wash Available</span>
-              <span style={{ color: `${PRIMARY}40` }}>•</span>
-              <span className="font-semibold" style={{ color: PRIMARY }}>Free Estimates</span>
-            </div>
-          </div>
-
-          <div className="relative flex justify-center">
-            <div className="absolute -inset-4 rounded-[40px] rotate-2 opacity-40 z-0" style={{ backgroundColor: `${ACCENT}30` }} />
-            <div className="relative z-10 w-full max-w-md h-[460px] sm:h-[520px] rounded-[36px] overflow-hidden border-4 border-white shadow-2xl" style={{ backgroundColor: PRIMARY }}>
-              <img
-                src="https://images.unsplash.com/photo-1558618047-3c8c76ca7b85?w=800&h=1000&fit=crop&auto=format"
-                alt="Power washing a driveway"
-                className="w-full h-full object-cover"
-              />
-              <div
-                className="absolute bottom-6 left-6 right-6 backdrop-blur-md p-5 rounded-2xl flex items-center justify-between"
-                style={{ backgroundColor: `${PRIMARY}e6`, border: `1px solid ${ACCENT}50` }}
-              >
-                <div>
-                  <p className="text-xs font-semibold uppercase tracking-wider" style={{ color: ACCENT }}>Power Washing by Lunova</p>
-                  <p className="font-serif-display text-xl text-white">Exterior Cleaning Experts</p>
-                </div>
-                <div className="w-10 h-10 rounded-full flex items-center justify-center font-bold text-xs text-white" style={{ backgroundColor: ACCENT }}>
-                  ★ 5.0
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <ServiceHero
+        badge="Power Washing by Lunova"
+        titleContent={<>Exterior Cleaning<br />for Homes &amp; <span className="italic" style={{ color: ACCENT }}>Businesses.</span></>}
+        description="Professional pressure washing, soft washing, gutter cleaning, and surface restoration across Kansas City. Licensed, insured, and results-guaranteed."
+        primaryColor={PRIMARY}
+        accentColor={ACCENT}
+        bgColor={BG}
+        ctaLabel="Book a Clean"
+        ctaTo="/book?service=power-washing"
+        trustItems={["Licensed & Insured", "Soft Wash Available", "Free Estimates"]}
+        heroImage="https://images.unsplash.com/photo-1558618047-3c8c76ca7b85?w=800&h=1000&fit=crop&auto=format"
+        heroImageAlt="Power washing a driveway"
+        badgeLabel="Power Washing by Lunova"
+        badgeSubLabel="Exterior Cleaning Experts"
+      />
 
       {/* MARQUEE STRIP */}
       <div style={{ backgroundColor: ACCENT, overflow: 'hidden' }} className="py-3">
@@ -319,6 +251,15 @@ export default function PowerWashing() {
           />
         </div>
       </section>
+
+      <ContactStrip
+        heading="Ready to Restore Your Curb Appeal?"
+        subtext="Book a free on-site estimate and get your driveway, siding, or deck looking brand new — same-week slots available across Kansas City."
+        primaryColor={PRIMARY}
+        accentColor={ACCENT}
+        ctaLabel="Book a Clean"
+        ctaTo="/book?service=power-washing"
+      />
 
     </div>
   );
