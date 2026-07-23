@@ -1,6 +1,6 @@
 import { Link } from "react-router";
 import { Home, ArrowLeft, Search, Phone } from "lucide-react";
-import { PHONE_DISPLAY } from "../constants/contact";
+import { PHONE, PHONE_DISPLAY } from "../constants/contact";
 
 const PRIMARY = "#3C312A";
 const ACCENT = "#c8960e";
@@ -31,7 +31,7 @@ export default function NotFound() {
           Page Not Found
         </h2>
 
-        <p className="text-base mb-10" style={{ color: `${PRIMARY}99` }}>
+        <p className="text-base leading-relaxed mb-10" style={{ color: `${PRIMARY}99` }}>
           The page you're looking for doesn't exist or has been moved. Let's get you back on track.
         </p>
 
@@ -46,7 +46,7 @@ export default function NotFound() {
           </Link>
 
           <a
-            href={`tel:+18163151305`}
+            href={`tel:+1${PHONE}`}
             className="inline-flex items-center gap-2 font-semibold px-6 py-3 rounded-full text-base transition-colors text-white"
             style={{ backgroundColor: PRIMARY }}
           >

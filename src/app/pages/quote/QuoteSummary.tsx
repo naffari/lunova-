@@ -18,7 +18,7 @@ export default function QuoteSummary() {
         <h2 style={{ fontFamily: "var(--font-display)" }} className="text-4xl font-bold text-foreground uppercase mb-3">
           Quote Request Sent{contact.name ? `, ${contact.name.split(" ")[0]}` : ""}!
         </h2>
-        <p className="text-muted-foreground text-base max-w-md mx-auto mb-8">
+        <p className="text-muted-foreground text-base leading-relaxed max-w-md mx-auto mb-8">
           Our team will contact you within 1 business hour to confirm your{" "}
           <strong className="text-foreground">${range[0]}–${range[1]}</strong> estimate and lock in your service window.
         </p>

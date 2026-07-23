@@ -64,7 +64,7 @@ export default function FaqSection({
         </div>
       )}
 
-      <div className="rounded-2xl overflow-hidden border border-border bg-card">
+      <div className="rounded-xl overflow-hidden border border-border bg-card">
         {items.map((item, i) => {
           const isOpen = open === i;
           return (

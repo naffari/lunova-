@@ -28,7 +28,7 @@ export default function Quote() {
             >
               Get a Free <span style={{ color: '#c8960e' }}>Instant Quote</span>
             </h1>
-            <p className="text-base max-w-lg mx-auto" style={{ color: 'rgba(241,235,217,0.6)' }}>
+            <p className="text-base leading-relaxed max-w-lg mx-auto" style={{ color: 'rgba(241,235,217,0.6)' }}>
               Pick your service, adjust your preferences, and receive a transparent price range in seconds.
             </p>
           </div>

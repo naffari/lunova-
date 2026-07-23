@@ -26,7 +26,7 @@ export default function Booking() {
             >
               Book Your Service <span className="text-primary">&amp; Bundle Savings</span>
             </h1>
-            <p className="text-muted-foreground text-base max-w-xl mx-auto">
+            <p className="text-muted-foreground text-base leading-relaxed max-w-xl mx-auto">
               Select your service, add discounted cross-sell add-ons, pick your date, and lock in your appointment in 60 seconds.
             </p>
           </div>
