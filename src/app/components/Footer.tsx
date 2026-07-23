@@ -96,6 +96,7 @@ export default function Footer() {
         <div className="flex items-center gap-4">
           <span>© {new Date().getFullYear()} Lunova Services. All rights reserved.</span>
           <Link to="/blog" className="hover:text-white transition-colors">Blog</Link>
+          <Link to="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link>
         </div>
         <span className="flex items-center gap-1" style={{ color: FT_ACCENT }}>
           <Sparkles size={12} /> Bundle 2+ services for 10% off

@@ -18,6 +18,7 @@ const Quote = lazy(() => import("./pages/Quote"));
 const QuoteSuccess = lazy(() => import("./pages/QuoteSuccess"));
 const Booking = lazy(() => import("./pages/Booking"));
 const BookingSuccess = lazy(() => import("./pages/BookingSuccess"));
+const Privacy = lazy(() => import("./pages/Privacy"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 export const router = createBrowserRouter([
@@ -41,6 +42,7 @@ export const router = createBrowserRouter([
       { path: "quote/success", Component: QuoteSuccess },
       { path: "book", Component: Booking },
       { path: "book/success", Component: BookingSuccess },
+      { path: "privacy", Component: Privacy },
       { path: "*", Component: NotFound },
     ],
   },
