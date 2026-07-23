@@ -15,6 +15,8 @@ import { Helmet } from "react-helmet-async";
 import ContactStrip from "../components/common/ContactStrip";
 import ServiceAreaSection from "../components/ServiceAreaSection";
 import FadeInSection from "../components/common/FadeInSection";
+import PhotoGallery from "../components/common/PhotoGallery";
+import TestimonialsSection from "../components/TestimonialsSection";
 import { PHONE, PHONE_DISPLAY, EMAIL } from "../constants/contact";
 
 const PRIMARY = "#3C312A";
@@ -57,6 +59,15 @@ const STATS = [
   { val: "Same-Day", label: "Availability" },
   { val: "100%", label: "Satisfaction Guarantee" },
   { val: "Licensed", label: "& Insured" },
+];
+
+const GALLERY_IMAGES = [
+  { src: "https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=600&h=600&fit=crop&auto=format", alt: "Sparkling clean modern kitchen after a Lunova deep clean" },
+  { src: "https://images.unsplash.com/photo-1558618047-3c8c76ca7b85?w=600&h=600&fit=crop&auto=format", alt: "Freshly power washed driveway" },
+  { src: "https://images.unsplash.com/photo-1558904541-efa843a96f01?w=600&h=600&fit=crop&auto=format", alt: "Manicured lawn and landscaping" },
+  { src: "https://images.unsplash.com/photo-1563453392212-326f5e854473?w=600&h=600&fit=crop&auto=format", alt: "Streak-free window cleaning results" },
+  { src: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=600&h=600&fit=crop&auto=format", alt: "Junk removal crew hauling away debris" },
+  { src: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600&h=600&fit=crop&auto=format", alt: "Clean patio and deck after pressure washing" },
 ];
 
 export default function Home() {
@@ -341,6 +352,29 @@ export default function Home() {
 
       {/* SERVICE AREA */}
       <ServiceAreaSection primaryColor={PRIMARY} accentColor={ACCENT} bgColor={BG} />
+
+      {/* RECENT WORK GALLERY */}
+      <section className="py-20 px-4 sm:px-6" style={{ backgroundColor: BG }}>
+        <FadeInSection className="max-w-6xl mx-auto">
+          <div className="text-center max-w-2xl mx-auto mb-12">
+            <div className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest mb-3" style={{ color: PRIMARY }}>
+              <span className="w-6 h-0.5" style={{ backgroundColor: PRIMARY }} />
+              <span>Recent Work</span>
+            </div>
+            <h2 className="font-serif-display text-4xl sm:text-5xl" style={{ color: PRIMARY }}>
+              See the Lunova Difference.
+            </h2>
+          </div>
+          <PhotoGallery images={GALLERY_IMAGES} />
+        </FadeInSection>
+      </section>
+
+      {/* TESTIMONIALS */}
+      <section className="py-20 px-4 sm:px-6" style={{ backgroundColor: BG }}>
+        <FadeInSection className="max-w-6xl mx-auto">
+          <TestimonialsSection />
+        </FadeInSection>
+      </section>
 
       {/* CONTACT STRIP */}
       <ContactStrip
