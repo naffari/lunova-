@@ -1,8 +1,8 @@
 import { Phone, Sparkles } from "lucide-react";
-import { Helmet } from "react-helmet-async";
 import { Link, useLocation } from "react-router";
 import { PHONE, PHONE_DISPLAY } from "../constants/contact";
 import { Confetti } from "./quote/QuoteAtoms";
+import Seo from "../components/common/Seo";
 
 interface QuoteSuccessState {
   name?: string;
@@ -16,10 +16,11 @@ export default function QuoteSuccess() {
 
   return (
     <>
-      <Helmet>
-        <title>Quote Request Sent | Lunova Services</title>
-        <meta name="description" content="Your quote request has been received. A Lunova representative will reach out within one business hour." />
-      </Helmet>
+      <Seo
+        title="Quote Request Sent | Lunova Services"
+        description="Your quote request has been received. A Lunova representative will reach out within one business hour."
+        noIndex
+      />
       <div className="bg-background text-foreground min-h-screen">
         <section className="relative pt-24 pb-16 px-4 sm:px-6 overflow-hidden" style={{ backgroundColor: '#2A2118', borderBottom: '1px solid rgba(241,235,217,0.1)' }}>
           <div className="relative z-10 max-w-4xl mx-auto text-center">

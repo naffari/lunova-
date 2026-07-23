@@ -11,7 +11,9 @@ import HowItWorks from "../components/HowItWorks";
 import ServiceAreaSection from "../components/ServiceAreaSection";
 import FaqSection from "../components/FaqSection";
 import ContactStrip from "../components/common/ContactStrip";
+import Seo from "../components/common/Seo";
 import { SERVICE_THEMES } from "../constants/theme";
+import { buildBreadcrumbSchema, buildFaqSchema, buildServiceSchema } from "../utils/structuredData";
 
 const { primary: PRIMARY, accent: ACCENT, bg: BG } = SERVICE_THEMES.landscaping;
 
@@ -101,9 +103,31 @@ const HOW_IT_WORKS_STEPS = [
   },
 ];
 
+const LANDSCAPING_DESCRIPTION =
+  "Professional lawn mowing, hedge trimming, mulch, seasonal cleanup, and landscape design across the Kansas City metro — flat-rate pricing and same-week appointments.";
+
+const LANDSCAPING_FAQS = [
+  { q: "Do I need to be home for lawn service?", a: "No — our crews work independently. We'll notify you when we arrive and when the job is complete." },
+  { q: "How often should I schedule lawn care?", a: "We recommend weekly or bi-weekly service during growing season (April–October) and monthly in the off-season." },
+  { q: "Do you bring your own equipment?", a: "Yes. Our teams arrive fully equipped. You don't need to provide anything." },
+  { q: "What areas do you serve?", a: "We serve the full Kansas City metro area including Overland Park, Olathe, Shawnee, Lee's Summit, and more." },
+];
+
 export default function Landscaping() {
   return (
     <div data-theme="landscaping" className="font-sans-modern min-h-screen" style={{ backgroundColor: BG, color: PRIMARY }}>
+      <Seo
+        title="Landscaping & Lawn Care Services | Lunova Services"
+        description={LANDSCAPING_DESCRIPTION}
+        jsonLd={[
+          buildServiceSchema({ name: "Landscaping", description: LANDSCAPING_DESCRIPTION, path: "/landscaping" }),
+          buildBreadcrumbSchema([
+            { name: "Home", path: "/" },
+            { name: "Landscaping", path: "/landscaping" },
+          ]),
+          buildFaqSchema(LANDSCAPING_FAQS),
+        ]}
+      />
       <ServiceHero
         badge="No. 1 Lawn & Landscaping Company in KC"
         titleContent={<>We're Growing Better <br /><span className="italic" style={{ color: ACCENT }}>Neighborhoods</span> One <br />Yard At A Time</>}
@@ -238,12 +262,7 @@ export default function Landscaping() {
       <section className="py-20 px-4 sm:px-6" style={{ backgroundColor: BG }}>
         <div className="max-w-3xl mx-auto">
           <FaqSection
-            items={[
-              { q: "Do I need to be home for lawn service?", a: "No — our crews work independently. We'll notify you when we arrive and when the job is complete." },
-              { q: "How often should I schedule lawn care?", a: "We recommend weekly or bi-weekly service during growing season (April–October) and monthly in the off-season." },
-              { q: "Do you bring your own equipment?", a: "Yes. Our teams arrive fully equipped. You don't need to provide anything." },
-              { q: "What areas do you serve?", a: "We serve the full Kansas City metro area including Overland Park, Olathe, Shawnee, Lee's Summit, and more." },
-            ]}
+            items={LANDSCAPING_FAQS}
             title="Frequently Asked Questions"
             subtitle="Everything you need to know"
           />

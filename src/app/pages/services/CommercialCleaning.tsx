@@ -13,6 +13,8 @@ import HowItWorks from "../../components/HowItWorks";
 import ServiceAreaSection from "../../components/ServiceAreaSection";
 import FaqSection from "../../components/FaqSection";
 import ContactStrip from "../../components/common/ContactStrip";
+import Seo from "../../components/common/Seo";
+import { buildBreadcrumbSchema, buildFaqSchema, buildServiceSchema } from "../../utils/structuredData";
 import { SERVICE_THEMES } from "../../constants/theme";
 
 const { primary: PRIMARY, accent: ACCENT, bg: BG } = SERVICE_THEMES["commercial-cleaning"];
@@ -82,9 +84,32 @@ const HOW_IT_WORKS_STEPS = [
   },
 ];
 
+const COMMERCIAL_CLEANING_DESCRIPTION =
+  "Scheduled nightly janitorial for offices, medical facilities, retail stores, and restaurants across Kansas City. Fully insured, contract-ready crews dedicated to your standards.";
+
+const COMMERCIAL_CLEANING_FAQS = [
+  { q: "Do you offer after-hours cleaning?", a: "Yes — we specialize in after-hours and overnight cleaning so your business is ready to open each morning." },
+  { q: "Can you handle large commercial spaces?", a: "Absolutely. We serve offices, retail stores, medical facilities, and industrial spaces." },
+  { q: "Do you provide cleaning contracts?", a: "Yes. We offer weekly, bi-weekly, and monthly contracts with discounted rates for long-term commitments." },
+  { q: "Are your cleaners insured?", a: "Yes. Lunova Services is fully licensed and insured. We carry liability coverage for all commercial jobs." },
+];
+
 export default function CommercialCleaning() {
   return (
     <div data-theme="commercial-cleaning" className="font-sans-modern min-h-screen" style={{ backgroundColor: BG, color: DARK }}>
+      <Seo
+        title="Commercial Cleaning Services | Lunova Services"
+        description={COMMERCIAL_CLEANING_DESCRIPTION}
+        jsonLd={[
+          buildServiceSchema({ name: "Commercial Cleaning", description: COMMERCIAL_CLEANING_DESCRIPTION, path: "/services/commercial-cleaning" }),
+          buildBreadcrumbSchema([
+            { name: "Home", path: "/" },
+            { name: "Cleaning", path: "/cleaning" },
+            { name: "Commercial Cleaning", path: "/services/commercial-cleaning" },
+          ]),
+          buildFaqSchema(COMMERCIAL_CLEANING_FAQS),
+        ]}
+      />
       <ServiceHero
         badge="Now Accepting Commercial Contracts in KC"
         titleContent={<>Professional Janitorial.<br /><span style={{ color: ACCENT }} className="italic">Every Night. On Time.</span></>}
@@ -289,12 +314,7 @@ export default function CommercialCleaning() {
       <section className="py-20 px-4 sm:px-6" style={{ backgroundColor: BG }}>
         <div className="max-w-3xl mx-auto">
           <FaqSection
-            items={[
-              { q: "Do you offer after-hours cleaning?", a: "Yes — we specialize in after-hours and overnight cleaning so your business is ready to open each morning." },
-              { q: "Can you handle large commercial spaces?", a: "Absolutely. We serve offices, retail stores, medical facilities, and industrial spaces." },
-              { q: "Do you provide cleaning contracts?", a: "Yes. We offer weekly, bi-weekly, and monthly contracts with discounted rates for long-term commitments." },
-              { q: "Are your cleaners insured?", a: "Yes. Lunova Services is fully licensed and insured. We carry liability coverage for all commercial jobs." },
-            ]}
+            items={COMMERCIAL_CLEANING_FAQS}
             title="Frequently Asked Questions"
             subtitle="Everything you need to know"
           />

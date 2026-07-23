@@ -10,6 +10,8 @@ import HowItWorks from "../../components/HowItWorks";
 import ServiceAreaSection from "../../components/ServiceAreaSection";
 import FaqSection from "../../components/FaqSection";
 import ContactStrip from "../../components/common/ContactStrip";
+import Seo from "../../components/common/Seo";
+import { buildBreadcrumbSchema, buildFaqSchema, buildServiceSchema } from "../../utils/structuredData";
 import { SERVICE_THEMES } from "../../constants/theme";
 
 const { primary: PRIMARY, accent: ACCENT, bg: BG } = SERVICE_THEMES["auto-detailing"];
@@ -76,9 +78,32 @@ const HOW_IT_WORKS_STEPS = [
   },
 ];
 
+const AUTO_DETAILING_DESCRIPTION =
+  "Mobile auto detailing brought directly to your home or office in Kansas City. From express washes to full paint protection and ceramic coating.";
+
+const AUTO_DETAILING_FAQS = [
+  { q: "Do you come to my location?", a: "Yes — we are fully mobile. We come to your home, office, or wherever your vehicle is parked." },
+  { q: "How long does a detail take?", a: "Standard details take 2–4 hours. Full interior/exterior details can take 4–6 hours depending on vehicle size and condition." },
+  { q: "Do you need access to water and power?", a: "We carry our own water supply and power equipment. You don't need to provide anything." },
+  { q: "What vehicles do you detail?", a: "Cars, trucks, SUVs, vans, and boats. Pricing varies by vehicle size." },
+];
+
 export default function AutoDetailing() {
   return (
     <div data-theme="auto-detailing" className="font-sans-modern min-h-screen" style={{ backgroundColor: BG, color: PRIMARY }}>
+      <Seo
+        title="Auto Detailing Services | Lunova Services"
+        description={AUTO_DETAILING_DESCRIPTION}
+        jsonLd={[
+          buildServiceSchema({ name: "Auto Detailing", description: AUTO_DETAILING_DESCRIPTION, path: "/services/auto-detailing" }),
+          buildBreadcrumbSchema([
+            { name: "Home", path: "/" },
+            { name: "Cleaning", path: "/cleaning" },
+            { name: "Auto Detailing", path: "/services/auto-detailing" },
+          ]),
+          buildFaqSchema(AUTO_DETAILING_FAQS),
+        ]}
+      />
       <ServiceHero
         badge="KC's Mobile Auto Detailing Service"
         titleContent={<>Your Car, <span className="italic" style={{ color: ACCENT }}>Detailed</span> <br />At Your Doorstep.</>}
@@ -213,12 +238,7 @@ export default function AutoDetailing() {
       <section className="py-20 px-4 sm:px-6" style={{ backgroundColor: BG }}>
         <div className="max-w-3xl mx-auto">
           <FaqSection
-            items={[
-              { q: "Do you come to my location?", a: "Yes — we are fully mobile. We come to your home, office, or wherever your vehicle is parked." },
-              { q: "How long does a detail take?", a: "Standard details take 2–4 hours. Full interior/exterior details can take 4–6 hours depending on vehicle size and condition." },
-              { q: "Do you need access to water and power?", a: "We carry our own water supply and power equipment. You don't need to provide anything." },
-              { q: "What vehicles do you detail?", a: "Cars, trucks, SUVs, vans, and boats. Pricing varies by vehicle size." },
-            ]}
+            items={AUTO_DETAILING_FAQS}
             title="Frequently Asked Questions"
             subtitle="Everything you need to know"
           />

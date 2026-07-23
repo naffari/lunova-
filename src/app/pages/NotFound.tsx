@@ -1,6 +1,7 @@
 import { Link } from "react-router";
 import { Home, ArrowLeft, Search, Phone } from "lucide-react";
 import { PHONE, PHONE_DISPLAY } from "../constants/contact";
+import Seo from "../components/common/Seo";
 
 const PRIMARY = "#3C312A";
 const ACCENT = "#c8960e";
@@ -9,6 +10,11 @@ const BG = "#F1EBD9";
 export default function NotFound() {
   return (
     <div className="font-sans-modern min-h-screen flex flex-col items-center justify-center px-4" style={{ backgroundColor: BG, color: PRIMARY }}>
+      <Seo
+        title="Page Not Found | Lunova Services"
+        description="The page you're looking for doesn't exist or has been moved. Explore Lunova's cleaning, junk removal, and landscaping services in Kansas City."
+        noIndex
+      />
       <div className="text-center max-w-lg">
         <div
           className="w-24 h-24 rounded-full mx-auto mb-8 flex items-center justify-center"

@@ -10,6 +10,8 @@ import HowItWorks from "../../components/HowItWorks";
 import ServiceAreaSection from "../../components/ServiceAreaSection";
 import FaqSection from "../../components/FaqSection";
 import ContactStrip from "../../components/common/ContactStrip";
+import Seo from "../../components/common/Seo";
+import { buildBreadcrumbSchema, buildFaqSchema, buildServiceSchema } from "../../utils/structuredData";
 import BeforeAfterSlider from "../../components/common/BeforeAfterSlider";
 import { SERVICE_THEMES } from "../../constants/theme";
 
@@ -89,9 +91,32 @@ const HOW_IT_WORKS_STEPS = [
   },
 ];
 
+const POWER_WASHING_DESCRIPTION =
+  "Professional pressure washing, soft washing, gutter cleaning, and surface restoration for homes and businesses across Kansas City. Licensed, insured, and results-guaranteed.";
+
+const POWER_WASHING_FAQS = [
+  { q: "What surfaces can you power wash?", a: "Driveways, sidewalks, decks, patios, siding, fences, and commercial parking lots." },
+  { q: "Is power washing safe for all surfaces?", a: "We adjust pressure for each surface. Soft washing is used for siding, roofs, and painted surfaces to prevent damage." },
+  { q: "How long before I can use the surface?", a: "Most surfaces are ready within a few hours. We'll let you know based on the specific job." },
+  { q: "Do I need to be home?", a: "Not necessarily — as long as we have access to the area and a water connection, we can complete the job." },
+];
+
 export default function PowerWashing() {
   return (
     <div data-theme="power-washing" className="font-sans-modern min-h-screen" style={{ backgroundColor: BG, color: PRIMARY }}>
+      <Seo
+        title="Power Washing Services | Lunova Services"
+        description={POWER_WASHING_DESCRIPTION}
+        jsonLd={[
+          buildServiceSchema({ name: "Power Washing", description: POWER_WASHING_DESCRIPTION, path: "/services/power-washing" }),
+          buildBreadcrumbSchema([
+            { name: "Home", path: "/" },
+            { name: "Cleaning", path: "/cleaning" },
+            { name: "Power Washing", path: "/services/power-washing" },
+          ]),
+          buildFaqSchema(POWER_WASHING_FAQS),
+        ]}
+      />
       <ServiceHero
         badge="Power Washing by Lunova"
         titleContent={<>Exterior Cleaning<br />for Homes &amp; <span className="italic" style={{ color: ACCENT }}>Businesses.</span></>}
@@ -272,12 +297,7 @@ export default function PowerWashing() {
       <section className="py-20 px-4 sm:px-6" style={{ backgroundColor: BG }}>
         <div className="max-w-3xl mx-auto">
           <FaqSection
-            items={[
-              { q: "What surfaces can you power wash?", a: "Driveways, sidewalks, decks, patios, siding, fences, and commercial parking lots." },
-              { q: "Is power washing safe for all surfaces?", a: "We adjust pressure for each surface. Soft washing is used for siding, roofs, and painted surfaces to prevent damage." },
-              { q: "How long before I can use the surface?", a: "Most surfaces are ready within a few hours. We'll let you know based on the specific job." },
-              { q: "Do I need to be home?", a: "Not necessarily — as long as we have access to the area and a water connection, we can complete the job." },
-            ]}
+            items={POWER_WASHING_FAQS}
             title="Frequently Asked Questions"
             subtitle="Everything you need to know"
           />

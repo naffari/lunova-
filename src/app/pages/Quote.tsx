@@ -1,19 +1,24 @@
-import { Helmet } from "react-helmet-async";
 import { QuoteProvider } from "./quote/QuoteContext";
 import QuoteStepper from "./quote/QuoteStepper";
 import QuoteForm from "./quote/QuoteForm";
 import QuoteSidebar from "./quote/QuoteSidebar";
+import Seo from "../components/common/Seo";
+import { buildBreadcrumbSchema } from "../utils/structuredData";
+
+const QUOTE_DESCRIPTION =
+  "Get an instant, transparent quote for cleaning, power washing, junk removal, landscaping, auto detailing, bin cleaning, window cleaning, and commercial services in Kansas City.";
 
 export default function Quote() {
   return (
     <>
-      <Helmet>
-        <title>Get a Free Instant Quote | Lunova Services</title>
-        <meta name="description" content="Get an instant, transparent quote for cleaning, power washing, junk removal, landscaping, auto detailing, bin cleaning, window cleaning, and commercial services in Kansas City." />
-        <meta property="og:title" content="Get a Free Instant Quote | Lunova Services" />
-        <meta property="og:description" content="Instant cost estimator for all Lunova services. Pick your service, adjust preferences, and receive a transparent price range in seconds." />
-        <meta property="og:type" content="website" />
-      </Helmet>
+      <Seo
+        title="Get a Free Instant Quote | Lunova Services"
+        description={QUOTE_DESCRIPTION}
+        jsonLd={buildBreadcrumbSchema([
+          { name: "Home", path: "/" },
+          { name: "Get a Quote", path: "/quote" },
+        ])}
+      />
       <div className="bg-background text-foreground min-h-screen">
         {/* Page Hero */}
         <section className="relative pt-24 pb-16 px-4 sm:px-6 overflow-hidden" style={{ backgroundColor: '#2A2118', borderBottom: '1px solid rgba(241,235,217,0.1)' }}>

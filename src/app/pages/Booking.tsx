@@ -1,17 +1,22 @@
-import { Helmet } from "react-helmet-async";
 import { BookingProvider } from "./booking/BookingContext";
 import BookingForm from "./booking/BookingForm";
+import Seo from "../components/common/Seo";
+import { buildBreadcrumbSchema } from "../utils/structuredData";
+
+const BOOKING_DESCRIPTION =
+  "Book cleaning, power washing, junk removal, landscaping, auto detailing, bin cleaning, window cleaning, and commercial services online in Kansas City. Fast booking with bundle savings.";
 
 export default function Booking() {
   return (
     <>
-      <Helmet>
-        <title>Book Your Service | Lunova Services</title>
-        <meta name="description" content="Book cleaning, power washing, junk removal, landscaping, auto detailing, bin cleaning, window cleaning, and commercial services online in Kansas City. Fast booking with bundle savings." />
-        <meta property="og:title" content="Book Your Service | Lunova Services" />
-        <meta property="og:description" content="Select your service, add discounted cross-sell add-ons, pick your date, and lock in your appointment in 60 seconds." />
-        <meta property="og:type" content="website" />
-      </Helmet>
+      <Seo
+        title="Book Your Service | Lunova Services"
+        description={BOOKING_DESCRIPTION}
+        jsonLd={buildBreadcrumbSchema([
+          { name: "Home", path: "/" },
+          { name: "Book a Service", path: "/book" },
+        ])}
+      />
       <div className="bg-background text-foreground min-h-screen">
         {/* Page Hero */}
         <section className="relative pt-24 pb-14 px-4 sm:px-6 overflow-hidden border-b border-border bg-gradient-to-b from-[#0a1628] to-background">

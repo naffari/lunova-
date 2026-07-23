@@ -10,6 +10,8 @@ import HowItWorks from "../../components/HowItWorks";
 import ServiceAreaSection from "../../components/ServiceAreaSection";
 import FaqSection from "../../components/FaqSection";
 import ContactStrip from "../../components/common/ContactStrip";
+import Seo from "../../components/common/Seo";
+import { buildBreadcrumbSchema, buildFaqSchema, buildServiceSchema } from "../../utils/structuredData";
 import { SERVICE_THEMES } from "../../constants/theme";
 
 const { primary: PRIMARY, accent: ACCENT, bg: BG } = SERVICE_THEMES["bin-cleaning"];
@@ -76,9 +78,32 @@ const HOW_IT_WORKS_STEPS = [
   },
 ];
 
+const BIN_CLEANING_DESCRIPTION =
+  "Curbside trash bin cleaning after your regular pickup day, using 200° pressurized hot water and an eco-safe deodorizing treatment across Kansas City.";
+
+const BIN_CLEANING_FAQS = [
+  { q: "When do you clean the bins?", a: "We schedule service after your regular trash pickup so the bins are empty when we arrive." },
+  { q: "What do you use to clean the bins?", a: "Hot water pressure washing with EPA-approved, eco-friendly disinfectants that eliminate bacteria and odors." },
+  { q: "How often should I schedule bin cleaning?", a: "Monthly service is recommended to keep odors and bacteria under control, especially in summer." },
+  { q: "How many bins can you clean?", a: "We can clean trash, recycling, and yard waste bins in a single visit." },
+];
+
 export default function BinCleaning() {
   return (
     <div data-theme="bin-cleaning" className="font-sans-modern min-h-screen" style={{ backgroundColor: BG, color: PRIMARY }}>
+      <Seo
+        title="Trash Bin Cleaning Services | Lunova Services"
+        description={BIN_CLEANING_DESCRIPTION}
+        jsonLd={[
+          buildServiceSchema({ name: "Trash Bin Cleaning", description: BIN_CLEANING_DESCRIPTION, path: "/services/bin-cleaning" }),
+          buildBreadcrumbSchema([
+            { name: "Home", path: "/" },
+            { name: "Cleaning", path: "/cleaning" },
+            { name: "Bin Cleaning", path: "/services/bin-cleaning" },
+          ]),
+          buildFaqSchema(BIN_CLEANING_FAQS),
+        ]}
+      />
       <ServiceHero
         badge="KC's Curbside Trash Bin Cleaning Service"
         titleContent={<><span className="italic" style={{ color: ACCENT }}>Sanitized</span> Bins. <br />No More Stench.</>}
@@ -213,12 +238,7 @@ export default function BinCleaning() {
       <section className="py-20 px-4 sm:px-6" style={{ backgroundColor: BG }}>
         <div className="max-w-3xl mx-auto">
           <FaqSection
-            items={[
-              { q: "When do you clean the bins?", a: "We schedule service after your regular trash pickup so the bins are empty when we arrive." },
-              { q: "What do you use to clean the bins?", a: "Hot water pressure washing with EPA-approved, eco-friendly disinfectants that eliminate bacteria and odors." },
-              { q: "How often should I schedule bin cleaning?", a: "Monthly service is recommended to keep odors and bacteria under control, especially in summer." },
-              { q: "How many bins can you clean?", a: "We can clean trash, recycling, and yard waste bins in a single visit." },
-            ]}
+            items={BIN_CLEANING_FAQS}
             title="Frequently Asked Questions"
             subtitle="Everything you need to know"
           />

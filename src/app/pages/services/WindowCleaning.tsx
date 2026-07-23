@@ -10,6 +10,8 @@ import HowItWorks from "../../components/HowItWorks";
 import ServiceAreaSection from "../../components/ServiceAreaSection";
 import FaqSection from "../../components/FaqSection";
 import ContactStrip from "../../components/common/ContactStrip";
+import Seo from "../../components/common/Seo";
+import { buildBreadcrumbSchema, buildFaqSchema, buildServiceSchema } from "../../utils/structuredData";
 import { SERVICE_THEMES } from "../../constants/theme";
 
 const { primary: PRIMARY, accent: ACCENT, bg: BG } = SERVICE_THEMES["window-cleaning"];
@@ -76,9 +78,32 @@ const HOW_IT_WORKS_STEPS = [
   },
 ];
 
+const WINDOW_CLEANING_DESCRIPTION =
+  "Interior and exterior window washing, screen scrubbing, track cleaning, and hard water stain removal for homes and businesses across Kansas City.";
+
+const WINDOW_CLEANING_FAQS = [
+  { q: "Do you clean interior and exterior windows?", a: "Yes — we offer interior only, exterior only, or full inside-and-out service." },
+  { q: "How often should windows be professionally cleaned?", a: "Most homes benefit from cleaning 2–4 times per year. Commercial properties often need monthly service." },
+  { q: "Will you clean windows in winter?", a: "Yes. We operate year-round and use solutions safe for all temperatures." },
+  { q: "What about hard water stains or build-up?", a: "We carry specialized solutions for hard water and mineral deposits — just mention it when booking." },
+];
+
 export default function WindowCleaning() {
   return (
     <div data-theme="window-cleaning" className="font-sans-modern min-h-screen" style={{ backgroundColor: BG, color: PRIMARY }}>
+      <Seo
+        title="Window Cleaning Services | Lunova Services"
+        description={WINDOW_CLEANING_DESCRIPTION}
+        jsonLd={[
+          buildServiceSchema({ name: "Window Cleaning", description: WINDOW_CLEANING_DESCRIPTION, path: "/services/window-cleaning" }),
+          buildBreadcrumbSchema([
+            { name: "Home", path: "/" },
+            { name: "Cleaning", path: "/cleaning" },
+            { name: "Window Cleaning", path: "/services/window-cleaning" },
+          ]),
+          buildFaqSchema(WINDOW_CLEANING_FAQS),
+        ]}
+      />
       <ServiceHero
         badge="Window Cleaning by Lunova"
         titleContent={<><span className="italic" style={{ color: ACCENT }}>Streak-Free</span> Windows. <br />Inside and Out.</>}
@@ -213,12 +238,7 @@ export default function WindowCleaning() {
       <section className="py-20 px-4 sm:px-6" style={{ backgroundColor: BG }}>
         <div className="max-w-3xl mx-auto">
           <FaqSection
-            items={[
-              { q: "Do you clean interior and exterior windows?", a: "Yes — we offer interior only, exterior only, or full inside-and-out service." },
-              { q: "How often should windows be professionally cleaned?", a: "Most homes benefit from cleaning 2–4 times per year. Commercial properties often need monthly service." },
-              { q: "Will you clean windows in winter?", a: "Yes. We operate year-round and use solutions safe for all temperatures." },
-              { q: "What about hard water stains or build-up?", a: "We carry specialized solutions for hard water and mineral deposits — just mention it when booking." },
-            ]}
+            items={WINDOW_CLEANING_FAQS}
             title="Frequently Asked Questions"
             subtitle="Everything you need to know"
           />

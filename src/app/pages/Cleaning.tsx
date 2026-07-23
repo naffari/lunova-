@@ -13,14 +13,15 @@ import {
   MapPin,
 } from "lucide-react";
 import { Link } from "react-router";
-import { Helmet } from "react-helmet-async";
 import ServiceHero from "../components/ServiceHero";
 import HowItWorks from "../components/HowItWorks";
 import ServiceAreaSection from "../components/ServiceAreaSection";
 import FaqSection from "../components/FaqSection";
 import ContactStrip from "../components/common/ContactStrip";
 import BeforeAfterSlider from "../components/common/BeforeAfterSlider";
+import Seo from "../components/common/Seo";
 import { SERVICE_THEMES } from "../constants/theme";
+import { buildBreadcrumbSchema, buildFaqSchema, buildServiceSchema } from "../utils/structuredData";
 
 const { primary: PRIMARY, accent: ACCENT, bg: BG } = SERVICE_THEMES.cleaning;
 
@@ -111,16 +112,31 @@ const STATS = [
   { val: "Licensed", label: "& Insured" },
 ];
 
+const CLEANING_DESCRIPTION =
+  "Professional residential and commercial cleaning services in Kansas City. Deep cleaning, move-in/out, and recurring cleaning with eco-friendly products.";
+
+const CLEANING_FAQS = [
+  { q: "Do I need to be home during the cleaning?", a: "No — many of our clients provide a key or door code. We clean while you're at work and you come home to a spotless house." },
+  { q: "Do you bring your own supplies?", a: "Yes. We bring all cleaning products and equipment. If you have preferred products, just let us know." },
+  { q: "How do I prepare for a cleaning?", a: "Just pick up personal items and clutter so our team can focus on cleaning surfaces, not organizing." },
+  { q: "What's included in a standard clean?", a: "Kitchen, bathrooms, bedrooms, living areas, dusting, vacuuming, mopping, and more. See our packages for details." },
+];
+
 export default function Cleaning() {
   return (
     <>
-      <Helmet>
-        <title>Cleaning Services | Lunova Services</title>
-        <meta name="description" content="Professional residential and commercial cleaning services in Kansas City. Deep cleaning, move-in/out, and recurring cleaning with eco-friendly products." />
-        <meta property="og:title" content="Cleaning Services | Lunova Services" />
-        <meta property="og:description" content="Professional residential and commercial cleaning. Deep cleaning, move-in/out, and recurring services with eco-friendly products." />
-        <meta property="og:type" content="website" />
-      </Helmet>
+      <Seo
+        title="Cleaning Services | Lunova Services"
+        description={CLEANING_DESCRIPTION}
+        jsonLd={[
+          buildServiceSchema({ name: "Cleaning Services", description: CLEANING_DESCRIPTION, path: "/cleaning" }),
+          buildBreadcrumbSchema([
+            { name: "Home", path: "/" },
+            { name: "Cleaning", path: "/cleaning" },
+          ]),
+          buildFaqSchema(CLEANING_FAQS),
+        ]}
+      />
       <div data-theme="cleaning" className="font-sans-modern min-h-screen" style={{ backgroundColor: BG, color: PRIMARY }}>
       <ServiceHero
         badge="#1 Cleaning Company in Kansas City"
@@ -309,12 +325,7 @@ export default function Cleaning() {
       <section className="py-20 px-4 sm:px-6" style={{ backgroundColor: BG }}>
         <div className="max-w-3xl mx-auto">
           <FaqSection
-            items={[
-              { q: "Do I need to be home during the cleaning?", a: "No — many of our clients provide a key or door code. We clean while you're at work and you come home to a spotless house." },
-              { q: "Do you bring your own supplies?", a: "Yes. We bring all cleaning products and equipment. If you have preferred products, just let us know." },
-              { q: "How do I prepare for a cleaning?", a: "Just pick up personal items and clutter so our team can focus on cleaning surfaces, not organizing." },
-              { q: "What's included in a standard clean?", a: "Kitchen, bathrooms, bedrooms, living areas, dusting, vacuuming, mopping, and more. See our packages for details." },
-            ]}
+            items={CLEANING_FAQS}
             title="Frequently Asked Questions"
             subtitle="Everything you need to know"
           />

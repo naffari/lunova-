@@ -1,7 +1,7 @@
 import { Phone, Sparkles } from "lucide-react";
-import { Helmet } from "react-helmet-async";
 import { Link, useLocation } from "react-router";
 import { PHONE } from "../constants/contact";
+import Seo from "../components/common/Seo";
 
 interface BookingSuccessState {
   bookingId?: string;
@@ -20,10 +20,11 @@ export default function BookingSuccess() {
 
   return (
     <>
-      <Helmet>
-        <title>Booking Confirmed | Lunova Services</title>
-        <meta name="description" content="Your Lunova service booking has been received. A dispatcher will text you shortly to confirm arrival details." />
-      </Helmet>
+      <Seo
+        title="Booking Confirmed | Lunova Services"
+        description="Your Lunova service booking has been received. A dispatcher will text you shortly to confirm arrival details."
+        noIndex
+      />
       <div className="bg-background text-foreground min-h-screen">
         <section className="relative pt-24 pb-14 px-4 sm:px-6 overflow-hidden border-b border-border bg-gradient-to-b from-[#0a1628] to-background">
           <div className="relative z-10 max-w-5xl mx-auto text-center">

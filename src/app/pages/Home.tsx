@@ -11,13 +11,14 @@ import {
   Check,
 } from "lucide-react";
 import { Link } from "react-router";
-import { Helmet } from "react-helmet-async";
 import ContactStrip from "../components/common/ContactStrip";
 import ServiceAreaSection from "../components/ServiceAreaSection";
 import FadeInSection from "../components/common/FadeInSection";
 import PhotoGallery from "../components/common/PhotoGallery";
 import TestimonialsSection from "../components/TestimonialsSection";
+import Seo from "../components/common/Seo";
 import { PHONE, PHONE_DISPLAY, EMAIL } from "../constants/contact";
+import { buildLocalBusinessSchema, buildOrganizationSchema } from "../utils/structuredData";
 
 const PRIMARY = "#3C312A";
 const ACCENT = "#c8960e";
@@ -73,13 +74,11 @@ const GALLERY_IMAGES = [
 export default function Home() {
   return (
     <>
-      <Helmet>
-        <title>Lunova Services | Kansas City Cleaning, Landscaping & More</title>
-        <meta name="description" content="Lunova Services provides professional cleaning, power washing, junk removal, landscaping, auto detailing, bin cleaning, window cleaning, and commercial services across Kansas City." />
-        <meta property="og:title" content="Lunova Services | Kansas City Cleaning, Landscaping & More" />
-        <meta property="og:description" content="Professional home and business services across Kansas City. From cleaning to landscaping, we handle it all with licensed, insured professionals." />
-        <meta property="og:type" content="website" />
-      </Helmet>
+      <Seo
+        title="Lunova Services | Kansas City Cleaning, Landscaping & More"
+        description="Lunova Services provides professional cleaning, power washing, junk removal, landscaping, auto detailing, bin cleaning, window cleaning, and commercial services across Kansas City."
+        jsonLd={[buildLocalBusinessSchema(), buildOrganizationSchema()]}
+      />
       <div className="font-sans-modern min-h-screen" style={{ backgroundColor: BG, color: PRIMARY }}>
       {/* HERO */}
       <section className="relative pt-[4.5rem] pb-20 px-4 sm:px-6 overflow-hidden" style={{ backgroundColor: BG }}>

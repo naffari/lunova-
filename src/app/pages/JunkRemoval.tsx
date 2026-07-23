@@ -11,7 +11,9 @@ import HowItWorks from "../components/HowItWorks";
 import ServiceAreaSection from "../components/ServiceAreaSection";
 import FaqSection from "../components/FaqSection";
 import ContactStrip from "../components/common/ContactStrip";
+import Seo from "../components/common/Seo";
 import { SERVICE_THEMES } from "../constants/theme";
+import { buildBreadcrumbSchema, buildFaqSchema, buildServiceSchema } from "../utils/structuredData";
 
 const { primary: PRIMARY, accent: ACCENT, bg: BG } = SERVICE_THEMES["junk-removal"];
 
@@ -77,9 +79,31 @@ const HOW_IT_WORKS_STEPS = [
   },
 ];
 
+const JUNK_REMOVAL_DESCRIPTION =
+  "Furniture, appliances, construction debris, and full estate cleanouts — Lunova's junk removal crew shows up fast, hauls everything, and leaves your space spotless.";
+
+const JUNK_REMOVAL_FAQS = [
+  { q: "What items can you remove?", a: "We haul almost everything — furniture, appliances, yard waste, construction debris, electronics, and more. We cannot take hazardous materials." },
+  { q: "Do I need to move items to the curb?", a: "No. Our crew does all the heavy lifting, including items inside your home, garage, or basement." },
+  { q: "How is pricing determined?", a: "Pricing is based on volume (how much space your items take up in the truck). Get an instant estimate on our quote page." },
+  { q: "How quickly can you come?", a: "We offer same-day and next-day appointments in most areas. Call or book online to check availability." },
+];
+
 export default function JunkRemoval() {
   return (
     <div data-theme="junk-removal" className="font-sans-modern min-h-screen" style={{ backgroundColor: BG, color: PRIMARY }}>
+      <Seo
+        title="Junk Removal & Hauling Services | Lunova Services"
+        description={JUNK_REMOVAL_DESCRIPTION}
+        jsonLd={[
+          buildServiceSchema({ name: "Junk Removal", description: JUNK_REMOVAL_DESCRIPTION, path: "/junk-removal" }),
+          buildBreadcrumbSchema([
+            { name: "Home", path: "/" },
+            { name: "Junk Removal", path: "/junk-removal" },
+          ]),
+          buildFaqSchema(JUNK_REMOVAL_FAQS),
+        ]}
+      />
       <ServiceHero
         badge="KC's #1 Junk Removal & Hauling Service"
         titleContent={<>We Haul So <br />You <span className="italic" style={{ color: ACCENT }}>Don't</span> Have To.</>}
@@ -214,12 +238,7 @@ export default function JunkRemoval() {
       <section className="py-20 px-4 sm:px-6" style={{ backgroundColor: BG }}>
         <div className="max-w-3xl mx-auto">
           <FaqSection
-            items={[
-              { q: "What items can you remove?", a: "We haul almost everything — furniture, appliances, yard waste, construction debris, electronics, and more. We cannot take hazardous materials." },
-              { q: "Do I need to move items to the curb?", a: "No. Our crew does all the heavy lifting, including items inside your home, garage, or basement." },
-              { q: "How is pricing determined?", a: "Pricing is based on volume (how much space your items take up in the truck). Get an instant estimate on our quote page." },
-              { q: "How quickly can you come?", a: "We offer same-day and next-day appointments in most areas. Call or book online to check availability." },
-            ]}
+            items={JUNK_REMOVAL_FAQS}
             title="Frequently Asked Questions"
             subtitle="Everything you need to know"
           />

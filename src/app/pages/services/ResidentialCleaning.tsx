@@ -13,7 +13,9 @@ import HowItWorks from "../../components/HowItWorks";
 import ServiceAreaSection from "../../components/ServiceAreaSection";
 import FaqSection from "../../components/FaqSection";
 import ContactStrip from "../../components/common/ContactStrip";
+import Seo from "../../components/common/Seo";
 import { SERVICE_THEMES } from "../../constants/theme";
+import { buildBreadcrumbSchema, buildFaqSchema, buildServiceSchema } from "../../utils/structuredData";
 
 const { primary: PRIMARY, accent: ACCENT, bg: BG } = SERVICE_THEMES["residential-cleaning"];
 const DARK = "#0C1F30";
@@ -82,9 +84,32 @@ const HOW_IT_WORKS_STEPS = [
   },
 ];
 
+const RESIDENTIAL_CLEANING_DESCRIPTION =
+  "Standard cleans, deep cleans, and move-in/out cleaning services for Kansas City homes. Fully insured crews, eco-friendly products, and flat-rate pricing.";
+
+const RESIDENTIAL_CLEANING_FAQS = [
+  { q: "Do I need to be home during the cleaning?", a: "No — many of our clients provide a key or door code. We clean while you're at work and you come home to a spotless house." },
+  { q: "Do you bring your own supplies?", a: "Yes. We bring all cleaning products and equipment. If you have preferred products, just let us know." },
+  { q: "How do I prepare for a cleaning?", a: "Just pick up personal items and clutter so our team can focus on cleaning surfaces, not organizing." },
+  { q: "What's included in a standard clean?", a: "Kitchen, bathrooms, bedrooms, living areas, dusting, vacuuming, mopping, and more. See our packages for details." },
+];
+
 export default function ResidentialCleaning() {
   return (
     <div data-theme="residential-cleaning" className="font-sans-modern min-h-screen" style={{ backgroundColor: BG, color: DARK }}>
+      <Seo
+        title="Residential Cleaning Services | Lunova Services"
+        description={RESIDENTIAL_CLEANING_DESCRIPTION}
+        jsonLd={[
+          buildServiceSchema({ name: "Residential Cleaning", description: RESIDENTIAL_CLEANING_DESCRIPTION, path: "/services/residential-cleaning" }),
+          buildBreadcrumbSchema([
+            { name: "Home", path: "/" },
+            { name: "Cleaning", path: "/cleaning" },
+            { name: "Residential Cleaning", path: "/services/residential-cleaning" },
+          ]),
+          buildFaqSchema(RESIDENTIAL_CLEANING_FAQS),
+        ]}
+      />
       <ServiceHero
         badge="#1 Residential Cleaning in Kansas City"
         titleContent={<>Your Home, Cleaned<br /><span style={{ color: ACCENT }} className="italic">Spotlessly.</span></>}
@@ -291,12 +316,7 @@ export default function ResidentialCleaning() {
       <section className="py-20 px-4 sm:px-6" style={{ backgroundColor: BG }}>
         <div className="max-w-3xl mx-auto">
           <FaqSection
-            items={[
-              { q: "Do I need to be home during the cleaning?", a: "No — many of our clients provide a key or door code. We clean while you're at work and you come home to a spotless house." },
-              { q: "Do you bring your own supplies?", a: "Yes. We bring all cleaning products and equipment. If you have preferred products, just let us know." },
-              { q: "How do I prepare for a cleaning?", a: "Just pick up personal items and clutter so our team can focus on cleaning surfaces, not organizing." },
-              { q: "What's included in a standard clean?", a: "Kitchen, bathrooms, bedrooms, living areas, dusting, vacuuming, mopping, and more. See our packages for details." },
-            ]}
+            items={RESIDENTIAL_CLEANING_FAQS}
             title="Frequently Asked Questions"
             subtitle="Everything you need to know"
           />
