@@ -95,3 +95,32 @@ export function buildOrganizationSchema(): JsonLdSchema {
     telephone: PHONE_DISPLAY,
   };
 }
+
+interface ArticleSchemaInput {
+  title: string;
+  description: string;
+  path: string;
+  datePublished: string;
+  image: string;
+}
+
+export function buildArticleSchema({ title, description, path, datePublished, image }: ArticleSchemaInput): JsonLdSchema {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: title,
+    description,
+    image,
+    datePublished,
+    url: `${SITE_URL}${path}`,
+    author: {
+      "@type": "Organization",
+      name: COMPANY_NAME,
+    },
+    publisher: {
+      "@type": "Organization",
+      name: COMPANY_NAME,
+      url: SITE_URL,
+    },
+  };
+}

@@ -93,7 +93,10 @@ export default function Footer() {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-6 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs" style={{ borderTop: `1px solid ${FT_BORDER}`, color: FT_MUTED }}>
-        <span>© {new Date().getFullYear()} Lunova Services. All rights reserved.</span>
+        <div className="flex items-center gap-4">
+          <span>© {new Date().getFullYear()} Lunova Services. All rights reserved.</span>
+          <Link to="/blog" className="hover:text-white transition-colors">Blog</Link>
+        </div>
         <span className="flex items-center gap-1" style={{ color: FT_ACCENT }}>
           <Sparkles size={12} /> Bundle 2+ services for 10% off
         </span>

@@ -57,6 +57,26 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://www.lunovaservices.com/blog</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.lunovaservices.com/blog/5-signs-its-time-to-call-professional-cleaners</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://www.lunovaservices.com/blog/how-often-should-you-mow-your-lawn</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://www.lunovaservices.com/blog/junk-removal-101-what-can-and-cant-be-hauled</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
     <loc>https://www.lunovaservices.com/quote</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>

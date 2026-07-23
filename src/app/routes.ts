@@ -12,6 +12,8 @@ const AutoDetailing = lazy(() => import("./pages/services/AutoDetailing"));
 const BinCleaning = lazy(() => import("./pages/services/BinCleaning"));
 const JunkRemoval = lazy(() => import("./pages/JunkRemoval"));
 const Landscaping = lazy(() => import("./pages/Landscaping"));
+const Blog = lazy(() => import("./pages/Blog"));
+const BlogPost = lazy(() => import("./pages/BlogPost"));
 const Quote = lazy(() => import("./pages/Quote"));
 const QuoteSuccess = lazy(() => import("./pages/QuoteSuccess"));
 const Booking = lazy(() => import("./pages/Booking"));
@@ -33,6 +35,8 @@ export const router = createBrowserRouter([
       { path: "services/bin-cleaning", Component: BinCleaning },
       { path: "junk-removal", Component: JunkRemoval },
       { path: "landscaping", Component: Landscaping },
+      { path: "blog", Component: Blog },
+      { path: "blog/:slug", Component: BlogPost },
       { path: "quote", Component: Quote },
       { path: "quote/success", Component: QuoteSuccess },
       { path: "book", Component: Booking },

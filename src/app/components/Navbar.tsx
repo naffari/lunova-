@@ -260,6 +260,16 @@ export default function Navbar() {
           >
             Instant Quote
           </Link>
+
+          <Link
+            to="/blog"
+            className="text-sm font-medium transition-colors"
+            style={{ color: location.pathname.startsWith("/blog") ? NAV_ACCENT : NAV_MUTED }}
+            onMouseEnter={e => { if (!location.pathname.startsWith("/blog")) (e.target as HTMLElement).style.color = NAV_TEXT; }}
+            onMouseLeave={e => { if (!location.pathname.startsWith("/blog")) (e.target as HTMLElement).style.color = NAV_MUTED; }}
+          >
+            Blog
+          </Link>
         </nav>
 
         {/* Desktop CTAs */}
@@ -333,6 +343,7 @@ export default function Navbar() {
             <Calendar size={16} /> Book Online Directly
           </Link>
           <Link to="/quote" className="text-sm font-semibold" style={{ color: NAV_ACCENT }}>Instant Quote Calculator</Link>
+          <Link to="/blog" className="text-sm font-semibold" style={{ color: NAV_TEXT }}>Blog</Link>
 
           <div className="space-y-4 pt-2" style={{ borderTop: `1px solid ${NAV_BORDER}` }}>
             <p className="text-xs font-bold uppercase tracking-wider" style={{ color: NAV_ACCENT }}>All Services</p>
