@@ -4,6 +4,9 @@ import type { ReactNode } from "react";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import PageLoader from "./components/common/PageLoader";
+import MobileCTABar from "./components/common/MobileCTABar";
+
+const HIDE_MOBILE_CTA_PATHS = ["/book", "/quote"];
 
 class ErrorBoundary extends Component<
   { children: ReactNode },
@@ -43,13 +46,14 @@ class ErrorBoundary extends Component<
 
 export default function Root() {
   const location = useLocation();
+  const hideMobileCTA = HIDE_MOBILE_CTA_PATHS.includes(location.pathname);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [location.pathname]);
 
   return (
-    <div className="min-h-screen flex flex-col bg-background text-foreground">
+    <div className={`min-h-screen flex flex-col bg-background text-foreground ${hideMobileCTA ? "" : "pb-[4.75rem] sm:pb-0"}`}>
       <a
         href="#main-content"
         className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:rounded-lg focus:font-bold focus:text-sm"
@@ -66,6 +70,7 @@ export default function Root() {
         </ErrorBoundary>
       </main>
       <Footer />
+      {!hideMobileCTA && <MobileCTABar />}
     </div>
   );
 }
