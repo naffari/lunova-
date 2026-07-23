@@ -1,5 +1,4 @@
 import { Helmet } from "react-helmet-async";
-import BookingConfirmation from "./booking/BookingConfirmation";
 import { BookingProvider } from "./booking/BookingContext";
 import BookingForm from "./booking/BookingForm";
 
@@ -35,7 +34,6 @@ export default function Booking() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12">
           <BookingProvider>
             <BookingForm />
-            <BookingConfirmation />
           </BookingProvider>
         </div>
       </div>

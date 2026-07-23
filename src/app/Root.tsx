@@ -6,7 +6,7 @@ import Footer from "./components/Footer";
 import PageLoader from "./components/common/PageLoader";
 import MobileCTABar from "./components/common/MobileCTABar";
 
-const HIDE_MOBILE_CTA_PATHS = ["/book", "/quote"];
+const HIDE_MOBILE_CTA_PATHS = ["/book", "/quote", "/book/success", "/quote/success"];
 
 class ErrorBoundary extends Component<
   { children: ReactNode },

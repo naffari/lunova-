@@ -13,7 +13,9 @@ const BinCleaning = lazy(() => import("./pages/services/BinCleaning"));
 const JunkRemoval = lazy(() => import("./pages/JunkRemoval"));
 const Landscaping = lazy(() => import("./pages/Landscaping"));
 const Quote = lazy(() => import("./pages/Quote"));
+const QuoteSuccess = lazy(() => import("./pages/QuoteSuccess"));
 const Booking = lazy(() => import("./pages/Booking"));
+const BookingSuccess = lazy(() => import("./pages/BookingSuccess"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 export const router = createBrowserRouter([
@@ -32,7 +34,9 @@ export const router = createBrowserRouter([
       { path: "junk-removal", Component: JunkRemoval },
       { path: "landscaping", Component: Landscaping },
       { path: "quote", Component: Quote },
+      { path: "quote/success", Component: QuoteSuccess },
       { path: "book", Component: Booking },
+      { path: "book/success", Component: BookingSuccess },
       { path: "*", Component: NotFound },
     ],
   },

@@ -1,6 +1,6 @@
 import { createContext, useContext, useMemo, useState } from "react";
 import type { ReactNode } from "react";
-import { useSearchParams } from "react-router";
+import { useNavigate, useSearchParams } from "react-router";
 import { EMAIL } from "../../constants/contact";
 import { PRIMARY_SERVICES, CROSS_SELL_ADDONS, type ServiceDef } from "../../utils/bookingData";
 
@@ -29,8 +29,6 @@ interface BookingContextValue {
   notes: string;
   setNotes: (v: string) => void;
 
-  bookingConfirmed: boolean;
-  setBookingConfirmed: (v: boolean) => void;
   bookingId: string;
   errors: Record<string, string>;
 
@@ -49,6 +47,7 @@ interface BookingContextValue {
 const BookingContext = createContext<BookingContextValue | null>(null);
 
 export function BookingProvider({ children }: { children: ReactNode }) {
+  const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const initialService = searchParams.get("service") || "cleaning";
 
@@ -68,7 +67,6 @@ export function BookingProvider({ children }: { children: ReactNode }) {
   const [zip, setZip] = useState("");
   const [notes, setNotes] = useState("");
 
-  const [bookingConfirmed, setBookingConfirmed] = useState(false);
   const [bookingId, setBookingId] = useState("");
   const [errors, setErrors] = useState<Record<string, string>>({});
 
@@ -167,7 +165,17 @@ export function BookingProvider({ children }: { children: ReactNode }) {
     );
 
     window.open(`mailto:${EMAIL}?subject=${subject}&body=${body}`);
-    setBookingConfirmed(true);
+    navigate("/book/success", {
+      state: {
+        bookingId: newId,
+        serviceName: primaryService.name,
+        addonsCount: selectedAddons.length,
+        date,
+        timeSlot,
+        finalTotal,
+        phone,
+      },
+    });
   }
 
   return (
@@ -195,8 +203,6 @@ export function BookingProvider({ children }: { children: ReactNode }) {
         setZip,
         notes,
         setNotes,
-        bookingConfirmed,
-        setBookingConfirmed,
         bookingId,
         errors,
         primaryService,

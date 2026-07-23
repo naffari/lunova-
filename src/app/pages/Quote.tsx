@@ -2,7 +2,6 @@ import { Helmet } from "react-helmet-async";
 import { QuoteProvider } from "./quote/QuoteContext";
 import QuoteStepper from "./quote/QuoteStepper";
 import QuoteForm from "./quote/QuoteForm";
-import QuoteSummary from "./quote/QuoteSummary";
 import QuoteSidebar from "./quote/QuoteSidebar";
 
 export default function Quote() {
@@ -41,7 +40,6 @@ export default function Quote() {
               <div>
                 <QuoteStepper />
                 <QuoteForm />
-                <QuoteSummary />
               </div>
 
               {/* ---- RIGHT: Sidebar ---- */}

@@ -5,7 +5,6 @@ import { QUOTE_STEP_INDEX, useQuote } from "./QuoteContext";
 
 export default function QuoteStepper() {
   const { step } = useQuote();
-  if (step === "success") return null;
 
   return (
     <div className="flex items-center justify-between mb-6 pb-4 border-b border-border">

@@ -1,9 +1,10 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import type { ReactNode } from "react";
+import { useNavigate } from "react-router";
 import { EMAIL } from "../../constants/contact";
 import { priceFor, SERVICES } from "../../utils/pricing";
 
-export type QuoteStep = "service" | "details" | "contact" | "success";
+export type QuoteStep = "service" | "details" | "contact";
 
 export interface QuoteContactInfo {
   name: string;
@@ -23,7 +24,6 @@ export const QUOTE_STEP_INDEX: Record<QuoteStep, number> = {
   service: 0,
   details: 1,
   contact: 2,
-  success: 3,
 };
 
 interface QuoteContextValue {
@@ -43,6 +43,7 @@ interface QuoteContextValue {
 const QuoteContext = createContext<QuoteContextValue | null>(null);
 
 export function QuoteProvider({ children }: { children: ReactNode }) {
+  const navigate = useNavigate();
   const [step, setStep] = useState<QuoteStep>("service");
   const [service, setService] = useState<string | null>(null);
   const [opts, setOpts] = useState<Record<string, unknown>>({
@@ -99,7 +100,7 @@ export function QuoteProvider({ children }: { children: ReactNode }) {
       `Hi Lunova,\n\nI'd like a quote for ${serviceLabel}.\n\nEstimated range: $${range[0]}–$${range[1]}\n\nName: ${contact.name}\nEmail: ${contact.email}\nPhone: ${contact.phone}\nPreferred date: ${contact.date}\nNotes: ${contact.notes}\n`
     );
     window.open(`mailto:${EMAIL}?subject=${subject}&body=${body}`);
-    setStep("success");
+    navigate("/quote/success", { state: { name: contact.name, range } });
   }
 
   useEffect(() => {
