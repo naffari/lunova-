@@ -156,23 +156,22 @@ export default function Navbar() {
     <header
       className="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
       style={{
-        backgroundColor: showSolidBg ? NAV_BG_SOLID : "transparent",
-        backdropFilter: showSolidBg ? "blur(12px)" : "none",
+        backgroundColor: showSolidBg ? "rgba(17,19,24,0.78)" : "rgba(17,19,24,0.32)",
+        backgroundImage: showSolidBg ? "none" : "linear-gradient(to bottom, rgba(0,0,0,0.55), rgba(0,0,0,0))",
+        backdropFilter: showSolidBg ? "blur(16px) saturate(140%)" : "blur(4px)",
+        WebkitBackdropFilter: showSolidBg ? "blur(16px) saturate(140%)" : "blur(4px)",
         borderBottom: showSolidBg ? `1px solid ${NAV_BORDER}` : "1px solid transparent",
       }}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between h-16">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2 shrink-0">
-          <span className="w-8 h-8 rounded-full flex items-center justify-center" style={{ backgroundColor: NAV_ACCENT }}>
-            <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-              <path d="M9 2L14 7L9 12L4 7L9 2Z" fill={NAV_BG_SOLID} />
-              <path d="M5 10L9 14L13 10" stroke={NAV_BG_SOLID} strokeWidth="2" strokeLinecap="round" />
-            </svg>
-          </span>
-          <span style={{ fontFamily: "var(--font-display)", color: NAV_TEXT }} className="text-2xl font-bold tracking-wide">
-            LUNOVA
-          </span>
+          <img
+            src="/logo.svg"
+            alt="Lunova Services"
+            className="h-10 w-auto shrink-0"
+            style={{ filter: "brightness(0) invert(1)" }}
+          />
         </Link>
 
         {/* Desktop Nav Links */}
