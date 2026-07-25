@@ -3,7 +3,6 @@
 # real production domain is live.
 User-agent: *
 Allow: /
-Disallow: /quote/success
 Disallow: /book/success
 
 Sitemap: https://www.lunovaservices.com/sitemap.xml

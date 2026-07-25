@@ -5,8 +5,8 @@ import { PHONE, PHONE_DISPLAY } from "../../constants/contact";
 /**
  * Persistent bottom action bar shown only on mobile viewports, giving
  * visitors a one-tap path to book or call from anywhere on the site.
- * Hidden on the booking/quote flows themselves (Root.tsx), since those
- * pages already are the conversion action.
+ * Hidden on the booking flow itself (Root.tsx), since that
+ * page already is the conversion action.
  */
 export default function MobileCTABar() {
   return (

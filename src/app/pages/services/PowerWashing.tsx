@@ -51,8 +51,8 @@ const FEATURES = [
   },
   {
     icon: Star,
-    title: "5.0-Star Rated Crew",
-    desc: "Trusted by KC homeowners, property managers, and HOAs across the metro since day one.",
+    title: "Licensed & Insured Crew",
+    desc: "Licensed, insured, and ready to earn your trust on every job.",
   },
   {
     icon: CheckCircle,
@@ -123,14 +123,11 @@ export default function PowerWashing() {
         description="Professional pressure washing, soft washing, gutter cleaning, and surface restoration across Kansas City. Licensed, insured, and results-guaranteed."
         primaryColor={PRIMARY}
         accentColor={ACCENT}
-        bgColor={BG}
         ctaLabel="Book a Clean"
         ctaTo="/book?service=power-washing"
         trustItems={["Licensed & Insured", "Soft Wash Available", "Free Estimates"]}
-        heroImage="https://images.unsplash.com/photo-1558618047-3c8c76ca7b85?w=800&h=1000&fit=crop&auto=format"
+        heroImage="/images/hero/power-washing-hero.jpg"
         heroImageAlt="Power washing a driveway"
-        badgeLabel="Power Washing by Lunova"
-        badgeSubLabel="Exterior Cleaning Experts"
       />
 
       {/* MARQUEE STRIP */}
@@ -207,7 +204,7 @@ export default function PowerWashing() {
               <span>Why Choose Us</span>
             </div>
             <h2 className="font-serif-display text-4xl sm:text-5xl" style={{ color: PRIMARY }}>
-              KC's Most Trusted Exterior Cleaning Team
+              Why Choose Lunova
             </h2>
           </div>
 

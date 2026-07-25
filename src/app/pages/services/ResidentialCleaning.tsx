@@ -1,10 +1,6 @@
 import {
   ArrowUpRight,
-  Star,
   CheckCircle,
-  ShieldCheck,
-  Clock,
-  Leaf,
   MapPin,
 } from "lucide-react";
 import { Link } from "react-router";
@@ -45,13 +41,6 @@ const PACKAGES = [
     includes: ["Empty-space deep clean", "Inside all cabinets & closets", "Appliance interiors", "Walls & light fixtures"],
     img: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=700&h=500&fit=crop&auto=format",
   },
-];
-
-const TRUST_BADGES = [
-  { icon: ShieldCheck, label: "Fully Insured", sub: "Bonded & background-checked" },
-  { icon: Star, label: "5.0 Rated", sub: "Hundreds of happy clients" },
-  { icon: Clock, label: "On Time, Every Time", sub: "We never ghost or cancel" },
-  { icon: Leaf, label: "Eco Products", sub: "Safe for kids & pets" },
 ];
 
 const STATS = [
@@ -111,35 +100,17 @@ export default function ResidentialCleaning() {
         ]}
       />
       <ServiceHero
-        badge="#1 Residential Cleaning in Kansas City"
+        badge="Now Booking in Kansas City"
         titleContent={<>Your Home, Cleaned<br /><span style={{ color: ACCENT }} className="italic">Spotlessly.</span></>}
         description="Standard cleans, deep cleans, and move-in/out services. We bring all supplies, arrive on time, and leave every room immaculate."
         primaryColor={PRIMARY}
         accentColor={ACCENT}
-        bgColor={BG}
         ctaLabel="Book a Clean"
         ctaTo="/book?service=cleaning"
-        trustItems={["Fully Insured", "5.0 Rated", "Eco Products"]}
-        heroImage="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=700&h=500&fit=crop&auto=format"
+        trustItems={["Fully Insured", "Satisfaction Guarantee", "Eco Products"]}
+        heroImage="/images/hero/residential-cleaning-hero.jpg"
         heroImageAlt="Professional residential cleaning in a Kansas City home"
-        badgeLabel="Residential Cleaning by Lunova"
-        badgeSubLabel="Spotless Every Visit"
       />
-
-      {/* TRUST BADGES */}
-      <section className="py-14 px-4 sm:px-6" style={{ backgroundColor: BG }}>
-        <div className="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-          {TRUST_BADGES.map(({ icon: Icon, label, sub }) => (
-            <div key={label} className="flex flex-col items-center gap-2">
-              <div className="w-14 h-14 rounded-2xl flex items-center justify-center mb-1" style={{ backgroundColor: `${PRIMARY}15` }}>
-                <Icon size={26} style={{ color: PRIMARY }} />
-              </div>
-              <p className="font-bold text-sm" style={{ color: DARK }}>{label}</p>
-              <p className="text-xs" style={{ color: '#888' }}>{sub}</p>
-            </div>
-          ))}
-        </div>
-      </section>
 
       {/* MARQUEE STRIP */}
       <div style={{ backgroundColor: ACCENT, overflow: 'hidden' }} className="py-3">
@@ -312,6 +283,9 @@ export default function ResidentialCleaning() {
         </svg>
       </div>
 
+      {/* SERVICE AREA */}
+      <ServiceAreaSection primaryColor={PRIMARY} accentColor={ACCENT} bgColor={BG} />
+
       {/* FAQ SECTION */}
       <section className="py-20 px-4 sm:px-6" style={{ backgroundColor: BG }}>
         <div className="max-w-3xl mx-auto">
@@ -322,9 +296,6 @@ export default function ResidentialCleaning() {
           />
         </div>
       </section>
-
-      {/* SERVICE AREA */}
-      <ServiceAreaSection primaryColor={PRIMARY} accentColor={ACCENT} bgColor={BG} />
 
       <ContactStrip
         heading="Ready for a Spotless Home?"

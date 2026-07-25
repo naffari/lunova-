@@ -16,8 +16,6 @@ export const routeModules = {
   landscaping: () => import("./pages/Landscaping"),
   blog: () => import("./pages/Blog"),
   blogPost: () => import("./pages/BlogPost"),
-  quote: () => import("./pages/Quote"),
-  quoteSuccess: () => import("./pages/QuoteSuccess"),
   booking: () => import("./pages/Booking"),
   bookingSuccess: () => import("./pages/BookingSuccess"),
   privacy: () => import("./pages/Privacy"),
@@ -35,7 +33,6 @@ const PATH_TO_MODULE: Record<string, keyof typeof routeModules> = {
   "/junk-removal": "junkRemoval",
   "/landscaping": "landscaping",
   "/blog": "blog",
-  "/quote": "quote",
   "/book": "booking",
   "/privacy": "privacy",
 };

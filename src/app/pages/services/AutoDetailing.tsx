@@ -38,7 +38,7 @@ const FEATURES = [
   },
   {
     icon: Star,
-    title: "5.0-Star Rated Crew",
+    title: "Detail-Obsessed Crew",
     desc: "From daily drivers to luxury vehicles — our detail team treats every car like it's their own.",
   },
   {
@@ -110,14 +110,11 @@ export default function AutoDetailing() {
         description="We bring professional-grade detailing directly to your home or office. From express washes to full paint protection — your vehicle deserves the best."
         primaryColor={PRIMARY}
         accentColor={ACCENT}
-        bgColor={BG}
         ctaLabel="Book a Clean"
         ctaTo="/book?service=auto-detailing"
         trustItems={["Mobile Service", "Ceramic Coating Available", "Interior Steam Clean"]}
-        heroImage="https://images.unsplash.com/photo-1520340356584-f9917d1eea6f?w=800&h=1000&fit=crop&auto=format"
+        heroImage="/images/hero/auto-detailing-hero.jpg"
         heroImageAlt="Mobile Auto Detailing Professional"
-        badgeLabel="Auto Detailing by Lunova"
-        badgeSubLabel="Mobile Detailing Specialists"
       />
 
       {/* MARQUEE STRIP */}

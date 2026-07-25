@@ -10,7 +10,7 @@ import CookieConsent from "./components/common/CookieConsent";
 import Analytics from "./components/common/Analytics";
 import { PHONE, PHONE_DISPLAY } from "./constants/contact";
 
-const HIDE_MOBILE_CTA_PATHS = ["/book", "/quote", "/book/success", "/quote/success"];
+const HIDE_MOBILE_CTA_PATHS = ["/book", "/book/success"];
 
 class ErrorBoundary extends Component<
   { children: ReactNode; resetKey: string },

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Star } from "lucide-react";
+import { Star, Sparkles } from "lucide-react";
 
 export interface Testimonial {
   name: string;
@@ -9,64 +9,11 @@ export interface Testimonial {
   stars?: number;
 }
 
-export const TESTIMONIALS: Testimonial[] = [
-  {
-    name: "Maria T.",
-    tag: "cleaning",
-    loc: "Homeowner, Kansas City",
-    text: "Lunova did an incredible deep clean before our house listing. The place has never looked better.",
-    stars: 5,
-  },
-  {
-    name: "James R.",
-    tag: "junk",
-    loc: "Property Manager, Overland Park",
-    text: "Used them for junk removal after a tenant moved out. On time, fast, and no damage. Will use every time.",
-    stars: 5,
-  },
-  {
-    name: "Sandra K.",
-    tag: "landscaping",
-    loc: "Homeowner, Prairie Village",
-    text: "The crew transformed our overgrown backyard into something we are actually proud of. Outstanding.",
-    stars: 5,
-  },
-  {
-    name: "Dee W.",
-    tag: "junk",
-    loc: "Homeowner, Lee's Summit",
-    text: "Cleared a full garage in under an hour. No judgment about the mess either — just got it done.",
-    stars: 5,
-  },
-  {
-    name: "Priya K.",
-    tag: "cleaning",
-    loc: "Homeowner, Leawood",
-    text: "Deep clean before hosting family was worth every dollar. The oven and windows looked brand new.",
-    stars: 5,
-  },
-  {
-    name: "Alan R.",
-    tag: "landscaping",
-    loc: "Business Owner, KC",
-    text: "First company that actually edged the beds instead of just mowing over them. We're locked in weekly.",
-    stars: 5,
-  },
-  {
-    name: "David H.",
-    tag: "power",
-    loc: "Homeowner, Olathe",
-    text: "Power washed our two-story house siding and driveway. Blocked out all grease and mildew streaks!",
-    stars: 5,
-  },
-  {
-    name: "Rachel B.",
-    tag: "auto",
-    loc: "Homeowner, Lenexa",
-    text: "Got full mobile auto detailing right in my driveway while working from home. Spotless!",
-    stars: 5,
-  },
-];
+/**
+ * Real customer reviews go here once we have them. Lunova is a newly
+ * launched company — do not add placeholder/fabricated testimonials.
+ */
+export const TESTIMONIALS: Testimonial[] = [];
 
 interface TestimonialsSectionProps {
   category?: string;
@@ -112,7 +59,7 @@ export default function TestimonialsSection({
         </div>
       )}
 
-      {showFilters && (
+      {showFilters && TESTIMONIALS.length > 0 && (
         <div className="flex flex-wrap gap-2 mb-6">
           {FILTER_TABS.map((t) => (
             <button
@@ -130,22 +77,34 @@ export default function TestimonialsSection({
         </div>
       )}
 
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {shown.map((t, idx) => (
-          <div key={idx} className="bg-card border border-border rounded-xl p-5 hover:border-primary/30 transition-colors">
-            <div className="flex gap-0.5 mb-3">
-              {Array.from({ length: t.stars || 5 }).map((_, i) => (
-                <Star key={i} size={13} className="fill-primary text-primary" />
-              ))}
-            </div>
-            <p className="text-muted-foreground text-sm leading-relaxed mb-4">"{t.text}"</p>
-            <div>
-              <p className="text-foreground font-semibold text-sm">{t.name}</p>
-              <p className="text-muted-foreground text-xs">{t.loc}</p>
-            </div>
+      {TESTIMONIALS.length === 0 ? (
+        <div className="bg-card border border-border rounded-xl p-8 text-center">
+          <div className="w-11 h-11 rounded-full bg-primary/10 text-primary flex items-center justify-center mx-auto mb-3">
+            <Sparkles size={20} />
           </div>
-        ))}
-      </div>
+          <p className="text-foreground font-semibold text-sm mb-1">We're brand new to Kansas City.</p>
+          <p className="text-muted-foreground text-sm max-w-md mx-auto">
+            We haven't collected customer reviews yet — book with us and be one of our first! We're backed by a satisfaction guarantee on every job.
+          </p>
+        </div>
+      ) : (
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {shown.map((t, idx) => (
+            <div key={idx} className="bg-card border border-border rounded-xl p-5 hover:border-primary/30 transition-colors">
+              <div className="flex gap-0.5 mb-3">
+                {Array.from({ length: t.stars || 5 }).map((_, i) => (
+                  <Star key={i} size={13} className="fill-primary text-primary" />
+                ))}
+              </div>
+              <p className="text-muted-foreground text-sm leading-relaxed mb-4">"{t.text}"</p>
+              <div>
+                <p className="text-foreground font-semibold text-sm">{t.name}</p>
+                <p className="text-muted-foreground text-xs">{t.loc}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

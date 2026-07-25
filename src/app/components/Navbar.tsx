@@ -260,17 +260,6 @@ export default function Navbar() {
           </div>
 
           <Link
-            to="/quote"
-            className="text-sm font-medium transition-colors"
-            style={{ color: location.pathname === "/quote" ? NAV_ACCENT : NAV_MUTED }}
-            onMouseEnter={e => { if (location.pathname !== "/quote") (e.target as HTMLElement).style.color = NAV_TEXT; preloadRoute("/quote"); }}
-            onMouseLeave={e => { if (location.pathname !== "/quote") (e.target as HTMLElement).style.color = NAV_MUTED; }}
-            onFocus={() => preloadRoute("/quote")}
-          >
-            Instant Quote
-          </Link>
-
-          <Link
             to="/blog"
             className="text-sm font-medium transition-colors"
             style={{ color: location.pathname.startsWith("/blog") ? NAV_ACCENT : NAV_MUTED }}
@@ -354,7 +343,6 @@ export default function Navbar() {
           <Link to="/book" className="flex items-center gap-2 py-2 px-3 rounded-lg font-bold text-sm" style={{ backgroundColor: NAV_ACCENT, color: NAV_BG_SOLID }} onTouchStart={() => preloadRoute("/book")}>
             <Calendar size={16} /> Book Online Directly
           </Link>
-          <Link to="/quote" className="text-sm font-semibold" style={{ color: NAV_ACCENT }} onTouchStart={() => preloadRoute("/quote")}>Instant Quote Calculator</Link>
           <Link to="/blog" className="text-sm font-semibold" style={{ color: NAV_TEXT }} onTouchStart={() => preloadRoute("/blog")}>Blog</Link>
 
           <div className="space-y-4 pt-2" style={{ borderTop: `1px solid ${NAV_BORDER}` }}>

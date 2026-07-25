@@ -69,7 +69,7 @@ const FEATURES = [
   {
     icon: Calendar,
     title: "Same-Week Scheduling",
-    desc: "We fill your appointment fast. Most KC customers get same-week or next-day service.",
+    desc: "We keep our schedule tight so you can usually get same-week or next-day service.",
   },
 ];
 
@@ -129,19 +129,16 @@ export default function Landscaping() {
         ]}
       />
       <ServiceHero
-        badge="No. 1 Lawn & Landscaping Company in KC"
+        badge="Now Booking in Kansas City"
         titleContent={<>We're Growing Better <br /><span className="italic" style={{ color: ACCENT }}>Neighborhoods</span> One <br />Yard At A Time</>}
         description="Whether you need routine lawn maintenance, bush trimming, mulch application, or urgent yard cleanup, our team delivers fast, affordable, and professional outdoor care."
         primaryColor={PRIMARY}
         accentColor={ACCENT}
-        bgColor={BG}
         ctaLabel="Book Landscaping"
         ctaTo="/book?service=landscaping"
         trustItems={["Licensed & Insured", "Same-Week Appointments", "100% Satisfaction"]}
-        heroImage="https://images.unsplash.com/photo-1592417817098-8f3d6ef23a81?w=800&h=1000&fit=crop&auto=format"
+        heroImage="/images/hero/landscaping-hero.jpg"
         heroImageAlt="Landscaping Professional at Work"
-        badgeLabel="Lunova Landscaping"
-        badgeSubLabel="Expert Yard & Lawn Crew"
       />
 
       {/* MARQUEE STRIP */}

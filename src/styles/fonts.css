@@ -1,8 +1,12 @@
-@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Caprasimo&family=Figtree:wght@400;500;600;700;800&display=swap');
 
 :root {
   --font-display: 'Instrument Serif', serif;
   --font-body: 'Plus Jakarta Sans', sans-serif;
+
+  /* Sage design system — scoped to Home & Booking pages only */
+  --font-sage-heading: 'Caprasimo', serif;
+  --font-sage-body: 'Figtree', sans-serif;
 }
 
 body {

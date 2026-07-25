@@ -15,8 +15,6 @@ const JunkRemoval = lazy(routeModules.junkRemoval);
 const Landscaping = lazy(routeModules.landscaping);
 const Blog = lazy(routeModules.blog);
 const BlogPost = lazy(routeModules.blogPost);
-const Quote = lazy(routeModules.quote);
-const QuoteSuccess = lazy(routeModules.quoteSuccess);
 const Booking = lazy(routeModules.booking);
 const BookingSuccess = lazy(routeModules.bookingSuccess);
 const Privacy = lazy(routeModules.privacy);
@@ -39,8 +37,6 @@ export const router = createBrowserRouter([
       { path: "landscaping", Component: Landscaping },
       { path: "blog", Component: Blog },
       { path: "blog/:slug", Component: BlogPost },
-      { path: "quote", Component: Quote },
-      { path: "quote/success", Component: QuoteSuccess },
       { path: "book", Component: Booking },
       { path: "book/success", Component: BookingSuccess },
       { path: "privacy", Component: Privacy },

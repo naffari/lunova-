@@ -44,8 +44,8 @@ const FEATURES = [
   },
   {
     icon: Star,
-    title: "5.0-Star Rated Service",
-    desc: "Hundreds of satisfied KC customers — from single-item pickups to full estate cleanouts. See for yourself.",
+    title: "Careful, Damage-Free Crews",
+    desc: "Background-checked crew, careful with your property, and upfront pricing before we lift a thing.",
   },
 ];
 
@@ -110,19 +110,16 @@ export default function JunkRemoval() {
         ]}
       />
       <ServiceHero
-        badge="KC's #1 Junk Removal & Hauling Service"
+        badge="Now Booking in Kansas City"
         titleContent={<>We Haul So <br />You <span className="italic" style={{ color: ACCENT }}>Don't</span> Have To.</>}
         description="Furniture, appliances, construction debris, and full estate cleanouts — our crew shows up fast, lifts everything, and leaves your space spotless."
         primaryColor={PRIMARY}
         accentColor={ACCENT}
-        bgColor={BG}
         ctaLabel="Book a Haul"
         ctaTo="/book?service=junk"
         trustItems={["Licensed & Insured", "Same-Day Service", "Eco-Friendly Recycling"]}
-        heroImage="https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800&h=1000&fit=crop&auto=format"
+        heroImage="/images/hero/junk-removal-hero.jpg"
         heroImageAlt="Junk removal truck and crew"
-        badgeLabel="Lunova Hauling & Junk Removal"
-        badgeSubLabel="Fast & Reliable Crew"
       />
 
       {/* MARQUEE STRIP */}

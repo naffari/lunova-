@@ -110,14 +110,11 @@ export default function BinCleaning() {
         description="We pull up to your curb after trash day, blast your bins with 200° pressurized hot water, and apply a deodorizing treatment — no mess, no hassle."
         primaryColor={PRIMARY}
         accentColor={ACCENT}
-        bgColor={BG}
         ctaLabel="Book a Clean"
         ctaTo="/book?service=bin-cleaning"
         trustItems={["200° Hot Water Sanitization", "Kills 99.9% Bacteria", "Monthly Route Service"]}
-        heroImage="https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?w=800&h=1000&fit=crop&auto=format"
+        heroImage="/images/hero/bin-cleaning-hero.jpg"
         heroImageAlt="Curbside Bin Cleaning Service"
-        badgeLabel="Bin Cleaning by Lunova"
-        badgeSubLabel="Monthly Route Specialists"
       />
 
       {/* MARQUEE STRIP */}

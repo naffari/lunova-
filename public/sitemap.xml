@@ -3,7 +3,7 @@
   NOTE: URLs below use the placeholder production domain defined in
   src/app/constants/seo.ts (SITE_URL). Update both files together once the
   real production domain is live. Transactional/noindex routes
-  (/quote/success, /book/success, 404) are intentionally omitted.
+  (/book/success, 404) are intentionally omitted.
 -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
@@ -75,11 +75,6 @@
     <loc>https://www.lunovaservices.com/blog/junk-removal-101-what-can-and-cant-be-hauled</loc>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://www.lunovaservices.com/quote</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.lunovaservices.com/book</loc>

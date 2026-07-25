@@ -29,13 +29,13 @@ export default function Footer() {
             >
               <Calendar size={14} /> Book Online
             </Link>
-            <Link
-              to="/quote"
-              className="px-4 py-2 rounded-lg font-semibold text-xs transition-colors"
+            <a
+              href={`tel:+1${PHONE}`}
+              className="px-4 py-2 rounded-lg font-semibold text-xs transition-colors flex items-center gap-1.5"
               style={{ border: `1px solid ${FT_BORDER}`, color: FT_TEXT }}
             >
-              Get Instant Quote
-            </Link>
+              <Phone size={13} /> Call {PHONE_DISPLAY}
+            </a>
           </div>
         </div>
 

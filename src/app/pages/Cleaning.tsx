@@ -139,20 +139,31 @@ export default function Cleaning() {
       />
       <div data-theme="cleaning" className="font-sans-modern min-h-screen" style={{ backgroundColor: BG, color: PRIMARY }}>
       <ServiceHero
-        badge="#1 Cleaning Company in Kansas City"
+        badge="Now Booking in Kansas City"
         titleContent={<>We Clean <span className="italic" style={{ color: ACCENT }}>Everything.</span> <br />So You Don't Have To.</>}
         description="From home deep cleans to commercial janitorial, power washing, and auto detailing — Lunova brings professional-grade results to every surface."
         primaryColor={PRIMARY}
         accentColor={ACCENT}
-        bgColor={BG}
         ctaLabel="Book a Clean"
         ctaTo="/book?service=cleaning"
         trustItems={["Eco-Friendly Supplies", "Licensed & Insured", "Same-Week Slots"]}
         heroImage="https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=800&h=1000&fit=crop&auto=format"
         heroImageAlt="Professional Cleaning Service"
-        badgeLabel="Lunova Cleaning Services"
-        badgeSubLabel="Professional Clean Crew"
       />
+
+      {/* MARQUEE STRIP */}
+      <div style={{ backgroundColor: ACCENT, overflow: 'hidden' }} className="py-3">
+        <div style={{ display: 'flex', gap: '3rem', whiteSpace: 'nowrap', animation: 'marquee 20s linear infinite', width: 'max-content' }}>
+          {[
+            "Residential Cleaning", "Commercial Janitorial", "Power Washing", "Window Cleaning", "Auto Detailing", "Bin Cleaning", "Licensed & Insured", "Satisfaction Guarantee",
+            "Residential Cleaning", "Commercial Janitorial", "Power Washing", "Window Cleaning", "Auto Detailing", "Bin Cleaning", "Licensed & Insured", "Satisfaction Guarantee",
+          ].map((item, i) => (
+            <span key={i} className="text-xs font-bold uppercase tracking-widest" style={{ color: PRIMARY }}>
+              ✦ {item}
+            </span>
+          ))}
+        </div>
+      </div>
 
       {/* SERVICES HUB GRID */}
       <section className="py-20 px-4 sm:px-6" style={{ backgroundColor: `${PRIMARY}07`, borderTop: `1px solid ${PRIMARY}12`, borderBottom: `1px solid ${PRIMARY}12` }}>
@@ -244,7 +255,7 @@ export default function Cleaning() {
               A Reputation Built on Spotless Results, Every Time.
             </h2>
             <p className="text-sm leading-relaxed mb-8" style={{ color: `${PRIMARY}bb` }}>
-              We're not just a cleaning company — we're your trusted property care team. Background-checked crews, eco supplies, and a satisfaction guarantee on every job.
+              We're a new Kansas City cleaning company built on background-checked crews, eco supplies, and a satisfaction guarantee on every job.
             </p>
 
             <div className="space-y-4 mb-8">
@@ -317,6 +328,13 @@ export default function Cleaning() {
             </div>
           ))}
         </div>
+      </div>
+
+      {/* Wave transition */}
+      <div style={{ backgroundColor: PRIMARY, lineHeight: 0, marginTop: '-1px' }}>
+        <svg viewBox="0 0 1440 72" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" className="w-full block" style={{ height: '50px' }}>
+          <path d="M0,36 C180,72 360,0 540,36 C720,72 900,0 1080,36 C1260,72 1380,0 1440,36 L1440,72 L0,72 Z" fill={BG} />
+        </svg>
       </div>
 
       {/* SERVICE AREA */}

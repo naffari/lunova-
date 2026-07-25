@@ -110,14 +110,11 @@ export default function WindowCleaning() {
         description="Interior and exterior window washing, screen scrubbing, track cleaning, and hard water stain removal for homes and businesses."
         primaryColor={PRIMARY}
         accentColor={ACCENT}
-        bgColor={BG}
         ctaLabel="Book a Clean"
         ctaTo="/book?service=window-cleaning"
         trustItems={["Streak-Free Guarantee", "Interior & Exterior", "Eco-Safe Solution"]}
-        heroImage="https://images.unsplash.com/photo-1563453392212-326f5e854473?w=800&h=1000&fit=crop&auto=format"
+        heroImage="/images/hero/window-cleaning-hero.jpg"
         heroImageAlt="Window Cleaning Professional at Work"
-        badgeLabel="Window Cleaning by Lunova"
-        badgeSubLabel="Streak-Free Certified Crew"
       />
 
       {/* MARQUEE STRIP */}
