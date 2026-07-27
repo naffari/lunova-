@@ -1,5 +1,13 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { Resend } from "resend";
+import {
+  buildRequestedWindow,
+  createLead,
+  isCrmConfigured,
+  normalizeZip,
+  resolveServiceSlug,
+  splitCityState,
+} from "./_crm";
 
 const EMAIL = "naffari@myyahoo.com";
 
@@ -49,6 +57,57 @@ function escapeHtml(value: string): string {
     .replace(/'/g, "&#39;");
 }
 
+function buildCrmMessage(body: BookingPayload): string {
+  const lines = [
+    `Service: ${body.categoryLabel || body.category}`,
+    `Selected: ${body.subservices.join(", ")}`,
+  ];
+  if (body.addons.length > 0) lines.push(`Add-ons: ${body.addons.join(", ")}`);
+  if (body.frequency) lines.push(`Frequency: ${body.frequency}`);
+  if (body.timeWindow) lines.push(`Preferred window: ${body.date} (${body.timeWindow})`);
+  if (body.hearAbout) lines.push(`Heard about us: ${body.hearAbout}`);
+  if (body.notes) lines.push(`Notes: ${body.notes}`);
+  return lines.join("\n").slice(0, 2000);
+}
+
+/**
+ * Pushes the booking into the CRM as a customer + lead. Never throws: the
+ * emailed booking is the source of truth for the crew, so a CRM outage must
+ * not turn a captured lead into an error screen for the customer.
+ */
+async function sendToCrm(body: BookingPayload): Promise<string | null> {
+  if (!isCrmConfigured()) {
+    console.warn("WEBSITE_API_KEY is not configured; skipping CRM lead creation.");
+    return null;
+  }
+
+  const zip = normalizeZip(body.zip);
+  if (!zip) {
+    console.warn("Booking has no valid ZIP; skipping CRM lead creation.");
+    return null;
+  }
+
+  const { city, state } = splitCityState(body.city);
+  const window = buildRequestedWindow(body.date, body.timeWindow);
+
+  try {
+    const lead = await createLead({
+      name: body.name.slice(0, 120),
+      phone: body.phone,
+      email: body.email,
+      address: { line1: body.street, city, state, zip },
+      service_slug: resolveServiceSlug(body.category, body.frequency),
+      message: buildCrmMessage(body),
+      requested_window_start: window?.start,
+      requested_window_end: window?.end,
+    });
+    return lead.id;
+  } catch (err) {
+    console.error("CRM lead creation failed:", err);
+    return null;
+  }
+}
+
 function buildEmailHtml(body: BookingPayload, bookingId: string): string {
   const row = (label: string, value: string) =>
     `<tr><td style="padding:4px 12px 4px 0;color:#666;font-size:13px;">${escapeHtml(label)}</td><td style="padding:4px 0;font-size:13px;"><strong>${escapeHtml(value || "—")}</strong></td></tr>`;
@@ -74,6 +133,38 @@ function buildEmailHtml(body: BookingPayload, bookingId: string): string {
   `;
 }
 
+/**
+ * Emails the booking to the crew. Like `sendToCrm`, never throws: the two
+ * destinations are independent, and one being down must not cost us the other.
+ */
+async function sendEmail(body: BookingPayload, bookingId: string): Promise<boolean> {
+  const apiKey = process.env.RESEND_API_KEY;
+  if (!apiKey) {
+    console.error("RESEND_API_KEY is not configured; skipping booking email.");
+    return false;
+  }
+
+  try {
+    const resend = new Resend(apiKey);
+    const { error } = await resend.emails.send({
+      from: "Lunova Booking <bookings@lunovaservices.com>",
+      to: EMAIL,
+      replyTo: isNonEmptyString(body.email) ? body.email : undefined,
+      subject: `Booking request — ${body.categoryLabel || body.category}`,
+      html: buildEmailHtml(body, bookingId),
+    });
+
+    if (error) {
+      console.error("Resend error:", error);
+      return false;
+    }
+    return true;
+  } catch (err) {
+    console.error("Booking email failed:", err);
+    return false;
+  }
+}
+
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== "POST") {
     res.setHeader("Allow", "POST");
@@ -86,31 +177,27 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(400).json({ ok: false, error: validationError });
   }
 
-  const apiKey = process.env.RESEND_API_KEY;
-  if (!apiKey) {
-    console.error("RESEND_API_KEY is not configured.");
-    return res.status(500).json({ ok: false, error: "Email service is not configured." });
-  }
-
   const bookingId = `LUNOVA-${Date.now()}`;
   const payload = body as BookingPayload;
 
   try {
-    const resend = new Resend(apiKey);
-    const { error } = await resend.emails.send({
-      from: "Lunova Booking <bookings@lunovaservices.com>",
-      to: EMAIL,
-      replyTo: isNonEmptyString(payload.email) ? payload.email : undefined,
-      subject: `Booking request — ${payload.categoryLabel || payload.category}`,
-      html: buildEmailHtml(payload, bookingId),
-    });
+    // Independent destinations: the email reaches the crew, the CRM lead makes
+    // the booking trackable. Either one landing means we have the booking, so
+    // both are attempted regardless of the other's outcome.
+    const [emailed, leadId] = await Promise.all([
+      sendEmail(payload, bookingId),
+      sendToCrm(payload),
+    ]);
 
-    if (error) {
-      console.error("Resend error:", error);
-      return res.status(502).json({ ok: false, error: "Failed to send booking email." });
+    if (!emailed && !leadId) {
+      console.error(`Booking ${bookingId} landed nowhere: email and CRM both failed.`);
+      return res.status(502).json({ ok: false, error: "Failed to submit your booking request." });
     }
 
-    return res.status(200).json({ ok: true, bookingId });
+    if (!emailed) console.warn(`Booking ${bookingId}: CRM lead ${leadId} created, email failed.`);
+    if (!leadId) console.warn(`Booking ${bookingId}: emailed, but no CRM lead created.`);
+
+    return res.status(200).json({ ok: true, bookingId, leadId });
   } catch (err) {
     console.error("Booking submission failed:", err);
     return res.status(500).json({ ok: false, error: "Unexpected server error." });

@@ -163,7 +163,15 @@ export default function BookingWizard() {
 
   const step1NextDisabled = !state.category;
   const step2NextDisabled = state.subservices.length === 0;
-  const step3NextDisabled = !(state.date && state.timeWindow && state.street && state.city);
+  // ZIP is required (not just collected) because the CRM rejects an address
+  // without one, and a lead that only lands in email is a lead we lose track of.
+  const step3NextDisabled = !(
+    state.date &&
+    state.timeWindow &&
+    state.street &&
+    state.city &&
+    state.zip.length === 5
+  );
   const step4NextDisabled = !(state.name && state.phone && state.email);
 
   const scheduleParts: string[] = [];
@@ -436,7 +444,8 @@ export default function BookingWizard() {
               <input
                 id="zip"
                 value={state.zip}
-                onChange={(e) => update("zip", e.target.value)}
+                onChange={(e) => update("zip", e.target.value.replace(/\D/g, "").slice(0, 5))}
+                inputMode="numeric"
                 placeholder="64106"
                 className={inputClass}
               />
