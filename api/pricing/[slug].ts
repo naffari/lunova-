@@ -1,5 +1,5 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
-import { getPricing, isCrmConfigured } from "../_crm";
+import { getPricing, isCrmConfigured } from "../_crm.js";
 
 /**
  * Read-only proxy for the CRM's public pricing endpoint. Exists so the

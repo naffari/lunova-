@@ -7,7 +7,7 @@ import {
   normalizeZip,
   resolveServiceSlug,
   splitCityState,
-} from "./_crm";
+} from "./_crm.js";
 
 const EMAIL = "naffari@myyahoo.com";
 
