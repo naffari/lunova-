@@ -8,20 +8,39 @@
 const CRM_BASE_URL = (process.env.CRM_API_URL || "https://crm.lunovaservices.com").replace(/\/$/, "");
 
 /**
- * Booking-wizard category id -> CRM service slug. The CRM rejects a
- * `service_slug` that doesn't match an active service with a 400, so
- * `createLead` retries without the slug rather than losing the lead.
+ * Booking-wizard category id -> CRM service slug, for the categories that map
+ * one-to-one. The CRM rejects a `service_slug` that doesn't match an active
+ * service with a 400, so `createLead` retries without the slug rather than
+ * losing the lead. All eight slugs below are verified against production.
+ *
+ * `landscaping` is absent on purpose — see `resolveServiceSlug`. The CRM's
+ * `hardscape-demolition-adjacent` service has no wizard category and stays
+ * unmapped.
  */
-export const SERVICE_SLUG_MAP: Record<string, string> = {
+const SERVICE_SLUG_MAP: Record<string, string> = {
   cleaning: "residential-cleaning",
   junk: "junk-removal",
   power: "power-washing",
   window: "window-cleaning",
   auto: "auto-detailing",
   bin: "bin-cleaning",
-  landscaping: "landscaping",
   commercial: "commercial-cleaning",
 };
+
+/**
+ * Resolves the CRM service slug for a booking. Landscaping is split in the CRM
+ * into a one-time project service and a recurring maintenance service, which
+ * the wizard's frequency answer picks between; every other category ignores
+ * frequency. Returns undefined for categories with no CRM service.
+ */
+export function resolveServiceSlug(category: string, frequency: string): string | undefined {
+  if (category === "landscaping") {
+    return frequency === "One-Time"
+      ? "landscaping-one-time-project"
+      : "landscaping-recurring-maintenance";
+  }
+  return SERVICE_SLUG_MAP[category];
+}
 
 export interface CrmAddress {
   line1: string;
