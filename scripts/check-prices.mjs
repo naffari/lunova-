@@ -18,8 +18,10 @@
  */
 import { readFile, readdir } from "node:fs/promises";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 
-const ROOT = path.resolve(import.meta.dirname, "..");
+const HERE = path.dirname(fileURLToPath(import.meta.url));
+const ROOT = path.resolve(HERE, "..");
 const PAGES_DIR = path.join(ROOT, "src/app/pages");
 
 /** Catalogue floors, parsed out of the TS source (no TS loader in plain node). */

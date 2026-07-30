@@ -14,9 +14,11 @@
  */
 import { mkdir, readdir, stat, writeFile } from "node:fs/promises";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 import sharp from "sharp";
 
-const ROOT = path.resolve(import.meta.dirname, "..");
+const HERE = path.dirname(fileURLToPath(import.meta.url));
+const ROOT = path.resolve(HERE, "..");
 const SRC_DIR = path.join(ROOT, "assets-src/hero");
 const OUT_DIR = path.join(ROOT, "public/images/hero");
 

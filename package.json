@@ -3,6 +3,9 @@
   "private": true,
   "version": "0.0.1",
   "type": "module",
+  "engines": {
+    "node": ">=20.11"
+  },
   "scripts": {
     "build": "node scripts/generate-sitemap.mjs && vite build && vite build --ssr src/entry-server.tsx && node scripts/prerender.mjs",
     "build:client": "vite build",

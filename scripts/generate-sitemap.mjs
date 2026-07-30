@@ -9,8 +9,10 @@
  */
 import { readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 
-const ROOT = path.resolve(import.meta.dirname, "..");
+const HERE = path.dirname(fileURLToPath(import.meta.url));
+const ROOT = path.resolve(HERE, "..");
 
 /** Read a value out of a TS source file without importing it (no TS loader in plain node). */
 async function readConst(file, pattern) {

@@ -15,9 +15,10 @@
  */
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
-import { pathToFileURL } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 
-const ROOT = path.resolve(import.meta.dirname, "..");
+const HERE = path.dirname(fileURLToPath(import.meta.url));
+const ROOT = path.resolve(HERE, "..");
 const DIST = path.join(ROOT, "dist");
 const SSR_ENTRY = path.join(ROOT, "dist-ssr", "entry-server.js");
 

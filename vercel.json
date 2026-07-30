@@ -18,8 +18,11 @@
       "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }]
     },
     {
+      "comment": "Images are NOT content-hashed — pnpm images rewrites the same filenames. `immutable` here would mean replacing a photo leaves returning visitors on the old one for up to a year, with no way to purge their browser cache. A day of freshness with a long stale-while-revalidate keeps it fast on the CDN while staying correctable.",
       "source": "/images/(.*)",
-      "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }]
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=86400, stale-while-revalidate=604800" }
+      ]
     },
     {
       "source": "/(.*)",
