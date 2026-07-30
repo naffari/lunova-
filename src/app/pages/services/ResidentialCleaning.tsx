@@ -1,4 +1,4 @@
-import { ArrowUpRight, CheckCircle } from "lucide-react";
+import { CheckCircle } from "lucide-react";
 import { Link } from "react-router";
 import ServiceHero from "../../components/ServiceHero";
 import HowItWorks from "../../components/HowItWorks";
@@ -7,39 +7,14 @@ import FaqSection from "../../components/FaqSection";
 import ContactStrip from "../../components/common/ContactStrip";
 import Seo from "../../components/common/Seo";
 import StatBand from "../../components/StatBand";
+import PackageGrid from "../../components/PackageGrid";
 import WorkGallery from "../../components/WorkGallery";
 import { SERVICE_THEMES } from "../../constants/theme";
+import { BRAND } from "../../constants/brand";
 import { buildBreadcrumbSchema, buildFaqSchema, buildServiceSchema } from "../../utils/structuredData";
 
-const { primary: PRIMARY, accent: ACCENT, bg: BG } = SERVICE_THEMES["residential-cleaning"];
-const DARK = "#0C1F30";
+const { primary: PRIMARY, accent: ACCENT, ground: GROUND, bg: BG } = SERVICE_THEMES["residential-cleaning"];
 
-const PACKAGES = [
-  {
-    title: "Standard Clean",
-    badge: "Most Popular",
-    price: "From $130",
-    desc: "Our regular maintenance clean covers all living areas, bathrooms, kitchen surfaces, and bedrooms following a detailed 40-point checklist.",
-    includes: ["Kitchens & bathrooms", "Dusting & vacuuming", "Mopping all floors", "Trash removal"],
-    img: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=700&h=500&fit=crop&auto=format",
-  },
-  {
-    title: "Deep Clean",
-    badge: "Recommended First Visit",
-    price: "From $220",
-    desc: "An intensive top-to-bottom clean including inside appliances, baseboards, cabinet faces, window sills, and every forgotten corner.",
-    includes: ["Everything in standard", "Inside oven & fridge", "Baseboards & blinds", "Cabinet fronts & tracks"],
-    img: "https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=700&h=500&fit=crop&auto=format",
-  },
-  {
-    title: "Move-In / Move-Out",
-    badge: "Deposit Saver",
-    price: "From $250",
-    desc: "Landlord-ready or move-in-ready cleans designed to leave the property spotless. Perfect for renters, sellers, and property managers.",
-    includes: ["Empty-space deep clean", "Inside all cabinets & closets", "Appliance interiors", "Walls & light fixtures"],
-    img: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=700&h=500&fit=crop&auto=format",
-  },
-];
 
 const STATS = [
   { val: "From $130", label: "Starting Price" },
@@ -83,7 +58,7 @@ const RESIDENTIAL_CLEANING_FAQS = [
 
 export default function ResidentialCleaning() {
   return (
-    <div data-theme="residential-cleaning" className="font-sans-modern min-h-screen" style={{ backgroundColor: BG, color: DARK }}>
+    <div data-theme="residential-cleaning" className="font-sans-modern min-h-screen" style={{ backgroundColor: BG, color: BRAND.ink }}>
       <Seo
         title="Residential Cleaning Services | Lunova Services"
         description={RESIDENTIAL_CLEANING_DESCRIPTION}
@@ -101,7 +76,7 @@ export default function ResidentialCleaning() {
         badge="Now Booking in Kansas City"
         titleContent={<>Your Home, Cleaned<br /><span style={{ color: ACCENT }} className="italic">Spotlessly.</span></>}
         description="Standard cleans, deep cleans, and move-in/out services. We bring all supplies, arrive on time, and leave every room immaculate."
-        primaryColor={PRIMARY}
+        primaryColor={GROUND}
         accentColor={ACCENT}
         ctaLabel="Book a Clean"
         ctaTo="/book?service=cleaning"
@@ -119,65 +94,17 @@ export default function ResidentialCleaning() {
             "Deep Clean", "Move-In Clean", "Move-Out Clean", "Weekly Recurring", "Eco Products",
             "Background-Checked Crew", "Same-Week Slots", "Satisfaction Guarantee",
           ].map((item, i) => (
-            <span key={i} className="text-xs font-bold uppercase tracking-widest" style={{ color: DARK }}>
+            <span key={i} className="text-xs font-bold uppercase tracking-widest" style={{ color: BRAND.bg }}>
               ✦ {item}
             </span>
           ))}
         </div>
       </div>
 
-      {/* SERVICES — ALTERNATING ROWS */}
-      <section className="py-20 px-4 sm:px-6" style={{ backgroundColor: BG }}>
-        <div className="max-w-5xl mx-auto mb-14 text-center">
-          <p className="text-xs font-bold uppercase tracking-widest mb-2" style={{ color: PRIMARY }}>Services</p>
-          <h2 className="font-serif-display text-4xl sm:text-5xl" style={{ color: DARK }}>
-            Built for KC homes,<br />
-            <span className="italic" style={{ color: PRIMARY }}>priced to make sense.</span>
-          </h2>
-        </div>
-
-        <div className="max-w-5xl mx-auto space-y-16">
-          {PACKAGES.map((svc, idx) => (
-            <div
-              key={idx}
-              className={`flex flex-col ${idx % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'} gap-10 items-center`}
-            >
-              <div className="w-full md:w-1/2 rounded-3xl overflow-hidden shadow-xl flex-shrink-0" style={{ height: '300px' }}>
-                <img src={svc.img} alt={svc.title} className="w-full h-full object-cover" loading="lazy" />
-              </div>
-              <div className="w-full md:w-1/2 space-y-4">
-                <span
-                  className="inline-block text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full"
-                  style={{ backgroundColor: ACCENT, color: DARK }}
-                >
-                  {svc.badge}
-                </span>
-                <div className="flex items-center gap-3 flex-wrap">
-                  <h3 className="font-serif-display text-3xl" style={{ color: DARK }}>{svc.title}</h3>
-                  <span className="font-bold text-sm px-3 py-1 rounded-full" style={{ backgroundColor: `${PRIMARY}15`, color: PRIMARY }}>
-                    {svc.price}
-                  </span>
-                </div>
-                <p className="text-sm leading-relaxed" style={{ color: '#555' }}>{svc.desc}</p>
-                <ul className="space-y-2">
-                  {svc.includes.map((item) => (
-                    <li key={item} className="flex items-center gap-2 text-sm font-medium" style={{ color: DARK }}>
-                      <CheckCircle size={16} style={{ color: PRIMARY }} className="shrink-0" /> {item}
-                    </li>
-                  ))}
-                </ul>
-                <Link
-                  to="/book?service=cleaning"
-                  className="inline-flex items-center gap-2 font-bold px-6 py-3 rounded-full text-sm text-white"
-                  style={{ backgroundColor: PRIMARY }}
-                >
-                  Book {svc.title} <ArrowUpRight size={16} />
-                </Link>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
+      {/* WHAT'S INCLUDED — shared PackageGrid, sourced from constants/serviceDetails.ts.
+          Same packages, same checklist, same prices the booking wizard shows — clicking
+          "Book this" pre-selects the exact package in the wizard via ?package=. */}
+      <PackageGrid serviceKey="cleaning" primaryColor={PRIMARY} accentColor={ACCENT} />
 
       {/* WHAT DONE LOOKS LIKE — real job photography, see constants/serviceGallery.ts */}
       <WorkGallery
@@ -192,7 +119,7 @@ export default function ResidentialCleaning() {
       <HowItWorks
         heading="Three Steps from Booking to Spotless."
         steps={HOW_IT_WORKS_STEPS}
-        primaryColor={PRIMARY}
+        primaryColor={GROUND}
         accentColor={ACCENT}
       />
 
@@ -200,7 +127,7 @@ export default function ResidentialCleaning() {
       <section className="py-20 px-4 sm:px-6" style={{ backgroundColor: BG }}>
         <div className="max-w-4xl mx-auto text-center mb-14">
           <p className="text-xs font-bold uppercase tracking-widest mb-2" style={{ color: PRIMARY }}>Pricing</p>
-          <h2 className="font-serif-display text-4xl sm:text-5xl" style={{ color: DARK }}>
+          <h2 className="font-serif-display text-4xl sm:text-5xl" style={{ color: BRAND.ink }}>
             Honest pricing.<br />
             <span className="italic" style={{ color: PRIMARY }}>Zero surprises.</span>
           </h2>
@@ -235,7 +162,7 @@ export default function ResidentialCleaning() {
               className="rounded-3xl p-8 flex flex-col gap-5"
               style={{
                 backgroundColor: plan.highlight ? PRIMARY : '#ffffff',
-                color: plan.highlight ? 'white' : DARK,
+                color: plan.highlight ? 'white' : BRAND.ink,
                 border: plan.highlight ? 'none' : `2px solid ${PRIMARY}20`,
                 boxShadow: plan.highlight ? `0 20px 60px ${PRIMARY}40` : '0 2px 12px rgba(0,0,0,0.05)',
                 transform: plan.highlight ? 'scale(1.04)' : 'none',
@@ -261,7 +188,7 @@ export default function ResidentialCleaning() {
                 className="text-center font-bold py-3 rounded-full text-sm block"
                 style={{
                   backgroundColor: plan.highlight ? ACCENT : PRIMARY,
-                  color: plan.highlight ? DARK : 'white',
+                  color: plan.highlight ? BRAND.ink : 'white',
                 }}
               >
                 Book Reservation →
@@ -272,10 +199,10 @@ export default function ResidentialCleaning() {
       </section>
 
       {/* STATS BAND — shared component; this markup was duplicated on all 9 pages. */}
-      <StatBand stats={STATS} primaryColor={PRIMARY} accentColor={ACCENT} />
+      <StatBand stats={STATS} primaryColor={GROUND} accentColor={ACCENT} />
 
       {/* Wave transition */}
-      <div style={{ backgroundColor: DARK, lineHeight: 0, marginTop: '-1px' }}>
+      <div style={{ backgroundColor: GROUND, lineHeight: 0, marginTop: '-1px' }}>
         <svg viewBox="0 0 1440 72" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" className="w-full block" style={{ height: '50px' }}>
           <path d="M0,36 C180,72 360,0 540,36 C720,72 900,0 1080,36 C1260,72 1380,0 1440,36 L1440,72 L0,72 Z" fill={BG} />
         </svg>
@@ -298,7 +225,7 @@ export default function ResidentialCleaning() {
       <ContactStrip
         heading="Ready for a Spotless Home?"
         subtext="Book your clean today and get a flat-rate quote in minutes. Same-week slots are available across the Kansas City metro."
-        primaryColor={PRIMARY}
+        primaryColor={GROUND}
         accentColor={ACCENT}
         ctaLabel="Book a Clean"
         ctaTo="/book?service=cleaning"

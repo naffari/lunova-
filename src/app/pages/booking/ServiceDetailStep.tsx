@@ -55,8 +55,10 @@ export default function ServiceDetailStep({
             return (
               <label
                 key={pkg.id}
-                className={`relative block rounded-2xl border-2 p-5 cursor-pointer transition-colors ${
-                  active ? "border-primary bg-primary/[0.06]" : "border-border bg-background hover:border-primary/30"
+                className={`relative block rounded-2xl border-2 p-5 cursor-pointer transition-all duration-150 ${
+                  active
+                    ? "border-primary bg-primary/[0.06] scale-[1.008] shadow-[0_0_0_3px_var(--tw-shadow-color)] shadow-primary/15"
+                    : "border-border bg-background hover:border-primary/30 active:scale-[0.99]"
                 }`}
               >
                 <input
@@ -68,12 +70,18 @@ export default function ServiceDetailStep({
                 />
 
                 <div className="flex items-start gap-3">
+                  {/*
+                    The checkmark pops in on selection (tw-animate-css's
+                    zoom-in, already a dependency) rather than just fading —
+                    a small, immediate reward for the tap, which is the whole
+                    ask behind "think of it as a game almost".
+                  */}
                   <span
                     className={`mt-0.5 w-5 h-5 rounded-full flex-none flex items-center justify-center border-2 transition-colors ${
                       active ? "border-primary bg-primary text-primary-foreground" : "border-muted-foreground/35"
                     }`}
                   >
-                    {active && <Check size={12} strokeWidth={3.5} />}
+                    {active && <Check size={12} strokeWidth={3.5} className="animate-in zoom-in-50 spin-in-12 duration-200" />}
                   </span>
 
                   <div className="flex-1 min-w-0">

@@ -4,7 +4,6 @@ import {
   Trash2,
   MapPin,
 } from "lucide-react";
-import { Link } from "react-router";
 import ServiceHero from "../../components/ServiceHero";
 import HowItWorks from "../../components/HowItWorks";
 import ServiceAreaSection from "../../components/ServiceAreaSection";
@@ -12,19 +11,13 @@ import FaqSection from "../../components/FaqSection";
 import ContactStrip from "../../components/common/ContactStrip";
 import Seo from "../../components/common/Seo";
 import StatBand from "../../components/StatBand";
+import PackageGrid from "../../components/PackageGrid";
 import { buildBreadcrumbSchema, buildFaqSchema, buildServiceSchema } from "../../utils/structuredData";
 import { SERVICE_THEMES } from "../../constants/theme";
+import { BRAND } from "../../constants/brand";
 
-const { primary: PRIMARY, accent: ACCENT, bg: BG } = SERVICE_THEMES["bin-cleaning"];
+const { primary: PRIMARY, accent: ACCENT, ground: GROUND, bg: BG } = SERVICE_THEMES["bin-cleaning"];
 
-const PACKAGES = [
-  { title: "Monthly Service", price: "$28/mo", desc: "One clean per month after your regular trash pickup day. Most popular plan." },
-  { title: "Bi-Monthly Service", price: "$18/mo", desc: "Clean every other month for moderate-use households." },
-  { title: "One-Time Clean", price: "$45", desc: "Try it once before committing to a route plan. No contract." },
-  { title: "Two-Bin Plan", price: "$48/mo", desc: "Monthly cleaning for 2 trash or recycling bins. Best value for most families." },
-  { title: "Three-Bin Plan", price: "$65/mo", desc: "Three bins per month — trash, recycling, and compost or yard waste." },
-  { title: "Commercial Bins", price: "Custom Quote", desc: "Dumpster and commercial bin sanitization for restaurants, apartments, and offices." },
-];
 
 const FEATURES = [
   {
@@ -91,7 +84,7 @@ const BIN_CLEANING_FAQS = [
 
 export default function BinCleaning() {
   return (
-    <div data-theme="bin-cleaning" className="font-sans-modern min-h-screen" style={{ backgroundColor: BG, color: PRIMARY }}>
+    <div data-theme="bin-cleaning" className="font-sans-modern min-h-screen" style={{ backgroundColor: BG, color: BRAND.ink }}>
       <Seo
         title="Trash Bin Cleaning Services | Lunova Services"
         description={BIN_CLEANING_DESCRIPTION}
@@ -109,7 +102,7 @@ export default function BinCleaning() {
         badge="KC's Curbside Trash Bin Cleaning Service"
         titleContent={<><span className="italic" style={{ color: ACCENT }}>Sanitized</span> Bins. <br />No More Stench.</>}
         description="We pull up to your curb after trash day, blast your bins with 200° pressurized hot water, and apply a deodorizing treatment — no mess, no hassle."
-        primaryColor={PRIMARY}
+        primaryColor={GROUND}
         accentColor={ACCENT}
         ctaLabel="Book a Clean"
         ctaTo="/book?service=bin-cleaning"
@@ -125,51 +118,17 @@ export default function BinCleaning() {
             "200° Hot Water", "Monthly Route Service", "99.9% Bacteria Kill", "Eco-Safe Deodorizer", "Curbside Service", "No Contracts", "Licensed & Insured", "Satisfaction Guarantee",
             "200° Hot Water", "Monthly Route Service", "99.9% Bacteria Kill", "Eco-Safe Deodorizer", "Curbside Service", "No Contracts", "Licensed & Insured", "Satisfaction Guarantee",
           ].map((item, i) => (
-            <span key={i} className="text-xs font-bold uppercase tracking-widest" style={{ color: PRIMARY }}>
+            <span key={i} className="text-xs font-bold uppercase tracking-widest" style={{ color: BRAND.bg }}>
               ✦ {item}
             </span>
           ))}
         </div>
       </div>
 
-      {/* SERVICE PACKAGES */}
-      <section className="py-20 px-4 sm:px-6" style={{ backgroundColor: `${PRIMARY}08`, borderTop: `1px solid ${PRIMARY}15`, borderBottom: `1px solid ${PRIMARY}15` }}>
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center max-w-2xl mx-auto mb-12">
-            <div className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest mb-3" style={{ color: PRIMARY }}>
-              <span className="w-6 h-0.5" style={{ backgroundColor: PRIMARY }} />
-              <span>Services &amp; Rates</span>
-            </div>
-            <h2 className="font-serif-display text-4xl sm:text-5xl" style={{ color: PRIMARY }}>
-              Bin Cleaning Plans &amp; Pricing
-            </h2>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {PACKAGES.map((item, idx) => (
-              <div key={idx} className="bg-white p-6 rounded-2xl flex flex-col justify-between shadow-sm" style={{ border: `1px solid ${PRIMARY}18` }}>
-                <div>
-                  <div className="flex justify-between items-start mb-3">
-                    <h3 className="font-serif-display text-2xl" style={{ color: PRIMARY }}>{item.title}</h3>
-                    <span className="text-xs font-bold px-3 py-1 rounded-full shrink-0 ml-2 text-white" style={{ backgroundColor: ACCENT }}>
-                      {item.price}
-                    </span>
-                  </div>
-                  <p className="text-sm leading-relaxed mb-6" style={{ color: `${PRIMARY}bb` }}>{item.desc}</p>
-                </div>
-                <Link
-                  to="/book?service=bin-cleaning"
-                  className="w-full py-2.5 text-xs font-bold rounded-full text-center transition-colors block"
-                  style={{ backgroundColor: PRIMARY, color: '#ffffff' }}
-                >
-                  Book This Service →
-                </Link>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
+      {/* WHAT'S INCLUDED — shared PackageGrid, sourced from constants/serviceDetails.ts.
+          Same packages, same checklist, same prices the booking wizard shows — clicking
+          "Book this" pre-selects the exact package in the wizard via ?package=. */}
+      <PackageGrid serviceKey="bin" primaryColor={PRIMARY} accentColor={ACCENT} />
       {/* FEATURE HIGHLIGHTS */}
       <section className="py-20 px-4 sm:px-6" style={{ backgroundColor: BG }}>
         <div className="max-w-7xl mx-auto">
@@ -187,13 +146,13 @@ export default function BinCleaning() {
             {FEATURES.map((f, idx) => {
               const Icon = f.icon;
               return (
-                <div key={idx} className="bg-white p-6 rounded-2xl shadow-sm flex flex-col gap-4" style={{ border: `1px solid ${PRIMARY}15` }}>
+                <div key={idx} className="bg-card p-6 rounded-2xl flex flex-col gap-4" style={{ border: `1px solid ${PRIMARY}15` }}>
                   <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0 text-white" style={{ backgroundColor: PRIMARY }}>
                     <Icon size={22} />
                   </div>
                   <div>
                     <h4 className="font-bold text-sm mb-1" style={{ color: PRIMARY }}>{f.title}</h4>
-                    <p className="text-sm leading-relaxed" style={{ color: `${PRIMARY}bb` }}>{f.desc}</p>
+                    <p className="text-sm leading-relaxed" style={{ color: `${BRAND.ink}bb` }}>{f.desc}</p>
                   </div>
                 </div>
               );
@@ -206,15 +165,15 @@ export default function BinCleaning() {
       <HowItWorks
         heading="Our Proven Bin Cleaning Process"
         steps={HOW_IT_WORKS_STEPS}
-        primaryColor={PRIMARY}
+        primaryColor={GROUND}
         accentColor={ACCENT}
       />
 
       {/* STATS BAND — shared component; this markup was duplicated on all 9 pages. */}
-      <StatBand stats={STATS} primaryColor={PRIMARY} accentColor={ACCENT} />
+      <StatBand stats={STATS} primaryColor={GROUND} accentColor={ACCENT} />
 
       {/* Wave transition */}
-      <div style={{ backgroundColor: PRIMARY, lineHeight: 0, marginTop: '-1px' }}>
+      <div style={{ backgroundColor: GROUND, lineHeight: 0, marginTop: '-1px' }}>
         <svg viewBox="0 0 1440 72" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" className="w-full block" style={{ height: '50px' }}>
           <path d="M0,36 C180,72 360,0 540,36 C720,72 900,0 1080,36 C1260,72 1380,0 1440,36 L1440,72 L0,72 Z" fill={BG} />
         </svg>
@@ -237,7 +196,7 @@ export default function BinCleaning() {
       <ContactStrip
         heading="Ready to Ditch the Stink?"
         subtext="Join our monthly route and never scrub a filthy bin again — sanitized, deodorized, and back at your curb before you know it."
-        primaryColor={PRIMARY}
+        primaryColor={GROUND}
         accentColor={ACCENT}
         ctaLabel="Book a Clean"
         ctaTo="/book?service=bin-cleaning"

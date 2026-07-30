@@ -1,54 +1,57 @@
 /**
- * The brand palette, in JS form.
+ * THE brand palette. Single source of truth — mirrored in CSS at
+ * src/styles/theme.css for anything styled with Tailwind token classes
+ * (bg-background, text-foreground, bg-card, border-border). Reach for these
+ * raw hex values only when composing an inline style that needs to build an
+ * alpha-blended color (e.g. `${BRAND.accent}1a`).
  *
- * These values MUST match the `:root` custom properties in
- * src/styles/theme.css. That stylesheet is the real source of truth for
- * anything styled with Tailwind token classes (`bg-primary`, `text-foreground`);
- * this module exists only for the pages that still compose inline
- * `style={{ ... }}` objects and need the raw hex.
+ * DARK GROUND, chosen deliberately warm rather than neutral: seven of the
+ * eight department accents (src/app/constants/theme.ts) are warm hues, so a
+ * neutral grey ground would fight them. `bg`/`surface`/`raised` step from
+ * darkest to lightest for page ground → card → stat band / deep panel.
  *
- * Prefer the Tailwind token classes in new code. Reach for BRAND only when you
- * need a hex to build an alpha-composited value (e.g. `${BRAND.ink}99`).
- *
- * Contrast, measured against BRAND.bg (#F1EBD9):
- *   ink       14.0:1  — body and headings, passes AAA
- *   primary    5.4:1  — passes AA at normal text sizes
- *   muted      6.0:1  — passes AA
- * And white on primary is 6.1:1, ink on accent is 6.3:1 — both pass AA.
- *
- * The palette this replaced used #c8960e gold as a text colour on this same
- * cream, which measured 2.4:1 and failed AA outright. Do not reintroduce it.
+ * NAMING NOTE: `ink` predates the dark rebuild, when it WAS the near-black
+ * text color on a cream ground. The name stuck because renaming it means
+ * touching every "color: PRIMARY" callsite across nine service pages; the
+ * VALUE flipped to the light foreground color it needs to be on a dark
+ * ground. Read `BRAND.ink` as "the strong foreground token", not literally
+ * as ink.
  */
 export const BRAND = {
-  /** Warm cream page ground, shared by every page including service pages. */
-  bg: "#F1EBD9",
-  /** Slightly deeper cream for section tints and inset panels. */
-  surface: "#E8DFD0",
-  /** Near-black ink with a green cast. Body copy and headings. */
-  ink: "#1e2319",
-  /** Sage green — the brand colour. Primary buttons, links, active states. */
+  /** Warm charcoal page ground. Same value the dark chrome (nav/footer) uses. */
+  bg: "#171512",
+  /** Card / section surface, one step up from the ground. */
+  surface: "#201D19",
+  /** Stat bands and deep panels — the darkest surface, used sparingly. */
+  raised: "#100F0C",
+  /** Primary text color. See naming note above. */
+  ink: "#EDEAE3",
+  /** Muted body text. */
+  muted: "#A29C92",
+  /** Sage green — the parent-brand accent (the homepage / HQ identity). */
   primary: "#3d6b2e",
-  /** Olive green — secondary accent, used on dark grounds where sage goes muddy. */
+  /** Olive green — secondary parent-brand accent. */
   accent: "#7fa650",
-  /** Muted body copy. Use instead of alpha-compositing ink below ~70%. */
-  muted: "#5f6256",
-  /** White, for text on primary/ink grounds. */
+  /** Text on a filled primary/accent button. */
   onPrimary: "#ffffff",
+  /** Hairline border, the thing that replaces card shadows sitewide. */
+  hairline: "rgba(237, 234, 227, 0.12)",
+  hairlineStrong: "rgba(237, 234, 227, 0.22)",
 } as const;
 
 /**
  * Dark site chrome — the fixed navbar, the footer, and the cookie banner.
- * Deliberately near-black rather than BRAND.ink: the chrome is meant to read as
- * a frame around the warm page ground, not as more of the same surface.
  *
- * These five values were previously redeclared in all three components. Import
- * them; don't re-inline them.
+ * Now the SAME tone as BRAND.bg on purpose: the nav is a frosted-blur overlay
+ * on the page itself, not a separate darker frame around it. Kept as its own
+ * export because the chrome renders on every route regardless of that route's
+ * department accent, so it needs an accent-neutral definition.
  */
 export const CHROME = {
-  bg: "#111318",
-  text: "#E8E4DC",
-  muted: "rgba(255,255,255,0.55)",
-  border: "rgba(255,255,255,0.08)",
-  /** White reads cleaner than sage on this ground — sage muddies below ~15% lightness. */
+  bg: BRAND.bg,
+  text: BRAND.ink,
+  muted: "rgba(237, 234, 227, 0.55)",
+  border: BRAND.hairline,
+  /** White reads cleaner than an accent here — chrome stays accent-neutral. */
   accent: "#ffffff",
 } as const;

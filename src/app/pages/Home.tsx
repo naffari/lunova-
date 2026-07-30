@@ -98,7 +98,7 @@ export default function Home() {
         description="Lunova Services provides professional cleaning, power washing, junk removal, landscaping, auto detailing, bin cleaning, window cleaning, and commercial services across Kansas City."
         jsonLd={[buildLocalBusinessSchema(), buildOrganizationSchema(), buildFaqSchema(FAQS)]}
       />
-      <div className="font-sans-modern min-h-screen" style={{ backgroundColor: BG, color: PRIMARY }}>
+      <div className="font-sans-modern min-h-screen" style={{ backgroundColor: BG, color: BRAND.ink }}>
         {/*
           HERO — split layout, image right, single-input coverage check left.
           Replaces a centred text-only hero whose two buttons sent cold traffic
@@ -128,7 +128,7 @@ export default function Home() {
                 </span>
               </h1>
 
-              <p className="text-base sm:text-lg max-w-xl mb-7 leading-relaxed" style={{ color: `${PRIMARY}b0` }}>
+              <p className="text-base sm:text-lg max-w-xl mb-7 leading-relaxed" style={{ color: `${BRAND.ink}b0` }}>
                 Eight home services, one local crew, one number to call. Check your ZIP and book a
                 same-week slot in about two minutes.
               </p>
@@ -151,7 +151,7 @@ export default function Home() {
                 <a
                   href={`tel:+1${PHONE}`}
                   className="inline-flex items-center gap-2 text-sm font-semibold"
-                  style={{ color: `${PRIMARY}99` }}
+                  style={{ color: `${BRAND.ink}99` }}
                 >
                   <Phone size={14} style={{ color: ACCENT }} />
                   {PHONE_DISPLAY}
@@ -215,7 +215,7 @@ export default function Home() {
               <h2 className="font-serif-display text-4xl sm:text-5xl mb-3" style={{ color: PRIMARY }}>
                 Eight services. One call.
               </h2>
-              <p className="text-sm" style={{ color: `${PRIMARY}99` }}>
+              <p className="text-sm" style={{ color: `${BRAND.ink}99` }}>
                 Book two or more and 10% comes off the combined total.
               </p>
             </div>
@@ -228,7 +228,7 @@ export default function Home() {
                 return (
                   <div
                     key={svc.id}
-                    className="relative bg-white rounded-3xl p-6 flex flex-col shadow-sm"
+                    className="relative bg-card rounded-3xl p-6 flex flex-col"
                     style={{ border: `1px solid ${svc.popular ? `${ACCENT}55` : `${PRIMARY}14`}` }}
                   >
                     {svc.popular && (
@@ -253,7 +253,7 @@ export default function Home() {
                     </p>
                     <ul className="space-y-1.5 mb-6 flex-1">
                       {svc.bullets.map((b) => (
-                        <li key={b} className="flex items-center gap-2 text-xs" style={{ color: `${PRIMARY}99` }}>
+                        <li key={b} className="flex items-center gap-2 text-xs" style={{ color: `${BRAND.ink}99` }}>
                           <Check size={12} style={{ color: iconColor, flexShrink: 0 }} />
                           {b}
                         </li>
@@ -291,7 +291,7 @@ export default function Home() {
           <HowItWorks
             heading="Booking takes two minutes."
             steps={HOW_IT_WORKS_STEPS}
-            primaryColor={PRIMARY}
+            primaryColor={BRAND.raised}
             accentColor={ACCENT_2}
           />
         </FadeInSection>
@@ -299,7 +299,7 @@ export default function Home() {
         {/* WHY LUNOVA */}
         <section className="py-20 px-4 sm:px-6" style={{ backgroundColor: BG }}>
           <FadeInSection className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
-            <div className="relative aspect-[4/5] rounded-3xl overflow-hidden shadow-xl border-4 border-white order-2 lg:order-1">
+            <div className="relative aspect-[4/5] rounded-3xl overflow-hidden shadow-xl border-4 border-[var(--card)] order-2 lg:order-1">
               <img
                 src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=900&h=1125&fit=crop&auto=format"
                 alt="Lunova professional crew"
@@ -329,7 +329,7 @@ export default function Home() {
                     </div>
                     <div>
                       <p className="font-semibold text-sm mb-0.5" style={{ color: PRIMARY }}>{title}</p>
-                      <p className="text-xs leading-relaxed" style={{ color: `${PRIMARY}99` }}>{desc}</p>
+                      <p className="text-xs leading-relaxed" style={{ color: `${BRAND.ink}99` }}>{desc}</p>
                     </div>
                   </div>
                 ))}
@@ -359,7 +359,7 @@ export default function Home() {
               <h2 className="font-serif-display text-4xl sm:text-5xl mb-3" style={{ color: PRIMARY }}>
                 What "done" looks like.
               </h2>
-              <p className="text-sm" style={{ color: `${PRIMARY}99` }}>
+              <p className="text-sm" style={{ color: `${BRAND.ink}99` }}>
                 Reference photography showing the finish we work to. We're new here — our own job
                 photos go up as we complete them.
               </p>
@@ -386,7 +386,7 @@ export default function Home() {
         <ContactStrip
           heading="Ready to check something off your list?"
           subtext="Book online in under two minutes — we'll confirm by phone."
-          primaryColor={PRIMARY}
+          primaryColor={BRAND.raised}
           accentColor={ACCENT_2}
           ctaLabel="Book Online"
           ctaTo="/book"

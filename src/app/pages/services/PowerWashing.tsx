@@ -4,7 +4,6 @@ import {
   Droplets,
   CheckCircle,
 } from "lucide-react";
-import { Link } from "react-router";
 import ServiceHero from "../../components/ServiceHero";
 import HowItWorks from "../../components/HowItWorks";
 import ServiceAreaSection from "../../components/ServiceAreaSection";
@@ -12,32 +11,14 @@ import FaqSection from "../../components/FaqSection";
 import ContactStrip from "../../components/common/ContactStrip";
 import Seo from "../../components/common/Seo";
 import StatBand from "../../components/StatBand";
+import PackageGrid from "../../components/PackageGrid";
 import WorkGallery from "../../components/WorkGallery";
 import { buildBreadcrumbSchema, buildFaqSchema, buildServiceSchema } from "../../utils/structuredData";
 import { SERVICE_THEMES } from "../../constants/theme";
+import { BRAND } from "../../constants/brand";
 
-const { primary: PRIMARY, accent: ACCENT, bg: BG } = SERVICE_THEMES["power-washing"];
+const { primary: PRIMARY, accent: ACCENT, ground: GROUND, bg: BG } = SERVICE_THEMES["power-washing"];
 
-const PACKAGES = [
-  {
-    title: "Driveway & Sidewalk",
-    price: "From $100",
-    features: ["Concrete & asphalt", "Oil & rust removal", "Tire mark removal", "Rinse & inspection"],
-    highlight: false,
-  },
-  {
-    title: "House Soft Wash",
-    price: "From $180",
-    features: ["Vinyl, stucco & brick", "Mold & algae removal", "Gutter brightening", "Rinse & spot-check"],
-    highlight: true,
-  },
-  {
-    title: "Deck & Patio",
-    price: "From $120",
-    features: ["Wood & composite", "Mildew treatment", "Paver restoration", "Season prep clean"],
-    highlight: false,
-  },
-];
 
 const FEATURES = [
   {
@@ -104,7 +85,7 @@ const POWER_WASHING_FAQS = [
 
 export default function PowerWashing() {
   return (
-    <div data-theme="power-washing" className="font-sans-modern min-h-screen" style={{ backgroundColor: BG, color: PRIMARY }}>
+    <div data-theme="power-washing" className="font-sans-modern min-h-screen" style={{ backgroundColor: BG, color: BRAND.ink }}>
       <Seo
         title="Power Washing Services | Lunova Services"
         description={POWER_WASHING_DESCRIPTION}
@@ -122,7 +103,7 @@ export default function PowerWashing() {
         badge="Power Washing by Lunova"
         titleContent={<>Exterior Cleaning<br />for Homes &amp; <span className="italic" style={{ color: ACCENT }}>Businesses.</span></>}
         description="Professional pressure washing, soft washing, gutter cleaning, and surface restoration across Kansas City. Licensed, insured, and results-guaranteed."
-        primaryColor={PRIMARY}
+        primaryColor={GROUND}
         accentColor={ACCENT}
         ctaLabel="Book a Clean"
         ctaTo="/book?service=power-washing"
@@ -138,64 +119,17 @@ export default function PowerWashing() {
             "Driveway Cleaning", "House Soft Wash", "Deck Restoration", "Oil & Rust Removal", "Licensed & Insured", "Soft Wash Available", "Free Estimates", "Satisfaction Guarantee",
             "Driveway Cleaning", "House Soft Wash", "Deck Restoration", "Oil & Rust Removal", "Licensed & Insured", "Soft Wash Available", "Free Estimates", "Satisfaction Guarantee",
           ].map((item, i) => (
-            <span key={i} className="text-xs font-bold uppercase tracking-widest" style={{ color: PRIMARY }}>
+            <span key={i} className="text-xs font-bold uppercase tracking-widest" style={{ color: BRAND.bg }}>
               ✦ {item}
             </span>
           ))}
         </div>
       </div>
 
-      {/* SERVICE PACKAGES */}
-      <section className="py-20 px-4 sm:px-6" style={{ backgroundColor: `${PRIMARY}07`, borderTop: `1px solid ${PRIMARY}15`, borderBottom: `1px solid ${PRIMARY}15` }}>
-        <div className="max-w-5xl mx-auto">
-          <div className="text-center max-w-2xl mx-auto mb-12">
-            <div className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest mb-3" style={{ color: PRIMARY }}>
-              <span className="w-6 h-0.5" style={{ backgroundColor: PRIMARY }} />
-              <span>Service Rates</span>
-            </div>
-            <h2 className="font-serif-display text-4xl sm:text-5xl" style={{ color: PRIMARY }}>
-              Transparent Pricing
-            </h2>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-6 items-start">
-            {PACKAGES.map((plan, idx) => (
-              <div
-                key={idx}
-                className="rounded-3xl p-7 flex flex-col gap-5"
-                style={{
-                  backgroundColor: plan.highlight ? PRIMARY : '#ffffff',
-                  color: plan.highlight ? '#ffffff' : PRIMARY,
-                  border: plan.highlight ? 'none' : `2px solid ${PRIMARY}18`,
-                  boxShadow: plan.highlight ? `0 20px 60px ${PRIMARY}40` : '0 2px 12px rgba(0,0,0,0.05)',
-                  transform: plan.highlight ? 'scale(1.04)' : 'none',
-                }}
-              >
-                <div>
-                  <p className="text-xs font-bold uppercase tracking-widest mb-1" style={{ opacity: 0.55 }}>{plan.title}</p>
-                  <p className="font-serif-display text-4xl">{plan.price}</p>
-                </div>
-                <ul className="space-y-2.5 flex-1">
-                  {plan.features.map((f) => (
-                    <li key={f} className="flex items-center gap-2 text-sm">
-                      <CheckCircle size={14} style={{ color: ACCENT, flexShrink: 0 }} />
-                      {f}
-                    </li>
-                  ))}
-                </ul>
-                <Link
-                  to="/book?service=power-washing"
-                  className="text-center font-bold py-3 rounded-full text-sm block text-white"
-                  style={{ backgroundColor: plan.highlight ? ACCENT : PRIMARY }}
-                >
-                  Book This Service →
-                </Link>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
+      {/* WHAT'S INCLUDED — shared PackageGrid, sourced from constants/serviceDetails.ts.
+          Same packages, same checklist, same prices the booking wizard shows — clicking
+          "Book this" pre-selects the exact package in the wizard via ?package=. */}
+      <PackageGrid serviceKey="power" primaryColor={PRIMARY} accentColor={ACCENT} />
       {/* FEATURE HIGHLIGHTS */}
       <section className="py-20 px-4 sm:px-6" style={{ backgroundColor: BG }}>
         <div className="max-w-7xl mx-auto">
@@ -213,13 +147,13 @@ export default function PowerWashing() {
             {FEATURES.map((f, idx) => {
               const Icon = f.icon;
               return (
-                <div key={idx} className="bg-white p-6 rounded-2xl shadow-sm flex flex-col gap-4" style={{ border: `1px solid ${PRIMARY}15` }}>
+                <div key={idx} className="bg-card p-6 rounded-2xl flex flex-col gap-4" style={{ border: `1px solid ${PRIMARY}15` }}>
                   <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0 text-white" style={{ backgroundColor: PRIMARY }}>
                     <Icon size={22} />
                   </div>
                   <div>
                     <h4 className="font-bold text-sm mb-1" style={{ color: PRIMARY }}>{f.title}</h4>
-                    <p className="text-sm leading-relaxed" style={{ color: `${PRIMARY}bb` }}>{f.desc}</p>
+                    <p className="text-sm leading-relaxed" style={{ color: `${BRAND.ink}bb` }}>{f.desc}</p>
                   </div>
                 </div>
               );
@@ -231,7 +165,7 @@ export default function PowerWashing() {
       {/* WHAT DONE LOOKS LIKE — real job photography, see constants/serviceGallery.ts */}
       <WorkGallery
         serviceKey="power-washing"
-        primaryColor={PRIMARY}
+        primaryColor={GROUND}
         accentColor={ACCENT}
         bgColor={BG}
         bookTo="/book?service=power"
@@ -241,15 +175,15 @@ export default function PowerWashing() {
       <HowItWorks
         heading="Our Proven Power Washing Process"
         steps={HOW_IT_WORKS_STEPS}
-        primaryColor={PRIMARY}
+        primaryColor={GROUND}
         accentColor={ACCENT}
       />
 
       {/* STATS BAND — shared component; this markup was duplicated on all 9 pages. */}
-      <StatBand stats={STATS} primaryColor={PRIMARY} accentColor={ACCENT} />
+      <StatBand stats={STATS} primaryColor={GROUND} accentColor={ACCENT} />
 
       {/* Wave transition */}
-      <div style={{ backgroundColor: PRIMARY, lineHeight: 0, marginTop: '-1px' }}>
+      <div style={{ backgroundColor: GROUND, lineHeight: 0, marginTop: '-1px' }}>
         <svg viewBox="0 0 1440 72" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" className="w-full block" style={{ height: '50px' }}>
           <path d="M0,36 C180,72 360,0 540,36 C720,72 900,0 1080,36 C1260,72 1380,0 1440,36 L1440,72 L0,72 Z" fill={BG} />
         </svg>
@@ -272,7 +206,7 @@ export default function PowerWashing() {
       <ContactStrip
         heading="Ready to Restore Your Curb Appeal?"
         subtext="Book a free on-site estimate and get your driveway, siding, or deck looking brand new — same-week slots available across Kansas City."
-        primaryColor={PRIMARY}
+        primaryColor={GROUND}
         accentColor={ACCENT}
         ctaLabel="Book a Clean"
         ctaTo="/book?service=power-washing"

@@ -31,6 +31,9 @@ import { trackBookingStep, trackEvent } from "../../utils/analytics";
 import { useCrmPricing } from "../../hooks/useCrmPricing";
 import { Field, PrivacyNote, StepNav } from "./WizardChrome";
 import ServiceDetailStep from "./ServiceDetailStep";
+import ConfettiBurst from "../../components/common/ConfettiBurst";
+import { SERVICE_THEMES } from "../../constants/theme";
+import { BRAND } from "../../constants/brand";
 
 const inputClass =
   "w-full rounded-xl border border-border bg-card px-4 py-3 text-[15px] text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-shadow";
@@ -136,6 +139,7 @@ export default function BookingWizard() {
 
   useEffect(() => {
     const service = searchParams.get("service");
+    const packageParam = searchParams.get("package");
     const zip = normalizeZip(searchParams.get("zip") || "");
     const city = searchParams.get("city") || "";
     const step = Number(searchParams.get("step"));
@@ -145,6 +149,20 @@ export default function BookingWizard() {
       if (service && CATEGORY_LABELS[service]) {
         next.category = service;
         next.step = Math.max(next.step, 2);
+        next.answers = { ...defaultAnswers(service), ...next.answers };
+
+        /**
+         * The service-page → wizard deep link. Clicking "Book this" under a
+         * package on a service page (see PackageGrid) lands here with both
+         * `service` and `package` set — the exact tier the visitor was
+         * reading is already selected, so step 2 opens on the qualifying
+         * questions instead of asking them to re-pick a package that's
+         * literally still on their screen a click ago.
+         */
+        if (packageParam && findPackage(service, packageParam)) {
+          next.packageId = packageParam;
+          next.step = Math.max(next.step, 2);
+        }
       }
       if (zip.length === 5) next.zip = zip;
       if (city && CITIES.includes(city)) next.city = city;
@@ -422,9 +440,19 @@ export default function BookingWizard() {
   if (state.timeWindow) scheduleParts.push(state.timeWindow);
 
   if (state.submitted) {
+    const dept = SERVICE_THEMES[state.category as keyof typeof SERVICE_THEMES];
+    const confettiColors = dept
+      ? [dept.accent, BRAND.primary, BRAND.accent, "#ffffff"]
+      : [BRAND.primary, BRAND.accent, "#ffffff"];
+
     return (
       <div className="max-w-lg mx-auto text-center py-12">
-        <div className="w-16 h-16 rounded-full bg-primary/12 text-primary flex items-center justify-center mx-auto mb-5">
+        {/* The one moment in the flow that gets to be a little loud — a
+            booking just landed. Everything else in this wizard stays quiet
+            on purpose; see the artifact-design note on spending boldness
+            in one place. */}
+        <ConfettiBurst colors={confettiColors} />
+        <div className="w-16 h-16 rounded-full bg-primary/12 text-primary flex items-center justify-center mx-auto mb-5 animate-in zoom-in-50 duration-300">
           <Check size={30} strokeWidth={2.75} />
         </div>
         <h1 className="font-serif-display text-3xl mb-3 text-foreground">Request received</h1>
@@ -479,10 +507,10 @@ export default function BookingWizard() {
                     type="button"
                     onClick={() => selectCategory(cat.id)}
                     aria-pressed={active}
-                    className={`relative flex flex-col items-start gap-3 p-4 rounded-2xl text-left border-2 transition-all ${
+                    className={`relative flex flex-col items-start gap-3 p-4 rounded-2xl text-left border-2 transition-all duration-150 ${
                       active
-                        ? "border-primary bg-primary/[0.07] shadow-sm"
-                        : "border-border bg-background hover:border-primary/40"
+                        ? "border-primary bg-primary/[0.07] scale-[1.02] shadow-[0_0_0_3px_var(--tw-shadow-color)] shadow-primary/15"
+                        : "border-border bg-background hover:border-primary/40 hover:-translate-y-0.5 active:scale-[0.98] active:translate-y-0"
                     }`}
                   >
                     {cat.popular && (
@@ -492,13 +520,18 @@ export default function BookingWizard() {
                     )}
                     {/* The tick replaces the icon on select — an unmistakable
                         state change, rather than a border colour a colourblind
-                        user may not register. */}
+                        user may not register — and pops in rather than fading,
+                        the small immediate "you picked it" reward. */}
                     <span
                       className={`w-9 h-9 rounded-xl flex items-center justify-center transition-colors ${
                         active ? "bg-primary text-primary-foreground" : "bg-secondary text-primary"
                       }`}
                     >
-                      {active ? <Check size={18} strokeWidth={3} /> : <Icon size={18} />}
+                      {active ? (
+                        <Check size={18} strokeWidth={3} className="animate-in zoom-in-50 spin-in-12 duration-200" />
+                      ) : (
+                        <Icon size={18} />
+                      )}
                     </span>
                     <span className="text-sm font-semibold leading-tight text-foreground">{cat.name}</span>
                     <span className="text-xs font-bold text-primary -mt-1.5">{cat.price}</span>

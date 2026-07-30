@@ -4,7 +4,6 @@ import {
   Car,
   MapPin,
 } from "lucide-react";
-import { Link } from "react-router";
 import ServiceHero from "../../components/ServiceHero";
 import HowItWorks from "../../components/HowItWorks";
 import ServiceAreaSection from "../../components/ServiceAreaSection";
@@ -12,20 +11,14 @@ import FaqSection from "../../components/FaqSection";
 import ContactStrip from "../../components/common/ContactStrip";
 import Seo from "../../components/common/Seo";
 import StatBand from "../../components/StatBand";
+import PackageGrid from "../../components/PackageGrid";
 import WorkGallery from "../../components/WorkGallery";
 import { buildBreadcrumbSchema, buildFaqSchema, buildServiceSchema } from "../../utils/structuredData";
 import { SERVICE_THEMES } from "../../constants/theme";
+import { BRAND } from "../../constants/brand";
 
-const { primary: PRIMARY, accent: ACCENT, bg: BG } = SERVICE_THEMES["auto-detailing"];
+const { primary: PRIMARY, accent: ACCENT, ground: GROUND, bg: BG } = SERVICE_THEMES["auto-detailing"];
 
-const PACKAGES = [
-  { title: "Exterior Wash & Dry", price: "From $50", desc: "Hand wash, dry, and wheel clean for a quick refresh between details." },
-  { title: "Full Interior Detail", price: "From $95", desc: "Deep vacuum, steam, wipe-down of all surfaces, and odor elimination." },
-  { title: "Exterior Detail", price: "From $120", desc: "Clay bar, polish, wax, and tire dressing for a showroom shine." },
-  { title: "Full Detail Package", price: "From $180", desc: "Interior + exterior combined: our most popular complete detail." },
-  { title: "Ceramic Coating", price: "From $350", desc: "3-year paint protection coating applied professionally at your location." },
-  { title: "Headlight Restoration", price: "From $65", desc: "Oxidized headlights polished and sealed for improved clarity and safety." },
-];
 
 const FEATURES = [
   {
@@ -92,7 +85,7 @@ const AUTO_DETAILING_FAQS = [
 
 export default function AutoDetailing() {
   return (
-    <div data-theme="auto-detailing" className="font-sans-modern min-h-screen" style={{ backgroundColor: BG, color: PRIMARY }}>
+    <div data-theme="auto-detailing" className="font-sans-modern min-h-screen" style={{ backgroundColor: BG, color: BRAND.ink }}>
       <Seo
         title="Auto Detailing Services | Lunova Services"
         description={AUTO_DETAILING_DESCRIPTION}
@@ -110,7 +103,7 @@ export default function AutoDetailing() {
         badge="KC's Mobile Auto Detailing Service"
         titleContent={<>Your Car, <span className="italic" style={{ color: ACCENT }}>Detailed</span> <br />At Your Doorstep.</>}
         description="We bring professional-grade detailing directly to your home or office. From express washes to full paint protection — your vehicle deserves the best."
-        primaryColor={PRIMARY}
+        primaryColor={GROUND}
         accentColor={ACCENT}
         ctaLabel="Book a Clean"
         ctaTo="/book?service=auto-detailing"
@@ -126,51 +119,17 @@ export default function AutoDetailing() {
             "Full Detail", "Ceramic Coating", "Interior Steam Clean", "Headlight Restoration", "Mobile Service", "Licensed & Insured", "Satisfaction Guarantee", "We Come to You",
             "Full Detail", "Ceramic Coating", "Interior Steam Clean", "Headlight Restoration", "Mobile Service", "Licensed & Insured", "Satisfaction Guarantee", "We Come to You",
           ].map((item, i) => (
-            <span key={i} className="text-xs font-bold uppercase tracking-widest" style={{ color: PRIMARY }}>
+            <span key={i} className="text-xs font-bold uppercase tracking-widest" style={{ color: BRAND.bg }}>
               ✦ {item}
             </span>
           ))}
         </div>
       </div>
 
-      {/* SERVICE PACKAGES */}
-      <section className="py-20 px-4 sm:px-6" style={{ backgroundColor: `${PRIMARY}08`, borderTop: `1px solid ${PRIMARY}15`, borderBottom: `1px solid ${PRIMARY}15` }}>
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center max-w-2xl mx-auto mb-12">
-            <div className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest mb-3" style={{ color: PRIMARY }}>
-              <span className="w-6 h-0.5" style={{ backgroundColor: PRIMARY }} />
-              <span>Services &amp; Rates</span>
-            </div>
-            <h2 className="font-serif-display text-4xl sm:text-5xl" style={{ color: PRIMARY }}>
-              Complete Auto Detailing Menu
-            </h2>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {PACKAGES.map((item, idx) => (
-              <div key={idx} className="bg-white p-6 rounded-2xl flex flex-col justify-between shadow-sm" style={{ border: `1px solid ${PRIMARY}18` }}>
-                <div>
-                  <div className="flex justify-between items-start mb-3">
-                    <h3 className="font-serif-display text-2xl" style={{ color: PRIMARY }}>{item.title}</h3>
-                    <span className="text-xs font-bold px-3 py-1 rounded-full shrink-0 ml-2" style={{ backgroundColor: ACCENT, color: PRIMARY }}>
-                      {item.price}
-                    </span>
-                  </div>
-                  <p className="text-sm leading-relaxed mb-6" style={{ color: `${PRIMARY}bb` }}>{item.desc}</p>
-                </div>
-                <Link
-                  to="/book?service=auto-detailing"
-                  className="w-full py-2.5 text-xs font-bold rounded-full text-center transition-colors block"
-                  style={{ backgroundColor: PRIMARY, color: '#ffffff' }}
-                >
-                  Book This Service →
-                </Link>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
+      {/* WHAT'S INCLUDED — shared PackageGrid, sourced from constants/serviceDetails.ts.
+          Same packages, same checklist, same prices the booking wizard shows — clicking
+          "Book this" pre-selects the exact package in the wizard via ?package=. */}
+      <PackageGrid serviceKey="auto" primaryColor={PRIMARY} accentColor={ACCENT} />
       {/* FEATURE HIGHLIGHTS */}
       <section className="py-20 px-4 sm:px-6" style={{ backgroundColor: BG }}>
         <div className="max-w-7xl mx-auto">
@@ -188,13 +147,13 @@ export default function AutoDetailing() {
             {FEATURES.map((f, idx) => {
               const Icon = f.icon;
               return (
-                <div key={idx} className="bg-white p-6 rounded-2xl shadow-sm flex flex-col gap-4" style={{ border: `1px solid ${PRIMARY}15` }}>
-                  <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0" style={{ backgroundColor: PRIMARY, color: ACCENT }}>
+                <div key={idx} className="bg-card p-6 rounded-2xl flex flex-col gap-4" style={{ border: `1px solid ${PRIMARY}15` }}>
+                  <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0" style={{ backgroundColor: GROUND, color: ACCENT }}>
                     <Icon size={22} />
                   </div>
                   <div>
                     <h4 className="font-bold text-sm mb-1" style={{ color: PRIMARY }}>{f.title}</h4>
-                    <p className="text-sm leading-relaxed" style={{ color: `${PRIMARY}bb` }}>{f.desc}</p>
+                    <p className="text-sm leading-relaxed" style={{ color: `${BRAND.ink}bb` }}>{f.desc}</p>
                   </div>
                 </div>
               );
@@ -206,7 +165,7 @@ export default function AutoDetailing() {
       {/* WHAT DONE LOOKS LIKE — real job photography, see constants/serviceGallery.ts */}
       <WorkGallery
         serviceKey="auto-detailing"
-        primaryColor={PRIMARY}
+        primaryColor={GROUND}
         accentColor={ACCENT}
         bgColor={BG}
         bookTo="/book?service=auto"
@@ -216,15 +175,15 @@ export default function AutoDetailing() {
       <HowItWorks
         heading="Our Proven Auto Detailing Process"
         steps={HOW_IT_WORKS_STEPS}
-        primaryColor={PRIMARY}
+        primaryColor={GROUND}
         accentColor={ACCENT}
       />
 
       {/* STATS BAND — shared component; this markup was duplicated on all 9 pages. */}
-      <StatBand stats={STATS} primaryColor={PRIMARY} accentColor={ACCENT} />
+      <StatBand stats={STATS} primaryColor={GROUND} accentColor={ACCENT} />
 
       {/* Wave transition */}
-      <div style={{ backgroundColor: PRIMARY, lineHeight: 0, marginTop: '-1px' }}>
+      <div style={{ backgroundColor: GROUND, lineHeight: 0, marginTop: '-1px' }}>
         <svg viewBox="0 0 1440 72" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" className="w-full block" style={{ height: '50px' }}>
           <path d="M0,36 C180,72 360,0 540,36 C720,72 900,0 1080,36 C1260,72 1380,0 1440,36 L1440,72 L0,72 Z" fill={BG} />
         </svg>
@@ -247,7 +206,7 @@ export default function AutoDetailing() {
       <ContactStrip
         heading="Ready for a Showroom Shine?"
         subtext="Book your mobile detail today — we bring the water, power, and products straight to your driveway anywhere in the KC metro."
-        primaryColor={PRIMARY}
+        primaryColor={GROUND}
         accentColor={ACCENT}
         ctaLabel="Book a Clean"
         ctaTo="/book?service=auto-detailing"

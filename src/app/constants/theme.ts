@@ -1,73 +1,47 @@
 import { BRAND } from "./brand";
 
 /**
- * DEPARTMENT IDENTITIES.
+ * Per-service accent themes, on the dark rebuild.
  *
- * Each service line gets its own accent and its own dark ground, so the
- * branches can be spun out as separate departments later without a redesign —
- * the colour already belongs to the department rather than to the page.
+ * Each department layers exactly one vivid identity colour on top of the
+ * shared dark ground (BRAND.bg) — they do not replace it. That is the whole
+ * "one skeleton, nine accents" system: nine department pages that all look
+ * like the same company, not nine different websites.
  *
- * THE GUARDRAIL: identity is colour only. Every service page shares the exact
- * same skeleton (ServiceHero → marquee → packages → features → work gallery →
- * process → StatBand → service area → FAQ → ContactStrip) and the exact same
- * type scale. Nine palettes on one layout reads as one company with nine
- * divisions. Nine palettes on nine layouts reads as nine different websites
- * badly glued together. Do not fork the layout per service.
+ * `primary`/`accent` are the SAME vivid hex on purpose. The old cream-era
+ * version used two different tones (a dark navy "primary" for headings and a
+ * bright "accent" for highlights) because dark navy read fine as text on
+ * cream. On a dark ground that dark navy is nearly invisible, so there is
+ * only one identity colour now — components that used to alternate between
+ * PRIMARY and ACCENT for two-tone icon tints just get one consistent tone.
  *
- * `ground` is only ever used as a dark surface behind white text — hero scrims,
- * the stat band, the process band — so its contrast obligation is against
- * white, not against BRAND.bg. `accent` must clear 4.5:1 on `ground`.
- *
- * Values must stay in sync with the `[data-theme="..."]` blocks in
- * src/styles/theme.css.
+ * `ground` is the near-black tone unique to each department (hero scrims,
+ * stat bands, deep panels) — a hue-biased near-black rather than the flat
+ * page background, so those sections read as "this department", not just
+ * "the page again". Values mirror the [data-theme] blocks in
+ * src/styles/theme.css — change both together.
  */
-
 export interface ServiceTheme {
-  /** Human label for the department, for future org/nav separation. */
   department: string;
-  /** Dark ground. Used behind white text only. */
   primary: string;
-  /** The department's signature colour. */
   accent: string;
-  /** Page ground — shared across every department on purpose. */
+  /** Near-black, department-tinted. Hero scrims, stat bands, deep panels. */
+  ground: string;
   bg: string;
 }
 
 const bg = BRAND.bg;
 
 export const SERVICE_THEMES = {
-  // ── Cleaning division ────────────────────────────────────────────────
-  // Deep navy + warm amber. The parent of the two cleaning sub-brands.
-  cleaning: { department: "Cleaning", primary: "#14304A", accent: "#E8A830", bg },
-  "residential-cleaning": { department: "Residential Cleaning", primary: "#14304A", accent: "#E8A830", bg },
-  // Copper against a colder slate, so commercial reads as the business-facing
-  // sibling rather than a recolour of residential.
-  "commercial-cleaning": { department: "Commercial Cleaning", primary: "#1B2A38", accent: "#C97B3C", bg },
-
-  // ── Exterior division ────────────────────────────────────────────────
-  // Blue is the one cool accent in the system and it is earned: the service is
-  // water. Anything warm here fights the subject matter.
-  "power-washing": { department: "Power Washing", primary: "#1A2F4A", accent: "#2BA8E0", bg },
-  // Glass gets warm gold rather than a second blue — two blues in the same
-  // division were indistinguishable in the nav and on the cards.
-  "window-cleaning": { department: "Window Cleaning", primary: "#1E2430", accent: "#F0B429", bg },
-
-  // ── Auto division ────────────────────────────────────────────────────
-  // Automotive crimson on near-black, picked to sit with the dark-red bodywork
-  // in the detailing photography.
-  "auto-detailing": { department: "Auto Detailing", primary: "#1A1618", accent: "#D8402F", bg },
-
-  // ── Grounds division ─────────────────────────────────────────────────
-  // Sage carries straight through from the parent brand — lawn care is the
-  // closest department to the Lunova mark itself.
-  landscaping: { department: "Landscaping", primary: "#0d382c", accent: BRAND.accent, bg },
-  // Fresh lime for sanitation, distinct from landscaping's deeper sage.
-  "bin-cleaning": { department: "Bin Cleaning", primary: "#17301F", accent: "#8DC63F", bg },
-
-  // ── Hauling division ─────────────────────────────────────────────────
-  // Safety orange on warm charcoal. The most industrial line gets the most
-  // industrial colour.
-  "junk-removal": { department: "Junk Removal", primary: "#1F1B16", accent: "#F97316", bg },
+  cleaning: { department: "Cleaning", primary: "#E8A830", accent: "#E8A830", ground: "#101E2C", bg },
+  "residential-cleaning": { department: "Residential Cleaning", primary: "#E8A830", accent: "#E8A830", ground: "#101E2C", bg },
+  "commercial-cleaning": { department: "Commercial Cleaning", primary: "#C97B3C", accent: "#C97B3C", ground: "#141F29", bg },
+  "power-washing": { department: "Power Washing", primary: "#2BA8E0", accent: "#2BA8E0", ground: "#101C2C", bg },
+  "window-cleaning": { department: "Window Cleaning", primary: "#F0B429", accent: "#F0B429", ground: "#171B22", bg },
+  "auto-detailing": { department: "Auto Detailing", primary: "#D8402F", accent: "#D8402F", ground: "#17100F", bg },
+  landscaping: { department: "Landscaping", primary: BRAND.accent, accent: BRAND.accent, ground: "#0A2119", bg },
+  "bin-cleaning": { department: "Bin Cleaning", primary: "#8DC63F", accent: "#8DC63F", ground: "#0F1D14", bg },
+  "junk-removal": { department: "Junk Removal", primary: "#F97316", accent: "#F97316", ground: "#191410", bg },
 } as const satisfies Record<string, ServiceTheme>;
 
 export type ServiceThemeKey = keyof typeof SERVICE_THEMES;

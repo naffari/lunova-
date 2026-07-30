@@ -1,5 +1,4 @@
 import { ShieldCheck, Truck, Calendar, Star } from "lucide-react";
-import { Link } from "react-router";
 import ServiceHero from "../components/ServiceHero";
 import HowItWorks from "../components/HowItWorks";
 import ServiceAreaSection from "../components/ServiceAreaSection";
@@ -7,19 +6,13 @@ import FaqSection from "../components/FaqSection";
 import ContactStrip from "../components/common/ContactStrip";
 import Seo from "../components/common/Seo";
 import StatBand from "../components/StatBand";
+import PackageGrid from "../components/PackageGrid";
 import { SERVICE_THEMES } from "../constants/theme";
+import { BRAND } from "../constants/brand";
 import { buildBreadcrumbSchema, buildFaqSchema, buildServiceSchema } from "../utils/structuredData";
 
-const { primary: PRIMARY, accent: ACCENT, bg: BG } = SERVICE_THEMES["junk-removal"];
+const { primary: PRIMARY, accent: ACCENT, ground: GROUND, bg: BG } = SERVICE_THEMES["junk-removal"];
 
-const PACKAGES = [
-  { title: "Minimum / Single Item", price: "$99", desc: "Single small item or minimum trip fee. Great for one piece of furniture or appliance." },
-  { title: "1/4 Load", price: "$175", desc: "A truck-bed quarter load. Ideal for a few large items or a small room's worth of clutter." },
-  { title: "1/2 Load", price: "$299", desc: "Half a truckload — perfect for bedroom sets, office furniture, or moderate cleanouts." },
-  { title: "3/4 Load", price: "$425", desc: "Three-quarter load for significant estate items, garage cleanouts, or multi-room jobs." },
-  { title: "Full Truckload", price: "$550", desc: "Maximum haul — full estate cleanouts, construction debris, or commercial jobs." },
-  { title: "Same-Day Rush", price: "+$75", desc: "Emergency same-day scheduling fee. Subject to availability — call to confirm." },
-];
 
 const FEATURES = [
   {
@@ -91,7 +84,7 @@ const JUNK_REMOVAL_FAQS = [
 
 export default function JunkRemoval() {
   return (
-    <div data-theme="junk-removal" className="font-sans-modern min-h-screen" style={{ backgroundColor: BG, color: PRIMARY }}>
+    <div data-theme="junk-removal" className="font-sans-modern min-h-screen" style={{ backgroundColor: BG, color: BRAND.ink }}>
       <Seo
         title="Junk Removal & Hauling Services | Lunova Services"
         description={JUNK_REMOVAL_DESCRIPTION}
@@ -108,7 +101,7 @@ export default function JunkRemoval() {
         badge="Now Booking in Kansas City"
         titleContent={<>We Haul So <br />You <span className="italic" style={{ color: ACCENT }}>Don't</span> Have To.</>}
         description="Furniture, appliances, construction debris, and full estate cleanouts — our crew shows up fast, lifts everything, and leaves your space spotless."
-        primaryColor={PRIMARY}
+        primaryColor={GROUND}
         accentColor={ACCENT}
         ctaLabel="Book a Haul"
         ctaTo="/book?service=junk"
@@ -121,51 +114,17 @@ export default function JunkRemoval() {
       <div style={{ backgroundColor: ACCENT, overflow: 'hidden' }} className="py-3">
         <div style={{ display: 'flex', gap: '3rem', whiteSpace: 'nowrap', animation: 'marquee 20s linear infinite', width: 'max-content' }}>
           {MARQUEE_ITEMS.map((item, i) => (
-            <span key={i} className="text-xs font-bold uppercase tracking-widest" style={{ color: PRIMARY }}>
+            <span key={i} className="text-xs font-bold uppercase tracking-widest" style={{ color: BRAND.bg }}>
               ✦ {item}
             </span>
           ))}
         </div>
       </div>
 
-      {/* SERVICE PACKAGES */}
-      <section className="py-20 px-4 sm:px-6" style={{ backgroundColor: `${PRIMARY}07`, borderTop: `1px solid ${PRIMARY}12`, borderBottom: `1px solid ${PRIMARY}12` }}>
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center max-w-2xl mx-auto mb-12">
-            <div className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest mb-3" style={{ color: PRIMARY }}>
-              <span className="w-6 h-0.5" style={{ backgroundColor: PRIMARY }} />
-              <span>Rates &amp; Pricing</span>
-            </div>
-            <h2 className="font-serif-display text-4xl sm:text-5xl" style={{ color: PRIMARY }}>
-              Transparent Junk Removal Rates
-            </h2>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {PACKAGES.map((item, idx) => (
-              <div key={idx} className="bg-white p-6 rounded-2xl flex flex-col justify-between shadow-sm" style={{ border: `1px solid ${PRIMARY}18` }}>
-                <div>
-                  <div className="flex justify-between items-start mb-3">
-                    <h3 className="font-serif-display text-2xl" style={{ color: PRIMARY }}>{item.title}</h3>
-                    <span className="text-xs font-bold px-3 py-1 rounded-full shrink-0 ml-2" style={{ backgroundColor: ACCENT, color: PRIMARY }}>
-                      {item.price}
-                    </span>
-                  </div>
-                  <p className="text-sm leading-relaxed mb-6" style={{ color: `${PRIMARY}bb` }}>{item.desc}</p>
-                </div>
-                <Link
-                  to="/book?service=junk"
-                  className="w-full py-2.5 text-xs font-bold rounded-full text-center transition-colors block"
-                  style={{ backgroundColor: PRIMARY, color: '#ffffff' }}
-                >
-                  Book This Service →
-                </Link>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
+      {/* WHAT'S INCLUDED — shared PackageGrid, sourced from constants/serviceDetails.ts.
+          Same packages, same checklist, same prices the booking wizard shows — clicking
+          "Book this" pre-selects the exact package in the wizard via ?package=. */}
+      <PackageGrid serviceKey="junk" primaryColor={PRIMARY} accentColor={ACCENT} />
       {/* FEATURE HIGHLIGHTS */}
       <section className="py-20 px-4 sm:px-6" style={{ backgroundColor: BG }}>
         <div className="max-w-7xl mx-auto">
@@ -183,13 +142,13 @@ export default function JunkRemoval() {
             {FEATURES.map((f, idx) => {
               const Icon = f.icon;
               return (
-                <div key={idx} className="bg-white p-6 rounded-2xl shadow-sm flex flex-col gap-4" style={{ border: `1px solid ${PRIMARY}12` }}>
-                  <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0" style={{ backgroundColor: PRIMARY, color: ACCENT }}>
+                <div key={idx} className="bg-card p-6 rounded-2xl flex flex-col gap-4" style={{ border: `1px solid ${PRIMARY}12` }}>
+                  <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0" style={{ backgroundColor: GROUND, color: ACCENT }}>
                     <Icon size={22} />
                   </div>
                   <div>
                     <h4 className="font-bold text-sm mb-1" style={{ color: PRIMARY }}>{f.title}</h4>
-                    <p className="text-sm leading-relaxed" style={{ color: `${PRIMARY}bb` }}>{f.desc}</p>
+                    <p className="text-sm leading-relaxed" style={{ color: `${BRAND.ink}bb` }}>{f.desc}</p>
                   </div>
                 </div>
               );
@@ -202,15 +161,15 @@ export default function JunkRemoval() {
       <HowItWorks
         heading="Our Proven Junk Removal Process"
         steps={HOW_IT_WORKS_STEPS}
-        primaryColor={PRIMARY}
+        primaryColor={GROUND}
         accentColor={ACCENT}
       />
 
       {/* STATS BAND — shared component; this markup was duplicated on all 9 pages. */}
-      <StatBand stats={STATS} primaryColor={PRIMARY} accentColor={ACCENT} />
+      <StatBand stats={STATS} primaryColor={GROUND} accentColor={ACCENT} />
 
       {/* Wave transition */}
-      <div style={{ backgroundColor: PRIMARY, lineHeight: 0, marginTop: '-1px' }}>
+      <div style={{ backgroundColor: GROUND, lineHeight: 0, marginTop: '-1px' }}>
         <svg viewBox="0 0 1440 72" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" className="w-full block" style={{ height: '50px' }}>
           <path d="M0,36 C180,72 360,0 540,36 C720,72 900,0 1080,36 C1260,72 1380,0 1440,36 L1440,72 L0,72 Z" fill={BG} />
         </svg>
@@ -233,7 +192,7 @@ export default function JunkRemoval() {
       <ContactStrip
         heading="Ready to Clear the Clutter?"
         subtext="Get a free instant estimate and same-day hauling — our crew handles the heavy lifting so you don't have to."
-        primaryColor={PRIMARY}
+        primaryColor={GROUND}
         accentColor={ACCENT}
         ctaLabel="Book a Haul"
         ctaTo="/book?service=junk"

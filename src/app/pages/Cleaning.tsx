@@ -20,9 +20,10 @@ import BeforeAfterSlider from "../components/common/BeforeAfterSlider";
 import Seo from "../components/common/Seo";
 import StatBand from "../components/StatBand";
 import { SERVICE_THEMES } from "../constants/theme";
+import { BRAND } from "../constants/brand";
 import { buildBreadcrumbSchema, buildFaqSchema, buildServiceSchema } from "../utils/structuredData";
 
-const { primary: PRIMARY, accent: ACCENT, bg: BG } = SERVICE_THEMES.cleaning;
+const { primary: PRIMARY, accent: ACCENT, ground: GROUND, bg: BG } = SERVICE_THEMES.cleaning;
 
 const SERVICES = [
   {
@@ -136,12 +137,12 @@ export default function Cleaning() {
           buildFaqSchema(CLEANING_FAQS),
         ]}
       />
-      <div data-theme="cleaning" className="font-sans-modern min-h-screen" style={{ backgroundColor: BG, color: PRIMARY }}>
+      <div data-theme="cleaning" className="font-sans-modern min-h-screen" style={{ backgroundColor: BG, color: BRAND.ink }}>
       <ServiceHero
         badge="Now Booking in Kansas City"
         titleContent={<>We Clean <span className="italic" style={{ color: ACCENT }}>Everything.</span> <br />So You Don't Have To.</>}
         description="From home deep cleans to commercial janitorial, power washing, and auto detailing — Lunova brings professional-grade results to every surface."
-        primaryColor={PRIMARY}
+        primaryColor={GROUND}
         accentColor={ACCENT}
         ctaLabel="Book a Clean"
         ctaTo="/book?service=cleaning"
@@ -157,7 +158,7 @@ export default function Cleaning() {
             "Residential Cleaning", "Commercial Janitorial", "Power Washing", "Window Cleaning", "Auto Detailing", "Bin Cleaning", "Licensed & Insured", "Satisfaction Guarantee",
             "Residential Cleaning", "Commercial Janitorial", "Power Washing", "Window Cleaning", "Auto Detailing", "Bin Cleaning", "Licensed & Insured", "Satisfaction Guarantee",
           ].map((item, i) => (
-            <span key={i} className="text-xs font-bold uppercase tracking-widest" style={{ color: PRIMARY }}>
+            <span key={i} className="text-xs font-bold uppercase tracking-widest" style={{ color: BRAND.bg }}>
               ✦ {item}
             </span>
           ))}
@@ -183,7 +184,7 @@ export default function Cleaning() {
               return (
                 <div
                   key={idx}
-                  className="bg-white rounded-2xl flex flex-col shadow-sm overflow-hidden"
+                  className="bg-card rounded-2xl flex flex-col overflow-hidden"
                   style={{ border: `1px solid ${PRIMARY}18` }}
                 >
                   <div className="h-48 overflow-hidden" style={{ backgroundColor: PRIMARY }}>
@@ -208,13 +209,13 @@ export default function Cleaning() {
                       </div>
                       <span
                         className="text-xs font-bold px-3 py-1 rounded-full shrink-0 ml-2"
-                        style={{ backgroundColor: ACCENT, color: PRIMARY }}
+                        style={{ backgroundColor: ACCENT, color: BRAND.bg }}
                       >
                         {item.price}
                       </span>
                     </div>
 
-                    <p className="text-sm leading-relaxed mb-4" style={{ color: `${PRIMARY}bb` }}>{item.desc}</p>
+                    <p className="text-sm leading-relaxed mb-4" style={{ color: `${BRAND.ink}bb` }}>{item.desc}</p>
 
                     <ul className="space-y-1.5 mb-6">
                       {item.bullets.map((bullet, bIdx) => (
@@ -229,7 +230,7 @@ export default function Cleaning() {
                       <Link
                         to={item.link}
                         className="w-full py-2.5 text-xs font-bold rounded-full text-center transition-colors block"
-                        style={{ backgroundColor: PRIMARY, color: '#ffffff' }}
+                        style={{ backgroundColor: GROUND, color: '#ffffff' }}
                       >
                         View Full Details →
                       </Link>
@@ -253,30 +254,30 @@ export default function Cleaning() {
             <h2 className="font-serif-display text-4xl sm:text-5xl leading-tight mb-6" style={{ color: PRIMARY }}>
               A Reputation Built on Spotless Results, Every Time.
             </h2>
-            <p className="text-sm leading-relaxed mb-8" style={{ color: `${PRIMARY}bb` }}>
+            <p className="text-sm leading-relaxed mb-8" style={{ color: `${BRAND.ink}bb` }}>
               We're a new Kansas City cleaning company built on background-checked crews, eco supplies, and a satisfaction guarantee on every job.
             </p>
 
             <div className="space-y-4 mb-8">
-              <div className="bg-white p-5 rounded-2xl flex items-start gap-4" style={{ border: `1px solid ${PRIMARY}15` }}>
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0" style={{ backgroundColor: PRIMARY, color: ACCENT }}>
+              <div className="bg-card p-5 rounded-2xl flex items-start gap-4" style={{ border: `1px solid ${PRIMARY}15` }}>
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0" style={{ backgroundColor: GROUND, color: ACCENT }}>
                   <Sparkles size={20} />
                 </div>
                 <div>
                   <h4 className="font-bold text-sm mb-1" style={{ color: PRIMARY }}>Professional-Grade Eco Products</h4>
-                  <p className="text-sm leading-relaxed" style={{ color: `${PRIMARY}bb` }}>
+                  <p className="text-sm leading-relaxed" style={{ color: `${BRAND.ink}bb` }}>
                     We use non-toxic, EPA-registered cleaning formulas safe for kids, pets, and sensitive surfaces.
                   </p>
                 </div>
               </div>
 
-              <div className="bg-white p-5 rounded-2xl flex items-start gap-4" style={{ border: `1px solid ${PRIMARY}15` }}>
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0" style={{ backgroundColor: PRIMARY, color: ACCENT }}>
+              <div className="bg-card p-5 rounded-2xl flex items-start gap-4" style={{ border: `1px solid ${PRIMARY}15` }}>
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0" style={{ backgroundColor: GROUND, color: ACCENT }}>
                   <ShieldCheck size={20} />
                 </div>
                 <div>
                   <h4 className="font-bold text-sm mb-1" style={{ color: PRIMARY }}>Background-Checked, Trained Crews</h4>
-                  <p className="text-sm leading-relaxed" style={{ color: `${PRIMARY}bb` }}>
+                  <p className="text-sm leading-relaxed" style={{ color: `${BRAND.ink}bb` }}>
                     Every team member undergoes background checks, hands-on training, and regular quality audits.
                   </p>
                 </div>
@@ -291,7 +292,7 @@ export default function Cleaning() {
               Get To Know Us
               <span
                 className="w-6 h-6 rounded-full flex items-center justify-center group-hover:translate-x-0.5 transition-transform"
-                style={{ backgroundColor: ACCENT, color: PRIMARY }}
+                style={{ backgroundColor: ACCENT, color: BRAND.bg }}
               >
                 <ArrowUpRight size={14} />
               </span>
@@ -299,7 +300,7 @@ export default function Cleaning() {
           </div>
 
           <BeforeAfterSlider
-            className="rounded-3xl h-[450px] sm:h-[520px] shadow-2xl border-4 border-white"
+            className="rounded-3xl h-[450px] sm:h-[520px] shadow-2xl border-4 border-[var(--card)]"
             beforeImage="https://images.unsplash.com/photo-1610557892470-55d587b03d0c?w=800&h=1000&fit=crop&auto=format"
             afterImage="https://images.unsplash.com/photo-1563453392212-326f5e854473?w=800&h=1000&fit=crop&auto=format"
             beforeAlt="Home before Lunova's cleaning service"
@@ -313,15 +314,15 @@ export default function Cleaning() {
       <HowItWorks
         heading="Our Proven Cleaning Process"
         steps={HOW_IT_WORKS_STEPS}
-        primaryColor={PRIMARY}
+        primaryColor={GROUND}
         accentColor={ACCENT}
       />
 
       {/* STATS BAND — shared component; this markup was duplicated on all 9 pages. */}
-      <StatBand stats={STATS} primaryColor={PRIMARY} accentColor={ACCENT} />
+      <StatBand stats={STATS} primaryColor={GROUND} accentColor={ACCENT} />
 
       {/* Wave transition */}
-      <div style={{ backgroundColor: PRIMARY, lineHeight: 0, marginTop: '-1px' }}>
+      <div style={{ backgroundColor: GROUND, lineHeight: 0, marginTop: '-1px' }}>
         <svg viewBox="0 0 1440 72" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" className="w-full block" style={{ height: '50px' }}>
           <path d="M0,36 C180,72 360,0 540,36 C720,72 900,0 1080,36 C1260,72 1380,0 1440,36 L1440,72 L0,72 Z" fill={BG} />
         </svg>
@@ -344,7 +345,7 @@ export default function Cleaning() {
       <ContactStrip
         heading="Ready for a Spotless Property?"
         subtext="From homes to offices, driveways to vehicles — book any Lunova cleaning service today and get a flat-rate quote in minutes."
-        primaryColor={PRIMARY}
+        primaryColor={GROUND}
         accentColor={ACCENT}
         ctaLabel="Book a Clean"
         ctaTo="/book?service=cleaning"

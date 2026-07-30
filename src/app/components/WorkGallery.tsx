@@ -68,7 +68,7 @@ export default function WorkGallery({
 
         {gallery.beforeAfter && (
           <BeforeAfterSlider
-            className="rounded-3xl h-[340px] sm:h-[480px] shadow-2xl border-4 border-white mb-8"
+            className="rounded-3xl h-[340px] sm:h-[480px] shadow-2xl border-4 border-[var(--card)] mb-8"
             beforeImage={`${dir}/${gallery.beforeAfter.before}-1280.jpg`}
             afterImage={`${dir}/${gallery.beforeAfter.after}-1280.jpg`}
             beforeAlt={gallery.beforeAfter.beforeAlt}
