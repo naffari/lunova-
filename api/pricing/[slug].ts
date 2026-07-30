@@ -1,9 +1,15 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
-import { getPricing, isCrmConfigured } from "../_crm";
+import { getPricing, isCrmConfigured, resolveServiceSlug } from "../_crm";
 
 /**
  * Read-only proxy for the CRM's public pricing endpoint. Exists so the
  * browser never sees the API key; the CRM's own cache headers are mirrored.
+ *
+ * Accepts EITHER a booking-wizard category id ("cleaning", "power") or a raw CRM
+ * service slug ("residential-cleaning"). The wizard sends its own category ids,
+ * because the id→slug mapping lives in _crm.ts and must stay server-side with
+ * the rest of the CRM contract. A value that isn't a known category is passed
+ * through untouched, so a slug still works.
  */
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== "GET") {
@@ -20,8 +26,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(400).json({ error: "Missing service slug." });
   }
 
+  // "One-Time" is the wizard's default frequency; it only affects landscaping,
+  // which the CRM splits into one-time and recurring services.
+  const resolved = resolveServiceSlug(slug, "One-Time") ?? slug;
+
   try {
-    const { status, body } = await getPricing(slug);
+    const { status, body } = await getPricing(resolved);
     if (status === 200) {
       res.setHeader("Cache-Control", "public, s-maxage=60, stale-while-revalidate=300");
     }
