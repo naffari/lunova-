@@ -14,16 +14,23 @@ import {
 import {
   SERVICE_BY_ID,
   SERVICE_NAME_BY_ID,
-  buildEstimate,
+  cheapestSubservice,
   formatDollars,
-  formatPrice,
   startingAtLabel,
   BUNDLE_DISCOUNT,
 } from "../../constants/services";
+import {
+  defaultAnswers,
+  findPackage,
+  getServiceDetail,
+  priceDetail,
+  type Answers,
+} from "../../constants/serviceDetails";
 import { checkCoverage, isServable, normalizeZip } from "../../constants/serviceArea";
 import { trackBookingStep, trackEvent } from "../../utils/analytics";
 import { useCrmPricing } from "../../hooks/useCrmPricing";
 import { Field, PrivacyNote, StepNav } from "./WizardChrome";
+import ServiceDetailStep from "./ServiceDetailStep";
 
 const inputClass =
   "w-full rounded-xl border border-border bg-card px-4 py-3 text-[15px] text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-shadow";
@@ -38,14 +45,21 @@ const btnSecondary =
   "inline-flex items-center justify-center gap-1.5 font-semibold px-5 py-3.5 rounded-full text-sm border border-border text-foreground hover:bg-secondary transition-colors";
 
 const TOTAL_STEPS = STEP_LABELS.length;
-const DRAFT_KEY = "lunova:booking-draft:v2";
+/** Bumped: the shape changed from a subservice list to package + answers. */
+const DRAFT_KEY = "lunova:booking-draft:v3";
 
 interface WizardState {
   step: number;
   furthest: number;
   category: string;
-  subservices: string[];
-  addons: string[];
+  /** Chosen package id within the category, e.g. "deep". */
+  packageId: string;
+  /** Answers to the category's qualifying questions, keyed by question id. */
+  answers: Answers;
+  /** In-service add-on ids, e.g. "oven". */
+  extras: string[];
+  /** Other departments bundled into the same visit, by service id. */
+  bundles: string[];
   frequency: string;
   notes: string;
   date: string;
@@ -65,8 +79,10 @@ const INITIAL_STATE: WizardState = {
   step: 1,
   furthest: 1,
   category: "",
-  subservices: [],
-  addons: [],
+  packageId: "",
+  answers: {},
+  extras: [],
+  bundles: [],
   frequency: "One-Time",
   notes: "",
   date: "",
@@ -166,21 +182,64 @@ export default function BookingWizard() {
   const categoryLabel = SERVICE_NAME_BY_ID[state.category] || "";
   const service = SERVICE_BY_ID[state.category];
 
-  // Live CRM pricing where available, catalogue otherwise. Never blocks.
-  const { subservices, source: pricingSource } = useCrmPricing(state.category);
+  // Live CRM prices, matched onto the configured packages by name. The
+  // structure (checklists, exclusions, durations) always comes from
+  // serviceDetails.ts — the CRM only supplies the number, and only when it
+  // recognises the tier. Never blocks: the configured price shows immediately.
+  const { overrides: crmPrices, source: pricingSource } = useCrmPricing(state.category);
 
-  const estimate = useMemo(
-    () => buildEstimate({ serviceId: state.category, selected: state.subservices, addonIds: state.addons }),
-    [state.category, state.subservices, state.addons]
-  );
+  const detail = useMemo(() => {
+    const base = getServiceDetail(state.category);
+    if (!base || Object.keys(crmPrices).length === 0) return base;
+    return {
+      ...base,
+      packages: base.packages.map((pkg) => {
+        const live = crmPrices[pkg.name.trim().toLowerCase()];
+        return live === undefined || pkg.custom ? pkg : { ...pkg, from: live };
+      }),
+    };
+  }, [state.category, crmPrices]);
+
+  /**
+   * The estimate, assembled from the chosen package, the qualifying answers,
+   * the in-service extras, and any bundled departments.
+   *
+   * Bundled departments contribute their cheapest entry price, because the
+   * customer hasn't configured them — we'll pin those down on the call.
+   */
+  const estimate = useMemo(() => {
+    const detailPrice = priceDetail(detail, state.packageId, state.answers, state.extras);
+
+    let bundleTotal = 0;
+    let bundleNeedsVisit = false;
+    for (const id of state.bundles) {
+      const cheapest = cheapestSubservice(SERVICE_BY_ID[id]);
+      if (cheapest?.from === undefined) bundleNeedsVisit = true;
+      else bundleTotal += cheapest.from;
+    }
+
+    const serviceCount = (state.packageId ? 1 : 0) + state.bundles.length;
+    const subtotal = detailPrice.subtotal + bundleTotal;
+    const discount = serviceCount > 1 ? Math.round(subtotal * BUNDLE_DISCOUNT) : 0;
+
+    return {
+      ...detailPrice,
+      bundleTotal,
+      subtotal,
+      discount,
+      total: subtotal - discount,
+      serviceCount,
+      needsVisit: detailPrice.needsVisit || bundleNeedsVisit,
+    };
+  }, [state.category, state.packageId, state.answers, state.extras, state.bundles]);
 
   const coverage = state.zip.length === 5 ? checkCoverage(state.zip) : null;
 
   /** Per-step field errors. Keyed by field id so Field can pull its own. */
   const errors = useMemo(() => {
     const e: Record<string, string> = {};
-    if (state.step === 2 && state.subservices.length === 0) {
-      e.subservices = "Pick at least one option so we know what to quote.";
+    if (state.step === 2 && !state.packageId) {
+      e.packageId = "Choose a package so we know what to quote.";
     }
     if (state.step === 3) {
       if (!state.date) e.date = "Choose a preferred date.";
@@ -222,22 +281,35 @@ export default function BookingWizard() {
   }
 
   function selectCategory(id: string) {
-    setState((s) => (s.category === id ? s : { ...s, category: id, subservices: [], addons: [] }));
+    // Package, answers and extras are all keyed to the category, so switching
+    // service invalidates every one of them. Seed the answers with sensible
+    // defaults so the estimate is meaningful before anyone touches a control.
+    setState((s) =>
+      s.category === id
+        ? s
+        : { ...s, category: id, packageId: "", answers: defaultAnswers(id), extras: [], bundles: [] }
+    );
   }
 
-  function toggleSubservice(name: string) {
+  function selectPackage(id: string) {
+    setState((s) => ({ ...s, packageId: id }));
+  }
+
+  function setAnswer(questionId: string, value: string | number) {
+    setState((s) => ({ ...s, answers: { ...s.answers, [questionId]: value } }));
+  }
+
+  function toggleExtra(id: string) {
     setState((s) => ({
       ...s,
-      subservices: s.subservices.includes(name)
-        ? s.subservices.filter((v) => v !== name)
-        : [...s.subservices, name],
+      extras: s.extras.includes(id) ? s.extras.filter((v) => v !== id) : [...s.extras, id],
     }));
   }
 
-  function toggleAddon(id: string) {
+  function toggleBundle(id: string) {
     setState((s) => ({
       ...s,
-      addons: s.addons.includes(id) ? s.addons.filter((v) => v !== id) : [...s.addons, id],
+      bundles: s.bundles.includes(id) ? s.bundles.filter((v) => v !== id) : [...s.bundles, id],
     }));
   }
 
@@ -251,15 +323,34 @@ export default function BookingWizard() {
     setState(INITIAL_STATE);
   }
 
-  function selectedWithPrices(): string[] {
-    return subservices
-      .filter((sub) => state.subservices.includes(sub.name))
-      .map((sub) => `${sub.name} — ${formatPrice(sub)}`);
+  const chosenPackage = findPackage(state.category, state.packageId);
+
+  /**
+   * The priced breakdown as plain text, for the review screen and the crew's
+   * email. Every line the customer saw, in the order they saw it — so the
+   * person doing the job knows exactly what was sold.
+   */
+  function breakdownLines(): string[] {
+    return estimate.lines.map((line) =>
+      line.custom ? `${line.label} — quote on site` : `${line.label} — ${formatDollars(line.amount ?? 0)}`
+    );
   }
 
-  function addonPriceLabel(id: string): string {
-    const addon = SERVICE_BY_ID[id];
-    return addon ? startingAtLabel(addon).replace(/^From /, "from ") : "";
+  /** The answers, written out for a human rather than as raw ids. */
+  function answerSummary(): string[] {
+    if (!detail) return [];
+    return detail.questions.flatMap((question) => {
+      const value = state.answers[question.id];
+      if (value === undefined || value === "") return [];
+      if (question.kind === "counter") return [`${question.label}: ${value}`];
+      const option = question.options.find((o) => o.value === value);
+      return option ? [`${question.label}: ${option.label}`] : [];
+    });
+  }
+
+  function bundlePriceLabel(id: string): string {
+    const bundled = SERVICE_BY_ID[id];
+    return bundled ? startingAtLabel(bundled).replace(/^From /, "from ") : "";
   }
 
   async function handleSubmit() {
@@ -272,8 +363,14 @@ export default function BookingWizard() {
         body: JSON.stringify({
           category: state.category,
           categoryLabel,
-          subservices: selectedWithPrices(),
-          addons: state.addons.map((id) => `${SERVICE_NAME_BY_ID[id]} — ${addonPriceLabel(id)}`),
+          // `subservices` keeps its name so the CRM payload contract doesn't
+          // change; it now carries the package plus the full priced breakdown.
+          subservices: [
+            chosenPackage ? `${chosenPackage.name} (${chosenPackage.duration ?? "duration TBC"})` : "",
+            ...answerSummary(),
+            ...breakdownLines(),
+          ].filter(Boolean),
+          addons: state.bundles.map((id) => `${SERVICE_NAME_BY_ID[id]} — ${bundlePriceLabel(id)}`),
           frequency: state.frequency,
           notes: state.notes,
           date: state.date,
@@ -287,7 +384,7 @@ export default function BookingWizard() {
           hearAbout: state.hearAbout,
           website: state.website,
           estimateFloor: estimate.total,
-          estimateHasCustomItems: estimate.hasCustom,
+          estimateHasCustomItems: estimate.needsVisit,
         }),
       });
       const data = await res.json().catch(() => ({ ok: false }));
@@ -298,7 +395,8 @@ export default function BookingWizard() {
         service: state.category,
         services: estimate.serviceCount,
         estimate: estimate.total,
-        pricing: pricingSource,
+        package: state.packageId,
+        extras: state.extras.length,
       });
       setState((s) => ({ ...s, submitted: true }));
     } catch (err) {
@@ -418,70 +516,43 @@ export default function BookingWizard() {
         )}
 
         {/* STEP 2 — Details */}
-        {state.step === 2 && (
+        {state.step === 2 && detail && (
           <div>
             <h2 ref={stepHeadingRef} tabIndex={-1} className="font-serif-display text-2xl mb-1 text-foreground outline-none">
-              Tell us more
+              {detail.heading}
             </h2>
-            <p className="text-sm text-muted-foreground mb-6">
-              {categoryLabel}
+            <p className="text-sm text-muted-foreground mb-7">
+              {detail.blurb}
               {pricingSource === "crm" && (
-                <span className="ml-2 text-[11px] font-semibold text-primary">Live pricing</span>
+                <span className="ml-2 text-[11px] font-semibold text-primary whitespace-nowrap">
+                  Live pricing
+                </span>
               )}
             </p>
 
-            <fieldset className="mb-7">
-              <legend className="flex items-baseline gap-1.5 mb-2.5">
-                <span className="text-xs font-semibold text-foreground">Select all that apply</span>
-                <span className="text-[10px] font-medium text-primary">Required</span>
-              </legend>
-              <div className="grid gap-2">
-                {subservices.map((sub) => {
-                  const checked = state.subservices.includes(sub.name);
-                  return (
-                    <label
-                      key={sub.name}
-                      className={`flex items-center gap-3 px-4 py-3.5 rounded-xl border-2 cursor-pointer transition-colors ${
-                        checked ? "border-primary bg-primary/[0.07]" : "border-border bg-background hover:border-primary/30"
-                      }`}
-                    >
-                      <input
-                        type="checkbox"
-                        checked={checked}
-                        onChange={() => toggleSubservice(sub.name)}
-                        className="sr-only"
-                      />
-                      <span
-                        className={`w-5 h-5 rounded-md flex-none flex items-center justify-center border-2 transition-colors ${
-                          checked ? "border-primary bg-primary text-primary-foreground" : "border-muted-foreground/35"
-                        }`}
-                      >
-                        {checked && <Check size={12} strokeWidth={3.5} />}
-                      </span>
-                      <span className="flex-1 text-[15px] text-foreground">{sub.name}</span>
-                      <span className="text-sm font-bold text-primary">{formatPrice(sub)}</span>
-                    </label>
-                  );
-                })}
-              </div>
-              {errorFor("subservices") && (
-                <p role="alert" className="mt-2 text-[11px] font-semibold text-destructive">
-                  {errorFor("subservices")}
-                </p>
-              )}
-            </fieldset>
+            <ServiceDetailStep
+              detail={detail}
+              packageId={state.packageId}
+              answers={state.answers}
+              addOnIds={state.extras}
+              onPackage={selectPackage}
+              onAnswer={setAnswer}
+              onToggleAddOn={toggleExtra}
+              packageError={errorFor("packageId")}
+            />
 
             {(service?.upsells.length ?? 0) > 0 && (
-              <div className="rounded-2xl border border-primary/20 bg-primary/[0.04] p-5 mb-7">
+              <div className="rounded-2xl border border-primary/20 bg-primary/[0.04] p-5 mt-8">
                 <p className="text-sm font-semibold text-foreground mb-0.5">
-                  Add another service, save {Math.round(BUNDLE_DISCOUNT * 100)}%
+                  Need another department while we're there?
                 </p>
                 <p className="text-xs text-muted-foreground mb-3.5">
-                  One visit, one crew, {Math.round(BUNDLE_DISCOUNT * 100)}% off the combined total.
+                  One visit, one crew, {Math.round(BUNDLE_DISCOUNT * 100)}% off the combined total. We'll
+                  pin down the details for these on the call.
                 </p>
                 <div className="grid gap-2">
                   {(service?.upsells || []).map((id) => {
-                    const checked = state.addons.includes(id);
+                    const checked = state.bundles.includes(id);
                     return (
                       <label
                         key={id}
@@ -492,7 +563,7 @@ export default function BookingWizard() {
                         <input
                           type="checkbox"
                           checked={checked}
-                          onChange={() => toggleAddon(id)}
+                          onChange={() => toggleBundle(id)}
                           className="sr-only"
                         />
                         <span
@@ -503,13 +574,14 @@ export default function BookingWizard() {
                           {checked && <Check size={12} strokeWidth={3.5} />}
                         </span>
                         <span className="flex-1 text-sm text-foreground">{SERVICE_NAME_BY_ID[id]}</span>
-                        <span className="text-xs font-semibold text-muted-foreground">{addonPriceLabel(id)}</span>
+                        <span className="text-xs font-semibold text-muted-foreground">{bundlePriceLabel(id)}</span>
                       </label>
                     );
                   })}
                 </div>
               </div>
             )}
+
 
             <fieldset className="mb-7">
               <legend className="text-xs font-semibold text-foreground mb-2.5">How often?</legend>
@@ -787,9 +859,24 @@ export default function BookingWizard() {
 
             <dl className="rounded-2xl border border-border divide-y divide-border mb-6">
               <ReviewRow label="Service" value={categoryLabel} />
-              <ReviewRow label="Selected" value={selectedWithPrices().join(", ") || "—"} />
-              {state.addons.length > 0 && (
-                <ReviewRow label="Add-ons" value={state.addons.map((id) => SERVICE_NAME_BY_ID[id]).join(", ")} />
+              <ReviewRow label="Package" value={chosenPackage?.name || "—"} />
+              {answerSummary().length > 0 && (
+                <ReviewRow label="Details" value={answerSummary().join(" · ")} />
+              )}
+              {state.extras.length > 0 && (
+                <ReviewRow
+                  label="Add-ons"
+                  value={(detail?.addOns || [])
+                    .filter((a) => state.extras.includes(a.id))
+                    .map((a) => a.name)
+                    .join(", ")}
+                />
+              )}
+              {state.bundles.length > 0 && (
+                <ReviewRow
+                  label="Also booking"
+                  value={state.bundles.map((id) => SERVICE_NAME_BY_ID[id]).join(", ")}
+                />
               )}
               <ReviewRow label="Frequency" value={state.frequency} />
               <ReviewRow label="Date & time" value={scheduleParts.join(" · ") || "—"} />
@@ -835,26 +922,57 @@ export default function BookingWizard() {
       {state.step >= 2 && estimate.serviceCount > 0 && (
         <div className="mt-5 sm:sticky sm:bottom-5">
           <div className="rounded-2xl border border-primary/25 bg-card shadow-lg px-5 py-4">
+            {/*
+              Itemised, not just a total. An unexplained number is the thing
+              that makes people abandon a quote — "why is it $315?" has to be
+              answerable on the screen, not on the phone.
+            */}
+            {estimate.lines.length > 0 && (
+              <ul className="mb-3 pb-3 border-b border-border grid gap-1">
+                {estimate.lines.map((line, i) => (
+                  <li key={`${line.label}-${i}`} className="flex justify-between gap-4 text-xs">
+                    <span className="text-muted-foreground">{line.label}</span>
+                    <span className="font-semibold text-foreground tabular-nums whitespace-nowrap">
+                      {line.custom ? "on site" : formatDollars(line.amount ?? 0)}
+                    </span>
+                  </li>
+                ))}
+                {estimate.bundleTotal > 0 && (
+                  <li className="flex justify-between gap-4 text-xs">
+                    <span className="text-muted-foreground">
+                      {state.bundles.length} bundled service{state.bundles.length === 1 ? "" : "s"}, from
+                    </span>
+                    <span className="font-semibold text-foreground tabular-nums whitespace-nowrap">
+                      {formatDollars(estimate.bundleTotal)}
+                    </span>
+                  </li>
+                )}
+                {estimate.discount > 0 && (
+                  <li className="flex justify-between gap-4 text-xs">
+                    <span className="text-primary font-semibold">
+                      Bundle discount, {Math.round(BUNDLE_DISCOUNT * 100)}%
+                    </span>
+                    <span className="font-bold text-primary tabular-nums whitespace-nowrap">
+                      −{formatDollars(estimate.discount)}
+                    </span>
+                  </li>
+                )}
+              </ul>
+            )}
+
             <div className="flex items-baseline justify-between gap-4 flex-wrap">
-              <div>
-                <p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
-                  Estimated starting price
-                </p>
-                <p className="font-serif-display text-2xl text-foreground mt-0.5">
-                  {estimate.subtotal > 0 ? `${formatDollars(estimate.total)}+` : "Custom quote"}
-                  {estimate.hasRecurring && estimate.subtotal > 0 && (
-                    <span className="text-sm font-sans font-medium text-muted-foreground"> incl. recurring</span>
-                  )}
-                </p>
-              </div>
-              {estimate.discount > 0 && (
-                <p className="text-xs font-bold text-primary">
-                  −{formatDollars(estimate.discount)} bundle discount applied
-                </p>
-              )}
+              <p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+                {chosenPackage?.unit === "month" ? "Estimated monthly" : "Estimated starting price"}
+              </p>
+              <p className="font-serif-display text-2xl text-foreground">
+                {estimate.subtotal > 0
+                  ? `${formatDollars(estimate.total)}${chosenPackage?.unit === "month" ? "/mo" : "+"}`
+                  : "Custom quote"}
+              </p>
             </div>
+
             <p className="text-[11px] leading-relaxed text-muted-foreground mt-2">
-              {estimate.hasCustom
+              {estimate.needsVisit
                 ? "Some of what you've picked needs a look at the property before we can price it — we'll confirm the full figure on the phone."
                 : "A starting figure, not a quote. We confirm the final price before any work begins."}
             </p>

@@ -25,7 +25,28 @@ export type PricingSource = "crm" | "catalog" | "loading";
 
 interface UseCrmPricingResult {
   subservices: SubserviceDef[];
+  /**
+   * Package/tier name (lowercased) → live floor price in dollars.
+   *
+   * This is what the booking wizard consumes: the packages themselves — their
+   * inclusion checklists, exclusions and durations — are defined in
+   * serviceDetails.ts, because the CRM has no concept of them. Only the NUMBER
+   * comes from the CRM, matched by name. Anything that doesn't match keeps its
+   * configured price, so a rename on either side degrades to the local value
+   * rather than to a blank or a zero.
+   */
+  overrides: Record<string, number>;
   source: PricingSource;
+}
+
+function buildOverrides(subservices: SubserviceDef[]): Record<string, number> {
+  const map: Record<string, number> = {};
+  for (const sub of subservices) {
+    if (typeof sub.from === "number" && !sub.surcharge) {
+      map[sub.name.trim().toLowerCase()] = sub.from;
+    }
+  }
+  return map;
 }
 
 /** Anything numeric-looking, in dollars. Rejects NaN and negatives. */
@@ -157,5 +178,5 @@ export function useCrmPricing(categoryId: string): UseCrmPricingResult {
     return () => controller.abort();
   }, [categoryId]);
 
-  return { subservices, source };
+  return { subservices, overrides: buildOverrides(subservices), source };
 }
