@@ -3,6 +3,7 @@ import { Calendar, Clock } from "lucide-react";
 import { BLOG_POSTS } from "../constants/blog";
 import Seo from "../components/common/Seo";
 import { buildBreadcrumbSchema } from "../utils/structuredData";
+import { BRAND, CHROME } from "../constants/brand";
 
 const BLOG_DESCRIPTION =
   "Tips and guides on home cleaning, lawn care, and junk removal from the Lunova Services team, serving the Kansas City metro area.";
@@ -23,18 +24,24 @@ export default function Blog() {
         ])}
       />
       <div className="bg-background text-foreground min-h-screen">
-        <section className="relative pt-24 pb-16 px-4 sm:px-6 overflow-hidden" style={{ backgroundColor: "#2A2118", borderBottom: "1px solid rgba(241,235,217,0.1)" }}>
+        <section
+          className="relative pt-24 pb-16 px-4 sm:px-6 overflow-hidden"
+          style={{ backgroundColor: CHROME.bg, borderBottom: `1px solid ${CHROME.border}` }}
+        >
           <div className="relative z-10 max-w-4xl mx-auto text-center">
-            <span className="text-xs font-semibold uppercase tracking-widest px-3 py-1 rounded-full" style={{ color: "#c8960e", backgroundColor: "rgba(200,150,14,0.12)", border: "1px solid rgba(200,150,14,0.25)" }}>
+            <span
+              className="text-xs font-semibold uppercase tracking-widest px-3 py-1 rounded-full"
+              style={{ color: BRAND.accent, backgroundColor: `${BRAND.accent}1f`, border: `1px solid ${BRAND.accent}40` }}
+            >
               From the Lunova Team
             </span>
             <h1
-              style={{ fontFamily: "var(--font-display)", color: "#F1EBD9" }}
+              style={{ fontFamily: "var(--font-display)", color: CHROME.text }}
               className="text-4xl sm:text-6xl font-bold uppercase leading-tight mt-4 mb-3"
             >
-              The Lunova <span style={{ color: "#c8960e" }}>Blog</span>
+              The Lunova <span style={{ color: BRAND.accent }}>Blog</span>
             </h1>
-            <p className="text-base leading-relaxed max-w-lg mx-auto" style={{ color: "rgba(241,235,217,0.6)" }}>
+            <p className="text-base leading-relaxed max-w-lg mx-auto" style={{ color: CHROME.muted }}>
               {BLOG_DESCRIPTION}
             </p>
           </div>

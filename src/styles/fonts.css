@@ -1,12 +1,17 @@
-@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Caprasimo&family=Figtree:wght@400;500;600;700;800&display=swap');
-
+/**
+ * Font files themselves are requested by the <link> in index.html — a
+ * discoverable, non-render-blocking preload path. Never re-add an
+ * `@import url(...)` here: the browser cannot see it until this stylesheet
+ * has already downloaded and parsed, which serialises the font request
+ * behind the CSS.
+ *
+ * Two families only. `--font-display` and `--font-body` are the single
+ * source of truth; `.font-serif-display` / `.font-sans-modern` in
+ * index.html resolve to the same two faces.
+ */
 :root {
-  --font-display: 'Instrument Serif', serif;
-  --font-body: 'Plus Jakarta Sans', sans-serif;
-
-  /* Sage design system — scoped to Home & Booking pages only */
-  --font-sage-heading: 'Caprasimo', serif;
-  --font-sage-body: 'Figtree', sans-serif;
+  --font-display: 'Instrument Serif', Georgia, serif;
+  --font-body: 'Plus Jakarta Sans', system-ui, sans-serif;
 }
 
 body {

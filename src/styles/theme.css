@@ -1,81 +1,109 @@
-@custom-variant dark (&:is(.dark *));
-
+/**
+ * THE brand palette. Single source of truth — mirrored in JS at
+ * src/app/constants/brand.ts for pages that still build inline style objects.
+ *
+ * Warm cream ground, near-black ink, sage green as the brand colour. Service
+ * pages layer their own accent on top of this same ground via the
+ * `[data-theme="..."]` blocks further down; they do not replace it.
+ *
+ * This replaced three unreconciled palettes: a gold/cream set on the blog,
+ * 404, privacy and cookie banner; a separate sage set inlined on Home and
+ * Booking; and the per-service accents. The old gold (#c8960e) was used as a
+ * text colour on this cream at 2.4:1 contrast, failing WCAG AA. Every colour
+ * pair below passes AA — see the contrast table in brand.ts before editing.
+ */
 :root {
   --font-size: 16px;
   --background: #F1EBD9;
-  --foreground: #3C312A;
+  --foreground: #1e2319;
   --card: #ffffff;
-  --card-foreground: #3C312A;
+  --card-foreground: #1e2319;
   --popover: #ffffff;
-  --popover-foreground: #3C312A;
-  --primary: #c8960e;
+  --popover-foreground: #1e2319;
+  --primary: #3d6b2e;
   --primary-foreground: #ffffff;
   --secondary: #E8DFD0;
-  --secondary-foreground: #3C312A;
+  --secondary-foreground: #1e2319;
   --muted: #E8DFD0;
-  --muted-foreground: #6B5F52;
-  --accent: #3C312A;
-  --accent-foreground: #F1EBD9;
-  --destructive: #d4183d;
+  --muted-foreground: #5f6256;
+  --accent: #7fa650;
+  --accent-foreground: #1e2319;
+  --destructive: #b3123a;
   --destructive-foreground: #ffffff;
-  --border: rgba(60, 49, 42, 0.12);
+  --border: rgba(30, 35, 25, 0.14);
   --input: transparent;
   --input-background: #E8DFD0;
-  --switch-background: #E8DFD0;
   --font-weight-medium: 600;
   --font-weight-normal: 400;
-  --ring: #c8960e;
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
+  --ring: #3d6b2e;
   --radius: 0.625rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: #030213;
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
 }
 
-.dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.145 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.145 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.985 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.396 0.141 25.723);
-  --destructive-foreground: oklch(0.637 0.237 25.331);
-  --border: oklch(0.269 0 0);
-  --input: oklch(0.269 0 0);
-  --ring: oklch(0.439 0 0);
-  --font-weight-medium: 500;
-  --font-weight-normal: 400;
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(0.269 0 0);
-  --sidebar-ring: oklch(0.439 0 0);
+/**
+ * The booking wizard was built to a design spec with noticeably softer corners
+ * than the rest of the site. Scoped here rather than inlined on the page so
+ * there is exactly one place that knows about it.
+ */
+[data-theme="booking"] {
+  --radius: 1.1rem;
+}
+
+/**
+ * Dark site chrome (navbar, footer, cookie banner). Mirrored in JS as CHROME in
+ * src/app/constants/brand.ts for the components that build inline styles.
+ */
+:root {
+  --chrome-bg: #111318;
+  --chrome-text: #E8E4DC;
+  --chrome-muted: rgba(255, 255, 255, 0.55);
+  --chrome-border: rgba(255, 255, 255, 0.08);
+  --chrome-accent: #ffffff;
+}
+
+/**
+ * Navbar link states.
+ *
+ * These were previously twelve inline onMouseEnter/onMouseLeave handlers that
+ * mutated element.style directly — two of which read `e.target` rather than
+ * `e.currentTarget` and would have broken the moment a link wrapped a child
+ * element. Hover is a CSS concern; it does not need React state or event
+ * handlers.
+ */
+.nav-link {
+  color: var(--chrome-muted);
+  transition: color 0.2s ease;
+}
+.nav-link:hover,
+.nav-link:focus-visible {
+  color: var(--chrome-text);
+}
+.nav-link[data-active="true"] {
+  color: var(--chrome-accent);
+}
+
+.nav-pill {
+  color: var(--chrome-muted);
+  border: 1px solid var(--chrome-border);
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+.nav-pill:hover,
+.nav-pill:focus-visible {
+  color: var(--chrome-text);
+  border-color: rgba(255, 255, 255, 0.38);
+}
+
+.nav-menu-item {
+  color: var(--chrome-text);
+  background-color: transparent;
+  transition: background-color 0.15s ease;
+}
+.nav-menu-item:hover,
+.nav-menu-item:focus-visible {
+  background-color: rgba(255, 255, 255, 0.06);
+}
+.nav-menu-item[data-active="true"] {
+  color: var(--chrome-accent);
+  background-color: rgba(255, 255, 255, 0.09);
 }
 
 @theme inline {
@@ -98,51 +126,94 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-input-background: var(--input-background);
-  --color-switch-background: var(--switch-background);
   --color-ring: var(--ring);
-  --color-chart-1: var(--chart-1);
-  --color-chart-2: var(--chart-2);
-  --color-chart-3: var(--chart-3);
-  --color-chart-4: var(--chart-4);
-  --color-chart-5: var(--chart-5);
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
-  --color-sidebar: var(--sidebar);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-ring: var(--sidebar-ring);
 }
 
 /**
- * Per-service accent theme, applied via a `data-theme="..."` attribute on a
- * page's root element. Keys mirror ServiceThemeKey in
- * src/app/constants/theme.ts and must stay in sync with those hex values.
+ * DEPARTMENT IDENTITIES — one block per service line, applied via a
+ * `data-theme="..."` attribute on the page's root element.
+ *
+ * Keys and hex values mirror SERVICE_THEMES in src/app/constants/theme.ts;
+ * change both together. `--primary`/`--accent` are overridden as well as the
+ * `--service-*` pair, so Tailwind token classes (bg-primary, text-accent) pick
+ * up the department colour automatically inside shared components.
+ *
+ * `--background` is deliberately NOT overridden: every department sits on the
+ * same warm cream ground. See the guardrail comment in constants/theme.ts.
  */
+
+/* Cleaning division — deep navy + warm amber */
 [data-theme="cleaning"],
-[data-theme="residential-cleaning"],
-[data-theme="commercial-cleaning"],
-[data-theme="auto-detailing"] {
+[data-theme="residential-cleaning"] {
   --service-primary: #14304A;
   --service-accent: #E8A830;
+  --primary: #14304A;
+  --accent: #E8A830;
+  --ring: #14304A;
 }
 
-[data-theme="junk-removal"],
-[data-theme="landscaping"],
-[data-theme="bin-cleaning"] {
-  --service-primary: #0d382c;
-  --service-accent: #f5b82e;
+[data-theme="commercial-cleaning"] {
+  --service-primary: #1B2A38;
+  --service-accent: #C97B3C;
+  --primary: #1B2A38;
+  --accent: #C97B3C;
+  --ring: #1B2A38;
 }
 
-[data-theme="power-washing"],
-[data-theme="window-cleaning"] {
+/* Exterior division */
+[data-theme="power-washing"] {
   --service-primary: #1A2F4A;
   --service-accent: #2BA8E0;
+  --primary: #1A2F4A;
+  --accent: #2BA8E0;
+  --ring: #1A2F4A;
+}
+
+[data-theme="window-cleaning"] {
+  --service-primary: #1E2430;
+  --service-accent: #F0B429;
+  --primary: #1E2430;
+  --accent: #F0B429;
+  --ring: #1E2430;
+}
+
+/* Auto division */
+[data-theme="auto-detailing"] {
+  --service-primary: #1A1618;
+  --service-accent: #D8402F;
+  --primary: #1A1618;
+  --accent: #D8402F;
+  --ring: #1A1618;
+}
+
+/* Grounds division */
+[data-theme="landscaping"] {
+  --service-primary: #0d382c;
+  --service-accent: #7fa650;
+  --primary: #0d382c;
+  --accent: #7fa650;
+  --ring: #0d382c;
+}
+
+[data-theme="bin-cleaning"] {
+  --service-primary: #17301F;
+  --service-accent: #8DC63F;
+  --primary: #17301F;
+  --accent: #8DC63F;
+  --ring: #17301F;
+}
+
+/* Hauling division */
+[data-theme="junk-removal"] {
+  --service-primary: #1F1B16;
+  --service-accent: #F97316;
+  --primary: #1F1B16;
+  --accent: #F97316;
+  --ring: #1F1B16;
 }
 
 @keyframes marquee {

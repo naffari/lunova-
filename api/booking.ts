@@ -27,10 +27,84 @@ interface BookingPayload {
   phone: string;
   email: string;
   hearAbout: string;
+  /**
+   * The floor figure the customer was shown in the wizard's running estimate,
+   * after any bundle discount. Recorded so the crew quotes from the same number
+   * the customer already saw — not so it can be treated as an agreed price.
+   */
+  estimateFloor?: number;
+  /** True when a selected line genuinely needs a site visit to price. */
+  estimateHasCustomItems?: boolean;
+  /**
+   * Honeypot. Hidden from humans, so any value means an automated submission.
+   * Named `website` because that is a field bots expect to find and fill.
+   */
+  website?: string;
+}
+
+function formatEstimate(body: BookingPayload): string {
+  if (typeof body.estimateFloor !== "number" || body.estimateFloor <= 0) {
+    return "Custom quote — needs a site visit";
+  }
+  const base = `$${body.estimateFloor}+ (floor shown to customer)`;
+  return body.estimateHasCustomItems ? `${base}, plus items needing a site visit` : base;
 }
 
 function isNonEmptyString(value: unknown): value is string {
   return typeof value === "string" && value.trim().length > 0;
+}
+
+/**
+ * In-memory rate limiter, keyed on client IP.
+ *
+ * Deliberately simple: this runs on Vercel's serverless runtime, so the map
+ * lives only for the lifetime of one warm instance and resets on cold start.
+ * That is fine for the actual threat — a bot hammering the form in a burst hits
+ * the same warm instance. It is NOT a security control, and it is not a
+ * substitute for a durable store (Upstash/KV) if abuse becomes sustained.
+ */
+const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000;
+const RATE_LIMIT_MAX = 5;
+const submissions = new Map<string, number[]>();
+
+function clientIp(req: VercelRequest): string {
+  const forwarded = req.headers["x-forwarded-for"];
+  const raw = Array.isArray(forwarded) ? forwarded[0] : forwarded;
+  return raw?.split(",")[0]?.trim() || "unknown";
+}
+
+function isRateLimited(ip: string): boolean {
+  const now = Date.now();
+  const recent = (submissions.get(ip) ?? []).filter((t) => now - t < RATE_LIMIT_WINDOW_MS);
+
+  if (recent.length >= RATE_LIMIT_MAX) {
+    submissions.set(ip, recent);
+    return true;
+  }
+
+  recent.push(now);
+  submissions.set(ip, recent);
+
+  // Opportunistic cleanup so a long-lived instance can't grow unbounded.
+  if (submissions.size > 500) {
+    for (const [key, times] of submissions) {
+      if (times.every((t) => now - t >= RATE_LIMIT_WINDOW_MS)) submissions.delete(key);
+    }
+  }
+
+  return false;
+}
+
+/**
+ * Honeypot check.
+ *
+ * The form renders a field that is hidden from humans and left empty by them.
+ * Bots that blindly fill every input will populate it. Anything with a value
+ * here is dropped — and answered with a normal 200, so the bot records a success
+ * and doesn't retry with a different strategy.
+ */
+function isBot(body: Partial<BookingPayload>): boolean {
+  return isNonEmptyString(body.website);
 }
 
 function validate(body: Partial<BookingPayload>): string | null {
@@ -63,6 +137,7 @@ function buildCrmMessage(body: BookingPayload): string {
     `Selected: ${body.subservices.join(", ")}`,
   ];
   if (body.addons.length > 0) lines.push(`Add-ons: ${body.addons.join(", ")}`);
+  lines.push(`Estimate shown: ${formatEstimate(body)}`);
   if (body.frequency) lines.push(`Frequency: ${body.frequency}`);
   if (body.timeWindow) lines.push(`Preferred window: ${body.date} (${body.timeWindow})`);
   if (body.hearAbout) lines.push(`Heard about us: ${body.hearAbout}`);
@@ -120,6 +195,7 @@ function buildEmailHtml(body: BookingPayload, bookingId: string): string {
         ${row("Service", body.categoryLabel || body.category)}
         ${row("Selected", body.subservices.join(", "))}
         ${row("Add-ons", body.addons.join(", ") || "None")}
+        ${row("Estimate shown", formatEstimate(body))}
         ${row("Frequency", body.frequency)}
         ${row("Date & time", `${body.date} (${body.timeWindow})`)}
         ${row("Address", [body.street, body.city, body.zip].filter(Boolean).join(", "))}
@@ -172,6 +248,23 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   const body = (req.body ?? {}) as Partial<BookingPayload>;
+
+  // Silent 200: a bot that sees success stops probing. A 400 tells it to retry
+  // with the honeypot left blank, which is the opposite of what we want.
+  if (isBot(body)) {
+    console.warn("Booking dropped: honeypot field was filled.");
+    return res.status(200).json({ ok: true, bookingId: `LUNOVA-${Date.now()}` });
+  }
+
+  const ip = clientIp(req);
+  if (isRateLimited(ip)) {
+    console.warn(`Booking rate limit hit for ${ip}.`);
+    return res.status(429).json({
+      ok: false,
+      error: "Too many requests. Please wait a few minutes or call us directly.",
+    });
+  }
+
   const validationError = validate(body);
   if (validationError) {
     return res.status(400).json({ ok: false, error: validationError });

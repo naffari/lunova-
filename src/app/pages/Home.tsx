@@ -1,132 +1,37 @@
-import type { CSSProperties } from "react";
-import {
-  Phone,
-  ArrowUpRight,
-  Sparkles,
-  Truck,
-  Droplets,
-  AppWindow,
-  Car,
-  Trash2,
-  Leaf,
-  Building2,
-  ShieldCheck,
-  ThumbsUp,
-  CalendarClock,
-  MapPin,
-  Check,
-} from "lucide-react";
+import { Phone, ArrowUpRight, ShieldCheck, ThumbsUp, CalendarClock, MapPin, Check } from "lucide-react";
 import { Link } from "react-router";
 import ContactStrip from "../components/common/ContactStrip";
 import ServiceAreaSection from "../components/ServiceAreaSection";
 import FadeInSection from "../components/common/FadeInSection";
 import PhotoGallery from "../components/common/PhotoGallery";
 import TestimonialsSection from "../components/TestimonialsSection";
+import FaqSection from "../components/FaqSection";
+import HowItWorks from "../components/HowItWorks";
+import ProofStrip from "../components/ProofStrip";
+import ZipCheck from "../components/common/ZipCheck";
 import Seo from "../components/common/Seo";
 import { PHONE, PHONE_DISPLAY } from "../constants/contact";
+import { BRAND } from "../constants/brand";
+import { GUARANTEE } from "../constants/proof";
+import { SERVICES, startingAtLabel, cheapestSubservice, formatPrice } from "../constants/services";
 import { preloadRoute } from "../routeModules";
-import { buildLocalBusinessSchema, buildOrganizationSchema } from "../utils/structuredData";
+import { HIGH_FETCH_PRIORITY } from "../utils/dom";
+import { buildFaqSchema, buildLocalBusinessSchema, buildOrganizationSchema } from "../utils/structuredData";
 
-// Sage design system — scoped to the Home page only via CSS custom
-// property overrides on the root wrapper below. This re-themes every
-// shared, CSS-var-driven component (TestimonialsSection, PhotoGallery,
-// ContactStrip focus rings, etc.) without touching the global stylesheet.
-const PRIMARY = "#1e2319"; // ink
-const ACCENT = "#3d6b2e"; // sage green
-const ACCENT_2 = "#7fa650"; // olive green
-const BG = "#f4f6f2"; // page background
-const SURFACE = "#e7ece1"; // card/section tint
+// Local aliases matching this page's existing naming: PRIMARY is the ink used
+// for type, ACCENT is the sage brand colour. Values come from the global
+// palette — this page no longer defines a theme of its own.
+const PRIMARY = BRAND.ink;
+const ACCENT = BRAND.primary;
+const ACCENT_2 = BRAND.accent;
+const BG = BRAND.bg;
+const SURFACE = BRAND.surface;
 
-const sageThemeVars = {
-  "--background": BG,
-  "--foreground": PRIMARY,
-  "--card": "#ffffff",
-  "--card-foreground": PRIMARY,
-  "--popover": "#ffffff",
-  "--popover-foreground": PRIMARY,
-  "--primary": ACCENT,
-  "--primary-foreground": "#ffffff",
-  "--secondary": SURFACE,
-  "--secondary-foreground": PRIMARY,
-  "--muted": SURFACE,
-  "--muted-foreground": "#5f6256",
-  "--accent": ACCENT_2,
-  "--accent-foreground": PRIMARY,
-  "--border": "rgba(30, 35, 25, 0.14)",
-  "--input": "transparent",
-  "--input-background": SURFACE,
-  "--ring": ACCENT,
-  "--radius": "1.1rem",
-  "--font-display": "var(--font-sage-heading)",
-  "--font-body": "var(--font-sage-body)",
-} as CSSProperties;
-
-const SERVICES = [
-  {
-    icon: Sparkles,
-    title: "Residential Cleaning",
-    price: "Starting at $120",
-    to: "/services/residential-cleaning",
-    bookId: "cleaning",
-    bullets: ["Standard clean", "Deep clean", "Move-in / move-out"],
-  },
-  {
-    icon: Truck,
-    title: "Junk Removal",
-    price: "Starting at $75",
-    to: "/junk-removal",
-    bookId: "junk",
-    bullets: ["Single item", "Partial truckload", "Full truckload"],
-  },
-  {
-    icon: Droplets,
-    title: "Power Washing",
-    price: "Starting at $120",
-    to: "/services/power-washing",
-    bookId: "power",
-    bullets: ["Siding", "Driveway", "Deck / patio"],
-  },
-  {
-    icon: AppWindow,
-    title: "Window Cleaning",
-    price: "Starting at $110",
-    to: "/services/window-cleaning",
-    bookId: "window",
-    bullets: ["Interior & exterior", "Exterior only", "Hard water treatment"],
-  },
-  {
-    icon: Car,
-    title: "Auto Detailing",
-    price: "Starting at $69",
-    to: "/services/auto-detailing",
-    bookId: "auto",
-    bullets: ["Interior only", "Exterior only", "Full detail"],
-  },
-  {
-    icon: Trash2,
-    title: "Bin Cleaning",
-    price: "Starting at $15/mo",
-    to: "/services/bin-cleaning",
-    bookId: "bin",
-    bullets: ["One-time 2-bin clean", "Recurring monthly plan", "Recurring bi-weekly plan"],
-  },
-  {
-    icon: Leaf,
-    title: "Landscaping",
-    price: "Starting at $45/visit",
-    to: "/landscaping",
-    bookId: "landscaping",
-    bullets: ["One-time clean-up", "Recurring lawn care", "Seasonal package"],
-  },
-  {
-    icon: Building2,
-    title: "Commercial Cleaning",
-    price: "Custom quote",
-    to: "/services/commercial-cleaning",
-    bookId: "commercial",
-    bullets: ["Offices", "Restaurants", "Dealerships"],
-  },
-];
+/** The cheapest entry price across the whole catalogue, for the hero headline. */
+const CHEAPEST = SERVICES.map(cheapestSubservice).reduce((min, sub) => {
+  if (!sub?.from) return min;
+  return !min?.from || sub.from < min.from ? sub : min;
+}, undefined as ReturnType<typeof cheapestSubservice>);
 
 const MARQUEE_ITEMS = [
   "Cleaning Services", "Junk Removal", "Landscaping", "Licensed & Insured", "Same-Week Slots", "100% Satisfaction", "Locally Owned", "Kansas City Metro",
@@ -134,14 +39,15 @@ const MARQUEE_ITEMS = [
 ];
 
 const HOW_IT_WORKS_STEPS = [
-  { step: "1", title: "Tell us what you need", desc: "Pick a service and the details — one-time or recurring." },
-  { step: "2", title: "We confirm a time", desc: "Our team calls to lock in a date and time that works for you." },
-  { step: "3", title: "We show up & handle it", desc: "Licensed, insured and local — you cross it off the list." },
+  { step: "1", title: "Check your ZIP", desc: "One field tells you if we run routes on your street." },
+  { step: "2", title: "Tell us what you need", desc: "Pick a service and the details — one-time or recurring." },
+  { step: "3", title: "We confirm a time", desc: "Our team calls to lock in a date and time that works for you." },
+  { step: "4", title: "We show up & handle it", desc: "Licensed, insured and local — you cross it off the list." },
 ];
 
 const WHY_LUNOVA = [
   { icon: ShieldCheck, title: "Licensed & insured", desc: "Every job, every crew member, covered." },
-  { icon: ThumbsUp, title: "Satisfaction guaranteed", desc: "Not happy? We'll make it right." },
+  { icon: ThumbsUp, title: GUARANTEE.short, desc: GUARANTEE.terms },
   { icon: CalendarClock, title: "Flexible scheduling", desc: "One-time visits or recurring plans, on your calendar." },
   { icon: MapPin, title: "Local KC crew", desc: "Based here, on your street more than most." },
 ];
@@ -153,7 +59,7 @@ const FAQS = [
   },
   {
     q: "What areas do you serve?",
-    a: "We serve the greater Kansas City metro, including Overland Park, Olathe, Shawnee, Lenexa, Leawood, Prairie Village, Lee's Summit, Independence, Blue Springs, and Raytown. Don't see your city? Call us — we may still be able to help.",
+    a: "We serve the greater Kansas City metro, including Overland Park, Olathe, Shawnee, Lenexa, Leawood, Prairie Village, Lee's Summit, Independence, Blue Springs, and Raytown. Enter your ZIP in the checker above — if we're not on your street yet we'll tell you straight away.",
   },
   {
     q: "How do I get a quote for commercial cleaning?",
@@ -165,13 +71,23 @@ const FAQS = [
   },
 ];
 
+/**
+ * Illustrative photography, NOT Lunova's completed work.
+ *
+ * This section was previously headed "Recent Work — See the Lunova difference"
+ * over six Unsplash stock photos. A customer who reverse-image-searches one of
+ * these loses trust in every other claim on the page, which also throws away
+ * the credit earned by refusing to publish fake testimonials. The heading and
+ * the caption below now say what these actually are. Replace with real job
+ * photos and then — and only then — relabel the section.
+ */
 const GALLERY_IMAGES = [
-  { src: "https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=600&h=600&fit=crop&auto=format", alt: "Sparkling clean modern kitchen after a Lunova deep clean" },
-  { src: "https://images.unsplash.com/photo-1558618047-3c8c76ca7b85?w=600&h=600&fit=crop&auto=format", alt: "Freshly power washed driveway" },
-  { src: "https://images.unsplash.com/photo-1558904541-efa843a96f01?w=600&h=600&fit=crop&auto=format", alt: "Manicured lawn and landscaping" },
-  { src: "https://images.unsplash.com/photo-1563453392212-326f5e854473?w=600&h=600&fit=crop&auto=format", alt: "Streak-free window cleaning results" },
-  { src: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=600&h=600&fit=crop&auto=format", alt: "Junk removal crew hauling away debris" },
-  { src: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600&h=600&fit=crop&auto=format", alt: "Clean patio and deck after pressure washing" },
+  { src: "https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=600&h=600&fit=crop&auto=format", alt: "A deep-cleaned modern kitchen, illustrating the standard we work to" },
+  { src: "https://images.unsplash.com/photo-1558618047-3c8c76ca7b85?w=600&h=600&fit=crop&auto=format", alt: "A freshly power washed driveway" },
+  { src: "https://images.unsplash.com/photo-1558904541-efa843a96f01?w=600&h=600&fit=crop&auto=format", alt: "A manicured lawn and tidy landscaping beds" },
+  { src: "https://images.unsplash.com/photo-1563453392212-326f5e854473?w=600&h=600&fit=crop&auto=format", alt: "Streak-free glass after a window clean" },
+  { src: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=600&h=600&fit=crop&auto=format", alt: "A crew loading debris for junk removal" },
+  { src: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600&h=600&fit=crop&auto=format", alt: "A clean patio and deck after pressure washing" },
 ];
 
 export default function Home() {
@@ -180,67 +96,99 @@ export default function Home() {
       <Seo
         title="Lunova Services | Kansas City Cleaning, Landscaping & More"
         description="Lunova Services provides professional cleaning, power washing, junk removal, landscaping, auto detailing, bin cleaning, window cleaning, and commercial services across Kansas City."
-        jsonLd={[buildLocalBusinessSchema(), buildOrganizationSchema()]}
+        jsonLd={[buildLocalBusinessSchema(), buildOrganizationSchema(), buildFaqSchema(FAQS)]}
       />
-      <div className="font-sans-modern min-h-screen" style={{ ...sageThemeVars, backgroundColor: BG, color: PRIMARY }}>
-        {/* HERO */}
-        <section className="relative pt-[4.5rem] pb-16 px-4 sm:px-6 overflow-hidden" style={{ backgroundColor: BG }}>
-          <div className="max-w-4xl mx-auto text-center">
-            <div
-              className="inline-flex items-center gap-2 text-xs font-semibold px-3.5 py-1.5 rounded-full mb-6 border"
-              style={{ backgroundColor: `${ACCENT}12`, color: ACCENT, borderColor: `${ACCENT}30` }}
-            >
-              <span className="w-2 h-2 rounded-full" style={{ backgroundColor: ACCENT }} />
-              <span>Serving the Kansas City Metro</span>
+      <div className="font-sans-modern min-h-screen" style={{ backgroundColor: BG, color: PRIMARY }}>
+        {/*
+          HERO — split layout, image right, single-input coverage check left.
+          Replaces a centred text-only hero whose two buttons sent cold traffic
+          straight into a five-step wizard. The ZIP field is the researched
+          pattern (LawnStarter's hero-as-form, Homeaglow's single ZIP + price
+          headline) and it qualifies the visitor before they invest any effort.
+        */}
+        <section className="relative pt-[5.5rem] pb-12 lg:pb-20 px-4 sm:px-6 overflow-hidden" style={{ backgroundColor: BG }}>
+          <div className="max-w-7xl mx-auto grid lg:grid-cols-[1.05fr_0.95fr] gap-10 lg:gap-14 items-center">
+            <div>
+              <div
+                className="inline-flex items-center gap-2 text-xs font-semibold px-3.5 py-1.5 rounded-full mb-6 border"
+                style={{ backgroundColor: `${ACCENT}12`, color: ACCENT, borderColor: `${ACCENT}30` }}
+              >
+                <span className="w-2 h-2 rounded-full" style={{ backgroundColor: ACCENT }} />
+                <span>Serving the Kansas City Metro</span>
+              </div>
+
+              <h1
+                className="font-serif-display text-[2.75rem] sm:text-6xl lg:text-[4.25rem] font-normal leading-[1.02] mb-5 tracking-tight"
+                style={{ color: PRIMARY }}
+              >
+                Clean. Cut. Haul.
+                <br />
+                <span style={{ color: ACCENT }}>
+                  {CHEAPEST?.from ? `From ${formatPrice(CHEAPEST)}.` : "One call."}
+                </span>
+              </h1>
+
+              <p className="text-base sm:text-lg max-w-xl mb-7 leading-relaxed" style={{ color: `${PRIMARY}b0` }}>
+                Eight home services, one local crew, one number to call. Check your ZIP and book a
+                same-week slot in about two minutes.
+              </p>
+
+              <ZipCheck variant="section" className="max-w-xl mb-6" />
+
+              <ProofStrip variant="light" className="mb-6" />
+
+              <div className="flex flex-wrap items-center gap-x-5 gap-y-3">
+                <Link
+                  to="/book"
+                  className="inline-flex items-center gap-2 text-sm font-bold transition-colors"
+                  style={{ color: PRIMARY }}
+                  onMouseEnter={() => preloadRoute("/book")}
+                  onFocus={() => preloadRoute("/book")}
+                >
+                  Or browse services and book directly
+                  <ArrowUpRight size={15} style={{ color: ACCENT }} />
+                </Link>
+                <a
+                  href={`tel:+1${PHONE}`}
+                  className="inline-flex items-center gap-2 text-sm font-semibold"
+                  style={{ color: `${PRIMARY}99` }}
+                >
+                  <Phone size={14} style={{ color: ACCENT }} />
+                  {PHONE_DISPLAY}
+                </a>
+              </div>
             </div>
 
-            <h1
-              className="font-serif-display text-5xl sm:text-6xl md:text-7xl font-normal leading-[1.05] mb-6 tracking-tight"
-              style={{ color: PRIMARY }}
-            >
-              Clean. Cut. Haul.
-            </h1>
-
-            <p className="text-base sm:text-lg max-w-2xl mx-auto mb-8 leading-relaxed" style={{ color: `${PRIMARY}bb` }}>
-              Serving Kansas City homeowners &amp; property managers with top-tier cleaning, hauling &amp; landscaping.
-            </p>
-
-            <div className="flex flex-wrap items-center justify-center gap-4 mb-10">
-              <Link
-                to="/book"
-                className="inline-flex items-center gap-3 font-bold px-7 py-4 rounded-full text-base transition-all shadow-md group"
-                style={{ backgroundColor: ACCENT, color: "#ffffff" }}
-                onMouseEnter={() => preloadRoute("/book")}
-                onFocus={() => preloadRoute("/book")}
+            {/* The homepage previously had no hero image at all, while every
+                service page had a full-bleed one. Same responsive variants. */}
+            <div className="relative rounded-[1.75rem] overflow-hidden shadow-xl aspect-[4/5] sm:aspect-[16/11] lg:aspect-[4/5] order-first lg:order-last">
+              <picture>
+                <source
+                  type="image/avif"
+                  sizes="(min-width: 1024px) 45vw, 100vw"
+                  srcSet="/images/hero/cleaning-hero-640.avif 640w, /images/hero/cleaning-hero-1280.avif 1280w"
+                />
+                <source
+                  type="image/webp"
+                  sizes="(min-width: 1024px) 45vw, 100vw"
+                  srcSet="/images/hero/cleaning-hero-640.webp 640w, /images/hero/cleaning-hero-1280.webp 1280w"
+                />
+                <img
+                  src="/images/hero/cleaning-hero-1280.jpg"
+                  alt="A Lunova crew member cleaning a Kansas City home"
+                  className="absolute inset-0 w-full h-full object-cover"
+                  loading="eager"
+                  decoding="async"
+                  {...HIGH_FETCH_PRIORITY}
+                />
+              </picture>
+              <div
+                className="absolute inset-x-0 bottom-0 p-5"
+                style={{ background: `linear-gradient(to top, ${PRIMARY}e6, transparent)` }}
               >
-                Book Online
-                <span
-                  className="w-7 h-7 rounded-full flex items-center justify-center group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform"
-                  style={{ backgroundColor: "#ffffff", color: ACCENT }}
-                >
-                  <ArrowUpRight size={16} />
-                </span>
-              </Link>
-              <a
-                href={`tel:+1${PHONE}`}
-                className="inline-flex items-center gap-2 font-semibold px-6 py-4 rounded-full text-sm transition-colors border-2"
-                style={{ borderColor: `${PRIMARY}30`, color: PRIMARY }}
-              >
-                <Phone size={16} style={{ color: ACCENT }} />
-                Call {PHONE_DISPLAY}
-              </a>
-            </div>
-
-            <div className="flex flex-wrap items-center justify-center gap-3">
-              {["Licensed & Insured", "Locally Owned", "Recurring Plans Available"].map((tag) => (
-                <span
-                  key={tag}
-                  className="text-xs font-semibold px-4 py-2 rounded-full border"
-                  style={{ borderColor: `${PRIMARY}25`, color: PRIMARY }}
-                >
-                  {tag}
-                </span>
-              ))}
+                <p className="text-xs font-semibold text-white/95">{GUARANTEE.name}</p>
+                <p className="text-[11px] mt-0.5 text-white/70">{GUARANTEE.short} — on every job.</p>
+              </div>
             </div>
           </div>
         </section>
@@ -256,7 +204,7 @@ export default function Home() {
           </div>
         </div>
 
-        {/* SERVICES */}
+        {/* SERVICES — cards and prices both come from the shared catalogue. */}
         <section className="py-20 px-4 sm:px-6" style={{ backgroundColor: BG }}>
           <FadeInSection className="max-w-7xl mx-auto">
             <div className="text-center max-w-2xl mx-auto mb-12">
@@ -268,7 +216,7 @@ export default function Home() {
                 Eight services. One call.
               </h2>
               <p className="text-sm" style={{ color: `${PRIMARY}99` }}>
-                Pick a service to see starting prices and book online in minutes.
+                Book two or more and 10% comes off the combined total.
               </p>
             </div>
 
@@ -279,10 +227,18 @@ export default function Home() {
                 const iconColor = idx % 2 === 0 ? ACCENT : ACCENT_2;
                 return (
                   <div
-                    key={svc.title}
-                    className="bg-white rounded-3xl p-6 flex flex-col shadow-sm"
-                    style={{ border: `1px solid ${PRIMARY}14` }}
+                    key={svc.id}
+                    className="relative bg-white rounded-3xl p-6 flex flex-col shadow-sm"
+                    style={{ border: `1px solid ${svc.popular ? `${ACCENT}55` : `${PRIMARY}14`}` }}
                   >
+                    {svc.popular && (
+                      <span
+                        className="absolute top-5 right-5 text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full"
+                        style={{ backgroundColor: `${ACCENT}15`, color: ACCENT }}
+                      >
+                        Most booked
+                      </span>
+                    )}
                     <div
                       className="w-12 h-12 rounded-full flex items-center justify-center mb-4"
                       style={{ backgroundColor: iconBg, color: iconColor }}
@@ -290,9 +246,11 @@ export default function Home() {
                       <Icon size={22} />
                     </div>
                     <h3 className="font-serif-display text-xl mb-1" style={{ color: PRIMARY }}>
-                      {svc.title}
+                      {svc.name}
                     </h3>
-                    <p className="text-xs font-bold mb-4" style={{ color: ACCENT }}>{svc.price}</p>
+                    <p className="text-xs font-bold mb-4" style={{ color: ACCENT }}>
+                      {startingAtLabel(svc)}
+                    </p>
                     <ul className="space-y-1.5 mb-6 flex-1">
                       {svc.bullets.map((b) => (
                         <li key={b} className="flex items-center gap-2 text-xs" style={{ color: `${PRIMARY}99` }}>
@@ -312,7 +270,7 @@ export default function Home() {
                         Details
                       </Link>
                       <Link
-                        to={`/book?service=${svc.bookId}`}
+                        to={`/book?service=${svc.id}`}
                         className="text-xs font-bold inline-flex items-center gap-1 transition-colors"
                         style={{ color: ACCENT }}
                         onMouseEnter={() => preloadRoute("/book")}
@@ -328,39 +286,15 @@ export default function Home() {
           </FadeInSection>
         </section>
 
-        {/* HOW IT WORKS */}
-        <section className="py-20 px-4 sm:px-6" style={{ backgroundColor: PRIMARY }}>
-          <FadeInSection className="max-w-6xl mx-auto">
-            <div className="text-center max-w-2xl mx-auto mb-16">
-              <div className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest mb-3" style={{ color: ACCENT_2 }}>
-                <span className="w-6 h-0.5" style={{ backgroundColor: ACCENT_2 }} />
-                <span>Simple Process</span>
-              </div>
-              <h2 className="font-serif-display text-4xl sm:text-5xl text-white">
-                Booking takes two minutes.
-              </h2>
-            </div>
-
-            <div className="grid sm:grid-cols-3 gap-8">
-              {HOW_IT_WORKS_STEPS.map((s) => (
-                <div
-                  key={s.step}
-                  className="p-6 rounded-3xl flex flex-col items-center text-center"
-                  style={{ backgroundColor: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.08)" }}
-                >
-                  <div
-                    className="w-12 h-12 rounded-full font-bold text-lg flex items-center justify-center mb-4 shadow-md"
-                    style={{ backgroundColor: ACCENT_2, color: PRIMARY }}
-                  >
-                    {s.step}
-                  </div>
-                  <h3 className="font-serif-display text-2xl text-white mb-2">{s.title}</h3>
-                  <p className="text-sm leading-relaxed" style={{ color: "rgba(255,255,255,0.6)" }}>{s.desc}</p>
-                </div>
-              ))}
-            </div>
-          </FadeInSection>
-        </section>
+        {/* HOW IT WORKS — shared component, was hand-rolled inline here. */}
+        <FadeInSection>
+          <HowItWorks
+            heading="Booking takes two minutes."
+            steps={HOW_IT_WORKS_STEPS}
+            primaryColor={PRIMARY}
+            accentColor={ACCENT_2}
+          />
+        </FadeInSection>
 
         {/* WHY LUNOVA */}
         <section className="py-20 px-4 sm:px-6" style={{ backgroundColor: BG }}>
@@ -369,8 +303,11 @@ export default function Home() {
               <img
                 src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=900&h=1125&fit=crop&auto=format"
                 alt="Lunova professional crew"
+                width={900}
+                height={1125}
                 className="w-full h-full object-cover"
                 loading="lazy"
+                decoding="async"
               />
             </div>
             <div className="order-1 lg:order-2">
@@ -403,25 +340,29 @@ export default function Home() {
 
         {/* Wave transition */}
         <div style={{ backgroundColor: BG, lineHeight: 0, marginTop: "-1px" }}>
-          <svg viewBox="0 0 1440 72" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" className="w-full block" style={{ height: "50px" }}>
+          <svg viewBox="0 0 1440 72" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" className="w-full block" style={{ height: "50px" }} aria-hidden="true">
             <path d="M0,36 C180,72 360,0 540,36 C720,72 900,0 1080,36 C1260,72 1380,0 1440,36 L1440,72 L0,72 Z" fill={SURFACE} />
           </svg>
         </div>
 
-        {/* SERVICE AREA — kept from the previous design, re-themed with sage colors */}
+        {/* SERVICE AREA — now carries its own ZIP checker. */}
         <ServiceAreaSection primaryColor={PRIMARY} accentColor={ACCENT} bgColor={SURFACE} />
 
-        {/* RECENT WORK GALLERY */}
+        {/* ILLUSTRATIVE GALLERY — see the note on GALLERY_IMAGES above. */}
         <section className="py-20 px-4 sm:px-6" style={{ backgroundColor: BG }}>
           <FadeInSection className="max-w-6xl mx-auto">
             <div className="text-center max-w-2xl mx-auto mb-12">
               <div className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest mb-3" style={{ color: ACCENT }}>
                 <span className="w-6 h-0.5" style={{ backgroundColor: ACCENT }} />
-                <span>Recent Work</span>
+                <span>The Standard</span>
               </div>
-              <h2 className="font-serif-display text-4xl sm:text-5xl" style={{ color: PRIMARY }}>
-                See the Lunova difference.
+              <h2 className="font-serif-display text-4xl sm:text-5xl mb-3" style={{ color: PRIMARY }}>
+                What "done" looks like.
               </h2>
+              <p className="text-sm" style={{ color: `${PRIMARY}99` }}>
+                Reference photography showing the finish we work to. We're new here — our own job
+                photos go up as we complete them.
+              </p>
             </div>
             <PhotoGallery images={GALLERY_IMAGES} />
           </FadeInSection>
@@ -434,39 +375,10 @@ export default function Home() {
           </FadeInSection>
         </section>
 
-        {/* FAQ */}
+        {/* FAQ — shared component, was a duplicate <details> implementation. */}
         <section className="py-20 px-4 sm:px-6" style={{ backgroundColor: BG }}>
           <FadeInSection className="max-w-3xl mx-auto">
-            <div className="text-center mb-12">
-              <div className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest mb-3 justify-center" style={{ color: ACCENT }}>
-                <span className="w-6 h-0.5" style={{ backgroundColor: ACCENT }} />
-                <span>Questions</span>
-              </div>
-              <h2 className="font-serif-display text-4xl sm:text-5xl" style={{ color: PRIMARY }}>
-                Frequently asked.
-              </h2>
-            </div>
-
-            <div className="space-y-3">
-              {FAQS.map((f) => (
-                <details
-                  key={f.q}
-                  className="group bg-white rounded-2xl px-6 py-4"
-                  style={{ border: `1px solid ${PRIMARY}14` }}
-                >
-                  <summary className="flex items-center justify-between gap-4 cursor-pointer list-none font-semibold text-sm" style={{ color: PRIMARY }}>
-                    {f.q}
-                    <span
-                      className="shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-xs transition-transform group-open:rotate-45"
-                      style={{ backgroundColor: `${ACCENT}15`, color: ACCENT }}
-                    >
-                      +
-                    </span>
-                  </summary>
-                  <p className="text-sm leading-relaxed mt-3" style={{ color: `${PRIMARY}99` }}>{f.a}</p>
-                </details>
-              ))}
-            </div>
+            <FaqSection items={FAQS} title="Frequently asked." subtitle="Questions" />
           </FadeInSection>
         </section>
 

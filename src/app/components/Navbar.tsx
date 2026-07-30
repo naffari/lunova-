@@ -1,7 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { Link, useLocation } from "react-router";
 import {
-  Phone,
   Menu,
   X,
   MessageSquare,
@@ -17,14 +16,16 @@ import {
   Calendar,
 } from "lucide-react";
 
-import { PHONE, PHONE_DISPLAY } from "../constants/contact";
+import { PHONE } from "../constants/contact";
 import { preloadRoute } from "../routeModules";
+import { CHROME } from "../constants/brand";
+import { PhoneLink } from "./common/ContactLinks";
 
-const NAV_ACCENT = "#ffffff";
-const NAV_TEXT = "#E8E4DC";
-const NAV_MUTED = "rgba(255,255,255,0.55)";
-const NAV_BORDER = "rgba(255,255,255,0.08)";
-const NAV_BG_SOLID = "#111318";
+const NAV_ACCENT = CHROME.accent;
+const NAV_TEXT = CHROME.text;
+const NAV_MUTED = CHROME.muted;
+const NAV_BORDER = CHROME.border;
+const NAV_BG_SOLID = CHROME.bg;
 
 const serviceCategories = [
   {
@@ -51,6 +52,10 @@ const serviceCategories = [
     ],
   },
 ];
+
+/** Flattened service list for the mobile menu, derived from the same source as
+ *  the desktop dropdown so the two can no longer disagree. */
+const ALL_SERVICES = serviceCategories.flatMap((cat) => cat.items);
 
 const FOCUSABLE_SELECTOR =
   'a[href], button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])';
@@ -176,13 +181,7 @@ export default function Navbar() {
 
         {/* Desktop Nav Links */}
         <nav aria-label="Main navigation" className="hidden md:flex items-center gap-6">
-          <Link
-            to="/"
-            className="text-sm font-medium transition-colors"
-            style={{ color: location.pathname === "/" ? NAV_ACCENT : NAV_MUTED }}
-            onMouseEnter={e => { if (location.pathname !== "/") (e.target as HTMLElement).style.color = NAV_TEXT; }}
-            onMouseLeave={e => { if (location.pathname !== "/") (e.target as HTMLElement).style.color = NAV_MUTED; }}
-          >
+          <Link to="/" className="nav-link text-sm font-medium" data-active={location.pathname === "/"}>
             Home
           </Link>
 
@@ -190,8 +189,10 @@ export default function Navbar() {
           <div className="relative" ref={dropdownRef}>
             <button
               onClick={() => setDropdownOpen((v) => !v)}
-              className="flex items-center gap-1 text-sm font-medium transition-colors py-2"
-              style={{ color: isServicesActive ? NAV_ACCENT : NAV_MUTED }}
+              className="nav-link flex items-center gap-1 text-sm font-medium py-2"
+              data-active={isServicesActive}
+              aria-expanded={dropdownOpen}
+              aria-haspopup="true"
             >
               <span>Services</span>
               <ChevronDown size={14} className={`transition-transform duration-200 ${dropdownOpen ? "rotate-180" : ""}`} style={{ color: dropdownOpen ? NAV_ACCENT : "inherit" }} />
@@ -215,13 +216,9 @@ export default function Navbar() {
                           <Link
                             key={item.to}
                             to={item.to}
-                            className="flex items-start gap-2.5 p-2 rounded-lg transition-colors group"
-                            style={{
-                              backgroundColor: active ? `${NAV_ACCENT}18` : "transparent",
-                              color: active ? NAV_ACCENT : NAV_TEXT,
-                            }}
-                            onMouseEnter={e => { if (!active) (e.currentTarget as HTMLElement).style.backgroundColor = "rgba(255,255,255,0.06)"; preloadRoute(item.to); }}
-                            onMouseLeave={e => { if (!active) (e.currentTarget as HTMLElement).style.backgroundColor = "transparent"; }}
+                            className="nav-menu-item flex items-start gap-2.5 p-2 rounded-lg group"
+                            data-active={active}
+                            onMouseEnter={() => preloadRoute(item.to)}
                             onFocus={() => preloadRoute(item.to)}
                           >
                             <Icon size={16} style={{ color: NAV_ACCENT }} className="shrink-0 mt-0.5" />
@@ -260,10 +257,9 @@ export default function Navbar() {
 
           <Link
             to="/blog"
-            className="text-sm font-medium transition-colors"
-            style={{ color: location.pathname.startsWith("/blog") ? NAV_ACCENT : NAV_MUTED }}
-            onMouseEnter={e => { if (!location.pathname.startsWith("/blog")) (e.target as HTMLElement).style.color = NAV_TEXT; preloadRoute("/blog"); }}
-            onMouseLeave={e => { if (!location.pathname.startsWith("/blog")) (e.target as HTMLElement).style.color = NAV_MUTED; }}
+            className="nav-link text-sm font-medium"
+            data-active={location.pathname.startsWith("/blog")}
+            onMouseEnter={() => preloadRoute("/blog")}
             onFocus={() => preloadRoute("/blog")}
           >
             Blog
@@ -272,13 +268,7 @@ export default function Navbar() {
 
         {/* Desktop CTAs */}
         <div className="hidden md:flex items-center gap-2.5">
-          <a
-            href={`sms:+1${PHONE}`}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs transition-colors"
-            style={{ border: `1px solid ${NAV_BORDER}`, color: NAV_MUTED }}
-            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = NAV_TEXT; (e.currentTarget as HTMLElement).style.borderColor = `${NAV_ACCENT}60`; }}
-            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = NAV_MUTED; (e.currentTarget as HTMLElement).style.borderColor = NAV_BORDER; }}
-          >
+          <a href={`sms:+1${PHONE}`} className="nav-pill flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs">
             <MessageSquare size={13} />
             Text Us
           </a>
@@ -294,14 +284,11 @@ export default function Navbar() {
             Book Online
           </Link>
 
-          <a
-            href={`tel:+1${PHONE}`}
+          <PhoneLink
+            iconSize={13}
             className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-md text-xs font-semibold transition-colors"
             style={{ backgroundColor: "rgba(255,255,255,0.08)", border: `1px solid ${NAV_BORDER}`, color: NAV_TEXT }}
-          >
-            <Phone size={13} />
-            {PHONE_DISPLAY}
-          </a>
+          />
         </div>
 
         {/* Mobile Menu Toggle */}
@@ -339,29 +326,37 @@ export default function Navbar() {
           style={{ backgroundColor: NAV_BG_SOLID, borderTop: `1px solid ${NAV_BORDER}` }}
         >
           <Link to="/" className="text-base font-semibold" style={{ color: NAV_TEXT }}>Home</Link>
-          <Link to="/book" className="flex items-center gap-2 py-2 px-3 rounded-lg font-bold text-sm" style={{ backgroundColor: NAV_ACCENT, color: NAV_BG_SOLID }} onTouchStart={() => preloadRoute("/book")}>
+          {/* No preload-on-touch here: the navigation fires milliseconds later,
+              so warming the chunk cache buys nothing. */}
+          <Link to="/book" className="flex items-center gap-2 py-2 px-3 rounded-lg font-bold text-sm" style={{ backgroundColor: NAV_ACCENT, color: NAV_BG_SOLID }}>
             <Calendar size={16} /> Book Online Directly
           </Link>
-          <Link to="/blog" className="text-sm font-semibold" style={{ color: NAV_TEXT }} onTouchStart={() => preloadRoute("/blog")}>Blog</Link>
+          <Link to="/blog" className="text-sm font-semibold" style={{ color: NAV_TEXT }}>Blog</Link>
 
           <div className="space-y-4 pt-2" style={{ borderTop: `1px solid ${NAV_BORDER}` }}>
             <p className="text-xs font-bold uppercase tracking-wider" style={{ color: NAV_ACCENT }}>All Services</p>
+            {/* Derived from serviceCategories — this was previously a second,
+                hand-maintained copy of the same eight links. */}
             <div className="grid grid-cols-2 gap-2 text-xs">
-              <Link to="/services/residential-cleaning" className="p-2 rounded" style={{ backgroundColor: "rgba(255,255,255,0.06)", border: `1px solid ${NAV_BORDER}`, color: NAV_TEXT }} onTouchStart={() => preloadRoute("/services/residential-cleaning")}>Residential Cleaning</Link>
-              <Link to="/services/commercial-cleaning" className="p-2 rounded" style={{ backgroundColor: "rgba(255,255,255,0.06)", border: `1px solid ${NAV_BORDER}`, color: NAV_TEXT }} onTouchStart={() => preloadRoute("/services/commercial-cleaning")}>Commercial Cleaning</Link>
-              <Link to="/services/power-washing" className="p-2 rounded" style={{ backgroundColor: "rgba(255,255,255,0.06)", border: `1px solid ${NAV_BORDER}`, color: NAV_TEXT }} onTouchStart={() => preloadRoute("/services/power-washing")}>Power Washing</Link>
-              <Link to="/services/window-cleaning" className="p-2 rounded" style={{ backgroundColor: "rgba(255,255,255,0.06)", border: `1px solid ${NAV_BORDER}`, color: NAV_TEXT }} onTouchStart={() => preloadRoute("/services/window-cleaning")}>Window Cleaning</Link>
-              <Link to="/services/auto-detailing" className="p-2 rounded" style={{ backgroundColor: "rgba(255,255,255,0.06)", border: `1px solid ${NAV_BORDER}`, color: NAV_TEXT }} onTouchStart={() => preloadRoute("/services/auto-detailing")}>Auto Detailing</Link>
-              <Link to="/services/bin-cleaning" className="p-2 rounded" style={{ backgroundColor: "rgba(255,255,255,0.06)", border: `1px solid ${NAV_BORDER}`, color: NAV_TEXT }} onTouchStart={() => preloadRoute("/services/bin-cleaning")}>Trash Bin Cleaning</Link>
-              <Link to="/junk-removal" className="p-2 rounded" style={{ backgroundColor: "rgba(255,255,255,0.06)", border: `1px solid ${NAV_BORDER}`, color: NAV_TEXT }} onTouchStart={() => preloadRoute("/junk-removal")}>Junk Removal</Link>
-              <Link to="/landscaping" className="p-2 rounded" style={{ backgroundColor: "rgba(255,255,255,0.06)", border: `1px solid ${NAV_BORDER}`, color: NAV_TEXT }} onTouchStart={() => preloadRoute("/landscaping")}>Landscaping</Link>
+              {ALL_SERVICES.map((item) => (
+                <Link
+                  key={item.to}
+                  to={item.to}
+                  className="p-2 rounded"
+                  style={{ backgroundColor: "rgba(255,255,255,0.06)", border: `1px solid ${NAV_BORDER}`, color: NAV_TEXT }}
+                >
+                  {item.label}
+                </Link>
+              ))}
             </div>
           </div>
 
           <div className="flex flex-col gap-2 pt-3" style={{ borderTop: `1px solid ${NAV_BORDER}` }}>
-            <a href={`tel:+1${PHONE}`} className="flex items-center justify-center gap-2 py-2.5 rounded-md font-semibold text-sm" style={{ backgroundColor: "rgba(255,255,255,0.08)", border: `1px solid ${NAV_BORDER}`, color: NAV_TEXT }}>
-              <Phone size={16} /> {PHONE_DISPLAY}
-            </a>
+            <PhoneLink
+              iconSize={16}
+              className="flex items-center justify-center gap-2 py-2.5 rounded-md font-semibold text-sm"
+              style={{ backgroundColor: "rgba(255,255,255,0.08)", border: `1px solid ${NAV_BORDER}`, color: NAV_TEXT }}
+            />
           </div>
         </div>
       )}

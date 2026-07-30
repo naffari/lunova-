@@ -1,10 +1,4 @@
-import {
-  Check,
-  ShieldCheck,
-  Leaf,
-  Calendar,
-  MapPin,
-} from "lucide-react";
+import { Check, ShieldCheck, Leaf, Calendar } from "lucide-react";
 import { Link } from "react-router";
 import ServiceHero from "../components/ServiceHero";
 import HowItWorks from "../components/HowItWorks";
@@ -12,6 +6,8 @@ import ServiceAreaSection from "../components/ServiceAreaSection";
 import FaqSection from "../components/FaqSection";
 import ContactStrip from "../components/common/ContactStrip";
 import Seo from "../components/common/Seo";
+import StatBand from "../components/StatBand";
+import WorkGallery from "../components/WorkGallery";
 import { SERVICE_THEMES } from "../constants/theme";
 import { buildBreadcrumbSchema, buildFaqSchema, buildServiceSchema } from "../utils/structuredData";
 
@@ -137,7 +133,7 @@ export default function Landscaping() {
         ctaLabel="Book Landscaping"
         ctaTo="/book?service=landscaping"
         trustItems={["Licensed & Insured", "Same-Week Appointments", "100% Satisfaction"]}
-        heroImage="/images/hero/landscaping-hero.jpg"
+        heroImage="landscaping-hero"
         heroImageAlt="Landscaping Professional at Work"
       />
 
@@ -225,6 +221,15 @@ export default function Landscaping() {
         </div>
       </section>
 
+      {/* WHAT DONE LOOKS LIKE — real job photography, see constants/serviceGallery.ts */}
+      <WorkGallery
+        serviceKey="landscaping"
+        primaryColor={PRIMARY}
+        accentColor={ACCENT}
+        bgColor={BG}
+        bookTo="/book?service=landscaping"
+      />
+
       {/* HOW IT WORKS */}
       <HowItWorks
         heading="Our Proven Landscape & Yard Process"
@@ -233,17 +238,8 @@ export default function Landscaping() {
         accentColor={ACCENT}
       />
 
-      {/* STATS BAR */}
-      <div className="py-12 px-4 sm:px-6" style={{ backgroundColor: PRIMARY }}>
-        <div className="max-w-4xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-          {STATS.map((stat, idx) => (
-            <div key={idx}>
-              <p className="font-serif-display text-4xl sm:text-5xl font-bold" style={{ color: ACCENT }}>{stat.val}</p>
-              <p className="text-xs mt-1 uppercase tracking-wider" style={{ color: 'rgba(255,255,255,0.55)' }}>{stat.label}</p>
-            </div>
-          ))}
-        </div>
-      </div>
+      {/* STATS BAND — shared component; this markup was duplicated on all 9 pages. */}
+      <StatBand stats={STATS} primaryColor={PRIMARY} accentColor={ACCENT} />
 
       {/* Wave transition */}
       <div style={{ backgroundColor: PRIMARY, lineHeight: 0, marginTop: '-1px' }}>

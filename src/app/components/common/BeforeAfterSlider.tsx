@@ -1,5 +1,6 @@
 import { useCallback, useRef, useState } from "react";
 import { ChevronsLeftRight } from "lucide-react";
+import { BRAND } from "../../constants/brand";
 
 interface BeforeAfterSliderProps {
   beforeImage: string;
@@ -27,7 +28,7 @@ export default function BeforeAfterSlider({
   afterAlt,
   beforeLabel = "Before",
   afterLabel = "After",
-  accentColor = "#c8960e",
+  accentColor = BRAND.primary,
   className = "",
 }: BeforeAfterSliderProps) {
   const containerRef = useRef<HTMLDivElement>(null);

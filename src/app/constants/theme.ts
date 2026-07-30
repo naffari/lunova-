@@ -1,24 +1,73 @@
+import { BRAND } from "./brand";
+
 /**
- * Single source of truth for each service page's accent theme.
- * Values here must stay in sync with the CSS custom properties defined
- * for the matching `[data-theme="..."]` selector in src/styles/theme.css.
+ * DEPARTMENT IDENTITIES.
+ *
+ * Each service line gets its own accent and its own dark ground, so the
+ * branches can be spun out as separate departments later without a redesign —
+ * the colour already belongs to the department rather than to the page.
+ *
+ * THE GUARDRAIL: identity is colour only. Every service page shares the exact
+ * same skeleton (ServiceHero → marquee → packages → features → work gallery →
+ * process → StatBand → service area → FAQ → ContactStrip) and the exact same
+ * type scale. Nine palettes on one layout reads as one company with nine
+ * divisions. Nine palettes on nine layouts reads as nine different websites
+ * badly glued together. Do not fork the layout per service.
+ *
+ * `ground` is only ever used as a dark surface behind white text — hero scrims,
+ * the stat band, the process band — so its contrast obligation is against
+ * white, not against BRAND.bg. `accent` must clear 4.5:1 on `ground`.
+ *
+ * Values must stay in sync with the `[data-theme="..."]` blocks in
+ * src/styles/theme.css.
  */
+
 export interface ServiceTheme {
+  /** Human label for the department, for future org/nav separation. */
+  department: string;
+  /** Dark ground. Used behind white text only. */
   primary: string;
+  /** The department's signature colour. */
   accent: string;
+  /** Page ground — shared across every department on purpose. */
   bg: string;
 }
 
+const bg = BRAND.bg;
+
 export const SERVICE_THEMES = {
-  cleaning: { primary: "#14304A", accent: "#E8A830", bg: "#F1EBD9" },
-  "residential-cleaning": { primary: "#14304A", accent: "#E8A830", bg: "#F1EBD9" },
-  "commercial-cleaning": { primary: "#14304A", accent: "#E8A830", bg: "#F1EBD9" },
-  "auto-detailing": { primary: "#14304A", accent: "#E8A830", bg: "#F1EBD9" },
-  "junk-removal": { primary: "#0d382c", accent: "#f5b82e", bg: "#F1EBD9" },
-  landscaping: { primary: "#0d382c", accent: "#f5b82e", bg: "#F1EBD9" },
-  "bin-cleaning": { primary: "#0d382c", accent: "#f5b82e", bg: "#F1EBD9" },
-  "power-washing": { primary: "#1A2F4A", accent: "#2BA8E0", bg: "#F1EBD9" },
-  "window-cleaning": { primary: "#1A2F4A", accent: "#2BA8E0", bg: "#F1EBD9" },
+  // ── Cleaning division ────────────────────────────────────────────────
+  // Deep navy + warm amber. The parent of the two cleaning sub-brands.
+  cleaning: { department: "Cleaning", primary: "#14304A", accent: "#E8A830", bg },
+  "residential-cleaning": { department: "Residential Cleaning", primary: "#14304A", accent: "#E8A830", bg },
+  // Copper against a colder slate, so commercial reads as the business-facing
+  // sibling rather than a recolour of residential.
+  "commercial-cleaning": { department: "Commercial Cleaning", primary: "#1B2A38", accent: "#C97B3C", bg },
+
+  // ── Exterior division ────────────────────────────────────────────────
+  // Blue is the one cool accent in the system and it is earned: the service is
+  // water. Anything warm here fights the subject matter.
+  "power-washing": { department: "Power Washing", primary: "#1A2F4A", accent: "#2BA8E0", bg },
+  // Glass gets warm gold rather than a second blue — two blues in the same
+  // division were indistinguishable in the nav and on the cards.
+  "window-cleaning": { department: "Window Cleaning", primary: "#1E2430", accent: "#F0B429", bg },
+
+  // ── Auto division ────────────────────────────────────────────────────
+  // Automotive crimson on near-black, picked to sit with the dark-red bodywork
+  // in the detailing photography.
+  "auto-detailing": { department: "Auto Detailing", primary: "#1A1618", accent: "#D8402F", bg },
+
+  // ── Grounds division ─────────────────────────────────────────────────
+  // Sage carries straight through from the parent brand — lawn care is the
+  // closest department to the Lunova mark itself.
+  landscaping: { department: "Landscaping", primary: "#0d382c", accent: BRAND.accent, bg },
+  // Fresh lime for sanitation, distinct from landscaping's deeper sage.
+  "bin-cleaning": { department: "Bin Cleaning", primary: "#17301F", accent: "#8DC63F", bg },
+
+  // ── Hauling division ─────────────────────────────────────────────────
+  // Safety orange on warm charcoal. The most industrial line gets the most
+  // industrial colour.
+  "junk-removal": { department: "Junk Removal", primary: "#1F1B16", accent: "#F97316", bg },
 } as const satisfies Record<string, ServiceTheme>;
 
 export type ServiceThemeKey = keyof typeof SERVICE_THEMES;

@@ -2,6 +2,7 @@ import { Phone, ArrowUpRight } from "lucide-react";
 import { Link } from "react-router";
 import type { ReactNode } from "react";
 import { PHONE, PHONE_DISPLAY } from "../constants/contact";
+import { HIGH_FETCH_PRIORITY } from "../utils/dom";
 
 interface ServiceHeroProps {
   badge: string;
@@ -12,9 +13,17 @@ interface ServiceHeroProps {
   ctaLabel: string;
   ctaTo: string;
   trustItems: string[];
+  /**
+   * Base filename of the hero, without directory, width suffix, or extension
+   * (e.g. "power-washing-hero"). The responsive AVIF/WebP/JPG variants are
+   * generated into public/images/hero/ by `pnpm images` — see
+   * scripts/optimize-images.mjs. Do not pass a full path or a remote URL.
+   */
   heroImage: string;
   heroImageAlt: string;
 }
+
+const HERO_PATH = "/images/hero";
 
 export default function ServiceHero({
   badge,
@@ -33,14 +42,28 @@ export default function ServiceHero({
       className="relative flex items-center min-h-[600px] sm:min-h-[720px] pt-[4.5rem] pb-20 px-4 sm:px-6 overflow-hidden"
       style={{ backgroundColor: primaryColor }}
     >
-      {/* Full-bleed background image */}
-      <img
-        src={heroImage}
-        alt={heroImageAlt}
-        className="absolute inset-0 w-full h-full object-cover z-0"
-        loading="eager"
-        fetchPriority="high"
-      />
+      {/* Full-bleed background image. Phones fetch the 640w variant (~10–51 KB),
+          desktop the 1280w; the JPG is only reached by browsers without WebP. */}
+      <picture>
+        <source
+          type="image/avif"
+          sizes="100vw"
+          srcSet={`${HERO_PATH}/${heroImage}-640.avif 640w, ${HERO_PATH}/${heroImage}-1280.avif 1280w`}
+        />
+        <source
+          type="image/webp"
+          sizes="100vw"
+          srcSet={`${HERO_PATH}/${heroImage}-640.webp 640w, ${HERO_PATH}/${heroImage}-1280.webp 1280w`}
+        />
+        <img
+          src={`${HERO_PATH}/${heroImage}-1280.jpg`}
+          alt={heroImageAlt}
+          className="absolute inset-0 w-full h-full object-cover z-0"
+          loading="eager"
+          decoding="async"
+          {...HIGH_FETCH_PRIORITY}
+        />
+      </picture>
 
       {/* Gradient overlay for text legibility */}
       <div

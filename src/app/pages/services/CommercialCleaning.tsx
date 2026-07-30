@@ -1,8 +1,4 @@
-import {
-  ArrowUpRight,
-  CheckCircle,
-  MapPin,
-} from "lucide-react";
+import { ArrowUpRight, CheckCircle } from "lucide-react";
 import { Link } from "react-router";
 import ServiceHero from "../../components/ServiceHero";
 import HowItWorks from "../../components/HowItWorks";
@@ -10,6 +6,7 @@ import ServiceAreaSection from "../../components/ServiceAreaSection";
 import FaqSection from "../../components/FaqSection";
 import ContactStrip from "../../components/common/ContactStrip";
 import Seo from "../../components/common/Seo";
+import StatBand from "../../components/StatBand";
 import { buildBreadcrumbSchema, buildFaqSchema, buildServiceSchema } from "../../utils/structuredData";
 import { SERVICE_THEMES } from "../../constants/theme";
 
@@ -108,7 +105,7 @@ export default function CommercialCleaning() {
         ctaLabel="Book a Clean"
         ctaTo="/book?service=commercial"
         trustItems={["Fully Insured", "After-Hours Service", "Satisfaction Guarantee"]}
-        heroImage="/images/hero/commercial-cleaning-hero.jpg"
+        heroImage="commercial-cleaning-hero"
         heroImageAlt="Commercial janitorial team cleaning an office space in Kansas City"
       />
 
@@ -262,17 +259,8 @@ export default function CommercialCleaning() {
         </div>
       </section>
 
-      {/* STATS BAR */}
-      <div className="py-12 px-4 sm:px-6" style={{ backgroundColor: DARK }}>
-        <div className="max-w-4xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-          {STATS.map((s) => (
-            <div key={s.label}>
-              <p className="font-serif-display text-4xl font-bold" style={{ color: ACCENT }}>{s.val}</p>
-              <p className="text-xs mt-1 uppercase tracking-wider" style={{ color: 'rgba(255,255,255,0.5)' }}>{s.label}</p>
-            </div>
-          ))}
-        </div>
-      </div>
+      {/* STATS BAND — shared component; this markup was duplicated on all 9 pages. */}
+      <StatBand stats={STATS} primaryColor={PRIMARY} accentColor={ACCENT} />
 
       {/* Wave transition */}
       <div style={{ backgroundColor: DARK, lineHeight: 0, marginTop: '-1px' }}>

@@ -1,0 +1,41 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls .eslintrc* eslint.config*)",
+      "Bash(grep -n \"MARQUEE STRIP\\\\|SERVICE PACKAGES\\\\|SERVICES —\\\\|FEATURE HIGHLIGHTS\\\\|HOW IT WORKS\\\\|STATS BAR\\\\|SERVICE AREA\\\\|FAQ SECTION\\\\|ContactStrip\\\\|ServiceHero$\\\\|<ServiceHero\" \"src/app/pages/JunkRemoval.tsx\")",
+      "Bash(ls -la *.jpg *.png)",
+      "Bash(ls tsconfig*.json)",
+      "Bash(grep -n -A2 \"<ServiceHero\" src/app/pages/Cleaning.tsx src/app/pages/Landscaping.tsx src/app/pages/JunkRemoval.tsx src/app/pages/services/*.tsx)",
+      "Bash(magick -version)",
+      "Bash(node -e \"console.log\\(process.version\\)\")",
+      "Bash(npm install:*)",
+      "Bash(npm -v)",
+      "Bash(pnpm -v)",
+      "Bash(node -e ':*)",
+      "Bash(node compress-hero.cjs)",
+      "Bash(rm compress-hero.cjs)",
+      "Bash(pnpm remove:*)",
+      "Read(//c/Users/naffa/.claude/projects/c--Users-naffa-Downloads-Service-website-for-Lunova/**)",
+      "Bash(grep -rn \"\\\\-\\\\-background\\\\|\\\\-\\\\-foreground\\\\|\\\\-\\\\-primary:\" src/styles/*.css src/index.css)",
+      "Bash(grep -rln \"/quote\" src --include=*.tsx --include=*.ts)",
+      "Bash(grep -rln \"\\\\\"/quote\\\\\"\\\\|'/quote'\\\\|to=\\\\\"/quote\\\\\"\" src --include=*.tsx --include=*.ts)",
+      "Bash(sed -n '1,60p' src/app/routes.ts)",
+      "Bash(xargs cat:*)",
+      "WebSearch",
+      "Bash(npm view:*)",
+      "Bash(identify public/favicon.png)",
+      "Bash(npx --yes sharp-cli -i public/favicon.svg -o public/favicon-preview.png resize 400)",
+      "Bash(npx --yes sharp-cli -i public/logo.svg -o public/logo-preview.png resize 800)",
+      "Bash(npx --yes sharp-cli -i public/favicon.svg -o public/favicon-preview.png resize 512)",
+      "Bash(mv public/favicon-preview.png public/favicon.png)",
+      "Bash(rm -f public/logo-preview.png)",
+      "Bash(ls public/*.png public/*.svg)",
+      "Bash(git check-ignore *)",
+      "Bash(echo \"ignore-check-exit:$?\")",
+      "Bash(git commit *)",
+      "Bash(gh auth *)",
+      "Bash(git push *)",
+      "Bash(gh pr *)"
+    ]
+  }
+}

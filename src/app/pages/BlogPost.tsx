@@ -4,6 +4,7 @@ import { getBlogPostBySlug } from "../constants/blog";
 import Seo from "../components/common/Seo";
 import ContactStrip from "../components/common/ContactStrip";
 import { buildArticleSchema, buildBreadcrumbSchema } from "../utils/structuredData";
+import { BRAND, CHROME } from "../constants/brand";
 
 function formatDate(iso: string) {
   return new Date(iso).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
@@ -53,18 +54,24 @@ export default function BlogPost() {
         ]}
       />
       <div className="bg-background text-foreground min-h-screen">
-        <section className="relative pt-24 pb-10 px-4 sm:px-6 overflow-hidden" style={{ backgroundColor: "#2A2118", borderBottom: "1px solid rgba(241,235,217,0.1)" }}>
+        <section
+          className="relative pt-24 pb-10 px-4 sm:px-6 overflow-hidden"
+          style={{ backgroundColor: CHROME.bg, borderBottom: `1px solid ${CHROME.border}` }}
+        >
           <div className="relative z-10 max-w-3xl mx-auto">
-            <Link to="/blog" className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest mb-6" style={{ color: "rgba(241,235,217,0.6)" }}>
+            <Link to="/blog" className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest mb-6" style={{ color: CHROME.muted }}>
               <ArrowLeft size={14} /> Back to Blog
             </Link>
-            <span className="text-xs font-semibold uppercase tracking-widest px-3 py-1 rounded-full" style={{ color: "#c8960e", backgroundColor: "rgba(200,150,14,0.12)", border: "1px solid rgba(200,150,14,0.25)" }}>
+            <span
+              className="text-xs font-semibold uppercase tracking-widest px-3 py-1 rounded-full"
+              style={{ color: BRAND.accent, backgroundColor: `${BRAND.accent}1f`, border: `1px solid ${BRAND.accent}40` }}
+            >
               {post.category}
             </span>
-            <h1 style={{ fontFamily: "var(--font-display)", color: "#F1EBD9" }} className="text-3xl sm:text-5xl font-bold leading-tight mt-4 mb-4">
+            <h1 style={{ fontFamily: "var(--font-display)", color: CHROME.text }} className="text-3xl sm:text-5xl font-bold leading-tight mt-4 mb-4">
               {post.title}
             </h1>
-            <div className="flex items-center gap-4 text-xs" style={{ color: "rgba(241,235,217,0.55)" }}>
+            <div className="flex items-center gap-4 text-xs" style={{ color: CHROME.muted }}>
               <span className="flex items-center gap-1.5">
                 <Calendar size={13} /> {formatDate(post.date)}
               </span>
