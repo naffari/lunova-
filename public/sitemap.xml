@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  NOTE: URLs below use the placeholder production domain defined in
-  src/app/constants/seo.ts (SITE_URL). Update both files together once the
-  real production domain is live. Transactional/noindex routes
-  (/book/success, 404) are intentionally omitted.
+  GENERATED FILE — do not edit by hand.
+  Produced by scripts/generate-sitemap.mjs from src/app/routeConfig.ts and
+  src/app/constants/blog.ts. The domain comes from SITE_URL in
+  src/app/constants/seo.ts; change it there, not here.
+  Noindex/transactional routes (/book/success, 404) are excluded.
 -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
@@ -13,6 +14,36 @@
   </url>
   <url>
     <loc>https://www.lunovaservices.com/cleaning</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.lunovaservices.com/services/residential-cleaning</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.lunovaservices.com/services/commercial-cleaning</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.lunovaservices.com/services/power-washing</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.lunovaservices.com/services/window-cleaning</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.lunovaservices.com/services/auto-detailing</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.lunovaservices.com/services/bin-cleaning</loc>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
@@ -27,63 +58,33 @@
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://www.lunovaservices.com/services/residential-cleaning</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://www.lunovaservices.com/services/commercial-cleaning</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://www.lunovaservices.com/services/power-washing</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://www.lunovaservices.com/services/window-cleaning</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://www.lunovaservices.com/services/auto-detailing</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://www.lunovaservices.com/services/bin-cleaning</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://www.lunovaservices.com/blog</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://www.lunovaservices.com/blog/5-signs-its-time-to-call-professional-cleaners</loc>
-    <changefreq>yearly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://www.lunovaservices.com/blog/how-often-should-you-mow-your-lawn</loc>
-    <changefreq>yearly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://www.lunovaservices.com/blog/junk-removal-101-what-can-and-cant-be-hauled</loc>
-    <changefreq>yearly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
     <loc>https://www.lunovaservices.com/book</loc>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.9</priority>
   </url>
   <url>
     <loc>https://www.lunovaservices.com/privacy</loc>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://www.lunovaservices.com/blog/5-signs-its-time-to-call-professional-cleaners</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.lunovaservices.com/blog/how-often-should-you-mow-your-lawn</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.lunovaservices.com/blog/junk-removal-101-what-can-and-cant-be-hauled</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
   </url>
 </urlset>

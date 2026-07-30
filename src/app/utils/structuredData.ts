@@ -1,4 +1,4 @@
-import { COMPANY_NAME, EMAIL, PHONE_DISPLAY, SERVICE_AREA } from "../constants/contact";
+import { COMPANY_NAME, PHONE_DISPLAY, SERVICE_AREA } from "../constants/contact";
 import { SITE_URL } from "../constants/seo";
 
 /** A JSON-LD document. Kept loose (schema.org has no static TS types) but never `any`. */
@@ -16,8 +16,13 @@ export function buildLocalBusinessSchema(): JsonLdSchema {
     "@type": "HomeAndConstructionBusiness",
     name: COMPANY_NAME,
     url: SITE_URL,
+    // `telephone` stays: it is what earns click-to-call in local results, and
+    // it is worth far more than the spam it attracts.
     telephone: PHONE_DISPLAY,
-    email: EMAIL,
+    // `email` deliberately omitted. It earns almost nothing here, and leaving it
+    // would put the address in static HTML for harvesters — undoing the
+    // obfuscation in utils/obfuscate.ts. Contact routes through the phone
+    // number, the booking form, and the post-hydration mailto link.
     areaServed: SERVICE_AREA,
     priceRange: "$$",
   };
@@ -91,7 +96,8 @@ export function buildOrganizationSchema(): JsonLdSchema {
     "@type": "Organization",
     name: COMPANY_NAME,
     url: SITE_URL,
-    email: EMAIL,
+    // See buildLocalBusinessSchema: telephone earns its keep, email does not and
+    // would leak the address into static HTML.
     telephone: PHONE_DISPLAY,
   };
 }

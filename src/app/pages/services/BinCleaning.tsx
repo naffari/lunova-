@@ -11,6 +11,7 @@ import ServiceAreaSection from "../../components/ServiceAreaSection";
 import FaqSection from "../../components/FaqSection";
 import ContactStrip from "../../components/common/ContactStrip";
 import Seo from "../../components/common/Seo";
+import StatBand from "../../components/StatBand";
 import { buildBreadcrumbSchema, buildFaqSchema, buildServiceSchema } from "../../utils/structuredData";
 import { SERVICE_THEMES } from "../../constants/theme";
 
@@ -113,7 +114,7 @@ export default function BinCleaning() {
         ctaLabel="Book a Clean"
         ctaTo="/book?service=bin-cleaning"
         trustItems={["200° Hot Water Sanitization", "Kills 99.9% Bacteria", "Monthly Route Service"]}
-        heroImage="/images/hero/bin-cleaning-hero.jpg"
+        heroImage="bin-cleaning-hero"
         heroImageAlt="Curbside Bin Cleaning Service"
       />
 
@@ -209,17 +210,8 @@ export default function BinCleaning() {
         accentColor={ACCENT}
       />
 
-      {/* STATS BAR */}
-      <div className="py-12 px-4 sm:px-6" style={{ backgroundColor: PRIMARY }}>
-        <div className="max-w-4xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-          {STATS.map((stat, idx) => (
-            <div key={idx}>
-              <p className="font-serif-display text-4xl sm:text-5xl font-bold" style={{ color: ACCENT }}>{stat.val}</p>
-              <p className="text-xs mt-1 uppercase tracking-wider" style={{ color: 'rgba(255,255,255,0.5)' }}>{stat.label}</p>
-            </div>
-          ))}
-        </div>
-      </div>
+      {/* STATS BAND — shared component; this markup was duplicated on all 9 pages. */}
+      <StatBand stats={STATS} primaryColor={PRIMARY} accentColor={ACCENT} />
 
       {/* Wave transition */}
       <div style={{ backgroundColor: PRIMARY, lineHeight: 0, marginTop: '-1px' }}>

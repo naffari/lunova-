@@ -3,14 +3,12 @@ import {
   ShieldCheck,
   Sparkles,
   CheckCircle2,
-  Calendar,
   Home,
   Building2,
   Droplets,
   AppWindow,
   Car,
   Trash2,
-  MapPin,
 } from "lucide-react";
 import { Link } from "react-router";
 import ServiceHero from "../components/ServiceHero";
@@ -20,6 +18,7 @@ import FaqSection from "../components/FaqSection";
 import ContactStrip from "../components/common/ContactStrip";
 import BeforeAfterSlider from "../components/common/BeforeAfterSlider";
 import Seo from "../components/common/Seo";
+import StatBand from "../components/StatBand";
 import { SERVICE_THEMES } from "../constants/theme";
 import { buildBreadcrumbSchema, buildFaqSchema, buildServiceSchema } from "../utils/structuredData";
 
@@ -147,7 +146,7 @@ export default function Cleaning() {
         ctaLabel="Book a Clean"
         ctaTo="/book?service=cleaning"
         trustItems={["Eco-Friendly Supplies", "Licensed & Insured", "Same-Week Slots"]}
-        heroImage="https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=800&h=1000&fit=crop&auto=format"
+        heroImage="cleaning-hero"
         heroImageAlt="Professional Cleaning Service"
       />
 
@@ -318,17 +317,8 @@ export default function Cleaning() {
         accentColor={ACCENT}
       />
 
-      {/* STATS BAR */}
-      <div className="py-12 px-4 sm:px-6" style={{ backgroundColor: PRIMARY }}>
-        <div className="max-w-4xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-          {STATS.map((stat, idx) => (
-            <div key={idx}>
-              <p className="font-serif-display text-4xl sm:text-5xl font-bold" style={{ color: ACCENT }}>{stat.val}</p>
-              <p className="text-xs mt-1 uppercase tracking-wider" style={{ color: 'rgba(255,255,255,0.5)' }}>{stat.label}</p>
-            </div>
-          ))}
-        </div>
-      </div>
+      {/* STATS BAND — shared component; this markup was duplicated on all 9 pages. */}
+      <StatBand stats={STATS} primaryColor={PRIMARY} accentColor={ACCENT} />
 
       {/* Wave transition */}
       <div style={{ backgroundColor: PRIMARY, lineHeight: 0, marginTop: '-1px' }}>

@@ -1,13 +1,15 @@
 import { Link } from "react-router";
-import { Phone, Mail, MessageSquare, MapPin, Calendar, Sparkles } from "lucide-react";
+import { MessageSquare, MapPin, Calendar, Sparkles } from "lucide-react";
 
-import { PHONE, PHONE_DISPLAY, EMAIL } from "../constants/contact";
+import { PHONE } from "../constants/contact";
+import { CHROME } from "../constants/brand";
+import { EmailLink, PhoneLink } from "./common/ContactLinks";
 
-const FT_BG = "#111318";
-const FT_TEXT = "#E8E4DC";
-const FT_MUTED = "rgba(255,255,255,0.55)";
-const FT_ACCENT = "#ffffff";
-const FT_BORDER = "rgba(255,255,255,0.08)";
+const FT_BG = CHROME.bg;
+const FT_TEXT = CHROME.text;
+const FT_MUTED = CHROME.muted;
+const FT_ACCENT = CHROME.accent;
+const FT_BORDER = CHROME.border;
 
 export default function Footer() {
   return (
@@ -29,13 +31,11 @@ export default function Footer() {
             >
               <Calendar size={14} /> Book Online
             </Link>
-            <a
-              href={`tel:+1${PHONE}`}
+            <PhoneLink
+              iconSize={13}
               className="px-4 py-2 rounded-lg font-semibold text-xs transition-colors flex items-center gap-1.5"
               style={{ border: `1px solid ${FT_BORDER}`, color: FT_TEXT }}
-            >
-              <Phone size={13} /> Call {PHONE_DISPLAY}
-            </a>
+            />
           </div>
         </div>
 
@@ -67,9 +67,7 @@ export default function Footer() {
           <p className="font-semibold text-xs uppercase tracking-wider mb-3" style={{ color: FT_TEXT }}>Contact &amp; Hours</p>
           <ul className="space-y-2 text-xs mb-4" style={{ color: FT_MUTED }}>
             <li>
-              <a href={`tel:+1${PHONE}`} className="flex items-center gap-2 hover:text-white transition-colors">
-                <Phone size={13} /> {PHONE_DISPLAY}
-              </a>
+              <PhoneLink iconSize={13} className="flex items-center gap-2 hover:text-white transition-colors" />
             </li>
             <li>
               <a href={`sms:+1${PHONE}`} className="flex items-center gap-2 hover:text-white transition-colors">
@@ -77,9 +75,7 @@ export default function Footer() {
               </a>
             </li>
             <li>
-              <a href={`mailto:${EMAIL}`} className="flex items-center gap-2 hover:text-white transition-colors">
-                <Mail size={13} /> {EMAIL}
-              </a>
+              <EmailLink iconSize={13} className="flex items-center gap-2 hover:text-white transition-colors" />
             </li>
             <li className="flex items-center gap-2">
               <MapPin size={13} /> Kansas City Metro

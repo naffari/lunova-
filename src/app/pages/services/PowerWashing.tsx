@@ -11,8 +11,9 @@ import ServiceAreaSection from "../../components/ServiceAreaSection";
 import FaqSection from "../../components/FaqSection";
 import ContactStrip from "../../components/common/ContactStrip";
 import Seo from "../../components/common/Seo";
+import StatBand from "../../components/StatBand";
+import WorkGallery from "../../components/WorkGallery";
 import { buildBreadcrumbSchema, buildFaqSchema, buildServiceSchema } from "../../utils/structuredData";
-import BeforeAfterSlider from "../../components/common/BeforeAfterSlider";
 import { SERVICE_THEMES } from "../../constants/theme";
 
 const { primary: PRIMARY, accent: ACCENT, bg: BG } = SERVICE_THEMES["power-washing"];
@@ -126,7 +127,7 @@ export default function PowerWashing() {
         ctaLabel="Book a Clean"
         ctaTo="/book?service=power-washing"
         trustItems={["Licensed & Insured", "Soft Wash Available", "Free Estimates"]}
-        heroImage="/images/hero/power-washing-hero.jpg"
+        heroImage="power-washing-hero"
         heroImageAlt="Power washing a driveway"
       />
 
@@ -227,38 +228,14 @@ export default function PowerWashing() {
         </div>
       </section>
 
-      {/* SEE THE DIFFERENCE */}
-      <section className="py-20 px-4 sm:px-6" style={{ backgroundColor: `${PRIMARY}07`, borderTop: `1px solid ${PRIMARY}15`, borderBottom: `1px solid ${PRIMARY}15` }}>
-        <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
-          <BeforeAfterSlider
-            className="rounded-3xl h-[380px] sm:h-[460px] shadow-2xl border-4 border-white order-2 lg:order-1"
-            beforeImage="https://images.unsplash.com/photo-1610557892470-55d587b03d0c?w=800&h=1000&fit=crop&auto=format"
-            afterImage="https://images.unsplash.com/photo-1558618047-3c8c76ca7b85?w=800&h=1000&fit=crop&auto=format"
-            beforeAlt="Grimy, stained exterior surface before power washing"
-            afterAlt="Clean driveway after Lunova's power washing service"
-            accentColor={ACCENT}
-          />
-          <div className="order-1 lg:order-2">
-            <div className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest mb-3" style={{ color: PRIMARY }}>
-              <span className="w-6 h-0.5" style={{ backgroundColor: PRIMARY }} />
-              <span>See The Difference</span>
-            </div>
-            <h2 className="font-serif-display text-4xl sm:text-5xl leading-tight mb-6" style={{ color: PRIMARY }}>
-              Years of Grime, Gone in a Single Visit.
-            </h2>
-            <p className="text-sm leading-relaxed mb-8" style={{ color: `${PRIMARY}bb` }}>
-              Drag the slider to see the kind of transformation our crews deliver on every driveway, siding, and deck job — no etching, no streaking, just a like-new finish.
-            </p>
-            <Link
-              to="/book?service=power-washing"
-              className="inline-block font-bold py-3 px-8 rounded-full text-sm text-white"
-              style={{ backgroundColor: ACCENT }}
-            >
-              Get Your Free Estimate →
-            </Link>
-          </div>
-        </div>
-      </section>
+      {/* WHAT DONE LOOKS LIKE — real job photography, see constants/serviceGallery.ts */}
+      <WorkGallery
+        serviceKey="power-washing"
+        primaryColor={PRIMARY}
+        accentColor={ACCENT}
+        bgColor={BG}
+        bookTo="/book?service=power"
+      />
 
       {/* HOW IT WORKS */}
       <HowItWorks
@@ -268,17 +245,8 @@ export default function PowerWashing() {
         accentColor={ACCENT}
       />
 
-      {/* STATS BAR */}
-      <div className="py-12 px-4 sm:px-6" style={{ backgroundColor: PRIMARY }}>
-        <div className="max-w-4xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-          {STATS.map((stat, idx) => (
-            <div key={idx}>
-              <p className="font-serif-display text-4xl sm:text-5xl font-bold" style={{ color: ACCENT }}>{stat.val}</p>
-              <p className="text-xs mt-1 uppercase tracking-wider" style={{ color: 'rgba(255,255,255,0.5)' }}>{stat.label}</p>
-            </div>
-          ))}
-        </div>
-      </div>
+      {/* STATS BAND — shared component; this markup was duplicated on all 9 pages. */}
+      <StatBand stats={STATS} primaryColor={PRIMARY} accentColor={ACCENT} />
 
       {/* Wave transition */}
       <div style={{ backgroundColor: PRIMARY, lineHeight: 0, marginTop: '-1px' }}>

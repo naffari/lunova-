@@ -1,46 +1,23 @@
 import { lazy } from "react";
 import { createBrowserRouter } from "react-router";
 import Root from "./Root";
-import Home from "./pages/Home";
 import { routeModules } from "./routeModules";
+import type { RouteModuleKey } from "./routeModules";
+import { ROUTE_CONFIG } from "./routeConfig";
 
-const Cleaning = lazy(routeModules.cleaning);
-const ResidentialCleaning = lazy(routeModules.residentialCleaning);
-const CommercialCleaning = lazy(routeModules.commercialCleaning);
-const PowerWashing = lazy(routeModules.powerWashing);
-const WindowCleaning = lazy(routeModules.windowCleaning);
-const AutoDetailing = lazy(routeModules.autoDetailing);
-const BinCleaning = lazy(routeModules.binCleaning);
-const JunkRemoval = lazy(routeModules.junkRemoval);
-const Landscaping = lazy(routeModules.landscaping);
-const Blog = lazy(routeModules.blog);
-const BlogPost = lazy(routeModules.blogPost);
-const Booking = lazy(routeModules.booking);
-const BookingSuccess = lazy(routeModules.bookingSuccess);
-const Privacy = lazy(routeModules.privacy);
-const NotFound = lazy(routeModules.notFound);
-
+/**
+ * Client router. Every page is code-split; the route table itself comes from
+ * ROUTE_CONFIG so it stays in step with the prerender entry.
+ */
 export const router = createBrowserRouter([
   {
     path: "/",
     Component: Root,
-    children: [
-      { index: true, Component: Home },
-      { path: "cleaning", Component: Cleaning },
-      { path: "services/residential-cleaning", Component: ResidentialCleaning },
-      { path: "services/commercial-cleaning", Component: CommercialCleaning },
-      { path: "services/power-washing", Component: PowerWashing },
-      { path: "services/window-cleaning", Component: WindowCleaning },
-      { path: "services/auto-detailing", Component: AutoDetailing },
-      { path: "services/bin-cleaning", Component: BinCleaning },
-      { path: "junk-removal", Component: JunkRemoval },
-      { path: "landscaping", Component: Landscaping },
-      { path: "blog", Component: Blog },
-      { path: "blog/:slug", Component: BlogPost },
-      { path: "book", Component: Booking },
-      { path: "book/success", Component: BookingSuccess },
-      { path: "privacy", Component: Privacy },
-      { path: "*", Component: NotFound },
-    ],
+    children: ROUTE_CONFIG.map(({ path, module }) => {
+      const Component = lazy(routeModules[module as RouteModuleKey]);
+      // react-router wants the index route flagged rather than pathed "/".
+      if (path === "/") return { index: true as const, Component };
+      return { path: path.replace(/^\//, ""), Component };
+    }),
   },
 ]);

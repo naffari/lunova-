@@ -2,10 +2,11 @@ import { Link } from "react-router";
 import { Home, Search, Phone } from "lucide-react";
 import { PHONE, PHONE_DISPLAY } from "../constants/contact";
 import Seo from "../components/common/Seo";
+import { BRAND } from "../constants/brand";
 
-const PRIMARY = "#3C312A";
-const ACCENT = "#c8960e";
-const BG = "#F1EBD9";
+const PRIMARY = BRAND.ink;
+const ACCENT = BRAND.primary;
+const BG = BRAND.bg;
 
 export default function NotFound() {
   return (

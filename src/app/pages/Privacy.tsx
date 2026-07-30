@@ -1,9 +1,11 @@
 import Seo from "../components/common/Seo";
 import { buildBreadcrumbSchema } from "../utils/structuredData";
-import { COMPANY_NAME, EMAIL } from "../constants/contact";
+import { COMPANY_NAME } from "../constants/contact";
+import { BRAND } from "../constants/brand";
+import { EmailLink, PhoneLink } from "../components/common/ContactLinks";
 
-const PRIMARY = "#3C312A";
-const BG = "#F1EBD9";
+const PRIMARY = BRAND.ink;
+const BG = BRAND.bg;
 
 const PRIVACY_DESCRIPTION =
   `${COMPANY_NAME}'s privacy policy: what information we collect, how it's used, and your choices around cookies and data.`;
@@ -59,8 +61,9 @@ export default function Privacy() {
           <section>
             <h2 className="text-xl font-bold mb-2" style={{ color: PRIMARY }}>Contact Us</h2>
             <p>
-              If you have questions about this policy or want to request that we delete your information, email us at{" "}
-              <a href={`mailto:${EMAIL}`} className="underline font-semibold">{EMAIL}</a>.
+              If you have questions about this policy or want to request that we delete your information,{" "}
+              <EmailLink icon={false} className="underline font-semibold" /> or call{" "}
+              <PhoneLink icon={false} className="underline font-semibold" />.
             </p>
           </section>
         </div>

@@ -7,10 +7,7 @@ export default function PageLoader() {
       aria-live="polite"
       aria-label="Loading page"
     >
-      <div
-        className="w-10 h-10 rounded-full border-4 border-t-transparent animate-spin"
-        style={{ borderColor: "rgba(200,150,14,0.25)", borderTopColor: "#c8960e" }}
-      />
+      <div className="w-10 h-10 rounded-full border-4 border-primary/25 border-t-primary animate-spin" />
       <span className="sr-only">Loading…</span>
     </div>
   );

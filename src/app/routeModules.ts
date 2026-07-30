@@ -1,10 +1,13 @@
+import { ROUTE_CONFIG } from "./routeConfig";
+
 /**
- * Central registry of lazy-loaded route modules. `routes.ts` uses these
- * to build `React.lazy()` components; `preloadRoute` reuses the same
- * import functions to warm the dynamic import cache ahead of navigation
- * (e.g. on link hover/focus) so the route feels instant when clicked.
+ * Central registry of route modules. `routes.ts` wraps these in `React.lazy()`
+ * for the client; `entry-server.tsx` awaits them directly for prerendering; and
+ * `preloadRoute` reuses the same import functions to warm the dynamic import
+ * cache ahead of navigation (e.g. on link hover/focus).
  */
 export const routeModules = {
+  home: () => import("./pages/Home"),
   cleaning: () => import("./pages/Cleaning"),
   residentialCleaning: () => import("./pages/services/ResidentialCleaning"),
   commercialCleaning: () => import("./pages/services/CommercialCleaning"),
@@ -22,20 +25,19 @@ export const routeModules = {
   notFound: () => import("./pages/NotFound"),
 } as const;
 
-const PATH_TO_MODULE: Record<string, keyof typeof routeModules> = {
-  "/cleaning": "cleaning",
-  "/services/residential-cleaning": "residentialCleaning",
-  "/services/commercial-cleaning": "commercialCleaning",
-  "/services/power-washing": "powerWashing",
-  "/services/window-cleaning": "windowCleaning",
-  "/services/auto-detailing": "autoDetailing",
-  "/services/bin-cleaning": "binCleaning",
-  "/junk-removal": "junkRemoval",
-  "/landscaping": "landscaping",
-  "/blog": "blog",
-  "/book": "booking",
-  "/privacy": "privacy",
-};
+export type RouteModuleKey = keyof typeof routeModules;
+
+/**
+ * Path → module lookup, derived from ROUTE_CONFIG rather than hand-maintained.
+ * Patterned and catch-all routes are excluded: there is nothing to preload for
+ * a path the user has not resolved yet.
+ */
+const PATH_TO_MODULE: Record<string, RouteModuleKey> = Object.fromEntries(
+  ROUTE_CONFIG.filter((r) => !r.path.includes(":") && r.path !== "*").map((r) => [
+    r.path,
+    r.module as RouteModuleKey,
+  ])
+);
 
 /** Warm the dynamic import cache for a route so navigation feels instant. */
 export function preloadRoute(path: string) {

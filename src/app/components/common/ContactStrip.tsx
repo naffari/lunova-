@@ -1,6 +1,7 @@
 import { Phone, Mail, ArrowUpRight } from "lucide-react";
 import { Link } from "react-router";
 import { PHONE, PHONE_DISPLAY, EMAIL } from "../../constants/contact";
+import { BRAND } from "../../constants/brand";
 
 export type ContactStripVariant = "dark" | "light" | "compact";
 
@@ -33,8 +34,8 @@ export default function ContactStrip({
   showEmail = false,
   ctaLabel = "Book a Service",
   ctaTo = "/book",
-  primaryColor = "#0E202F",
-  accentColor = "#F1EBD9",
+  primaryColor = BRAND.ink,
+  accentColor = BRAND.accent,
   variant = "dark",
   className = "",
 }: ContactStripProps) {
