@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useSearchParams } from "react-router";
-import { Check, ChevronRight, ChevronLeft, ChevronDown, AlertCircle, Info, Loader2 } from "lucide-react";
+import { Check, ChevronRight, ChevronLeft, AlertCircle, Info, Loader2 } from "lucide-react";
 import { PHONE_DISPLAY } from "../../constants/contact";
 import {
   CATEGORIES,
@@ -8,7 +8,6 @@ import {
   CITIES,
   HEAR_ABOUT_OPTIONS,
   STEP_LABELS,
-  FREQUENCY_OPTIONS,
   TIME_WINDOWS,
 } from "./wizardData";
 import {
@@ -128,8 +127,6 @@ export default function BookingWizard() {
   const [state, setState] = useState<WizardState>(loadDraft);
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
-  /** The itemized breakdown starts collapsed — see the note above the sticky bar. */
-  const [estimateExpanded, setEstimateExpanded] = useState(false);
   /**
    * Which steps the user has tried to leave. Errors only render for those, so
    * the form never scolds someone about a field they haven't reached yet —
@@ -291,6 +288,41 @@ export default function BookingWizard() {
   const showErrors = touched.has(state.step);
   const errorFor = (field: string) => (showErrors ? errors[field] : undefined);
   const stepValid = Object.keys(errors).length === 0;
+
+  /**
+   * Auto-advance on steps 1, 3 and 4 — each is a single decisive action
+   * (pick a category; fill an address; fill contact details) with nothing
+   * optional left to consider once it validates, so requiring a Continue
+   * tap on top is a click this flow doesn't need. Step 2 keeps its explicit
+   * Continue: it validates as soon as a package is picked, well before
+   * someone has looked at the qualifying questions, add-ons or frequency
+   * below it — auto-advancing there would skip content that changes price.
+   *
+   * Gated on `furthest === step`, not just `stepValid`, so this only fires
+   * on first-time forward progress. Someone who taps back into an
+   * already-complete step to review or edit it keeps full manual control —
+   * otherwise "Back" would be undone by an immediate auto-advance forward.
+   *
+   * Debounced half a second so it never fires mid-keystroke on the field
+   * that happens to complete validity (e.g. typing a ZIP): the timer resets
+   * on every change and only fires once things have been still.
+   */
+  useEffect(() => {
+    if (state.submitted) return;
+    if (![1, 3, 4].includes(state.step)) return;
+    if (state.step !== state.furthest) return;
+    if (!stepValid) return;
+
+    const t = setTimeout(() => {
+      setState((s) => {
+        if (s.step !== state.step || s.step !== s.furthest) return s;
+        const step = Math.min(TOTAL_STEPS, s.step + 1);
+        return { ...s, step, furthest: Math.max(s.furthest, step) };
+      });
+    }, 600);
+    return () => clearTimeout(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state.step, state.furthest, stepValid, state.submitted]);
 
   function next() {
     setTouched((t) => new Set(t).add(state.step));
@@ -586,88 +618,19 @@ export default function BookingWizard() {
               onAnswer={setAnswer}
               onToggleAddOn={toggleExtra}
               packageError={errorFor("packageId")}
+              upsells={service?.upsells ?? []}
+              bundles={state.bundles}
+              onToggleBundle={toggleBundle}
+              bundlePriceLabel={bundlePriceLabel}
+              frequency={state.frequency}
+              onFrequency={(freq) => update("frequency", freq)}
+              notes={state.notes}
+              onNotes={(v) => update("notes", v)}
             />
 
-            {(service?.upsells.length ?? 0) > 0 && (
-              <div className="rounded-2xl border border-primary/20 bg-primary/[0.04] p-5 mt-8">
-                <p className="text-sm font-semibold text-foreground mb-0.5">
-                  This would also go great with...
-                </p>
-                <p className="text-xs text-muted-foreground mb-3.5">
-                  One visit, one crew, {Math.round(BUNDLE_DISCOUNT * 100)}% off the combined total. We'll
-                  pin down the details for these on the call.
-                </p>
-                <div className="grid gap-2">
-                  {(service?.upsells || []).map((id) => {
-                    const checked = state.bundles.includes(id);
-                    return (
-                      <label
-                        key={id}
-                        className={`flex items-center gap-3 px-4 py-3 rounded-xl border-2 cursor-pointer transition-colors ${
-                          checked ? "border-primary bg-card" : "border-border/60 bg-card hover:border-primary/30"
-                        }`}
-                      >
-                        <input
-                          type="checkbox"
-                          checked={checked}
-                          onChange={() => toggleBundle(id)}
-                          className="sr-only"
-                        />
-                        <span
-                          className={`w-5 h-5 rounded-md flex-none flex items-center justify-center border-2 transition-colors ${
-                            checked ? "border-primary bg-primary text-primary-foreground" : "border-muted-foreground/35"
-                          }`}
-                        >
-                          {checked && <Check size={12} strokeWidth={3.5} />}
-                        </span>
-                        <span className="flex-1 text-sm text-foreground">{SERVICE_NAME_BY_ID[id]}</span>
-                        <span className="text-xs font-semibold text-muted-foreground">{bundlePriceLabel(id)}</span>
-                      </label>
-                    );
-                  })}
-                </div>
-              </div>
-            )}
-
-
-            <fieldset className="mb-7">
-              <legend className="text-xs font-semibold text-foreground mb-2.5">How often?</legend>
-              {/* Segmented control rather than a drop-down: Baymard found 55% of
-                  users open a drop-down purely to see what's inside, and with
-                  four options a drop-down saves nothing. */}
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                {FREQUENCY_OPTIONS.map((freq) => (
-                  <button
-                    key={freq}
-                    type="button"
-                    onClick={() => update("frequency", freq)}
-                    aria-pressed={state.frequency === freq}
-                    className={`py-3 rounded-xl text-sm font-semibold border-2 transition-colors ${
-                      state.frequency === freq
-                        ? "border-primary bg-primary text-primary-foreground"
-                        : "border-border bg-background text-foreground hover:border-primary/30"
-                    }`}
-                  >
-                    {freq}
-                  </button>
-                ))}
-              </div>
-            </fieldset>
-
-            <div className="mb-8">
-              <Field id="notes" label="Anything else we should know?" hint="Gate codes, pets, parking, access instructions.">
-                <textarea
-                  id="notes"
-                  rows={3}
-                  value={state.notes}
-                  onChange={(e) => update("notes", e.target.value)}
-                  placeholder="Side gate code is 4821, dog in the back yard…"
-                  className={inputClass}
-                />
-              </Field>
+            <div className="mt-3">
+              <StepFooter onBack={back} onNext={next} nextLabel="Continue" />
             </div>
-
-            <StepFooter onBack={back} onNext={next} nextLabel="Continue" />
           </div>
         )}
 
@@ -904,7 +867,28 @@ export default function BookingWizard() {
               Check anything looks wrong? Tap a step above to go back and fix it.
             </p>
 
-            <dl className="rounded-2xl border border-border divide-y divide-border mb-6">
+            {/*
+              Quick-glance tiles first — the four things worth confirming at
+              a look before reading the full detail list below. Bento-style
+              bordered tiles rather than plain text, matching the rest of the
+              wizard's card language.
+            */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 mb-5">
+              <SummaryTile label="Service" value={categoryLabel || "—"} sub={chosenPackage?.name} />
+              <SummaryTile
+                label="Details"
+                value={answerSummary().length > 0 ? `${answerSummary().length} answered` : "Default"}
+                sub={state.extras.length > 0 ? `${state.extras.length} add-on${state.extras.length === 1 ? "" : "s"}` : undefined}
+              />
+              <SummaryTile label="Date & time" value={scheduleParts.join(" · ") || "Not set"} accent />
+              <SummaryTile
+                label="Also booking"
+                value={state.bundles.length > 0 ? `${state.bundles.length} more` : "Just this"}
+                sub={state.bundles.length > 0 ? state.bundles.map((id) => SERVICE_NAME_BY_ID[id]).join(", ") : undefined}
+              />
+            </div>
+
+            <dl className="rounded-2xl border border-border divide-y divide-border mb-5">
               <ReviewRow label="Service" value={categoryLabel} />
               <ReviewRow label="Package" value={chosenPackage?.name || "—"} />
               {answerSummary().length > 0 && (
@@ -932,6 +916,65 @@ export default function BookingWizard() {
               {state.notes && <ReviewRow label="Notes" value={state.notes} />}
             </dl>
 
+            {/*
+              Price breakdown — previously a collapsed bar pinned under every
+              step from step 2 on; now surfaced once, in full, at the one
+              moment it actually matters: right before Submit.
+            */}
+            {estimate.serviceCount > 0 && (
+              <div className="rounded-2xl border border-border bg-background p-5 mb-6">
+                <h3 className="text-sm font-bold text-foreground mb-3">Price breakdown</h3>
+                {estimate.lines.length > 0 && (
+                  <ul className="grid gap-1.5 pb-3 mb-3 border-b border-border">
+                    {estimate.lines.map((line, i) => (
+                      <li key={`${line.label}-${i}`} className="flex justify-between gap-4 text-xs">
+                        <span className="text-muted-foreground">{line.label}</span>
+                        <span className="font-semibold text-foreground tabular-nums whitespace-nowrap">
+                          {line.custom ? "on site" : formatDollars(line.amount ?? 0)}
+                        </span>
+                      </li>
+                    ))}
+                    {estimate.bundleTotal > 0 && (
+                      <li className="flex justify-between gap-4 text-xs">
+                        <span className="text-muted-foreground">
+                          {state.bundles.length} bundled service{state.bundles.length === 1 ? "" : "s"}, from
+                        </span>
+                        <span className="font-semibold text-foreground tabular-nums whitespace-nowrap">
+                          {formatDollars(estimate.bundleTotal)}
+                        </span>
+                      </li>
+                    )}
+                    {estimate.discount > 0 && (
+                      <li className="flex justify-between gap-4 text-xs">
+                        <span className="text-primary font-semibold">
+                          Bundle discount, {Math.round(BUNDLE_DISCOUNT * 100)}%
+                        </span>
+                        <span className="font-bold text-primary tabular-nums whitespace-nowrap">
+                          −{formatDollars(estimate.discount)}
+                        </span>
+                      </li>
+                    )}
+                  </ul>
+                )}
+
+                <div className="flex items-baseline justify-between gap-4 flex-wrap">
+                  <p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+                    {chosenPackage?.unit === "month" ? "Estimated monthly" : "Estimated starting price"}
+                  </p>
+                  <p className="font-serif-display text-2xl text-foreground">
+                    {estimate.subtotal > 0
+                      ? `${formatDollars(estimate.total)}${chosenPackage?.unit === "month" ? "/mo" : "+"}`
+                      : "Custom quote"}
+                  </p>
+                </div>
+                <p className="text-[11px] leading-relaxed text-muted-foreground mt-2">
+                  {estimate.needsVisit
+                    ? "Some of what you've picked needs a look at the property before we can price it — we'll confirm the full figure on the phone."
+                    : "A starting figure, not a quote. We confirm the final price before any work begins."}
+                </p>
+              </div>
+            )}
+
             {submitError && (
               <div className="flex items-start gap-2.5 rounded-xl border border-destructive/30 bg-destructive/10 px-4 py-3 mb-6 text-sm text-destructive">
                 <AlertCircle size={16} className="mt-0.5 shrink-0" />
@@ -958,85 +1001,6 @@ export default function BookingWizard() {
           </div>
         )}
       </div>
-
-      {/*
-        Running estimate. Plain in-flow block, not pinned to the viewport —
-        a sticky bar that followed you down the page regardless of step was
-        the single most-flagged "distracting" thing in the wizard. Collapsed
-        to just the total by default; the itemized breakdown is one tap away,
-        not gone — the "why is it $315?" answer still has to live somewhere.
-      */}
-      {state.step >= 2 && estimate.serviceCount > 0 && (
-        <div className="mt-5">
-          <div className="rounded-2xl border border-border bg-card px-5 py-4">
-            <button
-              type="button"
-              onClick={() => setEstimateExpanded((v) => !v)}
-              className="flex w-full items-baseline justify-between gap-4 flex-wrap text-left"
-              aria-expanded={estimateExpanded}
-            >
-              <span className="inline-flex items-center gap-1 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
-                {chosenPackage?.unit === "month" ? "Estimated monthly" : "Estimated starting price"}
-                {estimate.lines.length > 0 && (
-                  <ChevronDown
-                    size={13}
-                    className={`transition-transform duration-150 ${estimateExpanded ? "rotate-180" : ""}`}
-                  />
-                )}
-              </span>
-              <span className="font-serif-display text-2xl text-foreground">
-                {estimate.subtotal > 0
-                  ? `${formatDollars(estimate.total)}${chosenPackage?.unit === "month" ? "/mo" : "+"}`
-                  : "Custom quote"}
-              </span>
-            </button>
-
-            {/*
-              Itemised, not just a total. An unexplained number is the thing
-              that makes people abandon a quote — "why is it $315?" has to be
-              answerable on the screen, not on the phone.
-            */}
-            {estimateExpanded && estimate.lines.length > 0 && (
-              <ul className="mt-3 pt-3 border-t border-border grid gap-1">
-                {estimate.lines.map((line, i) => (
-                  <li key={`${line.label}-${i}`} className="flex justify-between gap-4 text-xs">
-                    <span className="text-muted-foreground">{line.label}</span>
-                    <span className="font-semibold text-foreground tabular-nums whitespace-nowrap">
-                      {line.custom ? "on site" : formatDollars(line.amount ?? 0)}
-                    </span>
-                  </li>
-                ))}
-                {estimate.bundleTotal > 0 && (
-                  <li className="flex justify-between gap-4 text-xs">
-                    <span className="text-muted-foreground">
-                      {state.bundles.length} bundled service{state.bundles.length === 1 ? "" : "s"}, from
-                    </span>
-                    <span className="font-semibold text-foreground tabular-nums whitespace-nowrap">
-                      {formatDollars(estimate.bundleTotal)}
-                    </span>
-                  </li>
-                )}
-                {estimate.discount > 0 && (
-                  <li className="flex justify-between gap-4 text-xs">
-                    <span className="text-primary font-semibold">
-                      Bundle discount, {Math.round(BUNDLE_DISCOUNT * 100)}%
-                    </span>
-                    <span className="font-bold text-primary tabular-nums whitespace-nowrap">
-                      −{formatDollars(estimate.discount)}
-                    </span>
-                  </li>
-                )}
-              </ul>
-            )}
-
-            <p className="text-[11px] leading-relaxed text-muted-foreground mt-2">
-              {estimate.needsVisit
-                ? "Some of what you've picked needs a look at the property before we can price it — we'll confirm the full figure on the phone."
-                : "A starting figure, not a quote. We confirm the final price before any work begins."}
-            </p>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
@@ -1072,6 +1036,26 @@ function ReviewRow({ label, value }: { label: string; value: string }) {
     <div className="flex justify-between gap-4 px-5 py-3.5">
       <dt className="text-xs text-muted-foreground shrink-0 pt-0.5">{label}</dt>
       <dd className="text-sm font-semibold text-foreground text-right">{value}</dd>
+    </div>
+  );
+}
+
+function SummaryTile({
+  label,
+  value,
+  sub,
+  accent,
+}: {
+  label: string;
+  value: string;
+  sub?: string;
+  accent?: boolean;
+}) {
+  return (
+    <div className="rounded-xl border border-border bg-background p-3">
+      <span className="text-[10px] uppercase font-bold text-muted-foreground">{label}</span>
+      <p className={`text-xs font-bold truncate ${accent ? "text-primary" : "text-foreground"}`}>{value}</p>
+      {sub && <span className="block text-[10px] text-muted-foreground truncate mt-0.5">{sub}</span>}
     </div>
   );
 }
