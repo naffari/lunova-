@@ -91,7 +91,7 @@ export default function CommercialCleaning() {
             "Nightly Janitorial", "Office Cleaning", "Medical Facility", "Restaurant Cleaning", "HIPAA-Aware Protocols", "After-Hours Service", "Dedicated Crew", "Satisfaction Guarantee",
             "Nightly Janitorial", "Office Cleaning", "Medical Facility", "Restaurant Cleaning", "HIPAA-Aware Protocols", "After-Hours Service", "Dedicated Crew", "Satisfaction Guarantee",
           ].map((item, i) => (
-            <span key={i} className="text-xs font-bold uppercase tracking-widest" style={{ color: BRAND.bg }}>
+            <span key={i} className="text-xs font-bold uppercase tracking-widest" style={{ color: BRAND.ink }}>
               ✦ {item}
             </span>
           ))}

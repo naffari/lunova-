@@ -119,7 +119,7 @@ export default function AutoDetailing() {
             "Full Detail", "Ceramic Coating", "Interior Steam Clean", "Headlight Restoration", "Mobile Service", "Licensed & Insured", "Satisfaction Guarantee", "We Come to You",
             "Full Detail", "Ceramic Coating", "Interior Steam Clean", "Headlight Restoration", "Mobile Service", "Licensed & Insured", "Satisfaction Guarantee", "We Come to You",
           ].map((item, i) => (
-            <span key={i} className="text-xs font-bold uppercase tracking-widest" style={{ color: BRAND.bg }}>
+            <span key={i} className="text-xs font-bold uppercase tracking-widest" style={{ color: BRAND.ink }}>
               ✦ {item}
             </span>
           ))}

@@ -1,6 +1,17 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useSearchParams } from "react-router";
-import { Check, ChevronRight, ChevronLeft, AlertCircle, Info, Loader2 } from "lucide-react";
+import {
+  Check,
+  ChevronRight,
+  ChevronLeft,
+  ChevronDown,
+  AlertCircle,
+  Info,
+  Loader2,
+  CalendarClock,
+  ReceiptText,
+  PlugZap,
+} from "lucide-react";
 import { PHONE_DISPLAY } from "../../constants/contact";
 import {
   CATEGORIES,
@@ -128,6 +139,8 @@ export default function BookingWizard() {
   const [state, setState] = useState<WizardState>(loadDraft);
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
+  /** The itemized breakdown starts collapsed — see the note above the sticky bar. */
+  const [estimateExpanded, setEstimateExpanded] = useState(false);
   /**
    * Which steps the user has tried to leave. Errors only render for those, so
    * the form never scolds someone about a field they haven't reached yet —
@@ -194,6 +207,15 @@ export default function BookingWizard() {
     setSearchParams(params, { replace: true });
     trackBookingStep(state.step, STEP_LABELS[state.step - 1], state.category || undefined);
     stepHeadingRef.current?.focus();
+    // A deep link (e.g. "Book this" from a service page) can land past step 1,
+    // where the page header + progress bar sit above the fold and the actual
+    // step content is a scroll away. Bring it into view immediately instead of
+    // leaving the visitor at the top of an apparently-empty page. Skipped on
+    // step 1 itself so the intro copy and feature grid stay visible on a
+    // fresh page load — this only matters once there's a step above to jump.
+    if (state.step > 1) {
+      stepHeadingRef.current?.scrollIntoView({ behavior: "instant", block: "start" });
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.step]);
 
@@ -481,6 +503,26 @@ export default function BookingWizard() {
         </p>
       </div>
 
+      {state.step === 1 && (
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-8">
+          <BentoFeature
+            icon={CalendarClock}
+            title="Interactive calendar"
+            desc="Pick your own date and time window — no back-and-forth to find a slot."
+          />
+          <BentoFeature
+            icon={ReceiptText}
+            title="Itemized, real-time"
+            desc="Every line priced as you go, plus instant confirmation the moment you submit."
+          />
+          <BentoFeature
+            icon={PlugZap}
+            title="Add-ons built in"
+            desc="Bundle another department into the same visit and save automatically."
+          />
+        </div>
+      )}
+
       <StepNav labels={STEP_LABELS} current={state.step} furthest={state.furthest} onJump={jumpTo} />
 
       {/*
@@ -577,7 +619,7 @@ export default function BookingWizard() {
             {(service?.upsells.length ?? 0) > 0 && (
               <div className="rounded-2xl border border-primary/20 bg-primary/[0.04] p-5 mt-8">
                 <p className="text-sm font-semibold text-foreground mb-0.5">
-                  Need another department while we're there?
+                  This would also go great with...
                 </p>
                 <p className="text-xs text-muted-foreground mb-3.5">
                   One visit, one crew, {Math.round(BUNDLE_DISCOUNT * 100)}% off the combined total. We'll
@@ -951,17 +993,44 @@ export default function BookingWizard() {
         landscape phone screen, and a pinned bar competes with the very inputs
         the user is typing into. It is sticky only from `sm` up, where there is
         room for it.
+
+        Collapsed to just the total by default — a fully itemized breakdown
+        pinned to the bottom of every step was reading as the most visually
+        loud thing on the page. The breakdown is one tap away, not gone: the
+        "why is it $315?" answer still has to live on the screen somewhere.
       */}
       {state.step >= 2 && estimate.serviceCount > 0 && (
         <div className="mt-5 sm:sticky sm:bottom-5">
           <div className="rounded-2xl border border-primary/25 bg-card shadow-lg px-5 py-4">
+            <button
+              type="button"
+              onClick={() => setEstimateExpanded((v) => !v)}
+              className="flex w-full items-baseline justify-between gap-4 flex-wrap text-left"
+              aria-expanded={estimateExpanded}
+            >
+              <span className="inline-flex items-center gap-1 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+                {chosenPackage?.unit === "month" ? "Estimated monthly" : "Estimated starting price"}
+                {estimate.lines.length > 0 && (
+                  <ChevronDown
+                    size={13}
+                    className={`transition-transform duration-150 ${estimateExpanded ? "rotate-180" : ""}`}
+                  />
+                )}
+              </span>
+              <span className="font-serif-display text-2xl text-foreground">
+                {estimate.subtotal > 0
+                  ? `${formatDollars(estimate.total)}${chosenPackage?.unit === "month" ? "/mo" : "+"}`
+                  : "Custom quote"}
+              </span>
+            </button>
+
             {/*
               Itemised, not just a total. An unexplained number is the thing
               that makes people abandon a quote — "why is it $315?" has to be
               answerable on the screen, not on the phone.
             */}
-            {estimate.lines.length > 0 && (
-              <ul className="mb-3 pb-3 border-b border-border grid gap-1">
+            {estimateExpanded && estimate.lines.length > 0 && (
+              <ul className="mt-3 pt-3 border-t border-border grid gap-1">
                 {estimate.lines.map((line, i) => (
                   <li key={`${line.label}-${i}`} className="flex justify-between gap-4 text-xs">
                     <span className="text-muted-foreground">{line.label}</span>
@@ -992,17 +1061,6 @@ export default function BookingWizard() {
                 )}
               </ul>
             )}
-
-            <div className="flex items-baseline justify-between gap-4 flex-wrap">
-              <p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
-                {chosenPackage?.unit === "month" ? "Estimated monthly" : "Estimated starting price"}
-              </p>
-              <p className="font-serif-display text-2xl text-foreground">
-                {estimate.subtotal > 0
-                  ? `${formatDollars(estimate.total)}${chosenPackage?.unit === "month" ? "/mo" : "+"}`
-                  : "Custom quote"}
-              </p>
-            </div>
 
             <p className="text-[11px] leading-relaxed text-muted-foreground mt-2">
               {estimate.needsVisit
@@ -1047,6 +1105,26 @@ function ReviewRow({ label, value }: { label: string; value: string }) {
     <div className="flex justify-between gap-4 px-5 py-3.5">
       <dt className="text-xs text-muted-foreground shrink-0 pt-0.5">{label}</dt>
       <dd className="text-sm font-semibold text-foreground text-right">{value}</dd>
+    </div>
+  );
+}
+
+function BentoFeature({
+  icon: Icon,
+  title,
+  desc,
+}: {
+  icon: typeof CalendarClock;
+  title: string;
+  desc: string;
+}) {
+  return (
+    <div className="rounded-2xl border border-border bg-card p-4 flex flex-col gap-2">
+      <span className="w-8 h-8 rounded-lg bg-primary/10 text-primary flex items-center justify-center">
+        <Icon size={16} />
+      </span>
+      <p className="text-sm font-bold text-foreground">{title}</p>
+      <p className="text-xs text-muted-foreground leading-relaxed">{desc}</p>
     </div>
   );
 }

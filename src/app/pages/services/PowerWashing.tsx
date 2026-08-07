@@ -119,7 +119,7 @@ export default function PowerWashing() {
             "Driveway Cleaning", "House Soft Wash", "Deck Restoration", "Oil & Rust Removal", "Licensed & Insured", "Soft Wash Available", "Free Estimates", "Satisfaction Guarantee",
             "Driveway Cleaning", "House Soft Wash", "Deck Restoration", "Oil & Rust Removal", "Licensed & Insured", "Soft Wash Available", "Free Estimates", "Satisfaction Guarantee",
           ].map((item, i) => (
-            <span key={i} className="text-xs font-bold uppercase tracking-widest" style={{ color: BRAND.bg }}>
+            <span key={i} className="text-xs font-bold uppercase tracking-widest" style={{ color: BRAND.ink }}>
               ✦ {item}
             </span>
           ))}

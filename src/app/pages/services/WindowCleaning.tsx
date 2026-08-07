@@ -118,7 +118,7 @@ export default function WindowCleaning() {
             "Interior Windows", "Exterior Windows", "Screen Cleaning", "Hard Water Removal", "Streak-Free Guarantee", "Water-Fed Pole", "Licensed & Insured", "Free Estimates",
             "Interior Windows", "Exterior Windows", "Screen Cleaning", "Hard Water Removal", "Streak-Free Guarantee", "Water-Fed Pole", "Licensed & Insured", "Free Estimates",
           ].map((item, i) => (
-            <span key={i} className="text-xs font-bold uppercase tracking-widest" style={{ color: BRAND.bg }}>
+            <span key={i} className="text-xs font-bold uppercase tracking-widest" style={{ color: BRAND.ink }}>
               ✦ {item}
             </span>
           ))}

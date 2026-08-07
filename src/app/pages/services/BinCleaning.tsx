@@ -118,7 +118,7 @@ export default function BinCleaning() {
             "200° Hot Water", "Monthly Route Service", "99.9% Bacteria Kill", "Eco-Safe Deodorizer", "Curbside Service", "No Contracts", "Licensed & Insured", "Satisfaction Guarantee",
             "200° Hot Water", "Monthly Route Service", "99.9% Bacteria Kill", "Eco-Safe Deodorizer", "Curbside Service", "No Contracts", "Licensed & Insured", "Satisfaction Guarantee",
           ].map((item, i) => (
-            <span key={i} className="text-xs font-bold uppercase tracking-widest" style={{ color: BRAND.bg }}>
+            <span key={i} className="text-xs font-bold uppercase tracking-widest" style={{ color: BRAND.ink }}>
               ✦ {item}
             </span>
           ))}

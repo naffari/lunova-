@@ -107,30 +107,50 @@ export default function ServiceDetailStep({
                     )}
 
                     {/*
-                      The checklist is always visible, not hidden behind an
-                      accordion. Someone comparing two tiers needs to see both
-                      lists at once, and a collapsed list is a list nobody reads.
+                      Full checklist only for the selected package — a stack of
+                      packages with every checklist expanded at once is most of
+                      why step 2 read as too long. An unselected card still
+                      shows its top three inclusions so tiers stay comparable at
+                      a glance; tap it to see the rest.
                     */}
-                    <ul className="mt-3 grid sm:grid-cols-2 gap-x-4 gap-y-1.5">
-                      {pkg.includes.map((item) => (
-                        <li key={item} className="flex items-start gap-1.5 text-xs text-foreground/85">
-                          <Check size={13} className="mt-0.5 shrink-0 text-primary" />
-                          <span>{item}</span>
-                        </li>
-                      ))}
-                    </ul>
+                    {active ? (
+                      <>
+                        <ul className="mt-3 grid sm:grid-cols-2 gap-x-4 gap-y-1.5">
+                          {pkg.includes.map((item) => (
+                            <li key={item} className="flex items-start gap-1.5 text-xs text-foreground/85">
+                              <Check size={13} className="mt-0.5 shrink-0 text-primary" />
+                              <span>{item}</span>
+                            </li>
+                          ))}
+                        </ul>
 
-                    {pkg.excludes && pkg.excludes.length > 0 && (
-                      <ul className="mt-2.5 pt-2.5 border-t border-border grid sm:grid-cols-2 gap-x-4 gap-y-1.5">
-                        {pkg.excludes.map((item) => (
-                          <li
-                            key={item}
-                            className="flex items-start gap-1.5 text-[11px] text-muted-foreground"
-                          >
-                            <X size={12} className="mt-0.5 shrink-0 opacity-60" />
-                            <span>Not included: {item}</span>
+                        {pkg.excludes && pkg.excludes.length > 0 && (
+                          <ul className="mt-2.5 pt-2.5 border-t border-border grid sm:grid-cols-2 gap-x-4 gap-y-1.5">
+                            {pkg.excludes.map((item) => (
+                              <li
+                                key={item}
+                                className="flex items-start gap-1.5 text-[11px] text-muted-foreground"
+                              >
+                                <X size={12} className="mt-0.5 shrink-0 opacity-60" />
+                                <span>Not included: {item}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+                      </>
+                    ) : (
+                      <ul className="mt-3 flex flex-col gap-1">
+                        {pkg.includes.slice(0, 3).map((item) => (
+                          <li key={item} className="flex items-start gap-1.5 text-xs text-foreground/70">
+                            <Check size={13} className="mt-0.5 shrink-0 text-primary/60" />
+                            <span>{item}</span>
                           </li>
                         ))}
+                        {pkg.includes.length > 3 && (
+                          <li className="text-[11px] text-muted-foreground pl-[19px]">
+                            +{pkg.includes.length - 3} more — tap to see the full list
+                          </li>
+                        )}
                       </ul>
                     )}
                   </div>

@@ -114,7 +114,7 @@ export default function JunkRemoval() {
       <div style={{ backgroundColor: ACCENT, overflow: 'hidden' }} className="py-3">
         <div style={{ display: 'flex', gap: '3rem', whiteSpace: 'nowrap', animation: 'marquee 20s linear infinite', width: 'max-content' }}>
           {MARQUEE_ITEMS.map((item, i) => (
-            <span key={i} className="text-xs font-bold uppercase tracking-widest" style={{ color: BRAND.bg }}>
+            <span key={i} className="text-xs font-bold uppercase tracking-widest" style={{ color: BRAND.ink }}>
               ✦ {item}
             </span>
           ))}

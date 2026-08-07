@@ -113,7 +113,7 @@ export default function Landscaping() {
             "Lawn Mowing", "Hedge Trimming", "Mulch & Edging", "Seasonal Cleanup", "Aeration & Seeding", "Licensed & Insured", "Same-Week Slots", "Satisfaction Guarantee",
             "Lawn Mowing", "Hedge Trimming", "Mulch & Edging", "Seasonal Cleanup", "Aeration & Seeding", "Licensed & Insured", "Same-Week Slots", "Satisfaction Guarantee",
           ].map((item, i) => (
-            <span key={i} className="text-xs font-bold uppercase tracking-widest" style={{ color: BRAND.bg }}>
+            <span key={i} className="text-xs font-bold uppercase tracking-widest" style={{ color: BRAND.ink }}>
               ✦ {item}
             </span>
           ))}

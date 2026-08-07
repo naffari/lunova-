@@ -1,31 +1,30 @@
 import { BRAND } from "./brand";
 
 /**
- * Per-service accent themes, on the dark rebuild.
+ * Per-service accent themes, on the cream ground (reverted from the dark
+ * rebuild — see the note in src/app/constants/brand.ts).
  *
- * Each department layers exactly one vivid identity colour on top of the
- * shared dark ground (BRAND.bg) — they do not replace it. That is the whole
- * "one skeleton, nine accents" system: nine department pages that all look
- * like the same company, not nine different websites.
+ * Each department layers exactly one vivid identity colour plus one dark
+ * near-black tone on top of the shared cream ground (BRAND.bg) — they do not
+ * replace it. That is the whole "one skeleton, nine accents" system: nine
+ * department pages that all look like the same company, not nine different
+ * websites.
  *
- * `primary`/`accent` are the SAME vivid hex on purpose. The old cream-era
- * version used two different tones (a dark navy "primary" for headings and a
- * bright "accent" for highlights) because dark navy read fine as text on
- * cream. On a dark ground that dark navy is nearly invisible, so there is
- * only one identity colour now — components that used to alternate between
- * PRIMARY and ACCENT for two-tone icon tints just get one consistent tone.
- *
- * `ground` is the near-black tone unique to each department (hero scrims,
- * stat bands, deep panels) — a hue-biased near-black rather than the flat
- * page background, so those sections read as "this department", not just
- * "the page again". Values mirror the [data-theme] blocks in
+ * TWO-TONE, restored: `primary` is a dark, hue-biased near-black — used for
+ * headings, labels and any text/foreground role, since a vivid identity
+ * colour is not reliably legible as text on cream. `accent` is the vivid
+ * identity colour, for buttons, fills and highlights. `ground` is the same
+ * dark tone as `primary` by construction (hero scrims, stat bands, deep
+ * panels always want the dark tone regardless of what's currently assigned
+ * to `primary`) — kept as a separate field since callsites already
+ * destructure it explicitly. Values mirror the [data-theme] blocks in
  * src/styles/theme.css — change both together.
  */
 export interface ServiceTheme {
   department: string;
   primary: string;
   accent: string;
-  /** Near-black, department-tinted. Hero scrims, stat bands, deep panels. */
+  /** Near-black, department-tinted. Hero scrims, stat bands, deep panels. Same value as `primary`. */
   ground: string;
   bg: string;
 }
@@ -33,15 +32,15 @@ export interface ServiceTheme {
 const bg = BRAND.bg;
 
 export const SERVICE_THEMES = {
-  cleaning: { department: "Cleaning", primary: "#E8A830", accent: "#E8A830", ground: "#101E2C", bg },
-  "residential-cleaning": { department: "Residential Cleaning", primary: "#E8A830", accent: "#E8A830", ground: "#101E2C", bg },
-  "commercial-cleaning": { department: "Commercial Cleaning", primary: "#C97B3C", accent: "#C97B3C", ground: "#141F29", bg },
-  "power-washing": { department: "Power Washing", primary: "#2BA8E0", accent: "#2BA8E0", ground: "#101C2C", bg },
-  "window-cleaning": { department: "Window Cleaning", primary: "#F0B429", accent: "#F0B429", ground: "#171B22", bg },
-  "auto-detailing": { department: "Auto Detailing", primary: "#D8402F", accent: "#D8402F", ground: "#17100F", bg },
-  landscaping: { department: "Landscaping", primary: BRAND.accent, accent: BRAND.accent, ground: "#0A2119", bg },
-  "bin-cleaning": { department: "Bin Cleaning", primary: "#8DC63F", accent: "#8DC63F", ground: "#0F1D14", bg },
-  "junk-removal": { department: "Junk Removal", primary: "#F97316", accent: "#F97316", ground: "#191410", bg },
+  cleaning: { department: "Cleaning", primary: "#101E2C", accent: "#E8A830", ground: "#101E2C", bg },
+  "residential-cleaning": { department: "Residential Cleaning", primary: "#101E2C", accent: "#E8A830", ground: "#101E2C", bg },
+  "commercial-cleaning": { department: "Commercial Cleaning", primary: "#141F29", accent: "#C97B3C", ground: "#141F29", bg },
+  "power-washing": { department: "Power Washing", primary: "#101C2C", accent: "#2BA8E0", ground: "#101C2C", bg },
+  "window-cleaning": { department: "Window Cleaning", primary: "#171B22", accent: "#F0B429", ground: "#171B22", bg },
+  "auto-detailing": { department: "Auto Detailing", primary: "#17100F", accent: "#D8402F", ground: "#17100F", bg },
+  landscaping: { department: "Landscaping", primary: "#0A2119", accent: BRAND.accent, ground: "#0A2119", bg },
+  "bin-cleaning": { department: "Bin Cleaning", primary: "#0F1D14", accent: "#8DC63F", ground: "#0F1D14", bg },
+  "junk-removal": { department: "Junk Removal", primary: "#191410", accent: "#F97316", ground: "#191410", bg },
 } as const satisfies Record<string, ServiceTheme>;
 
 export type ServiceThemeKey = keyof typeof SERVICE_THEMES;

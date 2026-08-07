@@ -94,7 +94,7 @@ export default function ResidentialCleaning() {
             "Deep Clean", "Move-In Clean", "Move-Out Clean", "Weekly Recurring", "Eco Products",
             "Background-Checked Crew", "Same-Week Slots", "Satisfaction Guarantee",
           ].map((item, i) => (
-            <span key={i} className="text-xs font-bold uppercase tracking-widest" style={{ color: BRAND.bg }}>
+            <span key={i} className="text-xs font-bold uppercase tracking-widest" style={{ color: BRAND.ink }}>
               ✦ {item}
             </span>
           ))}

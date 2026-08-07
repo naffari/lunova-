@@ -158,7 +158,7 @@ export default function Cleaning() {
             "Residential Cleaning", "Commercial Janitorial", "Power Washing", "Window Cleaning", "Auto Detailing", "Bin Cleaning", "Licensed & Insured", "Satisfaction Guarantee",
             "Residential Cleaning", "Commercial Janitorial", "Power Washing", "Window Cleaning", "Auto Detailing", "Bin Cleaning", "Licensed & Insured", "Satisfaction Guarantee",
           ].map((item, i) => (
-            <span key={i} className="text-xs font-bold uppercase tracking-widest" style={{ color: BRAND.bg }}>
+            <span key={i} className="text-xs font-bold uppercase tracking-widest" style={{ color: BRAND.ink }}>
               ✦ {item}
             </span>
           ))}
@@ -209,7 +209,7 @@ export default function Cleaning() {
                       </div>
                       <span
                         className="text-xs font-bold px-3 py-1 rounded-full shrink-0 ml-2"
-                        style={{ backgroundColor: ACCENT, color: BRAND.bg }}
+                        style={{ backgroundColor: ACCENT, color: BRAND.ink }}
                       >
                         {item.price}
                       </span>
@@ -292,7 +292,7 @@ export default function Cleaning() {
               Get To Know Us
               <span
                 className="w-6 h-6 rounded-full flex items-center justify-center group-hover:translate-x-0.5 transition-transform"
-                style={{ backgroundColor: ACCENT, color: BRAND.bg }}
+                style={{ backgroundColor: ACCENT, color: BRAND.ink }}
               >
                 <ArrowUpRight size={14} />
               </span>

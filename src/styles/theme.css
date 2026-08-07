@@ -13,34 +13,36 @@
  * pair below passes AA — see the contrast table in brand.ts before editing.
  */
 /**
- * DARK REBUILD. Warm charcoal ground sitewide, replacing the earlier cream
- * palette. Every service page's [data-theme] block below sets only
- * --primary/--accent/--ring — --background stays this one value everywhere,
- * which is what makes "one skeleton, nine accents" hold as a system instead
- * of nine different-looking pages. See the rationale in
- * src/app/constants/brand.ts (mirror this file's values with that one).
+ * CREAM GROUND, restored. Warm cream sitewide for page content — reverted
+ * from the dark-rebuild charcoal ground (commit 5b52a7d). Every service
+ * page's [data-theme] block below still sets only --primary/--accent/--ring;
+ * --background stays this one value everywhere, which is what makes "one
+ * skeleton, nine accents" hold as a system instead of nine different-looking
+ * pages. CHROME (further below) and each department's dark `ground` tone stay
+ * dark on purpose — see the rationale in src/app/constants/brand.ts (mirror
+ * this file's values with that one).
  */
 :root {
   --font-size: 16px;
-  --background: #171512;
-  --foreground: #EDEAE3;
-  --card: #201D19;
-  --card-foreground: #EDEAE3;
-  --popover: #201D19;
-  --popover-foreground: #EDEAE3;
+  --background: #F1EBD9;
+  --foreground: #211D17;
+  --card: #FBF8F0;
+  --card-foreground: #211D17;
+  --popover: #FBF8F0;
+  --popover-foreground: #211D17;
   --primary: #3d6b2e;
   --primary-foreground: #ffffff;
-  --secondary: #292521;
-  --secondary-foreground: #EDEAE3;
-  --muted: #292521;
-  --muted-foreground: #A29C92;
+  --secondary: #EDE4CE;
+  --secondary-foreground: #211D17;
+  --muted: #EDE4CE;
+  --muted-foreground: #7A7166;
   --accent: #7fa650;
-  --accent-foreground: #EDEAE3;
+  --accent-foreground: #211D17;
   --destructive: #e2536b;
   --destructive-foreground: #ffffff;
-  --border: rgba(237, 234, 227, 0.12);
+  --border: rgba(33, 29, 23, 0.12);
   --input: transparent;
-  --input-background: #201D19;
+  --input-background: #FBF8F0;
   --font-weight-medium: 600;
   --font-weight-normal: 400;
   --ring: #3d6b2e;
@@ -148,30 +150,33 @@
  *
  * Keys mirror SERVICE_THEMES in src/app/constants/theme.ts; change both
  * together. `--background` is deliberately NOT overridden here — every
- * department sits on the exact same dark ground (see the guardrail comment
- * in constants/theme.ts). Only the accent changes per page.
+ * department sits on the exact same cream ground (see the guardrail comment
+ * in constants/theme.ts). Only primary/accent/ring change per page.
  *
- * `--service-primary` is the near-black tone each department was originally
- * built around — kept as a distinct, slightly hue-biased near-black (rather
- * than falling back to the flat global background) so a hero scrim or a stat
- * band reads as "this department's dark", not just "the page background
- * again". `--primary`/`--accent`/`--ring` all resolve to the vivid identity
- * colour, so every Tailwind token class (bg-primary, text-accent, ring)
- * picks up the department automatically inside shared components.
+ * TWO-TONE, restored: `--primary` is the near-black, hue-biased tone each
+ * department was originally built around (still exposed separately as
+ * `--service-primary` for hero scrims / stat bands / deep panels) — it is
+ * what `text-primary`/`bg-primary` resolve to for body content, so labels,
+ * headings and icons read as legible dark text on the cream ground.
+ * `--accent`/`--ring` stay the vivid identity colour, for buttons, fills and
+ * focus rings. The dark-rebuild version collapsed these to one vivid hue,
+ * which is unreadable as text on cream and is why "Book this" buttons were
+ * rendering with invisible text — accentColor and primaryColor resolved to
+ * the same value everywhere they were paired as background/foreground.
  */
 
 /* Cleaning division — deep navy ground, warm amber identity */
 [data-theme="cleaning"],
 [data-theme="residential-cleaning"] {
   --service-primary: #101E2C;
-  --primary: #E8A830;
+  --primary: #101E2C;
   --accent: #E8A830;
   --ring: #E8A830;
 }
 
 [data-theme="commercial-cleaning"] {
   --service-primary: #141F29;
-  --primary: #C97B3C;
+  --primary: #141F29;
   --accent: #C97B3C;
   --ring: #C97B3C;
 }
@@ -179,14 +184,14 @@
 /* Exterior division */
 [data-theme="power-washing"] {
   --service-primary: #101C2C;
-  --primary: #2BA8E0;
+  --primary: #101C2C;
   --accent: #2BA8E0;
   --ring: #2BA8E0;
 }
 
 [data-theme="window-cleaning"] {
   --service-primary: #171B22;
-  --primary: #F0B429;
+  --primary: #171B22;
   --accent: #F0B429;
   --ring: #F0B429;
 }
@@ -194,7 +199,7 @@
 /* Auto division */
 [data-theme="auto-detailing"] {
   --service-primary: #17100F;
-  --primary: #D8402F;
+  --primary: #17100F;
   --accent: #D8402F;
   --ring: #D8402F;
 }
@@ -202,14 +207,14 @@
 /* Grounds division */
 [data-theme="landscaping"] {
   --service-primary: #0A2119;
-  --primary: #7fa650;
+  --primary: #0A2119;
   --accent: #7fa650;
   --ring: #7fa650;
 }
 
 [data-theme="bin-cleaning"] {
   --service-primary: #0F1D14;
-  --primary: #8DC63F;
+  --primary: #0F1D14;
   --accent: #8DC63F;
   --ring: #8DC63F;
 }
@@ -217,7 +222,7 @@
 /* Hauling division */
 [data-theme="junk-removal"] {
   --service-primary: #191410;
-  --primary: #F97316;
+  --primary: #191410;
   --accent: #F97316;
   --ring: #F97316;
 }

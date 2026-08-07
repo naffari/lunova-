@@ -5,29 +5,28 @@
  * raw hex values only when composing an inline style that needs to build an
  * alpha-blended color (e.g. `${BRAND.accent}1a`).
  *
- * DARK GROUND, chosen deliberately warm rather than neutral: seven of the
- * eight department accents (src/app/constants/theme.ts) are warm hues, so a
- * neutral grey ground would fight them. `bg`/`surface`/`raised` step from
- * darkest to lightest for page ground → card → stat band / deep panel.
+ * CREAM GROUND. The dark rebuild (commit 5b52a7d) flipped this sitewide to a
+ * warm charcoal; reverted back to the original warm-cream content ground.
+ * The dark tone lives on deliberately: CHROME (nav/footer) and each
+ * department's `ground` (src/app/constants/theme.ts) stay dark by design —
+ * hero sections, stat bands, and the site chrome are the "very dark warm
+ * primary" half of the pattern, cream page content is the other half. Only
+ * the plain content tokens below (bg/surface/ink/muted/hairline) flip.
  *
- * NAMING NOTE: `ink` predates the dark rebuild, when it WAS the near-black
- * text color on a cream ground. The name stuck because renaming it means
- * touching every "color: PRIMARY" callsite across nine service pages; the
- * VALUE flipped to the light foreground color it needs to be on a dark
- * ground. Read `BRAND.ink` as "the strong foreground token", not literally
- * as ink.
+ * NAMING NOTE: `ink` is the near-black text color on the cream ground — the
+ * name is literal again now that the palette is back to its original sense.
  */
 export const BRAND = {
-  /** Warm charcoal page ground. Same value the dark chrome (nav/footer) uses. */
-  bg: "#171512",
-  /** Card / section surface, one step up from the ground. */
-  surface: "#201D19",
-  /** Stat bands and deep panels — the darkest surface, used sparingly. */
+  /** Warm cream page ground. */
+  bg: "#F1EBD9",
+  /** Card / section surface, a touch lighter than the ground so cards lift off the page. */
+  surface: "#FBF8F0",
+  /** Stat bands and deep panels — stays dark; these are the chrome-toned accents on the cream page. */
   raised: "#100F0C",
-  /** Primary text color. See naming note above. */
-  ink: "#EDEAE3",
+  /** Primary text color — near-black, warm-biased. */
+  ink: "#211D17",
   /** Muted body text. */
-  muted: "#A29C92",
+  muted: "#7A7166",
   /** Sage green — the parent-brand accent (the homepage / HQ identity). */
   primary: "#3d6b2e",
   /** Olive green — secondary parent-brand accent. */
@@ -35,23 +34,29 @@ export const BRAND = {
   /** Text on a filled primary/accent button. */
   onPrimary: "#ffffff",
   /** Hairline border, the thing that replaces card shadows sitewide. */
-  hairline: "rgba(237, 234, 227, 0.12)",
-  hairlineStrong: "rgba(237, 234, 227, 0.22)",
+  hairline: "rgba(33, 29, 23, 0.12)",
+  hairlineStrong: "rgba(33, 29, 23, 0.22)",
 } as const;
 
 /**
  * Dark site chrome — the fixed navbar, the footer, and the cookie banner.
  *
- * Now the SAME tone as BRAND.bg on purpose: the nav is a frosted-blur overlay
- * on the page itself, not a separate darker frame around it. Kept as its own
- * export because the chrome renders on every route regardless of that route's
- * department accent, so it needs an accent-neutral definition.
+ * Deliberately independent of BRAND.bg/ink, not derived from them. The page
+ * content ground is cream; the chrome stays the dark warm tone regardless —
+ * that's the "very dark warm primary" half of the pattern the cream half sits
+ * against. Every value here is a literal, so flipping BRAND's content tokens
+ * (light/dark mode, a future palette pass) can never silently drag the chrome
+ * along with it the way it did when `bg`/`text`/`border` referenced BRAND
+ * directly — that mismatch was why nav dropdown text went invisible the
+ * moment BRAND.bg flipped to cream. Kept as its own export because the
+ * chrome renders on every route regardless of that route's department
+ * accent, so it needs an accent-neutral definition.
  */
 export const CHROME = {
-  bg: BRAND.bg,
-  text: BRAND.ink,
+  bg: "#171512",
+  text: "#EDEAE3",
   muted: "rgba(237, 234, 227, 0.55)",
-  border: BRAND.hairline,
+  border: "rgba(237, 234, 227, 0.12)",
   /** White reads cleaner than an accent here — chrome stays accent-neutral. */
   accent: "#ffffff",
 } as const;

@@ -200,7 +200,7 @@ export default function Navbar() {
 
             {dropdownOpen && (
               <div
-                className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-[680px] rounded-xl shadow-2xl p-6 grid grid-cols-3 gap-6 z-50 animate-in fade-in slide-in-from-top-2 duration-150"
+                className="absolute top-full left-0 mt-2 w-[min(420px,calc(100vw-2rem))] lg:w-[min(680px,calc(100vw-2rem))] rounded-xl shadow-2xl p-6 grid grid-cols-1 lg:grid-cols-3 gap-6 z-50 animate-in fade-in slide-in-from-top-2 duration-150"
                 style={{ backgroundColor: NAV_BG_SOLID, border: `1px solid ${NAV_BORDER}` }}
               >
                 {serviceCategories.map((cat, idx) => (
@@ -237,7 +237,7 @@ export default function Navbar() {
                   </div>
                 ))}
                 <div
-                  className="col-span-3 pt-3 flex items-center justify-between -mx-6 -mb-6 p-4 rounded-b-xl"
+                  className="col-span-1 lg:col-span-3 pt-3 flex items-center justify-between -mx-6 -mb-6 p-4 rounded-b-xl"
                   style={{ borderTop: `1px solid ${NAV_BORDER}`, backgroundColor: "rgba(255,255,255,0.03)" }}
                 >
                   <span className="text-xs" style={{ color: NAV_MUTED }}>Looking for an umbrella overview?</span>
