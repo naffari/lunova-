@@ -1,17 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useSearchParams } from "react-router";
-import {
-  Check,
-  ChevronRight,
-  ChevronLeft,
-  ChevronDown,
-  AlertCircle,
-  Info,
-  Loader2,
-  CalendarClock,
-  ReceiptText,
-  PlugZap,
-} from "lucide-react";
+import { Check, ChevronRight, ChevronLeft, ChevronDown, AlertCircle, Info, Loader2 } from "lucide-react";
 import { PHONE_DISPLAY } from "../../constants/contact";
 import {
   CATEGORIES,
@@ -209,12 +198,15 @@ export default function BookingWizard() {
     stepHeadingRef.current?.focus();
     // A deep link (e.g. "Book this" from a service page) can land past step 1,
     // where the page header + progress bar sit above the fold and the actual
-    // step content is a scroll away. Bring it into view immediately instead of
-    // leaving the visitor at the top of an apparently-empty page. Skipped on
-    // step 1 itself so the intro copy and feature grid stay visible on a
-    // fresh page load — this only matters once there's a step above to jump.
+    // step content is a scroll away. Bring it into view instead of leaving
+    // the visitor at the top of an apparently-empty page. Skipped on step 1
+    // itself so the intro copy stays visible on a fresh page load — this
+    // only matters once there's a step above to jump to. Smooth, not
+    // instant: this is the "brings your focus to the next step" motion
+    // that carries someone through the flow, on every forward/back step
+    // change, not just a deep-link landing.
     if (state.step > 1) {
-      stepHeadingRef.current?.scrollIntoView({ behavior: "instant", block: "start" });
+      stepHeadingRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.step]);
@@ -502,26 +494,6 @@ export default function BookingWizard() {
           Takes about two minutes. No payment now — we confirm the price by phone first.
         </p>
       </div>
-
-      {state.step === 1 && (
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-8">
-          <BentoFeature
-            icon={CalendarClock}
-            title="Interactive calendar"
-            desc="Pick your own date and time window — no back-and-forth to find a slot."
-          />
-          <BentoFeature
-            icon={ReceiptText}
-            title="Itemized, real-time"
-            desc="Every line priced as you go, plus instant confirmation the moment you submit."
-          />
-          <BentoFeature
-            icon={PlugZap}
-            title="Add-ons built in"
-            desc="Bundle another department into the same visit and save automatically."
-          />
-        </div>
-      )}
 
       <StepNav labels={STEP_LABELS} current={state.step} furthest={state.furthest} onJump={jumpTo} />
 
@@ -988,20 +960,15 @@ export default function BookingWizard() {
       </div>
 
       {/*
-        Running estimate. Sits BELOW the card in normal flow rather than as a
-        fixed overlay: Baymard notes the touch keyboard can take ~70% of a
-        landscape phone screen, and a pinned bar competes with the very inputs
-        the user is typing into. It is sticky only from `sm` up, where there is
-        room for it.
-
-        Collapsed to just the total by default — a fully itemized breakdown
-        pinned to the bottom of every step was reading as the most visually
-        loud thing on the page. The breakdown is one tap away, not gone: the
-        "why is it $315?" answer still has to live on the screen somewhere.
+        Running estimate. Plain in-flow block, not pinned to the viewport —
+        a sticky bar that followed you down the page regardless of step was
+        the single most-flagged "distracting" thing in the wizard. Collapsed
+        to just the total by default; the itemized breakdown is one tap away,
+        not gone — the "why is it $315?" answer still has to live somewhere.
       */}
       {state.step >= 2 && estimate.serviceCount > 0 && (
-        <div className="mt-5 sm:sticky sm:bottom-5">
-          <div className="rounded-2xl border border-primary/25 bg-card shadow-lg px-5 py-4">
+        <div className="mt-5">
+          <div className="rounded-2xl border border-border bg-card px-5 py-4">
             <button
               type="button"
               onClick={() => setEstimateExpanded((v) => !v)}
@@ -1105,26 +1072,6 @@ function ReviewRow({ label, value }: { label: string; value: string }) {
     <div className="flex justify-between gap-4 px-5 py-3.5">
       <dt className="text-xs text-muted-foreground shrink-0 pt-0.5">{label}</dt>
       <dd className="text-sm font-semibold text-foreground text-right">{value}</dd>
-    </div>
-  );
-}
-
-function BentoFeature({
-  icon: Icon,
-  title,
-  desc,
-}: {
-  icon: typeof CalendarClock;
-  title: string;
-  desc: string;
-}) {
-  return (
-    <div className="rounded-2xl border border-border bg-card p-4 flex flex-col gap-2">
-      <span className="w-8 h-8 rounded-lg bg-primary/10 text-primary flex items-center justify-center">
-        <Icon size={16} />
-      </span>
-      <p className="text-sm font-bold text-foreground">{title}</p>
-      <p className="text-xs text-muted-foreground leading-relaxed">{desc}</p>
     </div>
   );
 }

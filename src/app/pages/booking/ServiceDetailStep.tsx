@@ -49,17 +49,53 @@ export default function ServiceDetailStep({
           <span className="text-[10px] font-medium text-primary">Required</span>
         </legend>
 
-        <div className="grid gap-3">
+        {/*
+          Unselected packages are a single compact row — name, price, radio,
+          nothing else. Only the selected one expands into the full card with
+          tagline, duration and checklist. Three fully-expanded cards stacked
+          was step 2's whole length problem; a picked tier and two one-line
+          alternatives is the actual "pick one" decision this step is asking
+          for.
+        */}
+        <div className="grid gap-2">
           {detail.packages.map((pkg) => {
             const active = packageId === pkg.id;
+
+            if (!active) {
+              return (
+                <label
+                  key={pkg.id}
+                  className="flex items-center gap-3 rounded-xl border-2 border-border bg-background px-4 py-3 cursor-pointer transition-colors hover:border-primary/30 active:scale-[0.99]"
+                >
+                  <input
+                    type="radio"
+                    name="package"
+                    checked={active}
+                    onChange={() => onPackage(pkg.id)}
+                    className="sr-only"
+                  />
+                  <span className="w-5 h-5 rounded-full flex-none border-2 border-muted-foreground/35" />
+                  <span className="flex-1 min-w-0 text-sm font-semibold text-foreground truncate">
+                    {pkg.name}
+                    {pkg.popular && (
+                      <span className="ml-2 align-middle text-[9px] font-bold uppercase tracking-wide text-primary">
+                        Most booked
+                      </span>
+                    )}
+                  </span>
+                  <span className="text-sm font-bold text-primary whitespace-nowrap">
+                    {pkg.custom || pkg.from === undefined
+                      ? "Custom quote"
+                      : `From ${formatDollars(pkg.from)}${pkg.unit === "month" ? "/mo" : pkg.unit === "visit" ? "/visit" : ""}`}
+                  </span>
+                </label>
+              );
+            }
+
             return (
               <label
                 key={pkg.id}
-                className={`relative block rounded-2xl border-2 p-5 cursor-pointer transition-all duration-150 ${
-                  active
-                    ? "border-primary bg-primary/[0.06] scale-[1.008] shadow-[0_0_0_3px_var(--tw-shadow-color)] shadow-primary/15"
-                    : "border-border bg-background hover:border-primary/30 active:scale-[0.99]"
-                }`}
+                className="relative block rounded-2xl border-2 border-primary bg-primary/[0.06] p-5 cursor-pointer shadow-[0_0_0_3px_var(--tw-shadow-color)] shadow-primary/15"
               >
                 <input
                   type="radio"
@@ -76,12 +112,8 @@ export default function ServiceDetailStep({
                     a small, immediate reward for the tap, which is the whole
                     ask behind "think of it as a game almost".
                   */}
-                  <span
-                    className={`mt-0.5 w-5 h-5 rounded-full flex-none flex items-center justify-center border-2 transition-colors ${
-                      active ? "border-primary bg-primary text-primary-foreground" : "border-muted-foreground/35"
-                    }`}
-                  >
-                    {active && <Check size={12} strokeWidth={3.5} className="animate-in zoom-in-50 spin-in-12 duration-200" />}
+                  <span className="mt-0.5 w-5 h-5 rounded-full flex-none flex items-center justify-center border-2 border-primary bg-primary text-primary-foreground">
+                    <Check size={12} strokeWidth={3.5} className="animate-in zoom-in-50 spin-in-12 duration-200" />
                   </span>
 
                   <div className="flex-1 min-w-0">
@@ -106,51 +138,23 @@ export default function ServiceDetailStep({
                       <p className="text-[11px] text-muted-foreground/80 mt-1">Typically {pkg.duration} on site</p>
                     )}
 
-                    {/*
-                      Full checklist only for the selected package — a stack of
-                      packages with every checklist expanded at once is most of
-                      why step 2 read as too long. An unselected card still
-                      shows its top three inclusions so tiers stay comparable at
-                      a glance; tap it to see the rest.
-                    */}
-                    {active ? (
-                      <>
-                        <ul className="mt-3 grid sm:grid-cols-2 gap-x-4 gap-y-1.5">
-                          {pkg.includes.map((item) => (
-                            <li key={item} className="flex items-start gap-1.5 text-xs text-foreground/85">
-                              <Check size={13} className="mt-0.5 shrink-0 text-primary" />
-                              <span>{item}</span>
-                            </li>
-                          ))}
-                        </ul>
+                    <ul className="mt-3 grid sm:grid-cols-2 gap-x-4 gap-y-1.5">
+                      {pkg.includes.map((item) => (
+                        <li key={item} className="flex items-start gap-1.5 text-xs text-foreground/85">
+                          <Check size={13} className="mt-0.5 shrink-0 text-primary" />
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                    </ul>
 
-                        {pkg.excludes && pkg.excludes.length > 0 && (
-                          <ul className="mt-2.5 pt-2.5 border-t border-border grid sm:grid-cols-2 gap-x-4 gap-y-1.5">
-                            {pkg.excludes.map((item) => (
-                              <li
-                                key={item}
-                                className="flex items-start gap-1.5 text-[11px] text-muted-foreground"
-                              >
-                                <X size={12} className="mt-0.5 shrink-0 opacity-60" />
-                                <span>Not included: {item}</span>
-                              </li>
-                            ))}
-                          </ul>
-                        )}
-                      </>
-                    ) : (
-                      <ul className="mt-3 flex flex-col gap-1">
-                        {pkg.includes.slice(0, 3).map((item) => (
-                          <li key={item} className="flex items-start gap-1.5 text-xs text-foreground/70">
-                            <Check size={13} className="mt-0.5 shrink-0 text-primary/60" />
-                            <span>{item}</span>
+                    {pkg.excludes && pkg.excludes.length > 0 && (
+                      <ul className="mt-2.5 pt-2.5 border-t border-border grid sm:grid-cols-2 gap-x-4 gap-y-1.5">
+                        {pkg.excludes.map((item) => (
+                          <li key={item} className="flex items-start gap-1.5 text-[11px] text-muted-foreground">
+                            <X size={12} className="mt-0.5 shrink-0 opacity-60" />
+                            <span>Not included: {item}</span>
                           </li>
                         ))}
-                        {pkg.includes.length > 3 && (
-                          <li className="text-[11px] text-muted-foreground pl-[19px]">
-                            +{pkg.includes.length - 3} more — tap to see the full list
-                          </li>
-                        )}
                       </ul>
                     )}
                   </div>
