@@ -17,22 +17,32 @@ why the SPF in §4 matters.
 Both verifications are already in the code and deployed. You do not need to
 upload anything — you need to click Verify.
 
-### Option A — the HTML file (already live)
+### Option A — the HTML file (live, but read the caveat)
 
-`public/google99eef85b1ad154d3.html` is committed and served. In Search
+`public/google99eef85b1ad154d3.html` is committed and deployed. In Search
 Console, add a **URL prefix** property for `https://www.lunovaservices.com`,
-choose the **HTML file** method, and click Verify. Do not re-upload the file.
+choose the **HTML file** method, and click Verify. Do not re-upload anything.
 
-> **If verification fails:** it is almost certainly `cleanUrls` in
-> `vercel.json`, which makes Vercel redirect `/anything.html` to `/anything`.
-> Google may reject the redirect. Use Option B instead — it is the better
-> method anyway. Check for yourself with:
->
-> ```
-> curl -I https://www.lunovaservices.com/google99eef85b1ad154d3.html
-> ```
->
-> `200` means it works. `308` means use Option B.
+**Caveat, measured on the live site rather than assumed:**
+
+```
+$ curl -sI https://www.lunovaservices.com/google99eef85b1ad154d3.html
+308 -> https://www.lunovaservices.com/google99eef85b1ad154d3
+
+$ curl -sL https://www.lunovaservices.com/google99eef85b1ad154d3.html
+google-site-verification: google99eef85b1ad154d3.html
+```
+
+So the exact URL Google requests returns a redirect, not a 200 — that is
+`cleanUrls` in `vercel.json`, which strips `.html` from every URL on the site.
+Follow the redirect and the correct token is served, so verification may well
+pass: Google's verifier does follow same-domain redirects. But it is not
+guaranteed, and it is not worth arguing with.
+
+**Just click Verify and see.** It costs ten seconds. If it fails, use Option B
+and forget the file — do not start disabling `cleanUrls` to make the file
+method work, because that flag governs the URL shape of all 32 pages and is
+not worth destabilising for a verification step that has a better alternative.
 
 ### Option B — DNS TXT (recommended)
 
