@@ -25,19 +25,45 @@
  * the profile directly.
  */
 export const GOOGLE_BUSINESS = {
-  PROFILE_URL: "https://share.google/vL3mMBGcNd8sLjAmC",
-  /** Empty until filled. The schema omits the field rather than emitting a blank. */
-  PLACE_ID: "",
   /**
-   * Direct "leave a review" link. Becomes
-   * `https://search.google.com/local/writereview?placeid=<PLACE_ID>` once the
-   * place ID above is set. That is the link to text customers after a job, and
-   * review velocity is 16% of local ranking weight.
+   * The share link from the Business Profile. Works, and Google follows it,
+   * but it resolves to a search URL rather than a stable Maps place URL. Once
+   * PLACE_ID below is filled, prefer replacing this with the canonical
+   * `https://www.google.com/maps/place/?q=place_id:<PLACE_ID>` form, which
+   * does not depend on a shortener staying alive.
    */
+  PROFILE_URL: "https://share.google/vL3mMBGcNd8sLjAmC",
+
+  /**
+   * Google Place ID, the `ChIJ…` string. Empty until filled; the schema omits
+   * `hasMap` rather than emitting a blank.
+   *
+   * NOT the same as the `kgmid` (`/g/11nr3bn4df`) visible in the share link's
+   * redirect — that is a Knowledge Graph id and the review and map URLs will
+   * not accept it. Get the real one from
+   * https://developers.google.com/maps/documentation/places/web-service/place-id
+   */
+  PLACE_ID: "",
+
+  /**
+   * Direct "leave a review" link, taken straight from the Business Profile.
+   *
+   * In the GBP dashboard: "Ask for reviews" (or "Get more reviews") hands you
+   * a short link of the form `https://g.page/r/<id>/review`. Paste it here.
+   * That is the link to text a customer the day after a job, and review
+   * velocity is a large share of local ranking weight — for a business with no
+   * reviews at all it is the single highest-value thing on this page.
+   *
+   * Preferred over deriving the URL from PLACE_ID because GBP gives you this
+   * one in two clicks, whereas the Place ID needs a lookup tool.
+   */
+  REVIEW_LINK: "",
+
+  /** Whichever review destination is configured, best first. */
   get REVIEW_URL(): string {
-    return this.PLACE_ID
-      ? `https://search.google.com/local/writereview?placeid=${this.PLACE_ID}`
-      : this.PROFILE_URL;
+    if (this.REVIEW_LINK) return this.REVIEW_LINK;
+    if (this.PLACE_ID) return `https://search.google.com/local/writereview?placeid=${this.PLACE_ID}`;
+    return this.PROFILE_URL;
   },
 } as const;
 
