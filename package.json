@@ -10,7 +10,7 @@
     "build": "node scripts/check-seo.mjs && node scripts/generate-sitemap.mjs && node scripts/generate-llms.mjs && vite build && vite build --ssr src/entry-server.tsx && node scripts/prerender.mjs",
     "build:client": "vite build",
     "dev": "vite",
-    "typecheck": "tsc --noEmit && tsc -p tsconfig.api.json --noEmit",
+    "typecheck": "tsc --noEmit && tsc -p api/tsconfig.json --noEmit",
     "sitemap": "node scripts/generate-sitemap.mjs",
     "llms": "node scripts/generate-llms.mjs",
     "check:seo": "node scripts/check-seo.mjs",
