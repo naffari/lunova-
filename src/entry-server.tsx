@@ -8,7 +8,9 @@ import type { ComponentType } from "react";
 import Root from "./app/Root";
 import { routeModules } from "./app/routeModules";
 import type { RouteModuleKey } from "./app/routeModules";
-import { ROUTE_CONFIG } from "./app/routeConfig";
+import { ROUTE_CONFIG, expandPrerenderPaths } from "./app/routeConfig";
+import { CITY_SLUGS } from "./app/constants/cities";
+import { GUIDE_SLUGS } from "./app/constants/guides";
 
 /**
  * Prerender entry.
@@ -103,10 +105,14 @@ export async function render(url: string): Promise<RenderResult> {
   return { html, head };
 }
 
-/** Static paths to emit, with `/blog/:slug` expanded to one file per post. */
+/**
+ * Static paths to emit: the flat routes, one URL per service-area city, and
+ * one per guide.
+ *
+ * Both patterned sets resolve through their `:param` route above, which reads
+ * the slug from useParams(). StaticRouter matches the concrete URL to the
+ * pattern, so each one renders that page's real content rather than a shell.
+ */
 export async function listPrerenderPaths(): Promise<string[]> {
-  const { BLOG_POSTS } = await import("./app/constants/blog");
-  const staticPaths = ROUTE_CONFIG.filter((r) => r.prerender).map((r) => r.path);
-  const blogPaths = BLOG_POSTS.map((post) => `/blog/${post.slug}`);
-  return [...staticPaths, ...blogPaths];
+  return expandPrerenderPaths(CITY_SLUGS, GUIDE_SLUGS);
 }

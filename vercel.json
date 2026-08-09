@@ -4,15 +4,26 @@
   "outputDirectory": "dist",
   "cleanUrls": true,
   "trailingSlash": false,
-  "rewrites": [
+  "redirects": [
     {
-      "source": "/((?!api/).*)",
-      "destination": "/index.html"
+      "//": "The blog was removed and replaced by /guides. A third-party crawl still lists /blog as a known URL, so anything pointing at it — a stale backlink, an old index entry — is worth catching rather than 404ing. 308 so the replacement inherits the link equity.",
+      "source": "/blog",
+      "destination": "/guides",
+      "permanent": true
+    },
+    {
+      "source": "/blog/:slug*",
+      "destination": "/guides",
+      "permanent": true
     }
   ],
   "headers": [
     {
       "source": "/assets/(.*)",
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }]
+    },
+    {
+      "source": "/fonts/(.*)",
       "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }]
     },
     {

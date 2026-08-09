@@ -19,13 +19,26 @@ function removeUmami() {
 }
 
 /**
- * Loads the Umami analytics script once the visitor has accepted
- * cookies/analytics via the CookieConsent banner, and removes it again
- * if they later revoke consent. Renders nothing.
+ * Loads Umami unless the visitor has explicitly opted out, and unloads it
+ * again the moment they do. Renders nothing.
+ *
+ * WHY THE DEFAULT IS ON: Umami is cookieless. It sets nothing on the device
+ * and stores no personal data, so it is not the kind of processing that needs
+ * prior consent — the notice exists to disclose it and offer a real opt-out,
+ * not to gate it.
+ *
+ * This used to be inverted: the script only loaded on an explicit "Accept",
+ * which meant every visitor who ignored the banner — the overwhelming majority
+ * — was invisible. The site had a working funnel, call-click tracking and
+ * step-by-step booking events, and was measuring almost none of it. A
+ * third-party audit of the live site reported no analytics installed at all,
+ * which is exactly what a crawler that never clicks "Accept" would see.
+ *
+ * `null` (undecided) and `"granted"` both load. Only `"denied"` suppresses.
  */
 export default function Analytics() {
   useEffect(() => {
-    if (getConsent() === "granted") loadUmami();
+    if (getConsent() !== "denied") loadUmami();
 
     const handleConsentChange = (e: Event) => {
       const status = (e as CustomEvent<"granted" | "denied">).detail;

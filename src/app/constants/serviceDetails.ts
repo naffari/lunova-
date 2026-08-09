@@ -104,7 +104,7 @@ export const SERVICE_DETAILS: Record<string, ServiceDetail> = {
   cleaning: {
     heading: "Which clean do you need?",
     blurb:
-      "Every tier lists exactly what's covered. If it isn't on the list, it isn't in the price — add it below or tell us in the notes.",
+      "Every tier lists exactly what's covered. If it isn't on the list, it isn't in the price. Add it below or tell us in the notes.",
     packageLabel: "Choose your clean",
     packages: [
       {
@@ -115,7 +115,7 @@ export const SERVICE_DETAILS: Record<string, ServiceDetail> = {
         duration: "2–3 hours",
         includes: [
           "Kitchen counters, sinks and appliance exteriors",
-          "All bathrooms — toilet, shower, tub, sink, mirrors",
+          "All bathrooms: toilet, shower, tub, sink, mirrors",
           "Dust all reachable surfaces and furniture",
           "Vacuum carpets and rugs",
           "Mop all hard floors",
@@ -207,7 +207,7 @@ export const SERVICE_DETAILS: Record<string, ServiceDetail> = {
         id: "condition",
         kind: "choice",
         label: "How's it looking right now?",
-        help: "Be honest — it costs you nothing and stops us arriving under-scheduled.",
+        help: "Be honest. It costs you nothing and stops us arriving under-scheduled.",
         options: [
           { value: "maintained", label: "Regularly cleaned", delta: 0 },
           { value: "behind", label: "A bit behind", delta: 40 },
@@ -317,7 +317,7 @@ export const SERVICE_DETAILS: Record<string, ServiceDetail> = {
         options: [
           { value: "clean", label: "Well kept", delta: 0 },
           { value: "normal", label: "Normal daily use", delta: 25 },
-          { value: "heavy", label: "Heavy — pets, kids or smoke", delta: 75 },
+          { value: "heavy", label: "Heavy: pets, kids or smoke", delta: 75 },
         ],
       },
       {
@@ -450,7 +450,7 @@ export const SERVICE_DETAILS: Record<string, ServiceDetail> = {
           "High-pressure hot wash, inside and out",
           "Sanitising treatment",
           "Deodoriser applied",
-          "Curbside — no need to be home",
+          "Curbside, no need to be home",
           "Wastewater captured and removed",
         ],
         excludes: ["Recurring scheduling", "Priority route slot"],
@@ -486,7 +486,7 @@ export const SERVICE_DETAILS: Record<string, ServiceDetail> = {
           "Reminder text before each visit",
           "Cancel any time, no fee",
         ],
-        excludes: ["Weekly service — ask us if you need it"],
+        excludes: ["Weekly service, ask us if you need it"],
       },
     ],
     questions: [
@@ -522,7 +522,7 @@ export const SERVICE_DETAILS: Record<string, ServiceDetail> = {
   power: {
     heading: "What are we washing?",
     blurb:
-      "We match pressure to the surface — soft wash for siding, high pressure for concrete. Area and staining level set the price.",
+      "We match pressure to the surface: soft wash for siding, high pressure for concrete. Area and staining level set the price.",
     packageLabel: "Choose your surface",
     packages: [
       {
@@ -578,9 +578,9 @@ export const SERVICE_DETAILS: Record<string, ServiceDetail> = {
         kind: "choice",
         label: "Roughly how big?",
         options: [
-          { value: "small", label: "Small — 1-car drive or small patio", delta: 0 },
-          { value: "medium", label: "Medium — 2-car drive or standard patio", delta: 40 },
-          { value: "large", label: "Large — 3-car, wraparound or long drive", delta: 95 },
+          { value: "small", label: "Small: 1-car drive or small patio", delta: 0 },
+          { value: "medium", label: "Medium: 2-car drive or standard patio", delta: 40 },
+          { value: "large", label: "Large: 3-car, wraparound or long drive", delta: 95 },
         ],
       },
       {
@@ -599,9 +599,9 @@ export const SERVICE_DETAILS: Record<string, ServiceDetail> = {
         kind: "choice",
         label: "How bad is the staining?",
         options: [
-          { value: "light", label: "Light — general dirt", delta: 0 },
-          { value: "moderate", label: "Moderate — visible green or black", delta: 35 },
-          { value: "heavy", label: "Heavy — years of build-up", delta: 90 },
+          { value: "light", label: "Light: general dirt", delta: 0 },
+          { value: "moderate", label: "Moderate: visible green or black", delta: 35 },
+          { value: "heavy", label: "Heavy: years of build-up", delta: 90 },
         ],
       },
     ],
@@ -609,7 +609,7 @@ export const SERVICE_DETAILS: Record<string, ServiceDetail> = {
       { id: "gutters", name: "Gutter interior clearing", price: 95, note: "Debris removed and downspouts flushed." },
       { id: "fence", name: "Fence washing", price: 75, note: "Per standard run, wood or vinyl." },
       { id: "rust", name: "Rust removal treatment", price: 55, note: "Irrigation and fertiliser staining." },
-      { id: "concrete-seal", name: "Concrete sealing", price: 0, note: "Quoted after the wash — depends on porosity." },
+      { id: "concrete-seal", name: "Concrete sealing", price: 0, note: "Quoted after the wash. Depends on porosity." },
     ],
   },
 
@@ -694,7 +694,7 @@ export const SERVICE_DETAILS: Record<string, ServiceDetail> = {
       {
         id: "single",
         name: "Single Item",
-        tagline: "One thing gone — sofa, mattress, appliance.",
+        tagline: "One thing gone: sofa, mattress, appliance.",
         from: 75,
         duration: "30 minutes",
         includes: [
@@ -765,7 +765,7 @@ export const SERVICE_DETAILS: Record<string, ServiceDetail> = {
       },
     ],
     addOns: [
-      { id: "rush", name: "Same-day rush", price: 75, note: "Subject to availability — we'll confirm by phone." },
+      { id: "rush", name: "Same-day rush", price: 75, note: "Subject to availability. We'll confirm by phone." },
       { id: "freon", name: "Appliance freon recovery", price: 30, note: "Required for fridges, freezers and AC units." },
       { id: "mattress", name: "Mattress disposal fee", price: 25, note: "Per mattress. Charged by the transfer station." },
       { id: "ewaste", name: "E-waste handling", price: 20, note: "TVs, monitors and computers." },
@@ -776,7 +776,7 @@ export const SERVICE_DETAILS: Record<string, ServiceDetail> = {
   commercial: {
     heading: "Tell us about the facility",
     blurb:
-      "Commercial work is always quoted after a walk-through — square footage, frequency and access vary too much to price online. This gets us ready for that call.",
+      "Commercial work is always quoted after a walk-through. Square footage, frequency and access vary too much to price online. This gets us ready for that call.",
     packageLabel: "What kind of facility?",
     packages: [
       {

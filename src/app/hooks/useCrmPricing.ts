@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { SERVICE_BY_ID, type SubserviceDef } from "../constants/services";
 
 /**
@@ -178,5 +178,16 @@ export function useCrmPricing(categoryId: string): UseCrmPricingResult {
     return () => controller.abort();
   }, [categoryId]);
 
-  return { subservices, overrides: buildOverrides(subservices), source };
+  /**
+   * Memoised because the identity, not just the value, is load-bearing.
+   *
+   * The booking wizard feeds `overrides` straight into a useMemo dependency
+   * list when it merges live prices onto the configured packages. Returning a
+   * freshly-built object every render made that dependency change on every
+   * render, so the merge re-ran on every keystroke anywhere in the wizard —
+   * the memo was there but never once hit.
+   */
+  const overrides = useMemo(() => buildOverrides(subservices), [subservices]);
+
+  return { subservices, overrides, source };
 }

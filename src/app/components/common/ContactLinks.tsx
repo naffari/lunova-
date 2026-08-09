@@ -2,6 +2,7 @@ import { Phone, Mail } from "lucide-react";
 import type { CSSProperties } from "react";
 import { useContactDetails } from "../../utils/obfuscate";
 import { PHONE, PHONE_DISPLAY } from "../../constants/contact";
+import { trackCall } from "../../utils/analytics";
 
 interface PhoneLinkProps {
   className?: string;
@@ -11,6 +12,12 @@ interface PhoneLinkProps {
   iconStyle?: CSSProperties;
   /** Text to render instead of the formatted number. */
   label?: string;
+  /**
+   * Where on the page this link sits ("navbar", "footer", "mobile_bar",
+   * "hero"). Reported with the click event so the funnel can tell which
+   * placements actually produce calls.
+   */
+  source?: string;
 }
 
 /**
@@ -29,6 +36,14 @@ interface PhoneLinkProps {
  * call. Always-clickable wins.
  *
  * Email is different — see EmailLink.
+ *
+ * TRACKING: a `tel:` click is a conversion for a home-services business, and
+ * for a lot of visitors it is the only one they will make. Until this fired an
+ * event, the funnel measured the booking wizard and reported every caller as a
+ * bounce, which made the highest-intent traffic look like the worst. The event
+ * carries where the link was and which page it was on, so the two questions
+ * that follow ("which placement works" and "which page sells") are answerable
+ * without adding more instrumentation later.
  */
 export function PhoneLink({
   className = "",
@@ -37,9 +52,15 @@ export function PhoneLink({
   iconSize = 16,
   iconStyle,
   label,
+  source = "unknown",
 }: PhoneLinkProps) {
   return (
-    <a href={`tel:+1${PHONE}`} className={className} style={style}>
+    <a
+      href={`tel:+1${PHONE}`}
+      className={className}
+      style={style}
+      onClick={() => trackCall(source)}
+    >
       {icon && <Phone size={iconSize} style={iconStyle} />}
       {label ?? PHONE_DISPLAY}
     </a>

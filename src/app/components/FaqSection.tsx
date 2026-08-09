@@ -9,7 +9,7 @@ export interface FaqItem {
 export const GENERAL_FAQS: FaqItem[] = [
   {
     q: "Are you licensed and insured?",
-    a: "Yes — Lunova and every crew member are fully licensed and carry general liability insurance. Proof of insurance is available on request before your job.",
+    a: "Yes. Lunova and every crew member are fully licensed and carry general liability insurance. Proof of insurance is available on request before your job.",
   },
   {
     q: "Do I need to be home for the service?",
@@ -25,7 +25,7 @@ export const GENERAL_FAQS: FaqItem[] = [
   },
   {
     q: "Can I bundle multiple services?",
-    a: "Absolutely — book 2 or more services and receive 10% off the combined total. Every cleaning or power washing quote surfaces bin cleaning or window washing as a discounted add-on.",
+    a: "Book 2 or more services and receive 10% off the combined total. Every cleaning or power washing quote surfaces bin cleaning or window washing as a discounted add-on.",
   },
   {
     q: "How fast can you come out?",

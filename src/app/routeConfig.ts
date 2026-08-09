@@ -32,13 +32,42 @@ export const ROUTE_CONFIG: RouteConfigEntry[] = [
   { path: "/services/bin-cleaning", module: "binCleaning", prerender: true },
   { path: "/junk-removal", module: "junkRemoval", prerender: true },
   { path: "/landscaping", module: "landscaping", prerender: true },
-  { path: "/blog", module: "blog", prerender: true },
-  { path: "/blog/:slug", module: "blogPost", prerender: false },
+  { path: "/service-areas", module: "serviceAreas", prerender: true },
+  // One route, twelve prerendered URLs. `prerender: false` here means "not a
+  // static path". expandPrerenderPaths() below turns it into a real page per
+  // city from CITY_SLUGS, so adding a city needs no change in this file.
+  { path: "/service-areas/:city", module: "serviceAreaCity", prerender: false },
+  { path: "/guides", module: "guides", prerender: true },
+  // Same shape as the city route below: one pattern, one prerendered URL per
+  // guide, expanded by expandPrerenderPaths from GUIDE_SLUGS.
+  { path: "/guides/:slug", module: "guide", prerender: false },
+  { path: "/about", module: "about", prerender: true },
+  { path: "/contact", module: "contact", prerender: true },
   { path: "/book", module: "booking", prerender: true },
-  { path: "/book/success", module: "bookingSuccess", prerender: true },
+  // No /book/success. The wizard renders its confirmation in place off
+  // `state.submitted`, so a separate route was only ever reachable by typing the
+  // URL — where it rendered an empty shell, having no navigation state to read.
   { path: "/privacy", module: "privacy", prerender: true },
   { path: "*", module: "notFound", prerender: false },
 ];
 
 /** Static paths only — no patterns, no catch-all. */
 export const STATIC_ROUTE_PATHS = ROUTE_CONFIG.filter((r) => r.prerender).map((r) => r.path);
+
+/**
+ * Every URL to emit as static HTML: the flat routes above, plus one page per
+ * service-area city.
+ *
+ * The city pages are the on-page half of local SEO for a business with no
+ * storefront, so they must exist as real HTML. A crawler that has to run
+ * JavaScript to see `/service-areas/overland-park` is a crawler that may never
+ * index it. `entry-server.tsx` and `scripts/generate-sitemap.mjs` both build
+ * from this, so the sitemap can never advertise a page the prerenderer skipped.
+ */
+export function expandPrerenderPaths(citySlugs: string[], guideSlugs: string[] = []): string[] {
+  return [
+    ...STATIC_ROUTE_PATHS,
+    ...citySlugs.map((slug) => `/service-areas/${slug}`),
+    ...guideSlugs.map((slug) => `/guides/${slug}`),
+  ];
+}

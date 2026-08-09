@@ -1,5 +1,3 @@
-import { CheckCircle } from "lucide-react";
-import { Link } from "react-router";
 import ServiceHero from "../../components/ServiceHero";
 import HowItWorks from "../../components/HowItWorks";
 import ServiceAreaSection from "../../components/ServiceAreaSection";
@@ -11,6 +9,8 @@ import PackageGrid from "../../components/PackageGrid";
 import { buildBreadcrumbSchema, buildFaqSchema, buildServiceSchema } from "../../utils/structuredData";
 import { SERVICE_THEMES } from "../../constants/theme";
 import { BRAND } from "../../constants/brand";
+import { bookPath } from "../../constants/services";
+import Marquee from "../../components/Marquee";
 
 const { primary: PRIMARY, accent: ACCENT, ground: GROUND, bg: BG } = SERVICE_THEMES["commercial-cleaning"];
 
@@ -46,13 +46,18 @@ const HOW_IT_WORKS_STEPS = [
 ];
 
 const COMMERCIAL_CLEANING_DESCRIPTION =
-  "Scheduled nightly janitorial for offices, medical facilities, retail stores, and restaurants across Kansas City. Fully insured, contract-ready crews dedicated to your standards.";
+  "Scheduled nightly janitorial for offices, medical facilities, retail stores, and restaurants across Kansas City. Fully insured, contract-ready crews.";
 
 const COMMERCIAL_CLEANING_FAQS = [
-  { q: "Do you offer after-hours cleaning?", a: "Yes — we specialize in after-hours and overnight cleaning so your business is ready to open each morning." },
+  { q: "Do you offer after-hours cleaning?", a: "Yes. We specialize in after-hours and overnight cleaning so your business is ready to open each morning." },
   { q: "Can you handle large commercial spaces?", a: "Absolutely. We serve offices, retail stores, medical facilities, and industrial spaces." },
   { q: "Do you provide cleaning contracts?", a: "Yes. We offer weekly, bi-weekly, and monthly contracts with discounted rates for long-term commitments." },
   { q: "Are your cleaners insured?", a: "Yes. Lunova Services is fully licensed and insured. We carry liability coverage for all commercial jobs." },
+];
+
+/** Written once; Marquee doubles it for the seamless loop. */
+const MARQUEE_ITEMS = [
+  "Nightly Janitorial", "Office Cleaning", "Medical Facility", "Restaurant Cleaning", "HIPAA-Aware Protocols", "After-Hours Service", "Dedicated Crew", "Satisfaction Guarantee",
 ];
 
 export default function CommercialCleaning() {
@@ -78,25 +83,13 @@ export default function CommercialCleaning() {
         primaryColor={GROUND}
         accentColor={ACCENT}
         ctaLabel="Book a Clean"
-        ctaTo="/book?service=commercial"
+        ctaTo={bookPath("commercial")}
         trustItems={["Fully Insured", "After-Hours Service", "Satisfaction Guarantee"]}
         heroImage="commercial-cleaning-hero"
         heroImageAlt="Commercial janitorial team cleaning an office space in Kansas City"
       />
 
-      {/* MARQUEE STRIP */}
-      <div style={{ backgroundColor: ACCENT, overflow: 'hidden' }} className="py-3">
-        <div style={{ display: 'flex', gap: '3rem', whiteSpace: 'nowrap', animation: 'marquee 20s linear infinite', width: 'max-content' }}>
-          {[
-            "Nightly Janitorial", "Office Cleaning", "Medical Facility", "Restaurant Cleaning", "HIPAA-Aware Protocols", "After-Hours Service", "Dedicated Crew", "Satisfaction Guarantee",
-            "Nightly Janitorial", "Office Cleaning", "Medical Facility", "Restaurant Cleaning", "HIPAA-Aware Protocols", "After-Hours Service", "Dedicated Crew", "Satisfaction Guarantee",
-          ].map((item, i) => (
-            <span key={i} className="text-xs font-bold uppercase tracking-widest" style={{ color: BRAND.ink }}>
-              ✦ {item}
-            </span>
-          ))}
-        </div>
-      </div>
+      <Marquee items={MARQUEE_ITEMS} backgroundColor={ACCENT} textColor={BRAND.ink} />
 
       {/* WHAT'S INCLUDED — shared PackageGrid, sourced from constants/serviceDetails.ts.
           Same packages, same checklist, same prices the booking wizard shows — clicking
@@ -110,80 +103,12 @@ export default function CommercialCleaning() {
         accentColor={ACCENT}
       />
 
-      {/* PRICING */}
-      <section className="py-20 px-4 sm:px-6" style={{ backgroundColor: BG }}>
-        <div className="max-w-4xl mx-auto text-center mb-14">
-          <p className="text-xs font-bold uppercase tracking-widest mb-2" style={{ color: PRIMARY }}>Pricing</p>
-          <h2 className="font-serif-display text-4xl sm:text-5xl" style={{ color: BRAND.ink }}>
-            Transparent contracts.<br />
-            <span className="italic" style={{ color: PRIMARY }}>No lock-in required.</span>
-          </h2>
-        </div>
-
-        <div className="max-w-4xl mx-auto grid md:grid-cols-3 gap-6 items-start">
-          {[
-            {
-              name: "Small Office",
-              price: "~$250",
-              sub: "per month",
-              highlight: false,
-              features: ["Up to 2,500 sqft", "Nightly 5 days/week", "Trash & restroom service", "Surface sanitization", "Break room cleaning"],
-            },
-            {
-              name: "Mid-Size Business",
-              price: "~$650",
-              sub: "per month",
-              highlight: true,
-              features: ["2,500–10,000 sqft", "Nightly service included", "Dedicated team lead", "Monthly quality audit", "Priority scheduling"],
-            },
-            {
-              name: "Enterprise / Custom",
-              price: "Quote",
-              sub: "based on scope",
-              highlight: false,
-              features: ["10,000+ sqft", "Medical, retail & restaurant", "Multi-location support", "Custom checklist", "Flexible contract terms"],
-            },
-          ].map((plan) => (
-            <div
-              key={plan.name}
-              className="rounded-3xl p-8 flex flex-col gap-5"
-              style={{
-                backgroundColor: plan.highlight ? PRIMARY : '#ffffff',
-                color: plan.highlight ? 'white' : BRAND.ink,
-                border: plan.highlight ? 'none' : `2px solid ${PRIMARY}20`,
-                boxShadow: plan.highlight ? `0 20px 60px ${PRIMARY}40` : '0 2px 12px rgba(0,0,0,0.05)',
-                transform: plan.highlight ? 'scale(1.04)' : 'none',
-              }}
-            >
-              <div>
-                <p className="text-xs font-bold uppercase tracking-widest mb-1" style={{ opacity: 0.6 }}>{plan.name}</p>
-                <div className="flex items-baseline gap-1">
-                  <span className="font-serif-display text-5xl">{plan.price}</span>
-                  <span className="text-sm" style={{ opacity: 0.6 }}>{plan.sub}</span>
-                </div>
-              </div>
-              <ul className="space-y-2.5 flex-1">
-                {plan.features.map((f) => (
-                  <li key={f} className="flex items-start gap-2 text-sm">
-                    <CheckCircle size={15} style={{ color: plan.highlight ? ACCENT : PRIMARY, flexShrink: 0, marginTop: '2px' }} />
-                    {f}
-                  </li>
-                ))}
-              </ul>
-              <Link
-                to="/book?service=commercial"
-                className="text-center font-bold py-3 rounded-full text-sm block"
-                style={{
-                  backgroundColor: plan.highlight ? ACCENT : PRIMARY,
-                  color: plan.highlight ? BRAND.ink : 'white',
-                }}
-              >
-                Request a Quote →
-              </Link>
-            </div>
-          ))}
-        </div>
-      </section>
+      {/* No pricing table here on purpose. Every commercial package is `custom: true`
+          in constants/serviceDetails.ts because these jobs genuinely cannot be priced
+          without a walk-through. The table that used to sit here invented "~$250" and
+          "~$650" per month and directly contradicted the "Custom quote" PackageGrid
+          renders above it. Quoting a number we won't stand behind costs more than
+          saying we need to see the facility. */}
 
       {/* STATS BAND — shared component; this markup was duplicated on all 9 pages. */}
       <StatBand stats={STATS} primaryColor={GROUND} accentColor={ACCENT} />
@@ -204,7 +129,7 @@ export default function CommercialCleaning() {
           <FaqSection
             items={COMMERCIAL_CLEANING_FAQS}
             title="Frequently Asked Questions"
-            subtitle="Everything you need to know"
+            subtitle="Before you sign a contract"
           />
         </div>
       </section>
@@ -215,7 +140,7 @@ export default function CommercialCleaning() {
         primaryColor={GROUND}
         accentColor={ACCENT}
         ctaLabel="Request a Quote"
-        ctaTo="/book?service=commercial"
+        ctaTo={bookPath("commercial")}
       />
 
     </div>

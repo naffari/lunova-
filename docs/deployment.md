@@ -25,11 +25,21 @@ sitemap, build the client, build the SSR entry, then prerender every route to
 static HTML. The default Vite preset would only run `vite build` and skip the
 prerender, which is what makes the site crawlable.
 
-**`rewrites` → `/index.html`** — the SPA fallback for routes that are *not*
-prerendered: `/blog/:slug` for posts added after a build, and anything unmatched
-so the in-app 404 renders. Prerendered paths resolve to their own
-`dist/<path>/index.html` first, because Vercel checks the filesystem before
-applying rewrites. `(?!api/)` keeps the serverless functions out of it.
+**No `rewrites` at all** — this is deliberate and was a change. There used to be
+a catch-all `/((?!api/).*) → /index.html` SPA fallback, which meant an unmatched
+URL rendered the in-app 404 page with an HTTP **200**. Google reads that as a
+soft 404 and can leave the URL indexed. It got worse when city pages landed:
+`/service-areas/:city` is a pattern, so every mistyped slug hit that path.
+
+Now every route in `ROUTE_CONFIG` is prerendered to its own
+`dist/<path>/index.html`, and `scripts/prerender.mjs` also writes `dist/404.html`.
+Vercel checks the filesystem first, serves the real page when there is one, and
+falls back to `404.html` **with a 404 status** when there is not.
+
+The tradeoff: **a route that is not prerendered will hard-404 on a direct load.**
+If you add one, set `prerender: true` in `src/app/routeConfig.ts` rather than
+restoring the rewrite. Dynamic patterns need expanding in `expandPrerenderPaths`,
+the way `CITY_SLUGS` already is.
 
 **`/assets/` immutable for a year** — Vite content-hashes these filenames, so a
 changed file is a changed URL. Safe to cache forever.
@@ -56,6 +66,42 @@ Everything under `api/` compiles to ESM. **Relative imports must carry a `.js`
 extension** (`from "./_crm.js"`, not `from "./_crm"`) or Node fails to resolve
 them at runtime — the build passes and the endpoint 500s. See commit `3582b30`.
 
+## Environment variables
+
+Set in the Vercel project, not in the repo. Every one of them degrades to a
+warning rather than an error, so a missing key never turns a captured lead into
+an error screen. That also means a missing key is silent, so check them here
+first when something "works but nothing arrives".
+
+| Variable | Used by | Missing means |
+|---|---|---|
+| `RESEND_API_KEY` | all three form endpoints | No email at all. Bookings survive only if the CRM key is set. |
+| `WEBSITE_API_KEY` | `api/_crm.ts` | No CRM lead, and `/api/pricing` returns 503. Bookings survive by email. |
+| `CRM_API_URL` | `api/_crm.ts` | Defaults to `https://crm.lunovaservices.com`. |
+| `BOOKING_INBOX` | `api/_mail.ts` | Falls back to `EMAIL` in `constants/contact.ts`, currently a personal address. |
+| `REVIEW_REQUEST_TOKEN` | `api/review-request.ts` | Endpoint returns 503. Unset is disabled, never unprotected. |
+
+Both `bookings@lunovaservices.com` and `hello@lunovaservices.com` must be
+verified senders on the domain in Resend, or customer mail silently lands in
+spam.
+
+## Sending a review request
+
+The website cannot know when a job finishes, so this is a hook the CRM (or a
+person, or a Zap) calls once a job is marked complete. Send it the day after,
+not the same evening.
+
+```bash
+curl -X POST https://www.lunovaservices.com/api/review-request \
+  -H "Authorization: Bearer $REVIEW_REQUEST_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"name":"Dana Reyes","email":"dana@example.com","service":"Deep clean"}'
+```
+
+The response includes `usedDirectReviewLink`. It stays `false` until `PLACE_ID`
+is filled in `src/app/constants/business.ts`; until then the email links to the
+profile page rather than straight to the review form, which converts worse.
+
 ## Rolling back
 
 Either works, nothing here touches a database or runs a migration:
@@ -66,8 +112,8 @@ Either works, nothing here touches a database or runs a migration:
 ## Verifying a deploy
 
 ```
-pnpm typecheck        # no errors
-pnpm build            # should end "Prerendered 17 routes to static HTML."
+pnpm typecheck        # no errors. Covers src AND api (see tsconfig.api.json)
+pnpm build            # ends "Prerendered 27 routes to static HTML, plus 404.html."
 pnpm check:prices     # reports service-page vs booking-flow price drift
 ```
 

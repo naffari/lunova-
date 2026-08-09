@@ -95,4 +95,28 @@ for (const route of paths) {
   console.log(`  ${route.padEnd(42)} ${size.padStart(4)} KB`);
 }
 
-console.log(`\nPrerendered ${written} routes to static HTML.`);
+/**
+ * dist/404.html, served by Vercel with a real 404 status.
+ *
+ * The site used to rewrite every unmatched path to index.html, which meant a
+ * bad URL rendered the NotFound page with HTTP 200. Google reads that as a soft
+ * 404 and can keep the URL indexed. It matters more now than it used to:
+ * /service-areas/:city is a pattern, so any mistyped city slug is an unmatched
+ * path, and there are twelve real ones people can get wrong.
+ *
+ * Every real route is prerendered to its own file, so Vercel resolves those
+ * from the filesystem first and only falls through to this for genuine misses.
+ * Rendered from "/__not-found" rather than "*" so react-router matches the
+ * catch-all rather than a literal path.
+ */
+const notFound = await render("/__not-found");
+await writeFile(
+  path.join(DIST, "404.html"),
+  stripDefaultMeta(template)
+    .replace("</head>", `  ${notFound.head}\n  </head>`)
+    .replace(ROOT_DIV, `<div id="root">${notFound.html}</div>`),
+  "utf8"
+);
+console.log(`  ${"404.html".padEnd(42)} ${(Buffer.byteLength(notFound.html) / 1024).toFixed(0).padStart(4)} KB`);
+
+console.log(`\nPrerendered ${written} routes to static HTML, plus 404.html.`);

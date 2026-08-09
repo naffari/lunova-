@@ -1,8 +1,10 @@
+import { withAlpha } from "../utils/color";
 import { Phone, ArrowUpRight } from "lucide-react";
 import { Link } from "react-router";
 import type { ReactNode } from "react";
 import { PHONE, PHONE_DISPLAY } from "../constants/contact";
 import { HIGH_FETCH_PRIORITY } from "../utils/dom";
+import { trackCall } from "../utils/analytics";
 
 interface ServiceHeroProps {
   badge: string;
@@ -69,12 +71,12 @@ export default function ServiceHero({
       <div
         className="absolute inset-0 z-0"
         style={{
-          background: `linear-gradient(100deg, ${primaryColor}f2 0%, ${primaryColor}d9 30%, ${primaryColor}80 55%, ${primaryColor}26 80%)`,
+          background: `linear-gradient(100deg, ${withAlpha(primaryColor, 0.95)} 0%, ${withAlpha(primaryColor, 0.85)} 30%, ${withAlpha(primaryColor, 0.5)} 55%, ${withAlpha(primaryColor, 0.15)} 80%)`,
         }}
       />
       <div
         className="absolute inset-0 z-0"
-        style={{ background: `linear-gradient(to top, ${primaryColor}e6 0%, transparent 35%)` }}
+        style={{ background: `linear-gradient(to top, ${withAlpha(primaryColor, 0.9)} 0%, transparent 35%)` }}
       />
 
       <div className="relative z-10 max-w-7xl mx-auto w-full">
@@ -118,6 +120,7 @@ export default function ServiceHero({
 
             <a
               href={`tel:+1${PHONE}`}
+              onClick={() => trackCall("service_hero")}
               className="inline-flex items-center gap-2 font-semibold px-6 py-4 rounded-full text-sm transition-colors"
               style={{ backgroundColor: 'rgba(255,255,255,0.14)', color: '#ffffff', border: '1px solid rgba(255,255,255,0.3)' }}
             >
@@ -133,7 +136,11 @@ export default function ServiceHero({
           >
             {trustItems.map((item, idx) => (
               <span key={idx} className="flex items-center gap-2">
-                {idx > 0 && <span style={{ color: 'rgba(255,255,255,0.4)' }}>•</span>}
+                {/* Purely a visual separator: hidden from screen readers, which
+                    already get one list item per <span>. Was white at 0.4, which
+                    measured 3.8:1 against every department ground — under the
+                    4.5:1 floor for text this size. 0.55 clears it on all nine. */}
+                {idx > 0 && <span aria-hidden="true" style={{ color: 'rgba(255,255,255,0.55)' }}>•</span>}
                 <span className="font-semibold text-white">
                   {item}
                 </span>

@@ -41,4 +41,17 @@ export const STEP_LABELS = ["Service", "Details", "Schedule", "Contact", "Review
 
 export const FREQUENCY_OPTIONS = ["One-Time", "Weekly", "Bi-Weekly", "Monthly"];
 
-export const TIME_WINDOWS = ["Morning", "Afternoon", "Evening"];
+/**
+ * Arrival windows.
+ *
+ * "Evening" used to be the third option, which we could not honour: the crew
+ * is off at 7pm on a weekday and 5pm on a Saturday (see OPENING_HOURS in
+ * constants/business.ts). Someone picking an evening slot for a Saturday was
+ * booking a time we are shut, and finding that out on the confirmation call.
+ * "Late day" is the window we can actually work, and the hint below the
+ * buttons in the wizard spells out the hours rather than leaving it to guess.
+ */
+export const TIME_WINDOWS = ["Morning", "Afternoon", "Late day"];
+
+/** Concrete hours behind the labels above, shown under the picker. */
+export const TIME_WINDOW_HINT = "Roughly 8am–12pm, 12–4pm, or 4–7pm. Saturdays finish at 5pm.";

@@ -1,0 +1,34 @@
+{
+  "//": [
+    "Typecheck config for the serverless functions.",
+    "",
+    "WHY IT IS SEPARATE: the root tsconfig includes only 'src' and is built for",
+    "the browser (DOM lib, Bundler resolution, vite/client types). api/ runs on",
+    "Node as ESM, so it needs Node resolution, Node types and no DOM. Folding",
+    "them into one config would either weaken the browser config or fail on the",
+    "API files.",
+    "",
+    "WHY IT EXISTS AT ALL: api/ was outside the typecheck scope entirely, so a",
+    "type error there passed `pnpm typecheck`, passed the build (Vercel compiles",
+    "functions separately) and first showed up as a 500 on a live booking.",
+    "",
+    "Run via `pnpm typecheck`, which now runs both."
+  ],
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2022"],
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "strict": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "types": ["node"],
+    "allowImportingTsExtensions": true
+  },
+  "include": ["api"]
+}

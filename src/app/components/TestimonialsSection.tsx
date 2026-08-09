@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Star, ShieldCheck } from "lucide-react";
 import { GUARANTEE, PROOF_POINTS, REVIEWS, hasReviews } from "../constants/proof";
 
@@ -21,30 +20,25 @@ export interface Testimonial {
 export const TESTIMONIALS: Testimonial[] = [];
 
 interface TestimonialsSectionProps {
+  /** Show only reviews with this `tag`. Omit for all of them. */
   category?: string;
-  showFilters?: boolean;
   title?: string;
   subtitle?: string;
 }
 
-const FILTER_TABS = [
-  { id: "all", label: "All Reviews" },
-  { id: "cleaning", label: "Cleaning" },
-  { id: "junk", label: "Junk Removal" },
-  { id: "landscaping", label: "Landscaping" },
-  { id: "power", label: "Power Wash" },
-  { id: "auto", label: "Auto Detail" },
-];
-
+/**
+ * NOTE: this used to carry a six-tab category filter and a `showFilters` prop.
+ * Both were dead — the tab row was gated on `TESTIMONIALS.length > 0` and the
+ * array is empty, so the filter state existed purely to be ignored. Filtering
+ * is now a plain prop, and the tabs come back when there are enough reviews to
+ * be worth filtering.
+ */
 export default function TestimonialsSection({
-  category = "all",
-  showFilters = true,
+  category,
   title = "Customers Agree.",
   subtitle = "Reviews",
 }: TestimonialsSectionProps) {
-  const [filter, setFilter] = useState(category);
-
-  const shown = filter === "all" ? TESTIMONIALS : TESTIMONIALS.filter((t) => t.tag === filter);
+  const shown = category ? TESTIMONIALS.filter((t) => t.tag === category) : TESTIMONIALS;
 
   return (
     <div>
@@ -73,30 +67,11 @@ export default function TestimonialsSection({
         </div>
       )}
 
-      {showFilters && TESTIMONIALS.length > 0 && (
-        <div className="flex flex-wrap gap-2 mb-6">
-          {FILTER_TABS.map((t) => (
-            <button
-              key={t.id}
-              onClick={() => setFilter(t.id)}
-              aria-pressed={filter === t.id}
-              className={`rounded-full px-4 py-2 text-sm font-medium border transition-colors ${
-                filter === t.id
-                  ? "bg-primary text-primary-foreground border-primary"
-                  : "bg-secondary text-muted-foreground border-border hover:text-foreground hover:border-primary/40"
-              }`}
-            >
-              {t.label}
-            </button>
-          ))}
-        </div>
-      )}
-
-      {TESTIMONIALS.length === 0 ? (
+      {shown.length === 0 ? (
         /*
           No reviews yet, and none will be invented. This is the researched
           Molly Maid pattern: their own widget shows "0/5", and they carry the
-          section on verifiable non-review proof instead — a named guarantee
+          section on verifiable non-review proof instead: a named guarantee
           with real terms, plus vetting and insurance claims.
 
           The previous version of this block simply apologised for being new and
@@ -124,7 +99,7 @@ export default function TestimonialsSection({
           </div>
 
           <p className="text-xs text-muted-foreground mt-5 pt-5 border-t border-border">
-            We're new to Kansas City and haven't collected reviews yet — so we're leading with what
+            We're new to Kansas City and haven't collected reviews yet, so we're leading with what
             you can check instead. Be one of our first and hold us to the promise above.
           </p>
         </div>

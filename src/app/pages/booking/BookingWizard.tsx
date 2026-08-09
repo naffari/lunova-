@@ -9,6 +9,7 @@ import {
   HEAR_ABOUT_OPTIONS,
   STEP_LABELS,
   TIME_WINDOWS,
+  TIME_WINDOW_HINT,
 } from "./wizardData";
 import {
   SERVICE_BY_ID,
@@ -26,6 +27,7 @@ import {
   type Answers,
 } from "../../constants/serviceDetails";
 import { checkCoverage, isServable, normalizeZip } from "../../constants/serviceArea";
+import { OPENING_HOURS } from "../../constants/business";
 import { trackBookingStep, trackEvent } from "../../utils/analytics";
 import { useCrmPricing } from "../../hooks/useCrmPricing";
 import { Field, PrivacyNote, StepNav } from "./WizardChrome";
@@ -109,6 +111,71 @@ function loadDraft(): WizardState {
   } catch {
     return INITIAL_STATE;
   }
+}
+
+/**
+ * Scheduling rules, enforced here because a native <input type="date"> can only
+ * express a min and a max.
+ *
+ * The field previously set `min` to today and nothing else, so a visitor could
+ * pick a Sunday, when we are closed, or 4pm today for a morning slot. Both got
+ * accepted, went to the crew, and turned into a call to move the booking. That
+ * call is the failure: the whole point of the flow is that the date the
+ * customer chose is a date we can work.
+ *
+ * Hours live in constants/business.ts and feed the schema and the footer, so
+ * "closed Sunday" is read from there rather than hardcoded twice.
+ */
+const CLOSED_WEEKDAYS = (() => {
+  const open = new Set<string>();
+  for (const block of OPENING_HOURS) for (const day of block.days) open.add(day);
+  return ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+    .map((day, index) => ({ day, index }))
+    .filter(({ day }) => !open.has(day))
+    .map(({ index }) => index);
+})();
+
+/**
+ * Past this hour, same-day slots stop being offered.
+ *
+ * Crews are routed the afternoon before. A same-day request booked at 6pm is a
+ * next-day job that nobody has told the customer is a next-day job.
+ */
+const SAME_DAY_CUTOFF_HOUR = 15;
+
+/** A local YYYY-MM-DD. `toISOString()` is UTC and rolls the date over at 6pm CST. */
+function toLocalDateString(date: Date): string {
+  const pad = (n: number) => String(n).padStart(2, "0");
+  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
+}
+
+/** Earliest date the picker will accept, honouring the same-day cutoff. */
+function earliestBookableDate(): string {
+  const now = new Date();
+  if (now.getHours() >= SAME_DAY_CUTOFF_HOUR) now.setDate(now.getDate() + 1);
+  return toLocalDateString(now);
+}
+
+/** Empty string when the date is fine, otherwise the reason it is not. */
+function validateBookingDate(value: string): string {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return "Choose a preferred date.";
+
+  // Parsed as local midnight. `new Date("2026-08-09")` is parsed as UTC and can
+  // land on the previous day, which would flag the wrong weekday.
+  const picked = new Date(`${value}T00:00:00`);
+  if (Number.isNaN(picked.getTime())) return "Choose a preferred date.";
+
+  if (value < earliestBookableDate()) {
+    return new Date().getHours() >= SAME_DAY_CUTOFF_HOUR
+      ? "We route crews the afternoon before, so today is fully booked. Pick tomorrow or later."
+      : "Pick a date from today onwards.";
+  }
+
+  if (CLOSED_WEEKDAYS.includes(picked.getDay())) {
+    return "We're closed Sundays. Pick another day, or call us if it has to be a weekend.";
+  }
+
+  return "";
 }
 
 /** Loose on purpose — the goal is catching typos, not policing valid addresses. */
@@ -272,6 +339,10 @@ export default function BookingWizard() {
     }
     if (state.step === 3) {
       if (!state.date) e.date = "Choose a preferred date.";
+      else {
+        const dateError = validateBookingDate(state.date);
+        if (dateError) e.date = dateError;
+      }
       if (!state.timeWindow) e.timeWindow = "Pick a time window.";
       if (!state.street.trim()) e.street = "We need the street address to route the crew.";
       if (!state.city) e.city = "Select your city.";
@@ -396,7 +467,7 @@ export default function BookingWizard() {
    */
   function breakdownLines(): string[] {
     return estimate.lines.map((line) =>
-      line.custom ? `${line.label} — quote on site` : `${line.label} — ${formatDollars(line.amount ?? 0)}`
+      line.custom ? `${line.label}: quote on site` : `${line.label}: ${formatDollars(line.amount ?? 0)}`
     );
   }
 
@@ -434,7 +505,7 @@ export default function BookingWizard() {
             ...answerSummary(),
             ...breakdownLines(),
           ].filter(Boolean),
-          addons: state.bundles.map((id) => `${SERVICE_NAME_BY_ID[id]} — ${bundlePriceLabel(id)}`),
+          addons: state.bundles.map((id) => `${SERVICE_NAME_BY_ID[id]}, ${bundlePriceLabel(id)}`),
           frequency: state.frequency,
           notes: state.notes,
           date: state.date,
@@ -523,7 +594,7 @@ export default function BookingWizard() {
       <div className="mb-8">
         <h1 className="font-serif-display text-3xl sm:text-4xl mb-1.5 text-foreground">Book your service</h1>
         <p className="text-sm text-muted-foreground">
-          Takes about two minutes. No payment now — we confirm the price by phone first.
+          Takes about two minutes. No payment now, we confirm the price by phone first.
         </p>
       </div>
 
@@ -641,7 +712,7 @@ export default function BookingWizard() {
               When &amp; where
             </h2>
             <p className="text-sm text-muted-foreground mb-6">
-              Pick a preference — we'll confirm the exact slot when we call.
+              Pick a preference. We'll confirm the exact slot when we call.
             </p>
 
             <div className="grid sm:grid-cols-2 gap-5 mb-5">
@@ -650,13 +721,19 @@ export default function BookingWizard() {
                   id="date"
                   type="date"
                   value={state.date}
-                  min={new Date().toISOString().slice(0, 10)}
+                  min={earliestBookableDate()}
                   onChange={(e) => update("date", e.target.value)}
                   className={errorFor("date") ? inputErrorClass : inputClass}
                 />
               </Field>
 
-              <Field id="timeWindow" label="Preferred time" required error={errorFor("timeWindow")}>
+              <Field
+                id="timeWindow"
+                label="Preferred time"
+                required
+                hint={TIME_WINDOW_HINT}
+                error={errorFor("timeWindow")}
+              >
                 <div className="grid grid-cols-3 gap-2" id="timeWindow">
                   {TIME_WINDOWS.map((w) => (
                     <button
@@ -737,7 +814,7 @@ export default function BookingWizard() {
               ) : coverage?.status === "outside" ? (
                 <p className="flex items-start gap-2 text-xs text-muted-foreground">
                   <Info size={13} className="mt-0.5 shrink-0 text-destructive" />
-                  That ZIP is outside our usual routes. Submit anyway and we'll call to see what we can do —
+                  That ZIP is outside our usual routes. Submit anyway and we'll call to see what we can do,
                   or reach us on {PHONE_DISPLAY}.
                 </p>
               ) : (
@@ -775,7 +852,7 @@ export default function BookingWizard() {
                 id="phone"
                 label="Phone number"
                 required
-                hint="So we can confirm your slot — one call, no marketing."
+                hint="So we can confirm your slot. One call, no marketing."
                 error={errorFor("phone")}
               >
                 <input
@@ -969,7 +1046,7 @@ export default function BookingWizard() {
                 </div>
                 <p className="text-[11px] leading-relaxed text-muted-foreground mt-2">
                   {estimate.needsVisit
-                    ? "Some of what you've picked needs a look at the property before we can price it — we'll confirm the full figure on the phone."
+                    ? "Some of what you've picked needs a look at the property before we can price it. We'll confirm the full figure on the phone."
                     : "A starting figure, not a quote. We confirm the final price before any work begins."}
                 </p>
               </div>

@@ -15,6 +15,9 @@ import PackageGrid from "../../components/PackageGrid";
 import { buildBreadcrumbSchema, buildFaqSchema, buildServiceSchema } from "../../utils/structuredData";
 import { SERVICE_THEMES } from "../../constants/theme";
 import { BRAND } from "../../constants/brand";
+import { SERVICE_BY_ID, startingAtLabel, bookPath } from "../../constants/services";
+import Marquee from "../../components/Marquee";
+import { withAlpha } from "../../utils/color";
 
 const { primary: PRIMARY, accent: ACCENT, ground: GROUND, bg: BG } = SERVICE_THEMES["bin-cleaning"];
 
@@ -43,7 +46,7 @@ const FEATURES = [
 ];
 
 const STATS = [
-  { val: "From $55", label: "Starting Price" },
+  { val: startingAtLabel(SERVICE_BY_ID.bin), label: "Starting Price" },
   { val: "200°", label: "Hot Water" },
   { val: "99.9%", label: "Bacteria Kill Rate" },
   { val: "Monthly", label: "Routes" },
@@ -58,7 +61,7 @@ const HOW_IT_WORKS_STEPS = [
   {
     step: "2",
     title: "Leave Bins Curbside",
-    desc: "After trash pickup, leave your empty bins at the curb — we handle the rest.",
+    desc: "After trash pickup, leave your empty bins at the curb. We handle the rest.",
   },
   {
     step: "3",
@@ -82,6 +85,11 @@ const BIN_CLEANING_FAQS = [
   { q: "How many bins can you clean?", a: "We can clean trash, recycling, and yard waste bins in a single visit." },
 ];
 
+/** Written once; Marquee doubles it for the seamless loop. */
+const MARQUEE_ITEMS = [
+  "200° Hot Water", "Monthly Route Service", "99.9% Bacteria Kill", "Eco-Safe Deodorizer", "Curbside Service", "No Contracts", "Licensed & Insured", "Satisfaction Guarantee",
+];
+
 export default function BinCleaning() {
   return (
     <div data-theme="bin-cleaning" className="font-sans-modern min-h-screen" style={{ backgroundColor: BG, color: BRAND.ink }}>
@@ -101,29 +109,17 @@ export default function BinCleaning() {
       <ServiceHero
         badge="KC's Curbside Trash Bin Cleaning Service"
         titleContent={<><span className="italic" style={{ color: ACCENT }}>Sanitized</span> Bins. <br />No More Stench.</>}
-        description="We pull up to your curb after trash day, blast your bins with 200° pressurized hot water, and apply a deodorizing treatment — no mess, no hassle."
+        description="We pull up to your curb after trash day, blast your bins with 200° pressurized hot water, and apply a deodorizing treatment. No mess, no hassle."
         primaryColor={GROUND}
         accentColor={ACCENT}
         ctaLabel="Book a Clean"
-        ctaTo="/book?service=bin-cleaning"
+        ctaTo={bookPath("bin")}
         trustItems={["200° Hot Water Sanitization", "Kills 99.9% Bacteria", "Monthly Route Service"]}
         heroImage="bin-cleaning-hero"
         heroImageAlt="Curbside Bin Cleaning Service"
       />
 
-      {/* MARQUEE STRIP */}
-      <div style={{ backgroundColor: ACCENT, overflow: 'hidden' }} className="py-3">
-        <div style={{ display: 'flex', gap: '3rem', whiteSpace: 'nowrap', animation: 'marquee 20s linear infinite', width: 'max-content' }}>
-          {[
-            "200° Hot Water", "Monthly Route Service", "99.9% Bacteria Kill", "Eco-Safe Deodorizer", "Curbside Service", "No Contracts", "Licensed & Insured", "Satisfaction Guarantee",
-            "200° Hot Water", "Monthly Route Service", "99.9% Bacteria Kill", "Eco-Safe Deodorizer", "Curbside Service", "No Contracts", "Licensed & Insured", "Satisfaction Guarantee",
-          ].map((item, i) => (
-            <span key={i} className="text-xs font-bold uppercase tracking-widest" style={{ color: BRAND.ink }}>
-              ✦ {item}
-            </span>
-          ))}
-        </div>
-      </div>
+      <Marquee items={MARQUEE_ITEMS} backgroundColor={ACCENT} textColor={BRAND.ink} />
 
       {/* WHAT'S INCLUDED — shared PackageGrid, sourced from constants/serviceDetails.ts.
           Same packages, same checklist, same prices the booking wizard shows — clicking
@@ -138,7 +134,7 @@ export default function BinCleaning() {
               <span>Why Choose Us</span>
             </div>
             <h2 className="font-serif-display text-4xl sm:text-5xl" style={{ color: PRIMARY }}>
-              200-Degree Hot Water Technology — Nothing Else Comes Close.
+              Truck-Mounted 200° Hot Water Sanitization.
             </h2>
           </div>
 
@@ -146,13 +142,13 @@ export default function BinCleaning() {
             {FEATURES.map((f, idx) => {
               const Icon = f.icon;
               return (
-                <div key={idx} className="bg-card p-6 rounded-2xl flex flex-col gap-4" style={{ border: `1px solid ${PRIMARY}15` }}>
+                <div key={idx} className="bg-card p-6 rounded-2xl flex flex-col gap-4" style={{ border: `1px solid ${withAlpha(PRIMARY, 0.082)}` }}>
                   <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0 text-white" style={{ backgroundColor: PRIMARY }}>
                     <Icon size={22} />
                   </div>
                   <div>
                     <h4 className="font-bold text-sm mb-1" style={{ color: PRIMARY }}>{f.title}</h4>
-                    <p className="text-sm leading-relaxed" style={{ color: `${BRAND.ink}bb` }}>{f.desc}</p>
+                    <p className="text-sm leading-relaxed" style={{ color: withAlpha(BRAND.ink, 0.733) }}>{f.desc}</p>
                   </div>
                 </div>
               );
@@ -188,18 +184,18 @@ export default function BinCleaning() {
           <FaqSection
             items={BIN_CLEANING_FAQS}
             title="Frequently Asked Questions"
-            subtitle="Everything you need to know"
+            subtitle="Before you join a route"
           />
         </div>
       </section>
 
       <ContactStrip
         heading="Ready to Ditch the Stink?"
-        subtext="Join our monthly route and never scrub a filthy bin again — sanitized, deodorized, and back at your curb before you know it."
+        subtext="Join our monthly route and never scrub a filthy bin again. Sanitized, deodorized, and back at your curb before you know it."
         primaryColor={GROUND}
         accentColor={ACCENT}
         ctaLabel="Book a Clean"
-        ctaTo="/book?service=bin-cleaning"
+        ctaTo={bookPath("bin")}
       />
 
     </div>

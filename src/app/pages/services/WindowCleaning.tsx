@@ -15,6 +15,9 @@ import PackageGrid from "../../components/PackageGrid";
 import { buildBreadcrumbSchema, buildFaqSchema, buildServiceSchema } from "../../utils/structuredData";
 import { SERVICE_THEMES } from "../../constants/theme";
 import { BRAND } from "../../constants/brand";
+import { SERVICE_BY_ID, startingAtLabel, bookPath } from "../../constants/services";
+import Marquee from "../../components/Marquee";
+import { withAlpha } from "../../utils/color";
 
 const { primary: PRIMARY, accent: ACCENT, ground: GROUND, bg: BG } = SERVICE_THEMES["window-cleaning"];
 
@@ -38,12 +41,12 @@ const FEATURES = [
   {
     icon: MapPin,
     title: "Residential & Commercial",
-    desc: "From single-family homes to multi-story office buildings — we scale to any property size in KC.",
+    desc: "From single-family homes to multi-story office buildings, we scale to any property size in KC.",
   },
 ];
 
 const STATS = [
-  { val: "From $140", label: "Starting Price" },
+  { val: startingAtLabel(SERVICE_BY_ID.window), label: "Starting Price" },
   { val: "Streak-Free", label: "Guarantee" },
   { val: "100%", label: "Satisfaction" },
   { val: "Licensed", label: "& Insured" },
@@ -76,10 +79,15 @@ const WINDOW_CLEANING_DESCRIPTION =
   "Interior and exterior window washing, screen scrubbing, track cleaning, and hard water stain removal for homes and businesses across Kansas City.";
 
 const WINDOW_CLEANING_FAQS = [
-  { q: "Do you clean interior and exterior windows?", a: "Yes — we offer interior only, exterior only, or full inside-and-out service." },
+  { q: "Do you clean interior and exterior windows?", a: "Yes. We offer interior only, exterior only, or full inside-and-out service." },
   { q: "How often should windows be professionally cleaned?", a: "Most homes benefit from cleaning 2–4 times per year. Commercial properties often need monthly service." },
   { q: "Will you clean windows in winter?", a: "Yes. We operate year-round and use solutions safe for all temperatures." },
-  { q: "What about hard water stains or build-up?", a: "We carry specialized solutions for hard water and mineral deposits — just mention it when booking." },
+  { q: "What about hard water stains or build-up?", a: "We carry specialized solutions for hard water and mineral deposits. Just mention it when booking." },
+];
+
+/** Written once; Marquee doubles it for the seamless loop. */
+const MARQUEE_ITEMS = [
+  "Interior Windows", "Exterior Windows", "Screen Cleaning", "Hard Water Removal", "Streak-Free Guarantee", "Water-Fed Pole", "Licensed & Insured", "Free Estimates",
 ];
 
 export default function WindowCleaning() {
@@ -105,25 +113,13 @@ export default function WindowCleaning() {
         primaryColor={GROUND}
         accentColor={ACCENT}
         ctaLabel="Book a Clean"
-        ctaTo="/book?service=window-cleaning"
+        ctaTo={bookPath("window")}
         trustItems={["Streak-Free Guarantee", "Interior & Exterior", "Eco-Safe Solution"]}
         heroImage="window-cleaning-hero"
         heroImageAlt="Window Cleaning Professional at Work"
       />
 
-      {/* MARQUEE STRIP */}
-      <div style={{ backgroundColor: ACCENT, overflow: 'hidden' }} className="py-3">
-        <div style={{ display: 'flex', gap: '3rem', whiteSpace: 'nowrap', animation: 'marquee 20s linear infinite', width: 'max-content' }}>
-          {[
-            "Interior Windows", "Exterior Windows", "Screen Cleaning", "Hard Water Removal", "Streak-Free Guarantee", "Water-Fed Pole", "Licensed & Insured", "Free Estimates",
-            "Interior Windows", "Exterior Windows", "Screen Cleaning", "Hard Water Removal", "Streak-Free Guarantee", "Water-Fed Pole", "Licensed & Insured", "Free Estimates",
-          ].map((item, i) => (
-            <span key={i} className="text-xs font-bold uppercase tracking-widest" style={{ color: BRAND.ink }}>
-              ✦ {item}
-            </span>
-          ))}
-        </div>
-      </div>
+      <Marquee items={MARQUEE_ITEMS} backgroundColor={ACCENT} textColor={BRAND.ink} />
 
       {/* WHAT'S INCLUDED — shared PackageGrid, sourced from constants/serviceDetails.ts.
           Same packages, same checklist, same prices the booking wizard shows — clicking
@@ -146,13 +142,13 @@ export default function WindowCleaning() {
             {FEATURES.map((f, idx) => {
               const Icon = f.icon;
               return (
-                <div key={idx} className="bg-card p-6 rounded-2xl flex flex-col gap-4" style={{ border: `1px solid ${PRIMARY}15` }}>
+                <div key={idx} className="bg-card p-6 rounded-2xl flex flex-col gap-4" style={{ border: `1px solid ${withAlpha(PRIMARY, 0.082)}` }}>
                   <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0 text-white" style={{ backgroundColor: PRIMARY }}>
                     <Icon size={22} />
                   </div>
                   <div>
                     <h4 className="font-bold text-sm mb-1" style={{ color: PRIMARY }}>{f.title}</h4>
-                    <p className="text-sm leading-relaxed" style={{ color: `${BRAND.ink}bb` }}>{f.desc}</p>
+                    <p className="text-sm leading-relaxed" style={{ color: withAlpha(BRAND.ink, 0.733) }}>{f.desc}</p>
                   </div>
                 </div>
               );
@@ -188,18 +184,18 @@ export default function WindowCleaning() {
           <FaqSection
             items={WINDOW_CLEANING_FAQS}
             title="Frequently Asked Questions"
-            subtitle="Everything you need to know"
+            subtitle="Before your first window clean"
           />
         </div>
       </section>
 
       <ContactStrip
         heading="Ready for Streak-Free Windows?"
-        subtext="Book your interior, exterior, or full-service window clean today — flat-rate pricing and a streak-free guarantee on every pane."
+        subtext="Book your interior, exterior, or full-service window clean today. Flat-rate pricing and a streak-free guarantee on every pane."
         primaryColor={GROUND}
         accentColor={ACCENT}
         ctaLabel="Book a Clean"
-        ctaTo="/book?service=window-cleaning"
+        ctaTo={bookPath("window")}
       />
 
     </div>

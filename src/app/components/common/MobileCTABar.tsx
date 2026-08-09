@@ -15,6 +15,7 @@ export default function MobileCTABar() {
       style={{ paddingBottom: "calc(0.625rem + env(safe-area-inset-bottom))" }}
     >
       <PhoneLink
+        source="mobile_bar"
         label="Call"
         iconSize={16}
         className="flex-1 flex items-center justify-center gap-2 font-semibold text-sm px-4 py-3 rounded-full border-2 border-border text-foreground"

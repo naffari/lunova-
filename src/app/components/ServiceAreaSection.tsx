@@ -1,6 +1,9 @@
-import { MapPin } from "lucide-react";
+import { withAlpha } from "../utils/color";
+import { MapPin, ArrowUpRight } from "lucide-react";
+import { Link } from "react-router";
 import { BRAND } from "../constants/brand";
 import { SERVICE_AREA_CITIES } from "../constants/serviceArea";
+import { cityPath } from "../constants/cities";
 import ZipCheck from "./common/ZipCheck";
 
 interface ServiceAreaSectionProps {
@@ -38,7 +41,7 @@ export default function ServiceAreaSection({
           <h2 className="font-serif-display text-4xl sm:text-5xl mb-3" style={{ color: primaryColor }}>
             Are we on your street?
           </h2>
-          <p className="text-sm max-w-lg mx-auto" style={{ color: `${primaryColor}99` }}>
+          <p className="text-sm max-w-lg mx-auto" style={{ color: withAlpha(primaryColor, 0.6) }}>
             Enter your ZIP and we'll tell you straight away. Residential and commercial, across the
             greater Kansas City metro.
           </p>
@@ -48,7 +51,7 @@ export default function ServiceAreaSection({
 
         <div
           className="rounded-2xl p-8 border"
-          style={{ backgroundColor: `${primaryColor}08`, borderColor: `${primaryColor}20` }}
+          style={{ backgroundColor: withAlpha(primaryColor, 0.03), borderColor: withAlpha(primaryColor, 0.125) }}
         >
           <div className="flex items-center gap-2 mb-6">
             <MapPin size={18} style={{ color: accentColor }} />
@@ -57,11 +60,17 @@ export default function ServiceAreaSection({
             </span>
           </div>
 
+          {/* Each city links to its own page rather than sitting as dead text.
+              This block renders on every service page, so it is the single
+              biggest source of internal links into /service-areas/*, which is
+              what gets those pages crawled and ranked rather than merely
+              existing. */}
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
             {SERVICE_AREA_CITIES.map((city) => (
-              <div
+              <Link
                 key={city.label}
-                className="flex items-center gap-2 text-xs font-medium py-1.5"
+                to={cityPath(city.slug)}
+                className="group flex items-center gap-2 text-xs font-medium py-1.5 hover:underline"
                 style={{ color: primaryColor }}
               >
                 <span
@@ -69,13 +78,21 @@ export default function ServiceAreaSection({
                   style={{ backgroundColor: accentColor }}
                 />
                 {city.label}
-              </div>
+                <ArrowUpRight
+                  size={11}
+                  className="opacity-0 group-hover:opacity-70 transition-opacity shrink-0"
+                />
+              </Link>
             ))}
           </div>
 
-          <p className="text-xs mt-6 pt-4" style={{ color: `${primaryColor}70`, borderTop: `1px solid ${primaryColor}20` }}>
-            Surrounding suburbs are usually covered too even when they're not listed — the ZIP check
-            above is the fastest way to know.
+          <p className="text-xs mt-6 pt-4" style={{ color: withAlpha(primaryColor, 0.44), borderTop: `1px solid ${withAlpha(primaryColor, 0.125)}` }}>
+            Surrounding suburbs are usually covered too even when they're not listed. The ZIP check
+            above is the fastest way to know, or{" "}
+            <Link to="/service-areas" className="underline font-medium">
+              browse every area we serve
+            </Link>
+            .
           </p>
         </div>
       </div>

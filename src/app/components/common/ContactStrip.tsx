@@ -1,7 +1,9 @@
+import { withAlpha } from "../../utils/color";
 import { Phone, Mail, ArrowUpRight } from "lucide-react";
 import { Link } from "react-router";
 import { PHONE, PHONE_DISPLAY, EMAIL } from "../../constants/contact";
 import { BRAND } from "../../constants/brand";
+import { trackCall } from "../../utils/analytics";
 
 export type ContactStripVariant = "dark" | "light" | "compact";
 
@@ -27,7 +29,7 @@ interface ContactStripProps {
  */
 export default function ContactStrip({
   heading = "Ready to Get Started?",
-  subtext = "Book today and get a free estimate. We serve the Kansas City metro — same-day slots available.",
+  subtext = "Book today and get a free estimate. We serve the Kansas City metro, with same-day slots available.",
   phone = PHONE,
   phoneDisplay = PHONE_DISPLAY,
   email = EMAIL,
@@ -44,12 +46,12 @@ export default function ContactStrip({
 
   const bg = isLight ? accentColor : primaryColor;
   const headingColor = isLight ? primaryColor : "#ffffff";
-  const subtextColor = isLight ? `${primaryColor}99` : "rgba(255,255,255,0.65)";
+  const subtextColor = isLight ? withAlpha(primaryColor, 0.6) : "rgba(255,255,255,0.65)";
   const btnBg = isLight ? primaryColor : accentColor;
   const btnColor = isLight ? accentColor : primaryColor;
-  const outlineBorder = isLight ? `${primaryColor}40` : "rgba(255,255,255,0.35)";
+  const outlineBorder = isLight ? withAlpha(primaryColor, 0.25) : "rgba(255,255,255,0.35)";
   const outlineText = isLight ? primaryColor : "#ffffff";
-  const outlineHover = isLight ? `${primaryColor}0d` : "rgba(255,255,255,0.1)";
+  const outlineHover = isLight ? withAlpha(primaryColor, 0.05) : "rgba(255,255,255,0.1)";
 
   return (
     <section
@@ -100,6 +102,7 @@ export default function ContactStrip({
           <div className="flex items-center gap-3 w-full sm:w-auto">
             <a
               href={`tel:+1${phone}`}
+              onClick={() => trackCall("contact_strip")}
               className="inline-flex items-center justify-center gap-2 font-semibold px-8 py-4 rounded-full border-2 text-base transition-colors w-full sm:w-auto"
               style={{ borderColor: outlineBorder, color: outlineText }}
               onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.backgroundColor = outlineHover; }}

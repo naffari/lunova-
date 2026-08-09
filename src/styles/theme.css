@@ -266,6 +266,23 @@
   }
 
   /**
+   * Custom radios and checkboxes.
+   *
+   * The booking wizard's package tiers, add-ons and bundle rows hide the real
+   * control with `.sr-only` and draw their own tick, which is fine for the
+   * mouse and fine for screen readers — but the rule above then paints the
+   * focus ring onto a 1px clipped box nobody can see. Keyboard users were
+   * tabbing through the entire package picker with no visible focus at all.
+   *
+   * Hoisting the ring to the wrapping label puts it back where the control
+   * actually appears.
+   */
+  label:has(input.sr-only:focus-visible) {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+
+  /**
   * Default typography styles for HTML elements (h1-h4, p, label, button, input).
   * These are in @layer base, so Tailwind utility classes (like text-sm, text-lg) automatically override them.
   */

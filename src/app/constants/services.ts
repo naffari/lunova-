@@ -31,8 +31,31 @@ export interface SubserviceDef {
   surcharge?: boolean;
 }
 
+/**
+ * The eight catalogue ids, as a closed set.
+ *
+ * These are the values the booking wizard matches on — `?service=power`, not
+ * `?service=power-washing`. The two vocabularies look similar enough that four
+ * service pages shipped hero CTAs carrying their own URL slug instead, which
+ * the wizard silently dropped (see the guard in BookingWizard's deep-link
+ * effect): the visitor clicked "Book a Clean" on the power washing page and
+ * landed on step 1 with nothing selected.
+ *
+ * Declaring the union and routing every link through `bookPath` below turns
+ * that from a silent runtime no-op into a compile error.
+ */
+export type ServiceId =
+  | "cleaning"
+  | "junk"
+  | "power"
+  | "window"
+  | "auto"
+  | "bin"
+  | "landscaping"
+  | "commercial";
+
 export interface ServiceDef {
-  id: string;
+  id: ServiceId;
   name: string;
   /** Route to the service's own detail page. */
   to: string;
@@ -43,7 +66,18 @@ export interface ServiceDef {
   popular?: boolean;
   subservices: SubserviceDef[];
   /** IDs of two other services offered as bundle add-ons during booking. */
-  upsells: string[];
+  upsells: ServiceId[];
+}
+
+/**
+ * The only way to link into the booking wizard.
+ *
+ * Never hand-write "/book?service=…" in a component — the id is checked here
+ * and nowhere else. `packageId` deep-links to a specific tier, which is what
+ * PackageGrid's "Book this" buttons use.
+ */
+export function bookPath(service: ServiceId, packageId?: string): string {
+  return packageId ? `/book?service=${service}&package=${packageId}` : `/book?service=${service}`;
 }
 
 export const SERVICES: ServiceDef[] = [
@@ -193,72 +227,13 @@ export function startingAtLabel(service: ServiceDef): string {
   return `From ${formatPrice(cheapest)}`;
 }
 
-export interface EstimateInput {
-  /** Subservice display names the customer selected, within one service. */
-  serviceId: string;
-  selected: string[];
-  /** Service IDs added as bundle extras. */
-  addonIds: string[];
-}
-
-export interface Estimate {
-  /** Floor total in dollars, before discount. */
-  subtotal: number;
-  /** Dollars removed by the multi-service bundle discount. */
-  discount: number;
-  /** What the customer should expect as a starting figure. */
-  total: number;
-  /** True when any selected line cannot be priced without a site visit. */
-  hasCustom: boolean;
-  /** True when at least one recurring plan is in the selection. */
-  hasRecurring: boolean;
-  /** Number of distinct services in the booking, including add-ons. */
-  serviceCount: number;
-}
-
 /**
- * Builds the running estimate shown in the booking wizard.
- *
- * Every figure is a FLOOR, not a quote: add-on services contribute their
- * cheapest entry price because the customer has not chosen a tier for them
- * yet. `hasCustom` exists so the UI can say "plus site-visit pricing" rather
- * than silently under-quoting a job we cannot price yet.
+ * NOTE ON ESTIMATES: a `buildEstimate` used to live here, pricing a booking from
+ * flat subservice names. Step 2 of the wizard moved to packages + qualifying
+ * questions, so pricing moved with it — `priceDetail` in serviceDetails.ts is
+ * the only estimator, and it returns a line-by-line breakdown rather than one
+ * number. This file stays the catalogue: names, routes, floors, cross-sells.
  */
-export function buildEstimate({ serviceId, selected, addonIds }: EstimateInput): Estimate {
-  const service = SERVICE_BY_ID[serviceId];
-  let subtotal = 0;
-  let hasCustom = false;
-  let hasRecurring = false;
-
-  if (service) {
-    for (const sub of service.subservices) {
-      if (!selected.includes(sub.name)) continue;
-      if (sub.custom || sub.from === undefined) {
-        hasCustom = true;
-        continue;
-      }
-      if (sub.unit === "month") hasRecurring = true;
-      subtotal += sub.from;
-    }
-  }
-
-  for (const id of addonIds) {
-    const addon = SERVICE_BY_ID[id];
-    if (!addon) continue;
-    const cheapest = cheapestSubservice(addon);
-    if (!cheapest) {
-      hasCustom = true;
-      continue;
-    }
-    if (cheapest.unit === "month") hasRecurring = true;
-    subtotal += cheapest.from!;
-  }
-
-  const serviceCount = (service ? 1 : 0) + addonIds.length;
-  const discount = serviceCount > 1 ? Math.round(subtotal * BUNDLE_DISCOUNT) : 0;
-
-  return { subtotal, discount, total: subtotal - discount, hasCustom, hasRecurring, serviceCount };
-}
 
 export function formatDollars(amount: number): string {
   return `$${amount.toLocaleString("en-US")}`;

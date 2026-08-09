@@ -10,7 +10,10 @@ import PackageGrid from "../components/PackageGrid";
 import WorkGallery from "../components/WorkGallery";
 import { SERVICE_THEMES } from "../constants/theme";
 import { BRAND } from "../constants/brand";
+import { SERVICE_BY_ID, startingAtLabel, bookPath } from "../constants/services";
 import { buildBreadcrumbSchema, buildFaqSchema, buildServiceSchema } from "../utils/structuredData";
+import Marquee from "../components/Marquee";
+import { withAlpha } from "../utils/color";
 
 const { primary: PRIMARY, accent: ACCENT, ground: GROUND, bg: BG } = SERVICE_THEMES.landscaping;
 
@@ -29,7 +32,7 @@ const FEATURES = [
   {
     icon: Check,
     title: "Licensed & Fully Insured",
-    desc: "Every job is backed by full liability insurance — your property is protected from start to finish.",
+    desc: "Every job is backed by full liability insurance. Your property is protected from start to finish.",
   },
   {
     icon: Calendar,
@@ -39,7 +42,7 @@ const FEATURES = [
 ];
 
 const STATS = [
-  { val: "From $45", label: "Starting Price" },
+  { val: startingAtLabel(SERVICE_BY_ID.landscaping), label: "Starting Price" },
   { val: "Same-Week", label: "Availability" },
   { val: "100%", label: "Satisfaction Guarantee" },
   { val: "Licensed", label: "& Insured" },
@@ -69,13 +72,18 @@ const HOW_IT_WORKS_STEPS = [
 ];
 
 const LANDSCAPING_DESCRIPTION =
-  "Professional lawn mowing, hedge trimming, mulch, seasonal cleanup, and landscape design across the Kansas City metro — flat-rate pricing and same-week appointments.";
+  "Professional lawn mowing, hedge trimming, mulch, and seasonal cleanup across the Kansas City metro. Flat-rate pricing and same-week appointments.";
 
 const LANDSCAPING_FAQS = [
-  { q: "Do I need to be home for lawn service?", a: "No — our crews work independently. We'll notify you when we arrive and when the job is complete." },
+  { q: "Do I need to be home for lawn service?", a: "No. Our crews work independently. We'll notify you when we arrive and when the job is complete." },
   { q: "How often should I schedule lawn care?", a: "We recommend weekly or bi-weekly service during growing season (April–October) and monthly in the off-season." },
   { q: "Do you bring your own equipment?", a: "Yes. Our teams arrive fully equipped. You don't need to provide anything." },
   { q: "What areas do you serve?", a: "We serve the full Kansas City metro area including Overland Park, Olathe, Shawnee, Lee's Summit, and more." },
+];
+
+/** Written once; Marquee doubles it for the seamless loop. */
+const MARQUEE_ITEMS = [
+  "Lawn Mowing", "Hedge Trimming", "Mulch & Edging", "Seasonal Cleanup", "Aeration & Seeding", "Licensed & Insured", "Same-Week Slots", "Satisfaction Guarantee",
 ];
 
 export default function Landscaping() {
@@ -100,25 +108,13 @@ export default function Landscaping() {
         primaryColor={GROUND}
         accentColor={ACCENT}
         ctaLabel="Book Landscaping"
-        ctaTo="/book?service=landscaping"
+        ctaTo={bookPath("landscaping")}
         trustItems={["Licensed & Insured", "Same-Week Appointments", "100% Satisfaction"]}
         heroImage="landscaping-hero"
         heroImageAlt="Landscaping Professional at Work"
       />
 
-      {/* MARQUEE STRIP */}
-      <div style={{ backgroundColor: ACCENT, overflow: 'hidden' }} className="py-3">
-        <div style={{ display: 'flex', gap: '3rem', whiteSpace: 'nowrap', animation: 'marquee 20s linear infinite', width: 'max-content' }}>
-          {[
-            "Lawn Mowing", "Hedge Trimming", "Mulch & Edging", "Seasonal Cleanup", "Aeration & Seeding", "Licensed & Insured", "Same-Week Slots", "Satisfaction Guarantee",
-            "Lawn Mowing", "Hedge Trimming", "Mulch & Edging", "Seasonal Cleanup", "Aeration & Seeding", "Licensed & Insured", "Same-Week Slots", "Satisfaction Guarantee",
-          ].map((item, i) => (
-            <span key={i} className="text-xs font-bold uppercase tracking-widest" style={{ color: BRAND.ink }}>
-              ✦ {item}
-            </span>
-          ))}
-        </div>
-      </div>
+      <Marquee items={MARQUEE_ITEMS} backgroundColor={ACCENT} textColor={BRAND.ink} />
 
       {/* WHAT'S INCLUDED — shared PackageGrid, sourced from constants/serviceDetails.ts.
           Same packages, same checklist, same prices the booking wizard shows — clicking
@@ -141,13 +137,13 @@ export default function Landscaping() {
             {FEATURES.map((f, idx) => {
               const Icon = f.icon;
               return (
-                <div key={idx} className="bg-card p-6 rounded-2xl flex flex-col gap-4" style={{ border: `1px solid ${PRIMARY}15` }}>
+                <div key={idx} className="bg-card p-6 rounded-2xl flex flex-col gap-4" style={{ border: `1px solid ${withAlpha(PRIMARY, 0.082)}` }}>
                   <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0" style={{ backgroundColor: GROUND, color: ACCENT }}>
                     <Icon size={22} />
                   </div>
                   <div>
                     <h4 className="font-bold text-sm mb-1" style={{ color: PRIMARY }}>{f.title}</h4>
-                    <p className="text-sm leading-relaxed" style={{ color: `${BRAND.ink}bb` }}>{f.desc}</p>
+                    <p className="text-sm leading-relaxed" style={{ color: withAlpha(BRAND.ink, 0.733) }}>{f.desc}</p>
                   </div>
                 </div>
               );
@@ -162,7 +158,7 @@ export default function Landscaping() {
         primaryColor={GROUND}
         accentColor={ACCENT}
         bgColor={BG}
-        bookTo="/book?service=landscaping"
+        bookTo={bookPath("landscaping")}
       />
 
       {/* HOW IT WORKS */}
@@ -192,18 +188,18 @@ export default function Landscaping() {
           <FaqSection
             items={LANDSCAPING_FAQS}
             title="Frequently Asked Questions"
-            subtitle="Everything you need to know"
+            subtitle="Before you book a yard visit"
           />
         </div>
       </section>
 
       <ContactStrip
         heading="Ready for a Yard You'll Love?"
-        subtext="Book mowing, cleanup, or a full landscape refresh today — flat-rate pricing and same-week appointments across the KC metro."
+        subtext="Book mowing, cleanup, or a full landscape refresh today. Flat-rate pricing and same-week appointments across the KC metro."
         primaryColor={GROUND}
         accentColor={ACCENT}
         ctaLabel="Book Landscaping"
-        ctaTo="/book?service=landscaping"
+        ctaTo={bookPath("landscaping")}
       />
 
     </div>

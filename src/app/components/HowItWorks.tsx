@@ -1,3 +1,4 @@
+import { withAlpha } from "../utils/color";
 interface Step {
   step: string;
   title: string;
@@ -36,8 +37,8 @@ export default function HowItWorks({
               key={idx}
               className="p-6 rounded-2xl flex flex-col items-center text-center"
               style={{
-                backgroundColor: `${accentColor}15`,
-                border: `1px solid ${accentColor}30`,
+                backgroundColor: withAlpha(accentColor, 0.082),
+                border: `1px solid ${withAlpha(accentColor, 0.19)}`,
               }}
             >
               <div

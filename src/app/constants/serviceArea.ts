@@ -14,42 +14,36 @@
  * Erring toward "yes" costs a phone call. Erring toward "no" costs the job.
  */
 
+import { SERVICE_CITIES } from "./cities";
+
 export interface ServiceAreaCity {
   label: string;
   /** ZIPs confirmed to be served. Not exhaustive — see the prefix fallback. */
   zips: string[];
+  /** URL segment for this city's landing page. */
+  slug: string;
 }
 
-export const SERVICE_AREA_CITIES: ServiceAreaCity[] = [
-  {
-    label: "Kansas City, MO",
-    zips: [
-      "64105", "64106", "64108", "64109", "64110", "64111", "64112", "64113",
-      "64114", "64116", "64117", "64118", "64119", "64123", "64124", "64125",
-      "64127", "64128", "64129", "64130", "64131", "64132", "64134", "64136",
-      "64137", "64145", "64146", "64147", "64151", "64152", "64153", "64154",
-      "64155", "64156", "64157", "64158",
-    ],
-  },
-  { label: "Kansas City, KS", zips: ["66101", "66102", "66103", "66104", "66105", "66106", "66109", "66111", "66112"] },
-  { label: "Overland Park", zips: ["66204", "66207", "66210", "66212", "66213", "66214", "66221", "66223", "66224"] },
-  { label: "Olathe", zips: ["66061", "66062", "66063"] },
-  { label: "Shawnee", zips: ["66203", "66216", "66217", "66218", "66226", "66227"] },
-  { label: "Lenexa", zips: ["66215", "66219", "66220", "66227"] },
-  { label: "Leawood", zips: ["66206", "66209", "66211"] },
-  { label: "Prairie Village", zips: ["66207", "66208"] },
-  { label: "Lee's Summit", zips: ["64063", "64064", "64081", "64082", "64086"] },
-  { label: "Independence", zips: ["64050", "64052", "64053", "64054", "64055", "64056", "64057", "64058"] },
-  { label: "Blue Springs", zips: ["64013", "64014", "64015"] },
-  { label: "Raytown", zips: ["64133", "64138"] },
-];
+/**
+ * Derived from constants/cities.ts rather than declared here.
+ *
+ * The ZIP list used to live in this file and the city landing pages did not
+ * exist. Now that both exist, two hand-maintained lists would eventually
+ * disagree, and the failure mode is a visitor being told by the checker that
+ * we serve their ZIP, landing on a city page that never mentions it. One list.
+ */
+export const SERVICE_AREA_CITIES: ServiceAreaCity[] = SERVICE_CITIES.map((city) => ({
+  label: city.label,
+  zips: city.zips,
+  slug: city.slug,
+}));
 
 /** Flat ZIP → city lookup, built from the list above. */
-const ZIP_TO_CITY: Record<string, string> = {};
+const ZIP_TO_CITY: Record<string, ServiceAreaCity> = {};
 for (const city of SERVICE_AREA_CITIES) {
   for (const zip of city.zips) {
     // First city wins on shared ZIPs (66207 and 66227 straddle two cities each).
-    if (!ZIP_TO_CITY[zip]) ZIP_TO_CITY[zip] = city.label;
+    if (!ZIP_TO_CITY[zip]) ZIP_TO_CITY[zip] = city;
   }
 }
 
@@ -66,6 +60,8 @@ export interface CoverageResult {
   status: CoverageStatus;
   /** Populated only for "covered" — the matching city's display name. */
   city?: string;
+  /** Populated only for "covered". Lets the checker deep-link to that city's page. */
+  slug?: string;
   /** Customer-facing explanation. Never blames the visitor for the gap. */
   message: string;
 }
@@ -83,7 +79,7 @@ export function checkCoverage(input: string): CoverageResult {
 
   const city = ZIP_TO_CITY[zip];
   if (city) {
-    return { status: "covered", city, message: `Yes — we serve ${city}.` };
+    return { status: "covered", city: city.label, slug: city.slug, message: `Yes, we serve ${city.label}.` };
   }
 
   if (METRO_PREFIXES.some((prefix) => zip.startsWith(prefix))) {
@@ -95,7 +91,7 @@ export function checkCoverage(input: string): CoverageResult {
 
   return {
     status: "outside",
-    message: "That's outside our usual Kansas City routes — but tell us where you are and we'll let you know when we expand.",
+    message: "That's outside our usual Kansas City routes, but tell us where you are and we'll let you know when we expand.",
   };
 }
 

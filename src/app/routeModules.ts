@@ -17,10 +17,13 @@ export const routeModules = {
   binCleaning: () => import("./pages/services/BinCleaning"),
   junkRemoval: () => import("./pages/JunkRemoval"),
   landscaping: () => import("./pages/Landscaping"),
-  blog: () => import("./pages/Blog"),
-  blogPost: () => import("./pages/BlogPost"),
+  serviceAreas: () => import("./pages/ServiceAreas"),
+  serviceAreaCity: () => import("./pages/ServiceAreaCity"),
+  guides: () => import("./pages/Guides"),
+  guide: () => import("./pages/Guide"),
+  about: () => import("./pages/About"),
+  contact: () => import("./pages/Contact"),
   booking: () => import("./pages/Booking"),
-  bookingSuccess: () => import("./pages/BookingSuccess"),
   privacy: () => import("./pages/Privacy"),
   notFound: () => import("./pages/NotFound"),
 } as const;
@@ -39,8 +42,22 @@ const PATH_TO_MODULE: Record<string, RouteModuleKey> = Object.fromEntries(
   ])
 );
 
+/**
+ * Patterned routes, matched by prefix rather than exact path.
+ *
+ * `/service-areas/overland-park` is not a key in PATH_TO_MODULE, since the
+ * route is declared as `:city`. Every city page is the same module, so a prefix
+ * match preloads the right chunk. Without this, the twelve most-linked pages on
+ * the site would be the only ones that do not warm on hover.
+ */
+const PREFIX_TO_MODULE: [string, RouteModuleKey][] = [
+  ["/service-areas/", "serviceAreaCity"],
+  ["/guides/", "guide"],
+];
+
 /** Warm the dynamic import cache for a route so navigation feels instant. */
 export function preloadRoute(path: string) {
-  const moduleKey = PATH_TO_MODULE[path];
+  const moduleKey =
+    PATH_TO_MODULE[path] ?? PREFIX_TO_MODULE.find(([prefix]) => path.startsWith(prefix))?.[1];
   if (moduleKey) routeModules[moduleKey]();
 }

@@ -19,6 +19,7 @@ import {
 import { PHONE } from "../constants/contact";
 import { preloadRoute } from "../routeModules";
 import { CHROME } from "../constants/brand";
+import { withAlpha } from "../utils/color";
 import { PhoneLink } from "./common/ContactLinks";
 
 const NAV_ACCENT = CHROME.accent;
@@ -72,7 +73,11 @@ export default function Navbar() {
   // Track scroll for transparent → solid transition
   useEffect(() => {
     function handleScroll() {
-      setScrolled(window.scrollY > 40);
+      // Compare before setting. The bar only has two states, so calling the
+      // setter on every scroll event asks React to re-render the whole header
+      // hundreds of times per scroll for a value that changes twice.
+      const next = window.scrollY > 40;
+      setScrolled((current) => (current === next ? current : next));
     }
     handleScroll();
     window.addEventListener("scroll", handleScroll, { passive: true });
@@ -161,7 +166,10 @@ export default function Navbar() {
     <header
       className="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
       style={{
-        backgroundColor: showSolidBg ? "rgba(17,19,24,0.78)" : "rgba(17,19,24,0.32)",
+        // Derived from the chrome token, not a literal. These two values were
+        // hand-written as rgba(17,19,24,…) — a near-match for CHROME.bg that
+        // would have quietly diverged the moment the chrome tone was retuned.
+        backgroundColor: withAlpha(NAV_BG_SOLID, showSolidBg ? 0.78 : 0.32),
         backgroundImage: showSolidBg ? "none" : "linear-gradient(to bottom, rgba(0,0,0,0.55), rgba(0,0,0,0))",
         backdropFilter: showSolidBg ? "blur(16px) saturate(140%)" : "blur(4px)",
         WebkitBackdropFilter: showSolidBg ? "blur(16px) saturate(140%)" : "blur(4px)",
@@ -255,14 +263,52 @@ export default function Navbar() {
             )}
           </div>
 
+          {/*
+            Areas and About in the primary nav, not just the footer.
+
+            A link in the main navigation carries materially more weight than
+            the same link in a footer, and /service-areas is the hub every city
+            page hangs off. Putting it here is what makes twelve local pages a
+            section of the site rather than an orphaned branch.
+          */}
           <Link
-            to="/blog"
+            to="/service-areas"
             className="nav-link text-sm font-medium"
-            data-active={location.pathname.startsWith("/blog")}
-            onMouseEnter={() => preloadRoute("/blog")}
-            onFocus={() => preloadRoute("/blog")}
+            data-active={location.pathname.startsWith("/service-areas")}
+            onMouseEnter={() => preloadRoute("/service-areas")}
+            onFocus={() => preloadRoute("/service-areas")}
           >
-            Blog
+            Areas
+          </Link>
+
+          <Link
+            to="/guides"
+            className="nav-link text-sm font-medium"
+            data-active={location.pathname.startsWith("/guides")}
+            onMouseEnter={() => preloadRoute("/guides")}
+            onFocus={() => preloadRoute("/guides")}
+          >
+            Guides
+          </Link>
+
+          <Link
+            to="/about"
+            className="nav-link text-sm font-medium"
+            data-active={location.pathname === "/about"}
+            onMouseEnter={() => preloadRoute("/about")}
+            onFocus={() => preloadRoute("/about")}
+          >
+            About
+          </Link>
+
+          <Link
+            to="/contact"
+            className="nav-link text-sm font-medium"
+            data-active={location.pathname === "/contact"}
+            onMouseEnter={() => preloadRoute("/contact")}
+            onFocus={() => preloadRoute("/contact")}
+          >
+            Contact
           </Link>
         </nav>
 
@@ -285,6 +331,7 @@ export default function Navbar() {
           </Link>
 
           <PhoneLink
+            source="navbar"
             iconSize={13}
             className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-md text-xs font-semibold transition-colors"
             style={{ backgroundColor: "rgba(255,255,255,0.08)", border: `1px solid ${NAV_BORDER}`, color: NAV_TEXT }}
@@ -331,8 +378,6 @@ export default function Navbar() {
           <Link to="/book" className="flex items-center gap-2 py-2 px-3 rounded-lg font-bold text-sm" style={{ backgroundColor: NAV_ACCENT, color: NAV_BG_SOLID }}>
             <Calendar size={16} /> Book Online Directly
           </Link>
-          <Link to="/blog" className="text-sm font-semibold" style={{ color: NAV_TEXT }}>Blog</Link>
-
           <div className="space-y-4 pt-2" style={{ borderTop: `1px solid ${NAV_BORDER}` }}>
             <p className="text-xs font-bold uppercase tracking-wider" style={{ color: NAV_ACCENT }}>All Services</p>
             {/* Derived from serviceCategories — this was previously a second,
@@ -352,7 +397,25 @@ export default function Navbar() {
           </div>
 
           <div className="flex flex-col gap-2 pt-3" style={{ borderTop: `1px solid ${NAV_BORDER}` }}>
+            <div className="flex flex-wrap gap-2 pb-1">
+              {[
+                { to: "/service-areas", label: "Service Areas" },
+                { to: "/guides", label: "Guides" },
+                { to: "/about", label: "About" },
+                { to: "/contact", label: "Contact" },
+              ].map((item) => (
+                <Link
+                  key={item.to}
+                  to={item.to}
+                  className="px-3 py-2 rounded text-xs font-semibold"
+                  style={{ backgroundColor: "rgba(255,255,255,0.06)", border: `1px solid ${NAV_BORDER}`, color: NAV_TEXT }}
+                >
+                  {item.label}
+                </Link>
+              ))}
+            </div>
             <PhoneLink
+              source="navbar_mobile"
               iconSize={16}
               className="flex items-center justify-center gap-2 py-2.5 rounded-md font-semibold text-sm"
               style={{ backgroundColor: "rgba(255,255,255,0.08)", border: `1px solid ${NAV_BORDER}`, color: NAV_TEXT }}

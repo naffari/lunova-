@@ -1,5 +1,4 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
-import { Resend } from "resend";
 import {
   buildRequestedWindow,
   createLead,
@@ -8,8 +7,21 @@ import {
   resolveServiceSlug,
   splitCityState,
 } from "./_crm.js";
-
-const EMAIL = "naffari@myyahoo.com";
+import {
+  clientIp,
+  escapeHtml,
+  isBot,
+  isEmail,
+  isNonEmptyString,
+  isRateLimited,
+} from "./_guard.js";
+import {
+  FROM_CUSTOMER,
+  FROM_INTERNAL,
+  INTERNAL_INBOX,
+  customerEmailShell,
+  sendMail,
+} from "./_mail.js";
 
 interface BookingPayload {
   category: string;
@@ -44,68 +56,14 @@ interface BookingPayload {
 
 function formatEstimate(body: BookingPayload): string {
   if (typeof body.estimateFloor !== "number" || body.estimateFloor <= 0) {
-    return "Custom quote — needs a site visit";
+    return "Custom quote, needs a site visit";
   }
   const base = `$${body.estimateFloor}+ (floor shown to customer)`;
   return body.estimateHasCustomItems ? `${base}, plus items needing a site visit` : base;
 }
 
-function isNonEmptyString(value: unknown): value is string {
-  return typeof value === "string" && value.trim().length > 0;
-}
-
-/**
- * In-memory rate limiter, keyed on client IP.
- *
- * Deliberately simple: this runs on Vercel's serverless runtime, so the map
- * lives only for the lifetime of one warm instance and resets on cold start.
- * That is fine for the actual threat — a bot hammering the form in a burst hits
- * the same warm instance. It is NOT a security control, and it is not a
- * substitute for a durable store (Upstash/KV) if abuse becomes sustained.
- */
-const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000;
+/** Bookings per IP per 10 minutes. See _guard.ts for why this is in memory. */
 const RATE_LIMIT_MAX = 5;
-const submissions = new Map<string, number[]>();
-
-function clientIp(req: VercelRequest): string {
-  const forwarded = req.headers["x-forwarded-for"];
-  const raw = Array.isArray(forwarded) ? forwarded[0] : forwarded;
-  return raw?.split(",")[0]?.trim() || "unknown";
-}
-
-function isRateLimited(ip: string): boolean {
-  const now = Date.now();
-  const recent = (submissions.get(ip) ?? []).filter((t) => now - t < RATE_LIMIT_WINDOW_MS);
-
-  if (recent.length >= RATE_LIMIT_MAX) {
-    submissions.set(ip, recent);
-    return true;
-  }
-
-  recent.push(now);
-  submissions.set(ip, recent);
-
-  // Opportunistic cleanup so a long-lived instance can't grow unbounded.
-  if (submissions.size > 500) {
-    for (const [key, times] of submissions) {
-      if (times.every((t) => now - t >= RATE_LIMIT_WINDOW_MS)) submissions.delete(key);
-    }
-  }
-
-  return false;
-}
-
-/**
- * Honeypot check.
- *
- * The form renders a field that is hidden from humans and left empty by them.
- * Bots that blindly fill every input will populate it. Anything with a value
- * here is dropped — and answered with a normal 200, so the bot records a success
- * and doesn't retry with a different strategy.
- */
-function isBot(body: Partial<BookingPayload>): boolean {
-  return isNonEmptyString(body.website);
-}
 
 function validate(body: Partial<BookingPayload>): string | null {
   if (!isNonEmptyString(body.category)) return "Missing service category.";
@@ -119,16 +77,8 @@ function validate(body: Partial<BookingPayload>): string | null {
   if (!isNonEmptyString(body.name)) return "Missing name.";
   if (!isNonEmptyString(body.phone)) return "Missing phone number.";
   if (!isNonEmptyString(body.email)) return "Missing email.";
+  if (!isEmail(body.email)) return "Enter a valid email address.";
   return null;
-}
-
-function escapeHtml(value: string): string {
-  return value
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#39;");
 }
 
 function buildCrmMessage(body: BookingPayload): string {
@@ -185,11 +135,11 @@ async function sendToCrm(body: BookingPayload): Promise<string | null> {
 
 function buildEmailHtml(body: BookingPayload, bookingId: string): string {
   const row = (label: string, value: string) =>
-    `<tr><td style="padding:4px 12px 4px 0;color:#666;font-size:13px;">${escapeHtml(label)}</td><td style="padding:4px 0;font-size:13px;"><strong>${escapeHtml(value || "—")}</strong></td></tr>`;
+    `<tr><td style="padding:4px 12px 4px 0;color:#666;font-size:13px;">${escapeHtml(label)}</td><td style="padding:4px 0;font-size:13px;"><strong>${escapeHtml(value || "Not given")}</strong></td></tr>`;
 
   return `
     <div style="font-family:sans-serif;max-width:560px;">
-      <h2 style="margin-bottom:4px;">New booking request — ${escapeHtml(body.categoryLabel || body.category)}</h2>
+      <h2 style="margin-bottom:4px;">New booking request: ${escapeHtml(body.categoryLabel || body.category)}</h2>
       <p style="color:#666;font-size:12px;margin-top:0;">Booking ID: ${escapeHtml(bookingId)}</p>
       <table>
         ${row("Service", body.categoryLabel || body.category)}
@@ -214,31 +164,86 @@ function buildEmailHtml(body: BookingPayload, bookingId: string): string {
  * destinations are independent, and one being down must not cost us the other.
  */
 async function sendEmail(body: BookingPayload, bookingId: string): Promise<boolean> {
-  const apiKey = process.env.RESEND_API_KEY;
-  if (!apiKey) {
-    console.error("RESEND_API_KEY is not configured; skipping booking email.");
-    return false;
-  }
+  return sendMail({
+    to: INTERNAL_INBOX,
+    from: FROM_INTERNAL,
+    replyTo: isNonEmptyString(body.email) ? body.email : undefined,
+    subject: `Booking request: ${body.categoryLabel || body.category}`,
+    html: buildEmailHtml(body, bookingId),
+  });
+}
 
-  try {
-    const resend = new Resend(apiKey);
-    const { error } = await resend.emails.send({
-      from: "Lunova Booking <bookings@lunovaservices.com>",
-      to: EMAIL,
-      replyTo: isNonEmptyString(body.email) ? body.email : undefined,
-      subject: `Booking request — ${body.categoryLabel || body.category}`,
-      html: buildEmailHtml(body, bookingId),
-    });
+/**
+ * The customer's copy of what they just booked.
+ *
+ * WHY: before this, a booking ended at a confirmation screen and nothing else.
+ * Close the tab and there was no record the request existed, no booking ID to
+ * quote, and nothing in the inbox to prove a real company received it. For a
+ * new business with no reviews, a receipt is one of the few trust signals
+ * available, and it costs one email.
+ *
+ * Deliberately does NOT ask for a review. That comes after the job is done,
+ * through api/review-request.ts. Asking now would be asking someone to rate work
+ * that has not happened.
+ */
+function buildCustomerHtml(body: BookingPayload, bookingId: string): string {
+  const line = (label: string, value: string) =>
+    value
+      ? `<tr>
+           <td style="padding:5px 14px 5px 0;color:#7A7166;font-size:13px;vertical-align:top;">${escapeHtml(label)}</td>
+           <td style="padding:5px 0;font-size:13px;color:#211D17;"><strong>${escapeHtml(value)}</strong></td>
+         </tr>`
+      : "";
 
-    if (error) {
-      console.error("Resend error:", error);
-      return false;
-    }
-    return true;
-  } catch (err) {
-    console.error("Booking email failed:", err);
-    return false;
-  }
+  const schedule = [body.date, body.timeWindow].filter(Boolean).join(", ");
+  const address = [body.street, body.city, body.zip].filter(Boolean).join(", ");
+
+  return customerEmailShell(
+    `We've got your ${escapeHtml(body.categoryLabel || body.category)} request`,
+    `
+      <p style="font-size:15px;line-height:1.6;margin:0 0 18px;">
+        Thanks ${escapeHtml((body.name || "").split(" ")[0] || "")}. Nothing is booked or charged
+        yet. We will call you within one business hour to confirm the slot and agree the price, and
+        the job is only on the calendar once you have said yes on that call.
+      </p>
+
+      <table style="border-collapse:collapse;margin:0 0 18px;">
+        ${line("Reference", bookingId)}
+        ${line("Service", body.categoryLabel || body.category)}
+        ${line("Selected", body.subservices.join(", "))}
+        ${line("Add-ons", body.addons.join(", "))}
+        ${line("Estimate shown", formatEstimate(body))}
+        ${line("Preferred time", schedule)}
+        ${line("Address", address)}
+      </table>
+
+      <p style="font-size:13px;line-height:1.6;color:#7A7166;margin:0 0 14px;">
+        The estimate above is the floor price you saw while booking, not a final quote. If anything
+        on site changes it, we tell you before we start, not after we finish.
+      </p>
+      <p style="font-size:13px;line-height:1.6;color:#7A7166;margin:0;">
+        Need to change something? Reply to this email or call us. Free to cancel or reschedule up to
+        24 hours before your appointment.
+      </p>
+    `
+  );
+}
+
+/**
+ * Sends the customer their receipt. Failure is logged and ignored: the booking
+ * has already landed with the crew, and a bounced confirmation is not a reason
+ * to show the customer an error for a request we successfully received.
+ */
+async function sendCustomerConfirmation(body: BookingPayload, bookingId: string): Promise<boolean> {
+  if (!isEmail(body.email)) return false;
+
+  return sendMail({
+    to: body.email.trim(),
+    from: FROM_CUSTOMER,
+    replyTo: INTERNAL_INBOX,
+    subject: `Booking request received (${bookingId})`,
+    html: buildCustomerHtml(body, bookingId),
+  });
 }
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
@@ -257,7 +262,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   const ip = clientIp(req);
-  if (isRateLimited(ip)) {
+  if (isRateLimited("booking", ip, RATE_LIMIT_MAX)) {
     console.warn(`Booking rate limit hit for ${ip}.`);
     return res.status(429).json({
       ok: false,
@@ -274,12 +279,17 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   const payload = body as BookingPayload;
 
   try {
-    // Independent destinations: the email reaches the crew, the CRM lead makes
-    // the booking trackable. Either one landing means we have the booking, so
-    // both are attempted regardless of the other's outcome.
-    const [emailed, leadId] = await Promise.all([
+    // Three destinations, all attempted regardless of each other's outcome.
+    //
+    // The first two are what "we received the booking" means: the crew email
+    // and the CRM lead. Either one landing is enough. The customer confirmation
+    // is a courtesy on top and is explicitly NOT part of that test, because a
+    // bounced receipt is not a reason to tell someone their booking failed when
+    // the crew already has it.
+    const [emailed, leadId, confirmed] = await Promise.all([
       sendEmail(payload, bookingId),
       sendToCrm(payload),
+      sendCustomerConfirmation(payload, bookingId),
     ]);
 
     if (!emailed && !leadId) {
@@ -289,6 +299,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     if (!emailed) console.warn(`Booking ${bookingId}: CRM lead ${leadId} created, email failed.`);
     if (!leadId) console.warn(`Booking ${bookingId}: emailed, but no CRM lead created.`);
+    if (!confirmed) console.warn(`Booking ${bookingId}: customer confirmation not delivered.`);
 
     return res.status(200).json({ ok: true, bookingId, leadId });
   } catch (err) {

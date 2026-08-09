@@ -1,3 +1,4 @@
+import { withAlpha } from "../utils/color";
 import Seo from "../components/common/Seo";
 import { buildBreadcrumbSchema } from "../utils/structuredData";
 import { COMPANY_NAME } from "../constants/contact";
@@ -8,7 +9,7 @@ const PRIMARY = BRAND.ink;
 const BG = BRAND.bg;
 
 const PRIVACY_DESCRIPTION =
-  `${COMPANY_NAME}'s privacy policy: what information we collect, how it's used, and your choices around cookies and data.`;
+  `${COMPANY_NAME}'s privacy policy: what we collect when you book or call, how it is used, how long we keep it, and how to opt out of analytics.`;
 
 /**
  * NOTE: this is a generic, standard-structure privacy policy template
@@ -28,9 +29,9 @@ export default function Privacy() {
       />
       <div className="max-w-2xl mx-auto">
         <h1 className="font-serif-display text-4xl sm:text-5xl font-bold mb-2">Privacy Policy</h1>
-        <p className="text-sm mb-10" style={{ color: `${PRIMARY}bb` }}>Last updated: {new Date().getFullYear()}</p>
+        <p className="text-sm mb-10" style={{ color: withAlpha(PRIMARY, 0.733) }}>Last updated: {new Date().getFullYear()}</p>
 
-        <div className="space-y-8 text-sm leading-relaxed" style={{ color: `${PRIMARY}bb` }}>
+        <div className="space-y-8 text-sm leading-relaxed" style={{ color: withAlpha(PRIMARY, 0.733) }}>
           <section>
             <h2 className="text-xl font-bold mb-2" style={{ color: PRIMARY }}>Information We Collect</h2>
             <p>
@@ -63,7 +64,7 @@ export default function Privacy() {
             <p>
               If you have questions about this policy or want to request that we delete your information,{" "}
               <EmailLink icon={false} className="underline font-semibold" /> or call{" "}
-              <PhoneLink icon={false} className="underline font-semibold" />.
+              <PhoneLink source="privacy" icon={false} className="underline font-semibold" />.
             </p>
           </section>
         </div>

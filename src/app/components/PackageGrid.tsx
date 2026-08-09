@@ -1,12 +1,13 @@
 import { Link } from "react-router";
 import { Check, X, ArrowUpRight } from "lucide-react";
 import { getServiceDetail } from "../constants/serviceDetails";
-import { formatDollars } from "../constants/services";
+import { formatDollars, bookPath, type ServiceId } from "../constants/services";
 import { preloadRoute } from "../routeModules";
+import { withAlpha } from "../utils/color";
 
 interface PackageGridProps {
   /** Booking-wizard category id, e.g. "power". Keys into serviceDetails.ts. */
-  serviceKey: string;
+  serviceKey: ServiceId;
   primaryColor: string;
   accentColor: string;
 }
@@ -34,7 +35,6 @@ export default function PackageGrid({ serviceKey, primaryColor, accentColor }: P
   const detail = getServiceDetail(serviceKey);
   if (!detail) return null;
 
-  const bookBase = `/book?service=${serviceKey}`;
 
   return (
     <section
@@ -60,7 +60,7 @@ export default function PackageGrid({ serviceKey, primaryColor, accentColor }: P
                   {pkg.popular && (
                     <span
                       className="text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full"
-                      style={{ backgroundColor: `${accentColor}20`, color: accentColor }}
+                      style={{ backgroundColor: withAlpha(accentColor, 0.125), color: accentColor }}
                     >
                       Most booked
                     </span>
@@ -76,7 +76,7 @@ export default function PackageGrid({ serviceKey, primaryColor, accentColor }: P
                   <p className="text-[11px] text-muted-foreground mb-4">Typically {pkg.duration} on site</p>
                 )}
                 <Link
-                  to={`${bookBase}&package=${pkg.id}`}
+                  to={bookPath(serviceKey, pkg.id)}
                   onMouseEnter={() => preloadRoute("/book")}
                   onFocus={() => preloadRoute("/book")}
                   className="inline-flex items-center gap-1.5 text-sm font-bold rounded-full px-5 py-2.5 transition-transform hover:scale-[1.03]"

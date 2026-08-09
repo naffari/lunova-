@@ -16,6 +16,9 @@ import WorkGallery from "../../components/WorkGallery";
 import { buildBreadcrumbSchema, buildFaqSchema, buildServiceSchema } from "../../utils/structuredData";
 import { SERVICE_THEMES } from "../../constants/theme";
 import { BRAND } from "../../constants/brand";
+import { SERVICE_BY_ID, startingAtLabel, bookPath } from "../../constants/services";
+import Marquee from "../../components/Marquee";
+import { withAlpha } from "../../utils/color";
 
 const { primary: PRIMARY, accent: ACCENT, ground: GROUND, bg: BG } = SERVICE_THEMES["auto-detailing"];
 
@@ -23,7 +26,7 @@ const { primary: PRIMARY, accent: ACCENT, ground: GROUND, bg: BG } = SERVICE_THE
 const FEATURES = [
   {
     icon: Car,
-    title: "Fully Mobile — No Drop-Off Needed",
+    title: "Fully Mobile, No Drop-Off Needed",
     desc: "We bring everything: water, generator, vacuum, and professional-grade products to your location.",
   },
   {
@@ -34,17 +37,17 @@ const FEATURES = [
   {
     icon: Star,
     title: "Detail-Obsessed Crew",
-    desc: "From daily drivers to luxury vehicles — our detail team treats every car like it's their own.",
+    desc: "From daily drivers to luxury vehicles, our detail team treats every car like it's their own.",
   },
   {
     icon: MapPin,
     title: "We Come to You",
-    desc: "Home, office, or apartment complex — our mobile unit parks and works wherever you are in KC.",
+    desc: "Home, office, or apartment complex, our mobile unit parks and works wherever you are in KC.",
   },
 ];
 
 const STATS = [
-  { val: "From $95", label: "Starting Price" },
+  { val: startingAtLabel(SERVICE_BY_ID.auto), label: "Starting Price" },
   { val: "Mobile", label: "Service" },
   { val: "100%", label: "Satisfaction Guarantee" },
   { val: "Licensed", label: "& Insured" },
@@ -59,7 +62,7 @@ const HOW_IT_WORKS_STEPS = [
   {
     step: "2",
     title: "Crew Arrives Fully Equipped",
-    desc: "Our team pulls up with everything needed — no hose hookup required from you.",
+    desc: "Our team pulls up with everything needed. No hose hookup required from you.",
   },
   {
     step: "3",
@@ -77,10 +80,15 @@ const AUTO_DETAILING_DESCRIPTION =
   "Mobile auto detailing brought directly to your home or office in Kansas City. From express washes to full paint protection and ceramic coating.";
 
 const AUTO_DETAILING_FAQS = [
-  { q: "Do you come to my location?", a: "Yes — we are fully mobile. We come to your home, office, or wherever your vehicle is parked." },
+  { q: "Do you come to my location?", a: "Yes. We are fully mobile and come to your home, office, or wherever your vehicle is parked." },
   { q: "How long does a detail take?", a: "Standard details take 2–4 hours. Full interior/exterior details can take 4–6 hours depending on vehicle size and condition." },
   { q: "Do you need access to water and power?", a: "We carry our own water supply and power equipment. You don't need to provide anything." },
   { q: "What vehicles do you detail?", a: "Cars, trucks, SUVs, vans, and boats. Pricing varies by vehicle size." },
+];
+
+/** Written once; Marquee doubles it for the seamless loop. */
+const MARQUEE_ITEMS = [
+  "Full Detail", "Ceramic Coating", "Interior Steam Clean", "Headlight Restoration", "Mobile Service", "Licensed & Insured", "Satisfaction Guarantee", "We Come to You",
 ];
 
 export default function AutoDetailing() {
@@ -102,29 +110,17 @@ export default function AutoDetailing() {
       <ServiceHero
         badge="KC's Mobile Auto Detailing Service"
         titleContent={<>Your Car, <span className="italic" style={{ color: ACCENT }}>Detailed</span> <br />At Your Doorstep.</>}
-        description="We bring professional-grade detailing directly to your home or office. From express washes to full paint protection — your vehicle deserves the best."
+        description="We bring professional-grade detailing directly to your home or office, from express washes to full paint protection."
         primaryColor={GROUND}
         accentColor={ACCENT}
         ctaLabel="Book a Clean"
-        ctaTo="/book?service=auto-detailing"
+        ctaTo={bookPath("auto")}
         trustItems={["Mobile Service", "Ceramic Coating Available", "Interior Steam Clean"]}
         heroImage="auto-detailing-hero"
         heroImageAlt="Mobile Auto Detailing Professional"
       />
 
-      {/* MARQUEE STRIP */}
-      <div style={{ backgroundColor: ACCENT, overflow: 'hidden' }} className="py-3">
-        <div style={{ display: 'flex', gap: '3rem', whiteSpace: 'nowrap', animation: 'marquee 20s linear infinite', width: 'max-content' }}>
-          {[
-            "Full Detail", "Ceramic Coating", "Interior Steam Clean", "Headlight Restoration", "Mobile Service", "Licensed & Insured", "Satisfaction Guarantee", "We Come to You",
-            "Full Detail", "Ceramic Coating", "Interior Steam Clean", "Headlight Restoration", "Mobile Service", "Licensed & Insured", "Satisfaction Guarantee", "We Come to You",
-          ].map((item, i) => (
-            <span key={i} className="text-xs font-bold uppercase tracking-widest" style={{ color: BRAND.ink }}>
-              ✦ {item}
-            </span>
-          ))}
-        </div>
-      </div>
+      <Marquee items={MARQUEE_ITEMS} backgroundColor={ACCENT} textColor={BRAND.ink} />
 
       {/* WHAT'S INCLUDED — shared PackageGrid, sourced from constants/serviceDetails.ts.
           Same packages, same checklist, same prices the booking wizard shows — clicking
@@ -147,13 +143,13 @@ export default function AutoDetailing() {
             {FEATURES.map((f, idx) => {
               const Icon = f.icon;
               return (
-                <div key={idx} className="bg-card p-6 rounded-2xl flex flex-col gap-4" style={{ border: `1px solid ${PRIMARY}15` }}>
+                <div key={idx} className="bg-card p-6 rounded-2xl flex flex-col gap-4" style={{ border: `1px solid ${withAlpha(PRIMARY, 0.082)}` }}>
                   <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0" style={{ backgroundColor: GROUND, color: ACCENT }}>
                     <Icon size={22} />
                   </div>
                   <div>
                     <h4 className="font-bold text-sm mb-1" style={{ color: PRIMARY }}>{f.title}</h4>
-                    <p className="text-sm leading-relaxed" style={{ color: `${BRAND.ink}bb` }}>{f.desc}</p>
+                    <p className="text-sm leading-relaxed" style={{ color: withAlpha(BRAND.ink, 0.733) }}>{f.desc}</p>
                   </div>
                 </div>
               );
@@ -168,7 +164,7 @@ export default function AutoDetailing() {
         primaryColor={GROUND}
         accentColor={ACCENT}
         bgColor={BG}
-        bookTo="/book?service=auto"
+        bookTo={bookPath("auto")}
       />
 
       {/* HOW IT WORKS */}
@@ -198,18 +194,18 @@ export default function AutoDetailing() {
           <FaqSection
             items={AUTO_DETAILING_FAQS}
             title="Frequently Asked Questions"
-            subtitle="Everything you need to know"
+            subtitle="Before you book a detail"
           />
         </div>
       </section>
 
       <ContactStrip
         heading="Ready for a Showroom Shine?"
-        subtext="Book your mobile detail today — we bring the water, power, and products straight to your driveway anywhere in the KC metro."
+        subtext="Book your mobile detail today. We bring the water, power, and products straight to your driveway anywhere in the KC metro."
         primaryColor={GROUND}
         accentColor={ACCENT}
         ctaLabel="Book a Clean"
-        ctaTo="/book?service=auto-detailing"
+        ctaTo={bookPath("auto")}
       />
 
     </div>

@@ -1,8 +1,10 @@
+import { withAlpha } from "../utils/color";
 import { Link } from "react-router";
 import { Home, Search, Phone } from "lucide-react";
 import { PHONE, PHONE_DISPLAY } from "../constants/contact";
 import Seo from "../components/common/Seo";
 import { BRAND } from "../constants/brand";
+import { trackCall } from "../utils/analytics";
 
 const PRIMARY = BRAND.ink;
 const ACCENT = BRAND.primary;
@@ -19,7 +21,7 @@ export default function NotFound() {
       <div className="text-center max-w-lg">
         <div
           className="w-24 h-24 rounded-full mx-auto mb-8 flex items-center justify-center"
-          style={{ backgroundColor: `${PRIMARY}15` }}
+          style={{ backgroundColor: withAlpha(PRIMARY, 0.082) }}
         >
           <Search size={48} style={{ color: PRIMARY }} />
         </div>
@@ -38,7 +40,7 @@ export default function NotFound() {
           Page Not Found
         </h2>
 
-        <p className="text-base leading-relaxed mb-10" style={{ color: `${PRIMARY}bb` }}>
+        <p className="text-base leading-relaxed mb-10" style={{ color: withAlpha(PRIMARY, 0.733) }}>
           The page you're looking for doesn't exist or has been moved. Let's get you back on track.
         </p>
 
@@ -54,6 +56,7 @@ export default function NotFound() {
 
           <a
             href={`tel:+1${PHONE}`}
+            onClick={() => trackCall("not_found")}
             className="inline-flex items-center gap-2 font-semibold px-6 py-3 rounded-full text-base transition-colors text-white"
             style={{ backgroundColor: PRIMARY }}
           >
@@ -62,36 +65,36 @@ export default function NotFound() {
           </a>
         </div>
 
-        <div className="pt-8" style={{ borderTop: `1px solid ${PRIMARY}20` }}>
-          <p className="text-sm mb-4" style={{ color: `${PRIMARY}bb` }}>
+        <div className="pt-8" style={{ borderTop: `1px solid ${withAlpha(PRIMARY, 0.125)}` }}>
+          <p className="text-sm mb-4" style={{ color: withAlpha(PRIMARY, 0.733) }}>
             Looking for a specific service?
           </p>
           <div className="grid grid-cols-2 gap-3 text-sm">
             <Link
               to="/services/residential-cleaning"
               className="px-4 py-2 rounded-lg text-center transition-colors"
-              style={{ backgroundColor: 'white', border: `1px solid ${PRIMARY}20`, color: PRIMARY }}
+              style={{ backgroundColor: 'white', border: `1px solid ${withAlpha(PRIMARY, 0.125)}`, color: PRIMARY }}
             >
               Residential Cleaning
             </Link>
             <Link
               to="/services/power-washing"
               className="px-4 py-2 rounded-lg text-center transition-colors"
-              style={{ backgroundColor: 'white', border: `1px solid ${PRIMARY}20`, color: PRIMARY }}
+              style={{ backgroundColor: 'white', border: `1px solid ${withAlpha(PRIMARY, 0.125)}`, color: PRIMARY }}
             >
               Power Washing
             </Link>
             <Link
               to="/junk-removal"
               className="px-4 py-2 rounded-lg text-center transition-colors"
-              style={{ backgroundColor: 'white', border: `1px solid ${PRIMARY}20`, color: PRIMARY }}
+              style={{ backgroundColor: 'white', border: `1px solid ${withAlpha(PRIMARY, 0.125)}`, color: PRIMARY }}
             >
               Junk Removal
             </Link>
             <Link
               to="/landscaping"
               className="px-4 py-2 rounded-lg text-center transition-colors"
-              style={{ backgroundColor: 'white', border: `1px solid ${PRIMARY}20`, color: PRIMARY }}
+              style={{ backgroundColor: 'white', border: `1px solid ${withAlpha(PRIMARY, 0.125)}`, color: PRIMARY }}
             >
               Landscaping
             </Link>

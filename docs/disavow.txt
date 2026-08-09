@@ -1,0 +1,33 @@
+# Google disavow file for lunovaservices.com
+#
+# HOW TO USE: upload this file at https://search.google.com/search-console/disavow-links
+# after adding and verifying the property. It is not read from the website —
+# putting it here just keeps it under version control with a record of why.
+#
+# ------------------------------------------------------------------------
+# READ THIS BEFORE UPLOADING
+#
+# Google's own guidance is that most sites should never use this tool. Their
+# systems already ignore the overwhelming majority of spam links, and a
+# disavow does not "remove" anything — the link stays on the other site, you
+# are only telling Google not to count it. Uploading the wrong domain can
+# actively cost you rankings, and it is easy to do by accident.
+#
+# The August 2026 audit of this domain found 3 backlinks from 1 referring
+# domain, and that domain is a Russian open-redirect page. That is not a
+# penalty risk at this volume; it is simply a profile with no authority in it.
+# The fix for that is earning real links (see seo-owner-tasks.md §1), not
+# disavowing the one that exists.
+#
+# This file is therefore prepared and NOT urgent. Upload it only if:
+#   - Search Console reports a manual action for unnatural links, or
+#   - the spam link count grows into the hundreds, which is what a negative
+#     SEO attack looks like.
+#
+# Check the current profile in Search Console under Links → Top linking sites
+# before uploading, in case it has changed since the audit.
+# ------------------------------------------------------------------------
+
+# Russian open-redirect / link-spam page. Points at lunovaservices.com through
+# a redirect parameter; no editorial relationship, no relevance, not requested.
+domain:8pw.ru

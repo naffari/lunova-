@@ -35,6 +35,18 @@ const WORK_OUT_DIR = path.join(ROOT, "public/images/work");
 const WIDTHS = [640, 1280];
 const QUALITY = { avif: 50, webp: 66, jpg: 72 };
 
+/**
+ * Heroes that render with no scrim over them, and so need real quality.
+ *
+ * The defaults above assume the heavy dark gradient ServiceHero lays over every
+ * department photo, which hides a lot of compression. PageHero (service areas,
+ * city pages, about, contact) puts the copy above the photo instead and leaves
+ * the image untouched, so banding in the sky and mush in the grass would be
+ * visible. These names get a higher setting.
+ */
+const UNSCRIMMED = new Set(["lunova-services-hero"]);
+const UNSCRIMMED_QUALITY = { avif: 62, webp: 80, jpg: 82 };
+
 function kb(bytes) {
   return `${(bytes / 1024).toFixed(0)} KB`;
 }
@@ -57,17 +69,19 @@ for (const file of files) {
   const { width: srcWidth, height: srcHeight } = await sharp(abs).metadata();
   manifest[base] = { width: srcWidth, height: srcHeight };
 
+  const quality = UNSCRIMMED.has(base) ? UNSCRIMMED_QUALITY : QUALITY;
+
   const sizes = {};
   for (const width of WIDTHS) {
     const resize = { width: Math.min(width, srcWidth), withoutEnlargement: true };
     const variants = [
-      ["avif", sharp(abs).resize(resize).avif({ quality: QUALITY.avif })],
-      ["webp", sharp(abs).resize(resize).webp({ quality: QUALITY.webp })],
+      ["avif", sharp(abs).resize(resize).avif({ quality: quality.avif })],
+      ["webp", sharp(abs).resize(resize).webp({ quality: quality.webp })],
     ];
     // Only the wide tier needs a JPG fallback — any browser without WebP
     // support is served the single 1280 JPG regardless of viewport.
     if (width === Math.max(...WIDTHS)) {
-      variants.push(["jpg", sharp(abs).resize(resize).jpeg({ quality: QUALITY.jpg, mozjpeg: true })]);
+      variants.push(["jpg", sharp(abs).resize(resize).jpeg({ quality: quality.jpg, mozjpeg: true })]);
     }
     for (const [ext, pipeline] of variants) {
       const out = path.join(OUT_DIR, `${base}-${width}.${ext}`);

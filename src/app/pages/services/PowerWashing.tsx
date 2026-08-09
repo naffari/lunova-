@@ -16,6 +16,9 @@ import WorkGallery from "../../components/WorkGallery";
 import { buildBreadcrumbSchema, buildFaqSchema, buildServiceSchema } from "../../utils/structuredData";
 import { SERVICE_THEMES } from "../../constants/theme";
 import { BRAND } from "../../constants/brand";
+import { SERVICE_BY_ID, startingAtLabel, bookPath } from "../../constants/services";
+import Marquee from "../../components/Marquee";
+import { withAlpha } from "../../utils/color";
 
 const { primary: PRIMARY, accent: ACCENT, ground: GROUND, bg: BG } = SERVICE_THEMES["power-washing"];
 
@@ -29,12 +32,12 @@ const FEATURES = [
   {
     icon: ShieldCheck,
     title: "Soft Wash Technology",
-    desc: "We match pressure and cleaning agents to your surface — no risk of etching or damage.",
+    desc: "We match pressure and cleaning agents to your surface, so there's no risk of etching or damage.",
   },
   {
     icon: Star,
-    title: "Licensed & Insured Crew",
-    desc: "Licensed, insured, and ready to earn your trust on every job.",
+    title: "Background-Checked Crew",
+    desc: "Every technician passes a background check before stepping foot on your property.",
   },
   {
     icon: CheckCircle,
@@ -44,7 +47,7 @@ const FEATURES = [
 ];
 
 const STATS = [
-  { val: "From $175", label: "Starting Price" },
+  { val: startingAtLabel(SERVICE_BY_ID.power), label: "Starting Price" },
   { val: "Same-Day", label: "Service" },
   { val: "100%", label: "Satisfaction Guarantee" },
   { val: "Licensed", label: "& Insured" },
@@ -59,7 +62,7 @@ const HOW_IT_WORKS_STEPS = [
   {
     step: "2",
     title: "Schedule Your Service",
-    desc: "Pick a time that works for you — same-week slots available. We confirm via text.",
+    desc: "Pick a time that works for you. Same-week slots available, and we confirm via text.",
   },
   {
     step: "3",
@@ -74,13 +77,18 @@ const HOW_IT_WORKS_STEPS = [
 ];
 
 const POWER_WASHING_DESCRIPTION =
-  "Professional pressure washing, soft washing, gutter cleaning, and surface restoration for homes and businesses across Kansas City. Licensed, insured, and results-guaranteed.";
+  "Professional pressure washing, soft washing, gutter cleaning, and surface restoration for homes and businesses across Kansas City. Licensed and insured.";
 
 const POWER_WASHING_FAQS = [
   { q: "What surfaces can you power wash?", a: "Driveways, sidewalks, decks, patios, siding, fences, and commercial parking lots." },
   { q: "Is power washing safe for all surfaces?", a: "We adjust pressure for each surface. Soft washing is used for siding, roofs, and painted surfaces to prevent damage." },
   { q: "How long before I can use the surface?", a: "Most surfaces are ready within a few hours. We'll let you know based on the specific job." },
-  { q: "Do I need to be home?", a: "Not necessarily — as long as we have access to the area and a water connection, we can complete the job." },
+  { q: "Do I need to be home?", a: "Not necessarily. As long as we have access to the area and a water connection, we can complete the job." },
+];
+
+/** Written once; Marquee doubles it for the seamless loop. */
+const MARQUEE_ITEMS = [
+  "Driveway Cleaning", "House Soft Wash", "Deck Restoration", "Oil & Rust Removal", "Licensed & Insured", "Soft Wash Available", "Free Estimates", "Satisfaction Guarantee",
 ];
 
 export default function PowerWashing() {
@@ -106,25 +114,13 @@ export default function PowerWashing() {
         primaryColor={GROUND}
         accentColor={ACCENT}
         ctaLabel="Book a Clean"
-        ctaTo="/book?service=power-washing"
+        ctaTo={bookPath("power")}
         trustItems={["Licensed & Insured", "Soft Wash Available", "Free Estimates"]}
         heroImage="power-washing-hero"
         heroImageAlt="Power washing a driveway"
       />
 
-      {/* MARQUEE STRIP */}
-      <div style={{ backgroundColor: ACCENT, overflow: 'hidden' }} className="py-3">
-        <div style={{ display: 'flex', gap: '3rem', whiteSpace: 'nowrap', animation: 'marquee 20s linear infinite', width: 'max-content' }}>
-          {[
-            "Driveway Cleaning", "House Soft Wash", "Deck Restoration", "Oil & Rust Removal", "Licensed & Insured", "Soft Wash Available", "Free Estimates", "Satisfaction Guarantee",
-            "Driveway Cleaning", "House Soft Wash", "Deck Restoration", "Oil & Rust Removal", "Licensed & Insured", "Soft Wash Available", "Free Estimates", "Satisfaction Guarantee",
-          ].map((item, i) => (
-            <span key={i} className="text-xs font-bold uppercase tracking-widest" style={{ color: BRAND.ink }}>
-              ✦ {item}
-            </span>
-          ))}
-        </div>
-      </div>
+      <Marquee items={MARQUEE_ITEMS} backgroundColor={ACCENT} textColor={BRAND.ink} />
 
       {/* WHAT'S INCLUDED — shared PackageGrid, sourced from constants/serviceDetails.ts.
           Same packages, same checklist, same prices the booking wizard shows — clicking
@@ -139,7 +135,7 @@ export default function PowerWashing() {
               <span>Why Choose Us</span>
             </div>
             <h2 className="font-serif-display text-4xl sm:text-5xl" style={{ color: PRIMARY }}>
-              Why Choose Lunova
+              A Reputation Built on Pressure, Precision, and Care.
             </h2>
           </div>
 
@@ -147,13 +143,13 @@ export default function PowerWashing() {
             {FEATURES.map((f, idx) => {
               const Icon = f.icon;
               return (
-                <div key={idx} className="bg-card p-6 rounded-2xl flex flex-col gap-4" style={{ border: `1px solid ${PRIMARY}15` }}>
+                <div key={idx} className="bg-card p-6 rounded-2xl flex flex-col gap-4" style={{ border: `1px solid ${withAlpha(PRIMARY, 0.082)}` }}>
                   <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0 text-white" style={{ backgroundColor: PRIMARY }}>
                     <Icon size={22} />
                   </div>
                   <div>
                     <h4 className="font-bold text-sm mb-1" style={{ color: PRIMARY }}>{f.title}</h4>
-                    <p className="text-sm leading-relaxed" style={{ color: `${BRAND.ink}bb` }}>{f.desc}</p>
+                    <p className="text-sm leading-relaxed" style={{ color: withAlpha(BRAND.ink, 0.733) }}>{f.desc}</p>
                   </div>
                 </div>
               );
@@ -168,7 +164,7 @@ export default function PowerWashing() {
         primaryColor={GROUND}
         accentColor={ACCENT}
         bgColor={BG}
-        bookTo="/book?service=power"
+        bookTo={bookPath("power")}
       />
 
       {/* HOW IT WORKS */}
@@ -198,18 +194,18 @@ export default function PowerWashing() {
           <FaqSection
             items={POWER_WASHING_FAQS}
             title="Frequently Asked Questions"
-            subtitle="Everything you need to know"
+            subtitle="Before you book a wash"
           />
         </div>
       </section>
 
       <ContactStrip
         heading="Ready to Restore Your Curb Appeal?"
-        subtext="Book a free on-site estimate and get your driveway, siding, or deck looking brand new — same-week slots available across Kansas City."
+        subtext="Book a free on-site estimate and get your driveway, siding, or deck looking brand new. Same-week slots available across Kansas City."
         primaryColor={GROUND}
         accentColor={ACCENT}
         ctaLabel="Book a Clean"
-        ctaTo="/book?service=power-washing"
+        ctaTo={bookPath("power")}
       />
 
     </div>

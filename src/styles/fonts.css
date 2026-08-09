@@ -1,17 +1,100 @@
 /**
- * Font files themselves are requested by the <link> in index.html — a
- * discoverable, non-render-blocking preload path. Never re-add an
- * `@import url(...)` here: the browser cannot see it until this stylesheet
- * has already downloaded and parsed, which serialises the font request
- * behind the CSS.
+ * SELF-HOSTED TYPEFACES.
  *
- * Two families only. `--font-display` and `--font-body` are the single
- * source of truth; `.font-serif-display` / `.font-sans-modern` in
- * index.html resolve to the same two faces.
+ * These two faces used to arrive via a `<link rel="stylesheet">` to
+ * fonts.googleapis.com in index.html. That is a render-blocking request to a
+ * third-party origin, and it blocked on a chain: DNS + TLS to googleapis, parse
+ * the returned CSS, THEN DNS + TLS to gstatic, then finally the woff2. On a
+ * fully prerendered static site that was the single slowest thing in front of
+ * first paint — mobile FCP measured 2.9s — and the late swap into 4xl/6xl
+ * display headings was a large share of the 0.40 CLS.
+ *
+ * Now both files sit in public/fonts/, same origin, on the same HTTP/2
+ * connection as the HTML, preloaded from index.html. No extra DNS, no extra
+ * TLS, no blocking stylesheet.
+ *
+ * Both are SIL Open Font License 1.1, which permits self-hosting — see
+ * ATTRIBUTIONS.md. The files are verbatim Google Fonts builds; to update,
+ * re-download from fonts.gstatic.com rather than re-encoding them.
+ *
+ * `unicode-range` is preserved from the upstream CSS on purpose: the latin-ext
+ * files are only fetched if a page actually renders a character in that range,
+ * so carrying them costs nothing on a normal pageview.
+ */
+
+/* ---- Instrument Serif — display, headings only ---- */
+@font-face {
+  font-family: 'Instrument Serif';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/instrument-serif-latin-400-normal.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304,
+    U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Instrument Serif';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/instrument-serif-latin-ext-400-normal.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308,
+    U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113,
+    U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Instrument Serif';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/instrument-serif-latin-400-italic.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304,
+    U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Instrument Serif';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/instrument-serif-latin-ext-400-italic.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308,
+    U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113,
+    U+2C60-2C7F, U+A720-A7FF;
+}
+
+/* ---- Plus Jakarta Sans — body. One variable file covers 400 through 800. ---- */
+@font-face {
+  font-family: 'Plus Jakarta Sans';
+  font-style: normal;
+  font-weight: 400 800;
+  font-display: swap;
+  src: url('/fonts/plus-jakarta-sans-latin-400-800-normal.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304,
+    U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Plus Jakarta Sans';
+  font-style: normal;
+  font-weight: 400 800;
+  font-display: swap;
+  src: url('/fonts/plus-jakarta-sans-latin-ext-400-800-normal.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308,
+    U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113,
+    U+2C60-2C7F, U+A720-A7FF;
+}
+
+/**
+ * Two families only. `--font-display` and `--font-body` are the single source
+ * of truth; `.font-serif-display` / `.font-sans-modern` in index.html resolve
+ * to the same two faces.
+ *
+ * Fallbacks are chosen for metric proximity, not just for being available:
+ * Georgia is the closest widely-installed serif to Instrument Serif's
+ * proportions, so the pre-swap frame is close to the post-swap one.
  */
 :root {
-  --font-display: 'Instrument Serif', Georgia, serif;
-  --font-body: 'Plus Jakarta Sans', system-ui, sans-serif;
+  --font-display: 'Instrument Serif', Georgia, 'Times New Roman', serif;
+  --font-body: 'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
 }
 
 body {

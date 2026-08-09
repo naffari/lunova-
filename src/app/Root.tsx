@@ -9,8 +9,10 @@ import MobileCTABar from "./components/common/MobileCTABar";
 import CookieConsent from "./components/common/CookieConsent";
 import Analytics from "./components/common/Analytics";
 import { PHONE, PHONE_DISPLAY } from "./constants/contact";
+import { trackCall } from "./utils/analytics";
 
-const HIDE_MOBILE_CTA_PATHS = ["/book", "/book/success"];
+/** The wizard has its own CTAs; a second sticky bar competes with them. */
+const HIDE_MOBILE_CTA_PATHS = ["/book"];
 
 class ErrorBoundary extends Component<
   { children: ReactNode; resetKey: string },
@@ -68,6 +70,7 @@ class ErrorBoundary extends Component<
           </div>
           <a
             href={`tel:+1${PHONE}`}
+            onClick={() => trackCall("error_boundary")}
             className="inline-flex items-center gap-2 text-sm font-semibold mt-6 transition-colors text-foreground/70"
           >
             <Phone size={14} /> Or call us at {PHONE_DISPLAY}

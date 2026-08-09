@@ -1,3 +1,4 @@
+import { withAlpha } from "../utils/color";
 import { Link } from "react-router";
 import { Camera } from "lucide-react";
 import BeforeAfterSlider from "./common/BeforeAfterSlider";
@@ -45,8 +46,8 @@ export default function WorkGallery({
       className="py-20 px-4 sm:px-6"
       style={{
         backgroundColor: bgColor,
-        borderTop: `1px solid ${primaryColor}15`,
-        borderBottom: `1px solid ${primaryColor}15`,
+        borderTop: `1px solid ${withAlpha(primaryColor, 0.082)}`,
+        borderBottom: `1px solid ${withAlpha(primaryColor, 0.082)}`,
       }}
     >
       <div className="max-w-6xl mx-auto">
@@ -61,7 +62,7 @@ export default function WorkGallery({
           <h2 className="font-serif-display text-4xl sm:text-5xl mb-3" style={{ color: primaryColor }}>
             {gallery.heading}
           </h2>
-          <p className="text-sm leading-relaxed" style={{ color: `${primaryColor}b0` }}>
+          <p className="text-sm leading-relaxed" style={{ color: withAlpha(primaryColor, 0.69) }}>
             {gallery.blurb}
           </p>
         </div>
@@ -108,7 +109,7 @@ export default function WorkGallery({
                 {photo.caption && (
                   <figcaption
                     className="mt-3 text-xs font-semibold uppercase tracking-wider flex items-center gap-2"
-                    style={{ color: `${primaryColor}99` }}
+                    style={{ color: withAlpha(primaryColor, 0.6) }}
                   >
                     <span className="w-4 h-0.5" style={{ backgroundColor: accentColor }} />
                     {photo.caption}
@@ -130,7 +131,7 @@ export default function WorkGallery({
           {!gallery.own && (
             <p
               className="flex items-center gap-1.5 text-xs"
-              style={{ color: `${primaryColor}80` }}
+              style={{ color: withAlpha(primaryColor, 0.5) }}
             >
               <Camera size={13} />
               Reference photography, not a completed Lunova job.

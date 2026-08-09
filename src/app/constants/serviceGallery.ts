@@ -65,12 +65,12 @@ export const SERVICE_GALLERIES: Record<string, ServiceGallery> = {
   landscaping: {
     own: true,
     heading: "What done looks like",
-    blurb: "Recurring lawn care on a Lunova route — cut, edged, and cleaned up.",
+    blurb: "Recurring lawn care on a Lunova route: cut, edged, and cleaned up.",
     photos: [
       {
         file: "lawn-front-yard",
         alt: "A dense, evenly mown front lawn with a cleanly edged sidewalk line",
-        caption: "Recurring lawn care — mown, edged, and blown clean",
+        caption: "Recurring lawn care, mown, edged, and blown clean",
       },
     ],
   },
@@ -78,17 +78,17 @@ export const SERVICE_GALLERIES: Record<string, ServiceGallery> = {
   "auto-detailing": {
     own: true,
     heading: "What done looks like",
-    blurb: "Paint correction, interior work, and engine bays — finished to hand-off standard.",
+    blurb: "Paint correction, interior work, and engine bays, finished to hand-off standard.",
     photos: [
       {
         file: "sedan-exterior",
         alt: "A dark red sedan after a full exterior detail, paint reflecting cleanly with no swirl marks",
-        caption: "Full exterior detail — decontaminated, polished, sealed",
+        caption: "Full exterior detail: decontaminated, polished, sealed",
       },
       {
         file: "engine-bay",
         alt: "A clean engine bay after an engine detail, with no residue on plastics or hoses",
-        caption: "Engine bay detail — degreased and dressed",
+        caption: "Engine bay detail: degreased and dressed",
       },
     ],
   },
