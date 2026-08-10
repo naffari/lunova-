@@ -13,6 +13,7 @@ import { SERVICE_BY_ID, startingAtLabel, bookPath } from "../constants/services"
 import { buildBreadcrumbSchema, buildFaqSchema, buildServiceSchema } from "../utils/structuredData";
 import { withAlpha } from "../utils/color";
 import Marquee from "../components/Marquee";
+import { heroOgImage } from "../constants/seo";
 
 const { primary: PRIMARY, accent: ACCENT, ground: GROUND, bg: BG } = SERVICE_THEMES["junk-removal"];
 
@@ -91,6 +92,8 @@ export default function JunkRemoval() {
       <Seo
         title="Junk Removal & Hauling Services | Lunova Services"
         description={JUNK_REMOVAL_DESCRIPTION}
+        image={heroOgImage("junk-removal-hero")}
+        imageAlt="A curbside pile of household junk cleared in one load: cardboard boxes, bagged waste, a broken dresser and a filing cabinet"
         jsonLd={[
           buildServiceSchema({ name: "Junk Removal", description: JUNK_REMOVAL_DESCRIPTION, path: "/junk-removal" }),
           buildBreadcrumbSchema([
@@ -110,7 +113,7 @@ export default function JunkRemoval() {
         ctaTo={bookPath("junk")}
         trustItems={["Licensed & Insured", "Same-Day Service", "Eco-Friendly Recycling"]}
         heroImage="junk-removal-hero"
-        heroImageAlt="Junk removal truck and crew"
+        heroImageAlt="A curbside pile of household junk cleared in one load: cardboard boxes, bagged waste, a broken dresser and a filing cabinet"
       />
 
       <Marquee items={MARQUEE_ITEMS} backgroundColor={ACCENT} textColor={BRAND.ink} />

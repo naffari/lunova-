@@ -55,6 +55,15 @@ export interface Guide {
   standfirst: string;
   /** ISO date. Shown on the page and emitted as `datePublished`. */
   published: string;
+  /**
+   * ISO date of the last substantive revision, emitted as `dateModified`.
+   *
+   * Omit until the guide is actually revised — it falls back to `published`.
+   * Bumping this without changing the content is the fastest way to teach
+   * Google that our dates mean nothing, and a price-driven number changing
+   * underneath the prose does not count as a revision.
+   */
+  updated?: string;
   /** Rough read time in minutes. Counted, not guessed — see readMinutes(). */
   category: string;
   /** The service this guide leads to. Drives the CTA and the related links. */

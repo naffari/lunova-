@@ -11,6 +11,7 @@ import { SERVICE_THEMES } from "../../constants/theme";
 import { BRAND } from "../../constants/brand";
 import { bookPath } from "../../constants/services";
 import Marquee from "../../components/Marquee";
+import { heroOgImage } from "../../constants/seo";
 
 const { primary: PRIMARY, accent: ACCENT, ground: GROUND, bg: BG } = SERVICE_THEMES["commercial-cleaning"];
 
@@ -66,6 +67,8 @@ export default function CommercialCleaning() {
       <Seo
         title="Commercial Cleaning Services | Lunova Services"
         description={COMMERCIAL_CLEANING_DESCRIPTION}
+        image={heroOgImage("commercial-cleaning-hero")}
+        imageAlt="A cleaner in protective coveralls sweeping up paint and plaster debris during a post-renovation clean"
         jsonLd={[
           buildServiceSchema({ name: "Commercial Cleaning", description: COMMERCIAL_CLEANING_DESCRIPTION, path: "/services/commercial-cleaning" }),
           buildBreadcrumbSchema([
@@ -86,7 +89,7 @@ export default function CommercialCleaning() {
         ctaTo={bookPath("commercial")}
         trustItems={["Fully Insured", "After-Hours Service", "Satisfaction Guarantee"]}
         heroImage="commercial-cleaning-hero"
-        heroImageAlt="Commercial janitorial team cleaning an office space in Kansas City"
+        heroImageAlt="A cleaner in protective coveralls sweeping up paint and plaster debris during a post-renovation clean"
       />
 
       <Marquee items={MARQUEE_ITEMS} backgroundColor={ACCENT} textColor={BRAND.ink} />

@@ -20,10 +20,21 @@ for each rule lives here instead.
 
 ## Why each rule exists
 
-**`buildCommand: pnpm build`** — the build is three steps, not one: generate the
-sitemap, build the client, build the SSR entry, then prerender every route to
-static HTML. The default Vite preset would only run `vite build` and skip the
-prerender, which is what makes the site crawlable.
+**`buildCommand: pnpm build`** — the build is a chain, not one step: lint the SEO
+in the source, generate the sitemap and `llms.txt`, build the client, build the
+SSR entry, prerender every route to static HTML, then lint the HTML that came
+out. The default Vite preset would only run `vite build` and skip the prerender,
+which is what makes the site crawlable.
+
+The last link matters as much as the prerender. `scripts/check-build-seo.mjs`
+reads `dist/` and fails the build on anything that is only wrong after
+rendering: a page that lost its canonical or grew a second one, two `<h1>`s
+from a layout change, a duplicate title across two pages, JSON-LD that no
+longer parses, an `og:image` pointing at a file that is not in the build, an
+internal link to a renamed route, a sitemap advertising a URL the prerenderer
+did not write. Every one of those is invisible in review and costs indexing
+rather than styling. Run it alone against an existing `dist/` with
+`pnpm check:build-seo`.
 
 **No `rewrites` at all** — this is deliberate and was a change. There used to be
 a catch-all `/((?!api/).*) → /index.html` SPA fallback, which meant an unmatched
@@ -113,7 +124,7 @@ Either works, nothing here touches a database or runs a migration:
 
 ```
 pnpm typecheck        # no errors. Covers src AND api (see tsconfig.api.json)
-pnpm build            # ends "Prerendered 27 routes to static HTML, plus 404.html."
+pnpm build            # ends "Build SEO check passed: 33 pages, 32 sitemap URLs"
 pnpm check:prices     # reports service-page vs booking-flow price drift
 ```
 

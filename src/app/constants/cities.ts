@@ -25,9 +25,18 @@
  * out of this file, and the prerenderer picks up both.
  */
 
+import type { ServiceId } from "./services";
+
 export interface CityServiceFocus {
-  /** Must match an `id` in constants/services.ts. */
-  serviceId: string;
+  /**
+   * A catalogue id from constants/services.ts.
+   *
+   * Typed as the union rather than `string`: a mistyped id used to compile
+   * fine and then resolve to `undefined` through SERVICE_BY_ID at runtime,
+   * silently dropping the service from the city page's schema, its price list
+   * and now its hero photo.
+   */
+  serviceId: ServiceId;
   heading: string;
   /** Why this service, in this city. */
   body: string;

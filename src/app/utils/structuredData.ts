@@ -324,10 +324,20 @@ interface ArticleSchemaInput {
   description: string;
   path: string;
   datePublished: string;
+  /** Last substantive revision. Falls back to `datePublished`. */
+  dateModified?: string;
   image: string;
 }
 
-export function buildArticleSchema({ title, description, path, datePublished, image }: ArticleSchemaInput): JsonLdSchema {
+export function buildArticleSchema({
+  title,
+  description,
+  path,
+  datePublished,
+  dateModified,
+  image,
+}: ArticleSchemaInput): JsonLdSchema {
+  const url = `${SITE_URL}${path}`;
   return {
     "@context": "https://schema.org",
     "@type": "Article",
@@ -335,15 +345,31 @@ export function buildArticleSchema({ title, description, path, datePublished, im
     description,
     image,
     datePublished,
-    url: `${SITE_URL}${path}`,
+    // Google reads `dateModified` for freshness and shows it in the snippet.
+    // Without it an evergreen guide looks stale the moment it stops being new.
+    dateModified: dateModified ?? datePublished,
+    url,
+    // Names the canonical page this article IS, rather than leaving a crawler to
+    // infer it from `url`. Required for Article to be eligible for rich results.
+    mainEntityOfPage: { "@type": "WebPage", "@id": url },
+    inLanguage: "en-US",
     author: {
-      "@type": "Organization",
-      name: COMPANY_NAME,
-    },
-    publisher: {
+      // The publisher, by @id, so the article resolves to the same business
+      // entity as every other page rather than a second nameless Organization.
+      "@id": BUSINESS_ID,
       "@type": "Organization",
       name: COMPANY_NAME,
       url: SITE_URL,
+    },
+    publisher: {
+      "@id": BUSINESS_ID,
+      "@type": "Organization",
+      name: COMPANY_NAME,
+      url: SITE_URL,
+      logo: {
+        "@type": "ImageObject",
+        url: `${SITE_URL}/favicon.png`,
+      },
     },
   };
 }

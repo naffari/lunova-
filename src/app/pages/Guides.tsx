@@ -67,6 +67,12 @@ export default function Guides() {
         lead="What a job involves, what it should cost in this metro, and when you are better off doing it yourself. Written by the people who do the work, which is why some of it talks you out of hiring us."
         meta={[`${GUIDES.length} guides`, "Kansas City metro", "No email required"]}
         ctaLabel="Get a flat-rate quote"
+        // Half the guides here are cleaning guides, so the index leads with a
+        // cleaning photo rather than the site composite. The composite is now
+        // reserved for the pages whose subject really is the whole business:
+        // home, about, contact and the service-areas hub.
+        image="cleaning-hero"
+        imageAlt="A cleaner working through a Kansas City home, the job most of these guides are about"
       />
 
       <section className="py-16 px-4 sm:px-6">

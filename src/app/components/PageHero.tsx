@@ -5,6 +5,8 @@ import { BRAND } from "../constants/brand";
 import { PHONE, PHONE_DISPLAY } from "../constants/contact";
 import { HIGH_FETCH_PRIORITY } from "../utils/dom";
 import { trackCall } from "../utils/analytics";
+import { heroSize } from "../constants/seo";
+import type { HeroName } from "../constants/seo";
 
 const HERO_PATH = "/images/hero";
 
@@ -37,8 +39,16 @@ interface PageHeroProps {
   ctaLabel?: string;
   ctaTo?: string;
   /** Base filename in public/images/hero, no width suffix or extension. */
-  image?: string;
+  image?: HeroName;
   imageAlt?: string;
+  /**
+   * Right-hand column, from lg up.
+   *
+   * Without it the copy sits in a centred measure instead. The wide layout
+   * used to run regardless, which left the whole right half of the first
+   * screen empty on every page that had nothing to put there.
+   */
+  aside?: ReactNode;
 }
 
 export default function PageHero({
@@ -51,11 +61,21 @@ export default function PageHero({
   ctaTo = "/book",
   image = "lunova-services-hero",
   imageAlt = "Three sides of the business, side by side: a cleaner wiping down interior window glass, a freshly mown back lawn, and a cleared household load stacked ready for hauling",
+  aside,
 }: PageHeroProps) {
+  const { width, height } = heroSize(image);
+
   return (
     <section>
       <div className="pt-28 pb-12 px-4 sm:px-6" style={{ backgroundColor: BRAND.raised }}>
-        <div className="max-w-5xl mx-auto">
+        <div
+          className={
+            aside
+              ? "max-w-7xl mx-auto grid lg:grid-cols-[minmax(0,1fr)_22rem] gap-10 lg:gap-16 items-start"
+              : "max-w-3xl mx-auto"
+          }
+        >
+        <div>
           {above}
 
           <div
@@ -119,6 +139,9 @@ export default function PageHero({
             </div>
           )}
         </div>
+
+          {aside ? <div className="lg:pt-2">{aside}</div> : null}
+        </div>
       </div>
 
       {/*
@@ -145,8 +168,8 @@ export default function PageHero({
             src={`${HERO_PATH}/${image}-1280.jpg`}
             alt={imageAlt}
             className="block w-full object-cover h-[38vw] min-h-[180px] max-h-[440px]"
-            width={2400}
-            height={864}
+            width={width}
+            height={height}
             loading="eager"
             decoding="async"
             {...HIGH_FETCH_PRIORITY}

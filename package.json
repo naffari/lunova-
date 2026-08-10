@@ -7,13 +7,14 @@
     "node": ">=20.11"
   },
   "scripts": {
-    "build": "node scripts/check-seo.mjs && node scripts/generate-sitemap.mjs && node scripts/generate-llms.mjs && vite build && vite build --ssr src/entry-server.tsx && node scripts/prerender.mjs",
+    "build": "node scripts/check-seo.mjs && node scripts/generate-sitemap.mjs && node scripts/generate-llms.mjs && vite build && vite build --ssr src/entry-server.tsx && node scripts/prerender.mjs && node scripts/check-build-seo.mjs",
     "build:client": "vite build",
     "dev": "vite",
     "typecheck": "tsc --noEmit && tsc -p api/tsconfig.json --noEmit",
     "sitemap": "node scripts/generate-sitemap.mjs",
     "llms": "node scripts/generate-llms.mjs",
     "check:seo": "node scripts/check-seo.mjs",
+    "check:build-seo": "node scripts/check-build-seo.mjs",
     "hero": "node scripts/compose-hero.mjs",
     "check:prices": "node scripts/check-prices.mjs",
     "images": "node scripts/optimize-images.mjs"

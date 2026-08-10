@@ -18,6 +18,7 @@ import { BRAND } from "../../constants/brand";
 import { SERVICE_BY_ID, startingAtLabel, bookPath } from "../../constants/services";
 import Marquee from "../../components/Marquee";
 import { withAlpha } from "../../utils/color";
+import { heroOgImage } from "../../constants/seo";
 
 const { primary: PRIMARY, accent: ACCENT, ground: GROUND, bg: BG } = SERVICE_THEMES["bin-cleaning"];
 
@@ -96,6 +97,8 @@ export default function BinCleaning() {
       <Seo
         title="Trash Bin Cleaning Services | Lunova Services"
         description={BIN_CLEANING_DESCRIPTION}
+        image={heroOgImage("bin-cleaning-hero")}
+        imageAlt="A wheelie bin tipped on its side at the curb being pressure-rinsed, water spraying out through the open lid"
         jsonLd={[
           buildServiceSchema({ name: "Trash Bin Cleaning", description: BIN_CLEANING_DESCRIPTION, path: "/services/bin-cleaning" }),
           buildBreadcrumbSchema([
@@ -116,7 +119,7 @@ export default function BinCleaning() {
         ctaTo={bookPath("bin")}
         trustItems={["200° Hot Water Sanitization", "Kills 99.9% Bacteria", "Monthly Route Service"]}
         heroImage="bin-cleaning-hero"
-        heroImageAlt="Curbside Bin Cleaning Service"
+        heroImageAlt="A wheelie bin tipped on its side at the curb being pressure-rinsed, water spraying out through the open lid"
       />
 
       <Marquee items={MARQUEE_ITEMS} backgroundColor={ACCENT} textColor={BRAND.ink} />

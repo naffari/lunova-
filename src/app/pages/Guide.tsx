@@ -12,7 +12,8 @@ import {
   buildBreadcrumbSchema,
   buildFaqSchema,
 } from "../utils/structuredData";
-import { DEFAULT_OG_IMAGE } from "../constants/seo";
+import { heroOgImage, heroSize } from "../constants/seo";
+import { HIGH_FETCH_PRIORITY } from "../utils/dom";
 import { preloadRoute } from "../routeModules";
 
 const PRIMARY = BRAND.primary;
@@ -58,19 +59,31 @@ export default function Guide() {
   const related = relatedGuides(guide.slug);
   const minutes = readMinutes(guide);
 
+  /**
+   * The guide shares a picture of the work it is about, not the site-wide
+   * composite: a link to the power-washing guide should preview as a driveway
+   * being washed. Same image feeds the Article schema, which is what an AI
+   * answer engine and Google Discover pick up.
+   */
+  const shareImage = heroOgImage(service.hero);
+  const shareImageAlt = `${service.name} by Lunova Services in Kansas City`;
+
   return (
     <div className="font-sans-modern min-h-screen" style={{ backgroundColor: BRAND.bg, color: BRAND.ink }}>
       <Seo
         title={`${guide.title} | Lunova`}
         description={guide.description}
         type="article"
+        image={shareImage}
+        imageAlt={shareImageAlt}
         jsonLd={[
           buildArticleSchema({
             title: guide.title,
             description: guide.description,
             path: guidePath(guide.slug),
             datePublished: guide.published,
-            image: DEFAULT_OG_IMAGE,
+            dateModified: guide.updated ?? guide.published,
+            image: shareImage,
           }),
           buildBreadcrumbSchema([
             { name: "Home", path: "/" },
@@ -115,6 +128,40 @@ export default function Guide() {
             </div>
           </div>
         </header>
+
+        {/*
+          A picture of the work the guide is about.
+
+          These four pages shipped with no image at all — 1,100 to 1,400 words
+          of text between a dark header and a cream body, which is a wall to
+          read and nothing for Google Images or a Discover card to pick up.
+          It is the same photo as the share card and the Article schema's
+          `image`, so what a reader sees and what a crawler is told match.
+        */}
+        <figure className="m-0 w-full overflow-hidden" style={{ backgroundColor: BRAND.raised }}>
+          <picture>
+            <source
+              type="image/avif"
+              sizes="100vw"
+              srcSet={`/images/hero/${service.hero}-640.avif 640w, /images/hero/${service.hero}-1280.avif 1280w`}
+            />
+            <source
+              type="image/webp"
+              sizes="100vw"
+              srcSet={`/images/hero/${service.hero}-640.webp 640w, /images/hero/${service.hero}-1280.webp 1280w`}
+            />
+            <img
+              src={`/images/hero/${service.hero}-1280.jpg`}
+              alt={shareImageAlt}
+              className="block w-full object-cover h-[30vw] min-h-[160px] max-h-[360px]"
+              width={heroSize(service.hero).width}
+              height={heroSize(service.hero).height}
+              loading="eager"
+              decoding="async"
+              {...HIGH_FETCH_PRIORITY}
+            />
+          </picture>
+        </figure>
 
         {/*
           THE SHORT ANSWER, before anything else.

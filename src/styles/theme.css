@@ -69,6 +69,15 @@
   --chrome-muted: rgba(237, 234, 227, 0.55);
   --chrome-border: rgba(237, 234, 227, 0.12);
   --chrome-accent: #ffffff;
+  /* Filled surfaces and hover washes inside the chrome. Declared as variables
+     rather than literal rgba(255,255,255,…) so the navbar can invert the whole
+     set on a cream-topped page — a white wash is invisible on cream. The
+     navbar overrides these on <header> itself; see CHROME_LIGHT in
+     src/app/constants/brand.ts. */
+  --chrome-fill: rgba(255, 255, 255, 0.08);
+  --chrome-hover: rgba(255, 255, 255, 0.06);
+  --chrome-hover-strong: rgba(255, 255, 255, 0.09);
+  --chrome-border-hover: rgba(255, 255, 255, 0.38);
 }
 
 /**
@@ -100,7 +109,7 @@
 .nav-pill:hover,
 .nav-pill:focus-visible {
   color: var(--chrome-text);
-  border-color: rgba(255, 255, 255, 0.38);
+  border-color: var(--chrome-border-hover);
 }
 
 .nav-menu-item {
@@ -110,11 +119,11 @@
 }
 .nav-menu-item:hover,
 .nav-menu-item:focus-visible {
-  background-color: rgba(255, 255, 255, 0.06);
+  background-color: var(--chrome-hover);
 }
 .nav-menu-item[data-active="true"] {
   color: var(--chrome-accent);
-  background-color: rgba(255, 255, 255, 0.09);
+  background-color: var(--chrome-hover-strong);
 }
 
 @theme inline {

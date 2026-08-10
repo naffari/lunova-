@@ -12,7 +12,7 @@ import Seo from "../components/common/Seo";
 import { PHONE, PHONE_DISPLAY } from "../constants/contact";
 import { BRAND } from "../constants/brand";
 import { GUARANTEE } from "../constants/proof";
-import { SERVICES, startingAtLabel, cheapestSubservice, formatPrice, bookPath } from "../constants/services";
+import { SERVICES, startingAtLabel, bookPath } from "../constants/services";
 import { preloadRoute } from "../routeModules";
 import { HIGH_FETCH_PRIORITY } from "../utils/dom";
 import {
@@ -34,11 +34,28 @@ const ACCENT_2 = BRAND.accent;
 const BG = BRAND.bg;
 const SURFACE = BRAND.surface;
 
-/** The cheapest entry price across the whole catalogue, for the hero headline. */
-const CHEAPEST = SERVICES.map(cheapestSubservice).reduce((min, sub) => {
-  if (!sub?.from) return min;
-  return !min?.from || sub.from < min.from ? sub : min;
-}, undefined as ReturnType<typeof cheapestSubservice>);
+/*
+  NO PRICE IN THE HEADLINE — deliberately.
+
+  This used to read "Clean. Cut. Haul. From $15/mo.", where $15 was computed as
+  the cheapest row anywhere in the catalogue: the recurring trash-bin plan. So
+  the three trades the headline names were being advertised at a price none of
+  them charge — cleaning starts at $120, junk at $75, lawn care at $45 a visit.
+  A visitor who reads "$15" and is quoted $120 has been misled by the first
+  line on the site, and that is the most expensive place to lose trust.
+
+  Real per-service floors are on the service cards a screen below, from the
+  same catalogue, where each number sits next to the thing it actually buys.
+*/
+
+/**
+ * The four services shown in the hero price card, in the order the headline
+ * names them plus the subscription. Pulled from the catalogue by id so the
+ * figures stay in step with the service pages and the wizard.
+ */
+const HERO_PRICE_ROWS = ["cleaning", "landscaping", "junk", "bin"]
+  .map((id) => SERVICES.find((service) => service.id === id))
+  .filter((service): service is (typeof SERVICES)[number] => service !== undefined);
 
 /** Written once; Marquee doubles it for the seamless loop. */
 const MARQUEE_ITEMS = [
@@ -100,7 +117,16 @@ export default function Home() {
           headline) and it qualifies the visitor before they invest any effort.
         */}
         <section className="relative pt-[5.5rem] pb-10 px-4 sm:px-6 overflow-hidden" style={{ backgroundColor: BG }}>
-          <div className="max-w-3xl mx-auto">
+          {/*
+            Two columns from lg up, one below.
+
+            The copy used to sit in a max-w-3xl column centred in a full-width
+            section, which on a 1440 screen left the entire right half of the
+            first viewport empty — it read as a layout that had lost its second
+            half rather than as deliberate space. The prices that belong next
+            to this headline now live there instead.
+          */}
+          <div className="max-w-7xl mx-auto grid lg:grid-cols-[minmax(0,1fr)_22rem] gap-10 lg:gap-16 items-start">
             <div>
               <div
                 className="inline-flex items-center gap-2 text-xs font-semibold px-3.5 py-1.5 rounded-full mb-6 border"
@@ -116,9 +142,7 @@ export default function Home() {
               >
                 Clean. Cut. Haul.
                 <br />
-                <span style={{ color: ACCENT }}>
-                  {CHEAPEST?.from ? `From ${formatPrice(CHEAPEST)}.` : "One call."}
-                </span>
+                <span style={{ color: ACCENT }}>One call.</span>
               </h1>
 
               {/*
@@ -164,6 +188,54 @@ export default function Home() {
               </div>
             </div>
 
+            {/*
+              THE PRICE CARD — where the number cut from the headline went.
+
+              Every figure is read from the catalogue, so it cannot drift from
+              the service pages or the booking wizard, and each one sits next
+              to the job it actually buys rather than being flattened into a
+              single misleading "from" number. Hidden below lg, where the copy
+              column is full width and the service cards are one scroll away.
+            */}
+            <aside
+              className="hidden lg:block rounded-3xl p-6 border"
+              style={{ backgroundColor: SURFACE, borderColor: BRAND.hairline }}
+            >
+              <p className="text-[11px] font-bold uppercase tracking-widest mb-4" style={{ color: ACCENT }}>
+                What it costs to start
+              </p>
+
+              <ul className="space-y-3">
+                {HERO_PRICE_ROWS.map((service) => (
+                  <li key={service.id} className="flex items-baseline justify-between gap-4">
+                    <Link
+                      to={service.to}
+                      className="text-sm font-semibold hover:underline"
+                      style={{ color: PRIMARY }}
+                      onMouseEnter={() => preloadRoute(service.to)}
+                      onFocus={() => preloadRoute(service.to)}
+                    >
+                      {service.name}
+                    </Link>
+                    <span className="text-sm font-bold shrink-0" style={{ color: ACCENT }}>
+                      {startingAtLabel(service)}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+
+              <p
+                className="mt-5 pt-4 text-xs leading-relaxed"
+                style={{ borderTop: `1px solid ${BRAND.hairline}`, color: withAlpha(BRAND.ink, 0.62) }}
+              >
+                Flat rates, confirmed by phone before any work starts. Book two or more services
+                and 10% comes off the combined total.
+              </p>
+
+              <p className="mt-3 text-xs font-semibold" style={{ color: PRIMARY }}>
+                {GUARANTEE.short}.
+              </p>
+            </aside>
           </div>
         </section>
 

@@ -1,5 +1,6 @@
 import { Sparkles, Truck, Droplets, AppWindow, Car, Trash2, Leaf, Building2 } from "lucide-react";
 import type { ElementType } from "react";
+import type { HeroName } from "./seo";
 
 /**
  * THE service catalogue. Single source of truth for service names, routes,
@@ -59,6 +60,13 @@ export interface ServiceDef {
   name: string;
   /** Route to the service's own detail page. */
   to: string;
+  /**
+   * Manifest key of this service's hero photo — no directory, width suffix or
+   * extension. Used wherever a page other than the service page itself needs a
+   * picture of the work (guide share cards, guide Article schema). The service
+   * page passes the same key to `<ServiceHero heroImage>`.
+   */
+  hero: HeroName;
   icon: ElementType;
   /** Three short scannable capabilities for card display. */
   bullets: string[];
@@ -85,6 +93,14 @@ export const SERVICES: ServiceDef[] = [
     id: "cleaning",
     name: "Residential Cleaning",
     to: "/services/residential-cleaning",
+    /*
+      NOT "residential-cleaning-hero". That file is a photograph of someone
+      wiping down a CAR INTERIOR — it was shipped as the residential cleaning
+      hero with alt text claiming it showed a Kansas City home. Until a real
+      interior-cleaning photo exists it points at cleaning-hero, which actually
+      shows a cleaner working inside a house. See ATTRIBUTIONS.md.
+    */
+    hero: "cleaning-hero",
     icon: Sparkles,
     bullets: ["Standard clean", "Deep clean", "Move-in / move-out"],
     popular: true,
@@ -100,6 +116,7 @@ export const SERVICES: ServiceDef[] = [
     id: "junk",
     name: "Junk Removal",
     to: "/junk-removal",
+    hero: "junk-removal-hero",
     icon: Truck,
     bullets: ["Single item", "Partial truckload", "Full truckload"],
     subservices: [
@@ -113,6 +130,7 @@ export const SERVICES: ServiceDef[] = [
     id: "power",
     name: "Power Washing",
     to: "/services/power-washing",
+    hero: "power-washing-hero",
     icon: Droplets,
     bullets: ["Siding", "Driveway", "Deck / patio"],
     subservices: [
@@ -126,6 +144,7 @@ export const SERVICES: ServiceDef[] = [
     id: "window",
     name: "Window Cleaning",
     to: "/services/window-cleaning",
+    hero: "window-cleaning-hero",
     icon: AppWindow,
     bullets: ["Interior & exterior", "Exterior only", "Hard water treatment"],
     subservices: [
@@ -139,6 +158,7 @@ export const SERVICES: ServiceDef[] = [
     id: "auto",
     name: "Auto Detailing",
     to: "/services/auto-detailing",
+    hero: "auto-detailing-hero",
     icon: Car,
     bullets: ["Interior only", "Exterior only", "Full detail"],
     subservices: [
@@ -152,6 +172,7 @@ export const SERVICES: ServiceDef[] = [
     id: "bin",
     name: "Bin Cleaning",
     to: "/services/bin-cleaning",
+    hero: "bin-cleaning-hero",
     icon: Trash2,
     bullets: ["One-time 2-bin clean", "Recurring monthly plan", "Recurring bi-weekly plan"],
     subservices: [
@@ -165,6 +186,7 @@ export const SERVICES: ServiceDef[] = [
     id: "landscaping",
     name: "Landscaping",
     to: "/landscaping",
+    hero: "landscaping-hero",
     icon: Leaf,
     bullets: ["One-time clean-up", "Recurring lawn care", "Seasonal package"],
     subservices: [
@@ -178,6 +200,7 @@ export const SERVICES: ServiceDef[] = [
     id: "commercial",
     name: "Commercial Cleaning",
     to: "/services/commercial-cleaning",
+    hero: "commercial-cleaning-hero",
     icon: Building2,
     bullets: ["Offices", "Restaurants", "Dealerships"],
     subservices: [

@@ -19,6 +19,7 @@ import { BRAND } from "../../constants/brand";
 import { SERVICE_BY_ID, startingAtLabel, bookPath } from "../../constants/services";
 import Marquee from "../../components/Marquee";
 import { withAlpha } from "../../utils/color";
+import { heroOgImage } from "../../constants/seo";
 
 const { primary: PRIMARY, accent: ACCENT, ground: GROUND, bg: BG } = SERVICE_THEMES["power-washing"];
 
@@ -97,6 +98,8 @@ export default function PowerWashing() {
       <Seo
         title="Power Washing Services | Lunova Services"
         description={POWER_WASHING_DESCRIPTION}
+        image={heroOgImage("power-washing-hero")}
+        imageAlt="A pressure washer stripping grey weathering off a wooden deck, leaving a clean stripe of bare timber"
         jsonLd={[
           buildServiceSchema({ name: "Power Washing", description: POWER_WASHING_DESCRIPTION, path: "/services/power-washing" }),
           buildBreadcrumbSchema([
@@ -117,7 +120,7 @@ export default function PowerWashing() {
         ctaTo={bookPath("power")}
         trustItems={["Licensed & Insured", "Soft Wash Available", "Free Estimates"]}
         heroImage="power-washing-hero"
-        heroImageAlt="Power washing a driveway"
+        heroImageAlt="A pressure washer stripping grey weathering off a wooden deck, leaving a clean stripe of bare timber"
       />
 
       <Marquee items={MARQUEE_ITEMS} backgroundColor={ACCENT} textColor={BRAND.ink} />

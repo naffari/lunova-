@@ -18,15 +18,10 @@ import {
 
 import { PHONE } from "../constants/contact";
 import { preloadRoute } from "../routeModules";
-import { CHROME } from "../constants/brand";
+import { CHROME, CHROME_LIGHT } from "../constants/brand";
+import { chromeToneFor } from "../routeConfig";
 import { withAlpha } from "../utils/color";
 import { PhoneLink } from "./common/ContactLinks";
-
-const NAV_ACCENT = CHROME.accent;
-const NAV_TEXT = CHROME.text;
-const NAV_MUTED = CHROME.muted;
-const NAV_BORDER = CHROME.border;
-const NAV_BG_SOLID = CHROME.bg;
 
 const serviceCategories = [
   {
@@ -162,15 +157,59 @@ export default function Navbar() {
 
   const showSolidBg = scrolled || mobileOpen || dropdownOpen;
 
+  /*
+    Which palette the bar wears, from the route table rather than a guess.
+
+    Cream-topped routes (home, the booking wizard, privacy) invert the whole
+    chrome: the logo drops its white filter back to its natural dark mark, the
+    links go to ink, and the translucent ground becomes cream instead of a dark
+    scrim laid over cream. Everything else keeps the transparent-over-photo
+    treatment, which is what the nine service pages and every PageHero page are
+    built for.
+  */
+  const tone = chromeToneFor(location.pathname);
+  const isLight = tone === "light";
+  const chrome = isLight ? CHROME_LIGHT : CHROME;
+
+  const NAV_ACCENT = chrome.accent;
+  const NAV_TEXT = chrome.text;
+  const NAV_MUTED = chrome.muted;
+  const NAV_BORDER = chrome.border;
+  const NAV_BG_SOLID = chrome.bg;
+  const NAV_FILL = chrome.fill;
+  const NAV_PANEL = chrome.panel;
+
   return (
     <header
       className="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
       style={{
+        /*
+          The .nav-link / .nav-pill / .nav-menu-item rules all read these, so
+          overriding them here re-tones every control in the bar and both menus
+          at once — no per-element branching, and no chance of one control
+          being missed and left white on cream.
+        */
+        ["--chrome-text" as string]: chrome.text,
+        ["--chrome-muted" as string]: chrome.muted,
+        ["--chrome-accent" as string]: chrome.accent,
+        ["--chrome-border" as string]: chrome.border,
+        ["--chrome-fill" as string]: chrome.fill,
+        ["--chrome-hover" as string]: chrome.hover,
+        ["--chrome-hover-strong" as string]: isLight ? "rgba(33, 29, 23, 0.09)" : "rgba(255, 255, 255, 0.09)",
+        ["--chrome-border-hover" as string]: isLight ? "rgba(33, 29, 23, 0.38)" : "rgba(255, 255, 255, 0.38)",
         // Derived from the chrome token, not a literal. These two values were
         // hand-written as rgba(17,19,24,…) — a near-match for CHROME.bg that
         // would have quietly diverged the moment the chrome tone was retuned.
-        backgroundColor: withAlpha(NAV_BG_SOLID, showSolidBg ? 0.78 : 0.32),
-        backgroundImage: showSolidBg ? "none" : "linear-gradient(to bottom, rgba(0,0,0,0.55), rgba(0,0,0,0))",
+        backgroundColor: withAlpha(NAV_BG_SOLID, showSolidBg ? 0.86 : isLight ? 0.55 : 0.32),
+        /*
+          The top-down black gradient exists to buy contrast against a bright
+          patch of photo. Over cream it has nothing to darken and reads as a
+          grey smear with a hard edge where it stops, so light routes get none.
+        */
+        backgroundImage:
+          showSolidBg || isLight
+            ? "none"
+            : "linear-gradient(to bottom, rgba(0,0,0,0.55), rgba(0,0,0,0))",
         backdropFilter: showSolidBg ? "blur(16px) saturate(140%)" : "blur(4px)",
         WebkitBackdropFilter: showSolidBg ? "blur(16px) saturate(140%)" : "blur(4px)",
         borderBottom: showSolidBg ? `1px solid ${NAV_BORDER}` : "1px solid transparent",
@@ -179,11 +218,25 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between h-16">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2 shrink-0">
+          {/*
+            Intrinsic size from the SVG's own viewBox (553×424). The height is
+            still driven by the `h-10` class — these only give the browser an
+            aspect ratio to reserve before the file arrives, so the nav links
+            do not shift sideways on first paint. Layout shift in a fixed
+            header is counted against CLS on every page of the site.
+          */}
           <img
             src="/logo.svg"
             alt="Lunova Services"
+            width={553}
+            height={424}
             className="h-10 w-auto shrink-0"
-            style={{ filter: "brightness(0) invert(1)" }}
+            /*
+              The mark ships dark on transparent, which is already correct on
+              cream — so light routes take no filter at all rather than an
+              approximation of the original ink.
+            */
+            style={isLight ? undefined : { filter: "brightness(0) invert(1)" }}
           />
         </Link>
 
@@ -209,7 +262,7 @@ export default function Navbar() {
             {dropdownOpen && (
               <div
                 className="absolute top-full left-0 mt-2 w-[min(420px,calc(100vw-2rem))] lg:w-[min(680px,calc(100vw-2rem))] rounded-xl shadow-2xl p-6 grid grid-cols-1 lg:grid-cols-3 gap-6 z-50 animate-in fade-in slide-in-from-top-2 duration-150"
-                style={{ backgroundColor: NAV_BG_SOLID, border: `1px solid ${NAV_BORDER}` }}
+                style={{ backgroundColor: NAV_PANEL, border: `1px solid ${NAV_BORDER}` }}
               >
                 {serviceCategories.map((cat, idx) => (
                   <div key={idx} className="space-y-3">
@@ -246,7 +299,7 @@ export default function Navbar() {
                 ))}
                 <div
                   className="col-span-1 lg:col-span-3 pt-3 flex items-center justify-between -mx-6 -mb-6 p-4 rounded-b-xl"
-                  style={{ borderTop: `1px solid ${NAV_BORDER}`, backgroundColor: "rgba(255,255,255,0.03)" }}
+                  style={{ borderTop: `1px solid ${NAV_BORDER}`, backgroundColor: chrome.hover }}
                 >
                   <span className="text-xs" style={{ color: NAV_MUTED }}>Looking for an umbrella overview?</span>
                   <Link
@@ -334,7 +387,7 @@ export default function Navbar() {
             source="navbar"
             iconSize={13}
             className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-md text-xs font-semibold transition-colors"
-            style={{ backgroundColor: "rgba(255,255,255,0.08)", border: `1px solid ${NAV_BORDER}`, color: NAV_TEXT }}
+            style={{ backgroundColor: NAV_FILL, border: `1px solid ${NAV_BORDER}`, color: NAV_TEXT }}
           />
         </div>
 
@@ -370,7 +423,7 @@ export default function Navbar() {
           aria-modal="true"
           aria-label="Mobile navigation"
           className="md:hidden relative z-50 px-4 pb-6 pt-3 flex flex-col gap-4 max-h-[85vh] overflow-y-auto animate-in fade-in slide-in-from-top-4 duration-200"
-          style={{ backgroundColor: NAV_BG_SOLID, borderTop: `1px solid ${NAV_BORDER}` }}
+          style={{ backgroundColor: NAV_PANEL, borderTop: `1px solid ${NAV_BORDER}` }}
         >
           <Link to="/" className="text-base font-semibold" style={{ color: NAV_TEXT }}>Home</Link>
           {/* No preload-on-touch here: the navigation fires milliseconds later,
@@ -388,7 +441,7 @@ export default function Navbar() {
                   key={item.to}
                   to={item.to}
                   className="p-2 rounded"
-                  style={{ backgroundColor: "rgba(255,255,255,0.06)", border: `1px solid ${NAV_BORDER}`, color: NAV_TEXT }}
+                  style={{ backgroundColor: NAV_FILL, border: `1px solid ${NAV_BORDER}`, color: NAV_TEXT }}
                 >
                   {item.label}
                 </Link>
@@ -408,7 +461,7 @@ export default function Navbar() {
                   key={item.to}
                   to={item.to}
                   className="px-3 py-2 rounded text-xs font-semibold"
-                  style={{ backgroundColor: "rgba(255,255,255,0.06)", border: `1px solid ${NAV_BORDER}`, color: NAV_TEXT }}
+                  style={{ backgroundColor: NAV_FILL, border: `1px solid ${NAV_BORDER}`, color: NAV_TEXT }}
                 >
                   {item.label}
                 </Link>
@@ -418,7 +471,7 @@ export default function Navbar() {
               source="navbar_mobile"
               iconSize={16}
               className="flex items-center justify-center gap-2 py-2.5 rounded-md font-semibold text-sm"
-              style={{ backgroundColor: "rgba(255,255,255,0.08)", border: `1px solid ${NAV_BORDER}`, color: NAV_TEXT }}
+              style={{ backgroundColor: NAV_FILL, border: `1px solid ${NAV_BORDER}`, color: NAV_TEXT }}
             />
           </div>
         </div>

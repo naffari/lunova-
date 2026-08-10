@@ -14,6 +14,7 @@ import { SERVICE_BY_ID, startingAtLabel, bookPath } from "../constants/services"
 import { buildBreadcrumbSchema, buildFaqSchema, buildServiceSchema } from "../utils/structuredData";
 import Marquee from "../components/Marquee";
 import { withAlpha } from "../utils/color";
+import { heroOgImage } from "../constants/seo";
 
 const { primary: PRIMARY, accent: ACCENT, ground: GROUND, bg: BG } = SERVICE_THEMES.landscaping;
 
@@ -92,6 +93,8 @@ export default function Landscaping() {
       <Seo
         title="Landscaping & Lawn Care Services | Lunova Services"
         description={LANDSCAPING_DESCRIPTION}
+        image={heroOgImage("landscaping-hero")}
+        imageAlt="A wide, freshly mown back lawn with trimmed shrub beds running down to a pool and patio"
         jsonLd={[
           buildServiceSchema({ name: "Landscaping", description: LANDSCAPING_DESCRIPTION, path: "/landscaping" }),
           buildBreadcrumbSchema([
@@ -111,7 +114,7 @@ export default function Landscaping() {
         ctaTo={bookPath("landscaping")}
         trustItems={["Licensed & Insured", "Same-Week Appointments", "100% Satisfaction"]}
         heroImage="landscaping-hero"
-        heroImageAlt="Landscaping Professional at Work"
+        heroImageAlt="A wide, freshly mown back lawn with trimmed shrub beds running down to a pool and patio"
       />
 
       <Marquee items={MARQUEE_ITEMS} backgroundColor={ACCENT} textColor={BRAND.ink} />

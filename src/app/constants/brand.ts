@@ -59,4 +59,49 @@ export const CHROME = {
   border: "rgba(237, 234, 227, 0.12)",
   /** White reads cleaner than an accent here — chrome stays accent-neutral. */
   accent: "#ffffff",
+  /** Ground for the small filled surfaces inside the chrome: pills, menu rows. */
+  fill: "rgba(255, 255, 255, 0.08)",
+  /** Hover wash on a chrome menu row. */
+  hover: "rgba(255, 255, 255, 0.06)",
+  /** Ground for the dropdown and mobile menu panels. */
+  panel: "#171512",
 } as const;
+
+/**
+ * The chrome, inverted, for pages whose first section is the cream ground
+ * rather than a dark photo hero.
+ *
+ * The navbar is transparent until you scroll, which is right on the nine
+ * service pages and every PageHero page — the bar floats on a dark image and
+ * the white mark and links sit on it cleanly. On the homepage, the booking
+ * wizard and the privacy page there is no image: the bar was laying a dark
+ * scrim over cream (a grey smear with a hard bottom edge), a white logo that
+ * all but vanished, and links at roughly 2:1 against the ground — under half
+ * the WCAG AA minimum for body text.
+ *
+ * Every value below is measured against BRAND.bg (#F1EBD9):
+ *   text   #211D17  14.0:1   muted  #635A4E  5.7:1   accent #3d6b2e  5.3:1
+ *
+ * `muted` is deliberately NOT BRAND.muted (#7A7166): that lands at 4.04:1 on
+ * this ground and fails AA for the nav links at 14px.
+ *
+ * Which routes use this is declared in routeConfig.ts, not guessed here.
+ */
+export const CHROME_LIGHT = {
+  bg: BRAND.bg,
+  text: BRAND.ink,
+  muted: "#635A4E",
+  border: "rgba(33, 29, 23, 0.14)",
+  accent: BRAND.primary,
+  fill: "rgba(33, 29, 23, 0.05)",
+  hover: "rgba(33, 29, 23, 0.06)",
+  /*
+    The menu panels take the lighter card tone, not the ground. A cream panel
+    on a cream page is only separated by its shadow, which disappears the
+    moment a viewer turns contrast up.
+  */
+  panel: BRAND.surface,
+} as const;
+
+/** The shape both palettes satisfy, so a caller can hold either. */
+export type ChromePalette = typeof CHROME | typeof CHROME_LIGHT;

@@ -19,10 +19,24 @@ export interface RouteConfigEntry {
    * Dynamic patterns (`:slug`) and the catch-all are expanded separately.
    */
   prerender: boolean;
+  /**
+   * What the navbar floats over on THIS route, before any scrolling.
+   *
+   * "dark" (the default) means the page opens on a dark photo hero or the
+   * chrome-toned PageHero band, so the bar stays transparent with a white mark
+   * and white links. "light" means the page opens on the cream ground, where
+   * that treatment produces a grey scrim, an invisible logo and links at ~2:1
+   * contrast — those routes get the inverted palette instead.
+   *
+   * Declared here rather than sniffed at runtime so it is server-rendered
+   * correctly: the prerendered HTML carries the right colours on first paint
+   * instead of flashing the wrong ones until hydration.
+   */
+  chrome?: "dark" | "light";
 }
 
 export const ROUTE_CONFIG: RouteConfigEntry[] = [
-  { path: "/", module: "home", prerender: true },
+  { path: "/", module: "home", prerender: true, chrome: "light" },
   { path: "/cleaning", module: "cleaning", prerender: true },
   { path: "/services/residential-cleaning", module: "residentialCleaning", prerender: true },
   { path: "/services/commercial-cleaning", module: "commercialCleaning", prerender: true },
@@ -43,11 +57,11 @@ export const ROUTE_CONFIG: RouteConfigEntry[] = [
   { path: "/guides/:slug", module: "guide", prerender: false },
   { path: "/about", module: "about", prerender: true },
   { path: "/contact", module: "contact", prerender: true },
-  { path: "/book", module: "booking", prerender: true },
+  { path: "/book", module: "booking", prerender: true, chrome: "light" },
   // No /book/success. The wizard renders its confirmation in place off
   // `state.submitted`, so a separate route was only ever reachable by typing the
   // URL — where it rendered an empty shell, having no navigation state to read.
-  { path: "/privacy", module: "privacy", prerender: true },
+  { path: "/privacy", module: "privacy", prerender: true, chrome: "light" },
   { path: "*", module: "notFound", prerender: false },
 ];
 
@@ -70,4 +84,21 @@ export function expandPrerenderPaths(citySlugs: string[], guideSlugs: string[] =
     ...citySlugs.map((slug) => `/service-areas/${slug}`),
     ...guideSlugs.map((slug) => `/guides/${slug}`),
   ];
+}
+
+/**
+ * Routes whose first section is the cream ground rather than a dark hero.
+ *
+ * Every path here is static, so a Set lookup is the whole matcher — no
+ * `matchPath` needed. If a patterned route ever opens on cream, this becomes a
+ * real match and the lookup below has to grow with it.
+ */
+const LIGHT_CHROME_PATHS = new Set(
+  ROUTE_CONFIG.filter((route) => route.chrome === "light").map((route) => route.path)
+);
+
+/** Which chrome palette the navbar should wear on `pathname`. */
+export function chromeToneFor(pathname: string): "dark" | "light" {
+  const normalised = pathname.length > 1 ? pathname.replace(/\/$/, "") : pathname;
+  return LIGHT_CHROME_PATHS.has(normalised) ? "light" : "dark";
 }

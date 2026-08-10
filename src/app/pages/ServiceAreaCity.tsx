@@ -7,9 +7,10 @@ import ContactStrip from "../components/common/ContactStrip";
 import ZipCheck from "../components/common/ZipCheck";
 import NotFound from "./NotFound";
 import { BRAND } from "../constants/brand";
-import { CITY_BY_SLUG, cityPath } from "../constants/cities";
+import { CITY_BY_SLUG, SERVICE_CITIES, cityPath } from "../constants/cities";
 import type { ServiceCity } from "../constants/cities";
 import { SERVICE_BY_ID, startingAtLabel } from "../constants/services";
+import type { ServiceId } from "../constants/services";
 import { withAlpha } from "../utils/color";
 import {
   buildBreadcrumbSchema,
@@ -19,6 +20,37 @@ import {
 
 const PRIMARY = BRAND.primary;
 const ACCENT = BRAND.accent;
+
+/**
+ * Which service supplies each city page's hero photo.
+ *
+ * Every city gets one of its OWN featured services, so the picture is always
+ * something Lunova is actually selling on that page — but the choice is
+ * balanced across the twelve rather than taken from `serviceFocus[0]`. Four
+ * cities lead on cleaning and there is exactly one true interior-cleaning
+ * photograph, so reading the first entry put the same image at the top of a
+ * third of the local pages, which is the thing that made the set look
+ * templated.
+ *
+ * Greedy and deterministic: walk the cities in catalogue order and give each
+ * one the featured service used least so far, ties going to its own ordering.
+ * Same input, same assignment on every build — no randomness to make two
+ * deploys disagree.
+ */
+const CITY_HERO_SERVICE: Record<string, ServiceId> = (() => {
+  const used = new Map<ServiceId, number>();
+  const assignment: Record<string, ServiceId> = {};
+
+  for (const entry of SERVICE_CITIES) {
+    const pick = entry.serviceFocus
+      .map((focus) => focus.serviceId)
+      .reduce((best, id) => ((used.get(id) ?? 0) < (used.get(best) ?? 0) ? id : best));
+    used.set(pick, (used.get(pick) ?? 0) + 1);
+    assignment[entry.slug] = pick;
+  }
+
+  return assignment;
+})();
 
 /**
  * A city landing page.
@@ -49,6 +81,7 @@ export default function ServiceAreaCity() {
 
 function CityPage({ city }: { city: ServiceCity }) {
   const path = cityPath(city.slug);
+  const heroService = SERVICE_BY_ID[CITY_HERO_SERVICE[city.slug]];
   // Kept under 60 characters with the longest label ("Prairie Village",
   // "Kansas City, MO") substituted in — past that Google truncates and the
   // brand, which is the part doing the trust work, is what gets cut.
@@ -103,6 +136,50 @@ function CityPage({ city }: { city: ServiceCity }) {
         }
         lead={city.intro}
         meta={["Licensed & insured", "Flat-rate quotes", "Same-week slots"]}
+        /*
+          This city's photo, not the site composite.
+
+          All twelve city pages used to run the same three-panel image, which
+          made a set of pages written to be individually distinct look
+          identical above the fold. The picture now shows the service the page
+          actually leads on — its first serviceFocus entry — which is both the
+          more relevant image and the one that varies city to city.
+        */
+        image={heroService.hero}
+        imageAlt={`${heroService.name} by Lunova Services in ${city.label}`}
+        aside={
+          <div
+            className="rounded-3xl p-6 border"
+            style={{ backgroundColor: "rgba(255,255,255,0.05)", borderColor: "rgba(255,255,255,0.16)" }}
+          >
+            <p className="text-[11px] font-bold uppercase tracking-widest mb-4" style={{ color: ACCENT }}>
+              Most booked in {city.label}
+            </p>
+            <ul className="space-y-3">
+              {city.serviceFocus.slice(0, 4).map((focus) => {
+                const service = SERVICE_BY_ID[focus.serviceId];
+                if (!service) return null;
+                return (
+                  <li key={focus.serviceId} className="flex items-baseline justify-between gap-4">
+                    <Link to={service.to} className="text-sm font-semibold text-white hover:underline">
+                      {service.name}
+                    </Link>
+                    <span className="text-sm font-bold shrink-0" style={{ color: ACCENT }}>
+                      {startingAtLabel(service)}
+                    </span>
+                  </li>
+                );
+              })}
+            </ul>
+            <p
+              className="mt-5 pt-4 text-xs leading-relaxed"
+              style={{ borderTop: "1px solid rgba(255,255,255,0.16)", color: "rgba(255,255,255,0.68)" }}
+            >
+              Same flat rates in {city.label} as everywhere else in the metro. No travel surcharge,
+              no zone pricing.
+            </p>
+          </div>
+        }
       />
 
       {/* Named neighborhoods and a full ZIP list. The concrete, checkable

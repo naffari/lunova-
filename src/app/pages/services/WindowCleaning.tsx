@@ -18,6 +18,7 @@ import { BRAND } from "../../constants/brand";
 import { SERVICE_BY_ID, startingAtLabel, bookPath } from "../../constants/services";
 import Marquee from "../../components/Marquee";
 import { withAlpha } from "../../utils/color";
+import { heroOgImage } from "../../constants/seo";
 
 const { primary: PRIMARY, accent: ACCENT, ground: GROUND, bg: BG } = SERVICE_THEMES["window-cleaning"];
 
@@ -96,6 +97,8 @@ export default function WindowCleaning() {
       <Seo
         title="Window Cleaning Services | Lunova Services"
         description={WINDOW_CLEANING_DESCRIPTION}
+        image={heroOgImage("window-cleaning-hero")}
+        imageAlt="A squeegee pulling a clean stripe through soap on a window, blue sky visible through the glass"
         jsonLd={[
           buildServiceSchema({ name: "Window Cleaning", description: WINDOW_CLEANING_DESCRIPTION, path: "/services/window-cleaning" }),
           buildBreadcrumbSchema([
@@ -116,7 +119,7 @@ export default function WindowCleaning() {
         ctaTo={bookPath("window")}
         trustItems={["Streak-Free Guarantee", "Interior & Exterior", "Eco-Safe Solution"]}
         heroImage="window-cleaning-hero"
-        heroImageAlt="Window Cleaning Professional at Work"
+        heroImageAlt="A squeegee pulling a clean stripe through soap on a window, blue sky visible through the glass"
       />
 
       <Marquee items={MARQUEE_ITEMS} backgroundColor={ACCENT} textColor={BRAND.ink} />

@@ -19,6 +19,7 @@ import { BRAND } from "../../constants/brand";
 import { SERVICE_BY_ID, startingAtLabel, bookPath } from "../../constants/services";
 import Marquee from "../../components/Marquee";
 import { withAlpha } from "../../utils/color";
+import { heroOgImage } from "../../constants/seo";
 
 const { primary: PRIMARY, accent: ACCENT, ground: GROUND, bg: BG } = SERVICE_THEMES["auto-detailing"];
 
@@ -97,6 +98,8 @@ export default function AutoDetailing() {
       <Seo
         title="Auto Detailing Services | Lunova Services"
         description={AUTO_DETAILING_DESCRIPTION}
+        image={heroOgImage("auto-detailing-hero")}
+        imageAlt="A detailer rinsing foam off a car on a residential driveway during a mobile wash"
         jsonLd={[
           buildServiceSchema({ name: "Auto Detailing", description: AUTO_DETAILING_DESCRIPTION, path: "/services/auto-detailing" }),
           buildBreadcrumbSchema([
@@ -117,7 +120,7 @@ export default function AutoDetailing() {
         ctaTo={bookPath("auto")}
         trustItems={["Mobile Service", "Ceramic Coating Available", "Interior Steam Clean"]}
         heroImage="auto-detailing-hero"
-        heroImageAlt="Mobile Auto Detailing Professional"
+        heroImageAlt="A detailer rinsing foam off a car on a residential driveway during a mobile wash"
       />
 
       <Marquee items={MARQUEE_ITEMS} backgroundColor={ACCENT} textColor={BRAND.ink} />
