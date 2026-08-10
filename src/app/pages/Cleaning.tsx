@@ -23,6 +23,7 @@ import { BRAND } from "../constants/brand";
 import { SERVICE_BY_ID, startingAtLabel, bookPath } from "../constants/services";
 import { buildBreadcrumbSchema, buildFaqSchema, buildServiceSchema } from "../utils/structuredData";
 import Marquee from "../components/Marquee";
+import CrossSellRow from "../components/CrossSellRow";
 import { withAlpha } from "../utils/color";
 import { heroOgImage } from "../constants/seo";
 
@@ -309,6 +310,11 @@ export default function Cleaning() {
 
       {/* SERVICE AREA */}
       <ServiceAreaSection primaryColor={PRIMARY} accentColor={ACCENT} bgColor={BG} />
+
+      {/* No estimator on this page: it is the hub that splits residential from
+          commercial, and both of those pages carry their own. Asking "which
+          clean?" here would duplicate the choice the page exists to make. */}
+      <CrossSellRow serviceKey="cleaning" primaryColor={PRIMARY} accentColor={ACCENT} />
 
       {/* FAQ SECTION */}
       <section className="py-20 px-4 sm:px-6" style={{ backgroundColor: BG }}>

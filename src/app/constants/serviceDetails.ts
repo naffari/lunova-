@@ -871,6 +871,33 @@ export function getServiceDetail(categoryId: string): ServiceDetail | undefined 
   return SERVICE_DETAILS[categoryId];
 }
 
+/**
+ * A service's detail with live CRM floors laid over the configured ones.
+ *
+ * Only the NUMBER moves. Packages, checklists, exclusions and durations have no
+ * CRM equivalent and stay exactly as configured here; a package whose name the
+ * CRM does not return keeps its local price rather than blanking. `custom` tiers
+ * are never overwritten — a site-visit tier has no floor to override.
+ *
+ * This lived inline in BookingWizard, which meant a service page and the wizard
+ * could quote different numbers for the same package: the page read the static
+ * catalogue, the wizard read the CRM. Anything that shows a customer a price
+ * they are about to commit to should call this.
+ */
+export function withLivePrices(
+  base: ServiceDetail | undefined,
+  overrides: Record<string, number>
+): ServiceDetail | undefined {
+  if (!base || Object.keys(overrides).length === 0) return base;
+  return {
+    ...base,
+    packages: base.packages.map((pkg) => {
+      const live = overrides[pkg.name.trim().toLowerCase()];
+      return live === undefined || pkg.custom ? pkg : { ...pkg, from: live };
+    }),
+  };
+}
+
 export function findPackage(categoryId: string, packageId: string): PackageDef | undefined {
   return SERVICE_DETAILS[categoryId]?.packages.find((p) => p.id === packageId);
 }

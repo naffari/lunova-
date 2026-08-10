@@ -24,8 +24,10 @@ import {
   findPackage,
   getServiceDetail,
   priceDetail,
+  withLivePrices,
   type Answers,
 } from "../../constants/serviceDetails";
+import { readEstimateParams } from "../../constants/estimatorLink";
 import { checkCoverage, isServable, normalizeZip } from "../../constants/serviceArea";
 import { OPENING_HOURS } from "../../constants/business";
 import { trackBookingStep, trackEvent } from "../../utils/analytics";
@@ -229,6 +231,27 @@ export default function BookingWizard() {
           next.packageId = packageParam;
           next.step = Math.max(next.step, 2);
         }
+
+        /**
+         * The service-page estimator handoff.
+         *
+         * The widget under each service hero asks exactly the questions step 2
+         * asks, so its answers arrive here and step 2 opens already filled in.
+         * Without this the page quotes "$240", the visitor clicks through, and
+         * the wizard immediately asks them how many bedrooms they have again —
+         * which reads as the number having been made up.
+         *
+         * readEstimateParams validates every value against the catalogue, so a
+         * mangled or hand-edited URL degrades to the defaults rather than
+         * pricing something that does not exist.
+         */
+        const fromEstimator = readEstimateParams(service, searchParams);
+        if (Object.keys(fromEstimator.answers).length > 0) {
+          next.answers = { ...next.answers, ...fromEstimator.answers };
+        }
+        if (fromEstimator.addOnIds.length > 0) {
+          next.extras = [...new Set([...next.extras, ...fromEstimator.addOnIds])];
+        }
       }
       if (zip.length === 5) next.zip = zip;
       if (city && CITIES.includes(city)) next.city = city;
@@ -284,17 +307,10 @@ export default function BookingWizard() {
   // recognises the tier. Never blocks: the configured price shows immediately.
   const { overrides: crmPrices, source: pricingSource } = useCrmPricing(state.category);
 
-  const detail = useMemo(() => {
-    const base = getServiceDetail(state.category);
-    if (!base || Object.keys(crmPrices).length === 0) return base;
-    return {
-      ...base,
-      packages: base.packages.map((pkg) => {
-        const live = crmPrices[pkg.name.trim().toLowerCase()];
-        return live === undefined || pkg.custom ? pkg : { ...pkg, from: live };
-      }),
-    };
-  }, [state.category, crmPrices]);
+  const detail = useMemo(
+    () => withLivePrices(getServiceDetail(state.category), crmPrices),
+    [state.category, crmPrices]
+  );
 
   /**
    * The estimate, assembled from the chosen package, the qualifying answers,

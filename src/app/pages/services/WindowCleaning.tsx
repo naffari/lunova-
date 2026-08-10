@@ -11,7 +11,9 @@ import FaqSection from "../../components/FaqSection";
 import ContactStrip from "../../components/common/ContactStrip";
 import Seo from "../../components/common/Seo";
 import StatBand from "../../components/StatBand";
+import ServiceEstimator from "../../components/ServiceEstimator";
 import PackageGrid from "../../components/PackageGrid";
+import CrossSellRow from "../../components/CrossSellRow";
 import { buildBreadcrumbSchema, buildFaqSchema, buildServiceSchema } from "../../utils/structuredData";
 import { SERVICE_THEMES } from "../../constants/theme";
 import { BRAND } from "../../constants/brand";
@@ -124,10 +126,19 @@ export default function WindowCleaning() {
 
       <Marquee items={MARQUEE_ITEMS} backgroundColor={ACCENT} textColor={BRAND.ink} />
 
+      {/* INSTANT ESTIMATE — the packages, questions and add-on prices from
+          constants/serviceDetails.ts, priced live and handed to the wizard
+          through the URL so step 2 opens already answered. Sits above the
+          package grid: price first, then the detail behind the price. */}
+      <ServiceEstimator serviceKey="window" primaryColor={PRIMARY} accentColor={ACCENT} />
+
       {/* WHAT'S INCLUDED — shared PackageGrid, sourced from constants/serviceDetails.ts.
           Same packages, same checklist, same prices the booking wizard shows — clicking
           "Book this" pre-selects the exact package in the wizard via ?package=. */}
       <PackageGrid serviceKey="window" primaryColor={PRIMARY} accentColor={ACCENT} />
+
+      {/* The two services this one is usually booked with, from `upsells`. */}
+      <CrossSellRow serviceKey="window" primaryColor={PRIMARY} accentColor={ACCENT} />
       {/* FEATURE HIGHLIGHTS */}
       <section className="py-20 px-4 sm:px-6" style={{ backgroundColor: BG }}>
         <div className="max-w-7xl mx-auto">
