@@ -75,6 +75,22 @@ export interface ServiceDef {
   subservices: SubserviceDef[];
   /** IDs of two other services offered as bundle add-ons during booking. */
   upsells: ServiceId[];
+  /**
+   * Whether this service can actually be delivered today.
+   *
+   * Lunova is two people with a cleaning kit, an extractor and a polisher. It
+   * can sell residential cleaning and mobile detailing. It cannot sell power
+   * washing (no machine, no experience), junk removal (no disposal account),
+   * landscaping (push mower only), window cleaning, or a commercial janitorial
+   * contract — and a booking it cannot service costs a referral, not just a job.
+   *
+   * Inactive services are NOT deleted. Their pages, city copy and guides stay
+   * indexed and reachable, because rebuilding that ranking later costs months.
+   * What changes is that they leave the navigation, the homepage grid and every
+   * cross-sell, and their page CTA becomes a waitlist capture instead of a
+   * booking link. Flip one flag to bring a line back everywhere at once.
+   */
+  active: boolean;
 }
 
 /**
@@ -104,13 +120,22 @@ export const SERVICES: ServiceDef[] = [
     icon: Sparkles,
     bullets: ["Standard clean", "Deep clean", "Move-in / move-out"],
     popular: true,
+    /*
+      Repriced August 2026 against the Kansas City market, which bills a
+      two-person team at $70–120/hour — $35–60 per person-hour. The old floors
+      were set before anyone had costed a job: $120 for a 3-bed/2-bath standard
+      clean is five person-hours of work, or about $24 an hour for two people
+      before supplies and fuel. These land at roughly $35, the bottom of the
+      local range, which is where a company with no reviews belongs.
+    */
     subservices: [
-      { name: "Standard Clean", from: 120 },
-      { name: "Deep Clean", from: 220 },
-      { name: "Move-In / Move-Out", from: 260 },
-      { name: "Airbnb Turnover", from: 90 },
+      { name: "Standard Clean", from: 175 },
+      { name: "Deep Clean", from: 280 },
+      { name: "Move-In / Move-Out", from: 350 },
+      { name: "Airbnb Turnover", from: 120 },
     ],
-    upsells: ["window", "bin"],
+    upsells: ["auto"],
+    active: true,
   },
   {
     id: "junk",
@@ -124,7 +149,8 @@ export const SERVICES: ServiceDef[] = [
       { name: "Partial Truckload", from: 175 },
       { name: "Full Truckload", from: 395 },
     ],
-    upsells: ["power", "landscaping"],
+    upsells: ["cleaning", "auto"],
+    active: false,
   },
   {
     id: "power",
@@ -138,7 +164,8 @@ export const SERVICES: ServiceDef[] = [
       { name: "Driveway", from: 120 },
       { name: "Deck / Patio", from: 150 },
     ],
-    upsells: ["window", "bin"],
+    upsells: ["cleaning", "auto"],
+    active: false,
   },
   {
     id: "window",
@@ -152,7 +179,8 @@ export const SERVICES: ServiceDef[] = [
       { name: "Exterior Only", from: 110 },
       { name: "Hard Water Treatment", from: 60, surcharge: true },
     ],
-    upsells: ["cleaning", "power"],
+    upsells: ["cleaning", "auto"],
+    active: false,
   },
   {
     id: "auto",
@@ -160,13 +188,28 @@ export const SERVICES: ServiceDef[] = [
     to: "/services/auto-detailing",
     hero: "auto-detailing-hero",
     icon: Car,
-    bullets: ["Interior only", "Exterior only", "Full detail"],
+    bullets: ["Express wash", "Interior detail", "Full detail"],
+    /*
+      These names now match the package ids in serviceDetails.ts. They did not
+      before — the catalogue advertised "Interior Only / Exterior Only / Full
+      Detail" while the wizard sold "Express Wash / Interior Detail / Full
+      Detail", so the price a visitor read on a card was not the tier they
+      landed on.
+
+      Repriced against the Kansas City mobile market, where the cheapest
+      comparable interior detail is around $210 and full details run $280–330.
+      The old $69/$89/$149 sat at roughly a third of that, which is not a
+      competitive position — it is a company that has not worked out what its
+      own time is worth. These undercut every local rival and still clear about
+      $60 a person-hour.
+    */
     subservices: [
-      { name: "Interior Only", from: 89 },
-      { name: "Exterior Only", from: 69 },
-      { name: "Full Detail (In & Out)", from: 149 },
+      { name: "Express Wash", from: 119 },
+      { name: "Interior Detail", from: 199 },
+      { name: "Full Detail (In & Out)", from: 269 },
     ],
-    upsells: ["bin", "cleaning"],
+    upsells: ["cleaning"],
+    active: true,
   },
   {
     id: "bin",
@@ -175,12 +218,25 @@ export const SERVICES: ServiceDef[] = [
     hero: "bin-cleaning-hero",
     icon: Trash2,
     bullets: ["One-time 2-bin clean", "Recurring monthly plan", "Recurring bi-weekly plan"],
+    /*
+      Bin cleaning is inactive AS A STANDALONE SERVICE and sold as an add-on
+      instead — see BIN_ADDON below and the `bin` entry in each active service's
+      add-on list in serviceDetails.ts.
+
+      The reason is route density. A subscription bin round is structurally a
+      collection business: the rig is a fixed cost and the only variable that
+      matters is stops per mile, so it needs a few hundred subscribers on tight
+      routes before it clears its own equipment. Sold as a $29 attach on a job
+      you are already parked at, the drive is already paid for by the cleaning
+      or the detail, and the same fifteen minutes earns about $60 an hour.
+    */
     subservices: [
       { name: "One-Time 2-Bin Clean", from: 25 },
       { name: "Recurring Monthly Plan", from: 15, unit: "month" },
       { name: "Recurring Bi-Weekly Plan", from: 22, unit: "month" },
     ],
-    upsells: ["landscaping", "cleaning"],
+    upsells: ["cleaning", "auto"],
+    active: false,
   },
   {
     id: "landscaping",
@@ -194,7 +250,8 @@ export const SERVICES: ServiceDef[] = [
       { name: "Recurring Lawn Care", from: 45, unit: "visit" },
       { name: "Seasonal Package", custom: true },
     ],
-    upsells: ["power", "bin"],
+    upsells: ["cleaning", "auto"],
+    active: false,
   },
   {
     id: "commercial",
@@ -208,9 +265,53 @@ export const SERVICES: ServiceDef[] = [
       { name: "Restaurant Cleaning", custom: true },
       { name: "Dealership Cleaning", custom: true },
     ],
-    upsells: ["window", "power"],
+    upsells: ["cleaning", "auto"],
+    active: false,
   },
 ];
+
+/**
+ * The services Lunova can actually deliver today.
+ *
+ * This is what the navigation, the homepage grid, the booking wizard and every
+ * cross-sell read from. `SERVICES` remains the full catalogue so the parked
+ * pages can still render themselves — they just cannot be reached by browsing
+ * or booked.
+ */
+export const ACTIVE_SERVICES: ServiceDef[] = SERVICES.filter((s) => s.active);
+
+/** Whether a service can be booked, by id. Unknown ids are not bookable. */
+export function isActive(id: string): boolean {
+  return SERVICE_BY_ID[id]?.active ?? false;
+}
+
+/**
+ * Bin cleaning, sold as an attach rather than a service.
+ *
+ * Offered on every active service's add-on list. The price assumes the crew is
+ * already on site for a clean or a detail — it is not a standalone rate, and it
+ * should not be quoted as one over the phone without adding travel.
+ */
+export const BIN_ADDON = {
+  id: "bin",
+  name: "Trash bin cleaning",
+  /** Two bins, washed and deodorised while we are already at the property. */
+  price: 29,
+  /** Each bin past the first two. */
+  perExtraBin: 10,
+  note: "Two bins washed out and deodorised while we're already there. $10 for each extra bin.",
+} as const;
+
+/**
+ * Smallest job worth loading the truck for, in whole dollars.
+ *
+ * Travel is the hidden cost in every mobile trade: a 20-minute drive each way
+ * is most of an hour of committed time before anyone has picked up a cloth. A
+ * job under this figure is a job that pays less per hour than the one it
+ * displaced, so the wizard surfaces the shortfall rather than quietly booking
+ * it.
+ */
+export const MINIMUM_CHARGE = 100;
 
 export const SERVICE_BY_ID: Record<string, ServiceDef> = Object.fromEntries(
   SERVICES.map((s) => [s.id, s])
@@ -233,27 +334,32 @@ export const BUNDLE_DISCOUNT = 0.1;
  * These are deliberately below the ladder the big maid franchises publish
  * (commonly 20/15/10). Those numbers are funded by route density Lunova does
  * not have yet — a weekly customer is only cheaper to serve once there are
- * several of them on the same street on the same morning. Starting at 15%
- * leaves room to go up as routes fill, which is a much easier conversation
- * than cutting an advertised discount later.
+ * several of them on the same street on the same morning.
+ *
+ * Cut again in August 2026, from 15/10/5, once the jobs were costed properly.
+ * A weekly standard clean is five person-hours; at 15% off the repriced $175
+ * that is about $30 an hour for two people, which made the best customer in the
+ * book the worst-paying work in it. At 10/5/0 the recurring slot is still worth
+ * choosing and the rate survives. Raising a discount as routes fill is an easy
+ * conversation; cutting one you already advertised is not.
  *
  * Keys must match FREQUENCY_OPTIONS in pages/booking/wizardData.ts.
  */
 export const FREQUENCY_DISCOUNT: Record<string, number> = {
   "One-Time": 0,
-  Weekly: 0.15,
-  "Bi-Weekly": 0.1,
-  Monthly: 0.05,
+  Weekly: 0.1,
+  "Bi-Weekly": 0.05,
+  Monthly: 0,
 };
 
 /**
  * Ceiling on everything stacked together.
  *
- * A weekly two-service booking would otherwise take 25% off, which is past the
- * point where the job is worth doing at all for a crew that still has to
- * travel to it.
+ * A weekly two-service booking would otherwise stack bundle on top of
+ * frequency, which is past the point where the job is worth doing at all for a
+ * crew that still has to travel to it. Lowered with the ladder above.
  */
-export const MAX_DISCOUNT = 0.2;
+export const MAX_DISCOUNT = 0.15;
 
 /**
  * The combined rate for a booking. Bundle and frequency stack, then cap.

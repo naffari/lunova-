@@ -111,7 +111,7 @@ export const SERVICE_DETAILS: Record<string, ServiceDetail> = {
         id: "standard",
         name: "Standard Clean",
         tagline: "Upkeep for a home that's already in decent shape.",
-        from: 120,
+        from: 175,
         duration: "2–3 hours",
         includes: [
           "Kitchen counters, sinks and appliance exteriors",
@@ -128,7 +128,7 @@ export const SERVICE_DETAILS: Record<string, ServiceDetail> = {
         id: "deep",
         name: "Deep Clean",
         tagline: "The reset. Recommended for a first visit or after a long gap.",
-        from: 220,
+        from: 280,
         popular: true,
         duration: "4–6 hours",
         includes: [
@@ -147,7 +147,7 @@ export const SERVICE_DETAILS: Record<string, ServiceDetail> = {
         id: "move",
         name: "Move-In / Move-Out",
         tagline: "Empty property, landlord-ready or ready to hand over.",
-        from: 260,
+        from: 350,
         duration: "5–8 hours",
         includes: [
           "Everything in Deep Clean",
@@ -164,7 +164,7 @@ export const SERVICE_DETAILS: Record<string, ServiceDetail> = {
         id: "turnover",
         name: "Airbnb Turnover",
         tagline: "Fast reset between guests, on a short window.",
-        from: 90,
+        from: 120,
         duration: "1–2 hours",
         includes: [
           "Full linen change and beds made",
@@ -188,7 +188,7 @@ export const SERVICE_DETAILS: Record<string, ServiceDetail> = {
         max: 8,
         default: 3,
         includedUpTo: 3,
-        pricePerUnit: 20,
+        pricePerUnit: 30,
         noun: "bedroom",
       },
       {
@@ -200,7 +200,7 @@ export const SERVICE_DETAILS: Record<string, ServiceDetail> = {
         max: 6,
         default: 2,
         includedUpTo: 2,
-        pricePerUnit: 25,
+        pricePerUnit: 35,
         noun: "bathroom",
       },
       {
@@ -208,20 +208,31 @@ export const SERVICE_DETAILS: Record<string, ServiceDetail> = {
         kind: "choice",
         label: "How's it looking right now?",
         help: "Be honest. It costs you nothing and stops us arriving under-scheduled.",
+        /*
+          These are the most under-costed numbers on the old price list. A house
+          that has not been touched in months is not 90 dollars of extra work on
+          top of a standard clean — it is closer to a second clean. Under-pricing
+          condition is how a two-hour job becomes a five-hour one at the same
+          price, and the customer who was honest on the form is not the one at
+          fault when that happens.
+        */
         options: [
           { value: "maintained", label: "Regularly cleaned", delta: 0 },
-          { value: "behind", label: "A bit behind", delta: 40 },
-          { value: "neglected", label: "Hasn't been done in a long while", delta: 90 },
+          { value: "behind", label: "A bit behind", delta: 60 },
+          { value: "neglected", label: "Hasn't been done in a long while", delta: 130 },
         ],
       },
     ],
     addOns: [
-      { id: "oven", name: "Inside the oven", price: 35, note: "Racks, glass and cavity degreased." },
-      { id: "fridge", name: "Inside the fridge", price: 35, note: "Emptied, shelves washed, restacked." },
-      { id: "windows-in", name: "Interior windows", price: 60, note: "Glass, sills and tracks throughout." },
-      { id: "laundry", name: "Laundry, wash & fold", price: 25, note: "Per load, on-site machines." },
-      { id: "pet-hair", name: "Pet hair treatment", price: 30, note: "Rubber-brush lift on upholstery and carpet." },
-      { id: "basement", name: "Finished basement", price: 40, note: "Treated as an extra living area." },
+      { id: "oven", name: "Inside the oven", price: 45, note: "Racks, glass and cavity degreased." },
+      { id: "fridge", name: "Inside the fridge", price: 45, note: "Emptied, shelves washed, restacked." },
+      { id: "windows-in", name: "Interior windows", price: 75, note: "Glass, sills and tracks throughout." },
+      { id: "laundry", name: "Laundry, wash & fold", price: 30, note: "Per load, on-site machines." },
+      { id: "pet-hair", name: "Pet hair treatment", price: 40, note: "Rubber-brush lift on upholstery and carpet." },
+      { id: "basement", name: "Finished basement", price: 55, note: "Treated as an extra living area." },
+      // Bin cleaning is only worth this rate because the truck is already on the
+      // drive. See BIN_ADDON in services.ts.
+      { id: "bin", name: "Trash bin cleaning", price: 29, note: "Two bins washed and deodorised while we're here. $10 per extra bin." },
     ],
   },
 
@@ -236,8 +247,8 @@ export const SERVICE_DETAILS: Record<string, ServiceDetail> = {
         id: "express",
         name: "Express Wash",
         tagline: "Clean and presentable, in and out.",
-        from: 69,
-        duration: "45 minutes",
+        from: 119,
+        duration: "1 hour",
         includes: [
           "Hand wash and microfibre dry",
           "Wheels, barrels and tyres cleaned",
@@ -251,8 +262,8 @@ export const SERVICE_DETAILS: Record<string, ServiceDetail> = {
         id: "interior",
         name: "Interior Detail",
         tagline: "For when the outside is fine and the inside isn't.",
-        from: 89,
-        duration: "2 hours",
+        from: 199,
+        duration: "2–3 hours",
         includes: [
           "Full vacuum including boot and under seats",
           "Fabric seats shampooed, or leather cleaned and conditioned",
@@ -267,7 +278,7 @@ export const SERVICE_DETAILS: Record<string, ServiceDetail> = {
         id: "full",
         name: "Full Detail",
         tagline: "Inside and out, with paint protection. Our most booked.",
-        from: 149,
+        from: 269,
         popular: true,
         duration: "3–4 hours",
         includes: [
@@ -280,22 +291,21 @@ export const SERVICE_DETAILS: Record<string, ServiceDetail> = {
         ],
         excludes: ["Multi-stage correction", "Ceramic coating", "Deep scratch removal"],
       },
-      {
-        id: "correction",
-        name: "Paint Correction & Ceramic",
-        tagline: "Swirl removal and long-term coating. Priced after inspection.",
-        custom: true,
-        duration: "6–8 hours, sometimes two days",
-        includes: [
-          "Paint depth inspection and test panel",
-          "Multi-stage cut and polish",
-          "Swirl and light scratch removal",
-          "Ceramic coating, 2–3 years protection",
-          "Coated wheels and glass on request",
-          "Aftercare kit and instructions",
-        ],
-        excludes: ["Dent or bodywork repair", "Repainting", "Deep scratches through clear coat"],
-      },
+      /*
+        A fourth tier used to sit here: "Paint Correction & Ceramic", six to
+        eight hours, multi-stage cut, a coating warranted for two to three
+        years.
+
+        It is gone because nobody here can do it yet. Multi-stage correction on
+        someone else's paint is the one job in this catalogue that can cause
+        permanent, expensive damage — clear coat is finite, and burning through
+        it on a panel is a respray, not a re-buff. Selling a two-to-three year
+        coating also means standing behind it for two to three years.
+
+        Single-stage machine polish stays in the Full Detail above, which is a
+        different risk entirely on a dual-action polisher. Bring correction back
+        when there is a portfolio behind it and a policy that covers it.
+      */
     ],
     questions: [
       {
@@ -304,9 +314,9 @@ export const SERVICE_DETAILS: Record<string, ServiceDetail> = {
         label: "Vehicle size",
         options: [
           { value: "sedan", label: "Coupe or sedan", delta: 0 },
-          { value: "crossover", label: "Small SUV / crossover", delta: 20 },
-          { value: "truck", label: "Pickup truck", delta: 30 },
-          { value: "large", label: "Large SUV, 3-row or van", delta: 40 },
+          { value: "crossover", label: "Small SUV / crossover", delta: 25 },
+          { value: "truck", label: "Pickup truck", delta: 40 },
+          { value: "large", label: "Large SUV, 3-row or van", delta: 55 },
         ],
       },
       {
@@ -316,8 +326,8 @@ export const SERVICE_DETAILS: Record<string, ServiceDetail> = {
         help: "Pets, kids and smoke all add real time.",
         options: [
           { value: "clean", label: "Well kept", delta: 0 },
-          { value: "normal", label: "Normal daily use", delta: 25 },
-          { value: "heavy", label: "Heavy: pets, kids or smoke", delta: 75 },
+          { value: "normal", label: "Normal daily use", delta: 35 },
+          { value: "heavy", label: "Heavy: pets, kids or smoke", delta: 95 },
         ],
       },
       {
@@ -332,13 +342,29 @@ export const SERVICE_DETAILS: Record<string, ServiceDetail> = {
         ],
       },
     ],
+    /*
+      Two add-ons were dropped rather than repriced.
+
+      Ozone odour treatment needs a generator and, worse, needs the car to sit
+      sealed for hours. On a mobile round that is not an add-on, it is a lost
+      afternoon — the slot it occupies is worth more than the $75 it earned.
+
+      Ceramic wheel coating went for the same reason as the correction tier: it
+      is a durability promise measured in years, sold by someone who has not
+      applied one yet.
+
+      What is left is what the Kansas City market actually sells alongside a
+      detail, and all of it is fast, low-risk work with gear that is already on
+      the truck.
+    */
     addOns: [
-      { id: "engine", name: "Engine bay deep clean", price: 45, note: "Degreased, rinsed and plastics dressed." },
-      { id: "headlights", name: "Headlight restoration", price: 65, note: "Wet-sanded, polished and UV sealed." },
-      { id: "pet-hair", name: "Pet hair removal", price: 40, note: "Embedded hair, charged separately from vacuuming." },
-      { id: "ozone", name: "Ozone odour treatment", price: 75, note: "Smoke, damp or spoiled food. Vehicle sits sealed." },
-      { id: "wax", name: "Upgrade to premium wax", price: 40, note: "Around 6 months protection instead of 3." },
-      { id: "wheels", name: "Ceramic wheel coating", price: 60, note: "Brake dust wipes off for about a year." },
+      { id: "engine", name: "Engine bay deep clean", price: 59, note: "Degreased, rinsed and plastics dressed." },
+      { id: "headlights", name: "Headlight restoration", price: 79, note: "Wet-sanded, polished and UV sealed." },
+      { id: "pet-hair", name: "Pet hair removal", price: 49, note: "Embedded hair, charged separately from vacuuming." },
+      { id: "leather", name: "Leather clean & condition", price: 49, note: "Seats and trim cleaned, then fed so they stop drying out." },
+      { id: "headliner", name: "Headliner spot clean", price: 39, note: "Marks lifted by hand. Headliners delaminate if they are soaked." },
+      { id: "sealant", name: "Ceramic spray sealant", price: 69, note: "Hand-applied. Around 6 months of protection instead of 3." },
+      { id: "bin", name: "Trash bin cleaning", price: 29, note: "Two bins washed and deodorised while we're here. $10 per extra bin." },
     ],
   },
 

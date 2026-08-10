@@ -46,13 +46,18 @@ export const CREDENTIALS = {
   /**
    * Criminal background checks run on every crew member before their first job.
    *
-   * UNCONFIRMED. This was on the site as a verified proof point and no one has
-   * said whether the process exists. It is left true because nothing has
-   * contradicted it — but it is the next claim to check, and if there is no
-   * actual check being run it belongs at false immediately. It is the second
-   * thing a customer letting someone into their home is relying on.
+   * false as of 2026-08-10 — asked and answered. No formal check has been run
+   * on anyone; the owners know each other, which is not the same thing and is
+   * not what the claim said. The site was telling homeowners "every crew member
+   * is checked before their first job, nobody unvetted enters your home", which
+   * is the second thing after insurance that someone letting a stranger into
+   * their house is relying on.
+   *
+   * This is cheap to make true: a vendor check runs $20–60 a head and returns
+   * in a few days. With two people it is one afternoon and one flag. Until then
+   * the badge, the proof point and the hero strip all stand down on their own.
    */
-  backgroundChecked: true,
+  backgroundChecked: false,
 } as const;
 
 /**

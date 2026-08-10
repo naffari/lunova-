@@ -71,10 +71,10 @@ const cleaning = getServiceDetail("cleaning");
 const answers = { bedrooms: 5, bathrooms: 3, condition: "behind" };
 const estimate = priceDetail(cleaning, "deep", answers, ["oven", "fridge"]);
 
-// 220 base + 2 extra bedrooms × 20 + 1 extra bathroom × 25 + 40 condition + 35 + 35
-check("deep clean 5bed/3bath/behind + oven + fridge", estimate.subtotal, 395);
+// 280 base + 2 extra bedrooms × 30 + 1 extra bathroom × 35 + 60 condition + 45 + 45
+check("deep clean 5bed/3bath/behind + oven + fridge", estimate.subtotal, 525);
 check("  priced, not deferred to a visit", estimate.needsVisit, false);
-check("  counters under the included threshold add nothing", priceDetail(cleaning, "deep", { bedrooms: 3, bathrooms: 2, condition: "maintained" }, []).subtotal, 220);
+check("  counters under the included threshold add nothing", priceDetail(cleaning, "deep", { bedrooms: 3, bathrooms: 2, condition: "maintained" }, []).subtotal, 280);
 
 // ── The URL contract, both directions ───────────────────────────────────────
 const url = estimateBookingPath({
@@ -116,7 +116,7 @@ const live = withLivePrices(cleaning, { "deep clean": 249 });
 const liveDeep = live.packages.find((pkg) => pkg.id === "deep");
 check("CRM floor is applied", liveDeep.from, 249);
 check("CRM does not touch the checklist", liveDeep.includes, cleaning.packages.find((p) => p.id === "deep").includes);
-check("a package the CRM did not return keeps its local price", live.packages.find((p) => p.id === "standard").from, 120);
+check("a package the CRM did not return keeps its local price", live.packages.find((p) => p.id === "standard").from, 175);
 
 // ── Every service prices its own defaults ───────────────────────────────────
 // Catches a new service, or a renamed question id, that leaves the estimator
