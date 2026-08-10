@@ -14,6 +14,7 @@ import StatBand from "../../components/StatBand";
 import ServiceEstimator from "../../components/ServiceEstimator";
 import PackageGrid from "../../components/PackageGrid";
 import CrossSellRow from "../../components/CrossSellRow";
+import ServicePolicySection from "../../components/ServicePolicySection";
 import { buildBreadcrumbSchema, buildFaqSchema, buildServiceSchema } from "../../utils/structuredData";
 import { SERVICE_THEMES } from "../../constants/theme";
 import { BRAND } from "../../constants/brand";
@@ -25,21 +26,40 @@ import { heroOgImage } from "../../constants/seo";
 const { primary: PRIMARY, accent: ACCENT, ground: GROUND, bg: BG } = SERVICE_THEMES["bin-cleaning"];
 
 
+/**
+ * WHAT THIS PAGE MAY AND MAY NOT SAY.
+ *
+ * This page used to advertise "200° pressurized hot water" and "kills 99.9% of
+ * bacteria", in the hero, the stat band, the marquee, the feature cards, the
+ * meta description and the nav dropdown. Neither is true: the rig runs
+ * unheated, and no kill rate has ever been measured for it.
+ *
+ * A specific efficacy percentage and a specific temperature are exactly the
+ * kind of claim that has to be substantiated before it is published, so both
+ * are gone rather than softened. What replaced them is the honest version of
+ * the same argument — pressure and detergent and dwell time do remove the film
+ * a garden hose leaves, and that stands on its own without a fake number.
+ *
+ * If the rig is ever heated, or a lab result ever exists, put the claim back
+ * with the evidence behind it. Until then: no temperature, no percentage, no
+ * "sanitised", no "disinfectant" (a regulated term for an EPA-registered
+ * product, which a biodegradable detergent is not).
+ */
 const FEATURES = [
   {
     icon: Trash2,
-    title: "200° Pressurized Hot Water",
-    desc: "Our truck-mounted system reaches temperatures that kill bacteria, mold, and maggots that chemicals miss.",
+    title: "Pressure Washed, Not Rinsed",
+    desc: "High-pressure jets plus a biodegradable detergent, worked over every interior face. That is what lifts the film a garden hose pushes around.",
   },
   {
     icon: ShieldCheck,
-    title: "Eco-Safe Deodorizing Treatment",
-    desc: "After sanitizing, we apply a biodegradable deodorizing solution that keeps bins smelling fresh between visits.",
+    title: "Biodegradable Detergents",
+    desc: "The only thing we put in your bin breaks down on its own. No solvents, nothing that needs a hazard label.",
   },
   {
     icon: Star,
-    title: "Kills 99.9% of Bacteria",
-    desc: "Our method is scientifically proven to eliminate the pathogens that cause odors, illness, and pest attraction.",
+    title: "Deodorizing Treatment",
+    desc: "A biodegradable finishing treatment after the wash, so the bin stops smelling instead of smelling like something else.",
   },
   {
     icon: MapPin,
@@ -50,8 +70,8 @@ const FEATURES = [
 
 const STATS = [
   { val: startingAtLabel(SERVICE_BY_ID.bin), label: "Starting Price" },
-  { val: "200°", label: "Hot Water" },
-  { val: "99.9%", label: "Bacteria Kill Rate" },
+  { val: "Curbside", label: "Nothing To Do" },
+  { val: "Biodegradable", label: "Detergents" },
   { val: "Monthly", label: "Routes" },
 ];
 
@@ -68,8 +88,8 @@ const HOW_IT_WORKS_STEPS = [
   },
   {
     step: "3",
-    title: "200° Hot Water Blast",
-    desc: "We load bins into our truck, blast with pressurized 200° hot water, and neutralize all bacteria.",
+    title: "Pressure Wash & Detergent",
+    desc: "The bin goes on the truck and gets pressure washed inside and out with a biodegradable detergent, lid and rim included.",
   },
   {
     step: "4",
@@ -79,18 +99,18 @@ const HOW_IT_WORKS_STEPS = [
 ];
 
 const BIN_CLEANING_DESCRIPTION =
-  "Curbside trash bin cleaning after your regular pickup day, using 200° pressurized hot water and an eco-safe deodorizing treatment across Kansas City.";
+  "Curbside trash bin cleaning across Kansas City, on or after your pickup day. Pressure washed with biodegradable detergent, deodorized, and back at your curb.";
 
 const BIN_CLEANING_FAQS = [
   { q: "When do you clean the bins?", a: "We schedule service after your regular trash pickup so the bins are empty when we arrive." },
-  { q: "What do you use to clean the bins?", a: "Hot water pressure washing with EPA-approved, eco-friendly disinfectants that eliminate bacteria and odors." },
+  { q: "What do you use to clean the bins?", a: "Pressure washing with a biodegradable detergent, then a biodegradable deodorizing treatment. The water is not heated, and we do not claim a bacterial kill rate we have not had measured — what the wash removes is the built-up film and the smell that comes with it." },
   { q: "How often should I schedule bin cleaning?", a: "Monthly service is recommended to keep odors and bacteria under control, especially in summer." },
   { q: "How many bins can you clean?", a: "We can clean trash, recycling, and yard waste bins in a single visit." },
 ];
 
 /** Written once; Marquee doubles it for the seamless loop. */
 const MARQUEE_ITEMS = [
-  "200° Hot Water", "Monthly Route Service", "99.9% Bacteria Kill", "Eco-Safe Deodorizer", "Curbside Service", "No Contracts", "Licensed & Insured", "Satisfaction Guarantee",
+  "Pressure Washed", "Monthly Route Service", "Biodegradable Detergents", "Deodorizing Treatment", "Curbside Service", "No Contracts", "Licensed & Insured", "Satisfaction Guarantee",
 ];
 
 export default function BinCleaning() {
@@ -113,13 +133,13 @@ export default function BinCleaning() {
       />
       <ServiceHero
         badge="KC's Curbside Trash Bin Cleaning Service"
-        titleContent={<><span className="italic" style={{ color: ACCENT }}>Sanitized</span> Bins. <br />No More Stench.</>}
-        description="We pull up to your curb after trash day, blast your bins with 200° pressurized hot water, and apply a deodorizing treatment. No mess, no hassle."
+        titleContent={<><span className="italic" style={{ color: ACCENT }}>Clean</span> Bins. <br />No More Stench.</>}
+        description="We pull up to your curb after trash day, pressure wash your bins inside and out with a biodegradable detergent, and finish with a deodorizing treatment. No mess, no hassle."
         primaryColor={GROUND}
         accentColor={ACCENT}
         ctaLabel="Book a Clean"
         ctaTo={bookPath("bin")}
-        trustItems={["200° Hot Water Sanitization", "Kills 99.9% Bacteria", "Monthly Route Service"]}
+        trustItems={["Biodegradable Detergents", "Curbside — Nothing To Do", "Monthly Route Service"]}
         heroImage="bin-cleaning-hero"
         heroImageAlt="A wheelie bin tipped on its side at the curb being pressure-rinsed, water spraying out through the open lid"
       />
@@ -139,6 +159,10 @@ export default function BinCleaning() {
 
       {/* The two services this one is usually booked with, from `upsells`. */}
       <CrossSellRow serviceKey="bin" primaryColor={PRIMARY} accentColor={ACCENT} />
+
+      {/* Access, prep and hard refusals, from constants/servicePolicy.ts.
+          Only blocks with confirmed facts behind them render. */}
+      <ServicePolicySection serviceKey="bin" primaryColor={PRIMARY} accentColor={ACCENT} />
       {/* FEATURE HIGHLIGHTS */}
       <section className="py-20 px-4 sm:px-6" style={{ backgroundColor: BG }}>
         <div className="max-w-7xl mx-auto">
@@ -148,7 +172,7 @@ export default function BinCleaning() {
               <span>Why Choose Us</span>
             </div>
             <h2 className="font-serif-display text-4xl sm:text-5xl" style={{ color: PRIMARY }}>
-              Truck-Mounted 200° Hot Water Sanitization.
+              The Bin Comes To Us. You Don't Lift Anything.
             </h2>
           </div>
 
@@ -205,7 +229,7 @@ export default function BinCleaning() {
 
       <ContactStrip
         heading="Ready to Ditch the Stink?"
-        subtext="Join our monthly route and never scrub a filthy bin again. Sanitized, deodorized, and back at your curb before you know it."
+        subtext="Join our monthly route and never scrub a filthy bin again. Washed, deodorized, and back at your curb before you know it."
         primaryColor={GROUND}
         accentColor={ACCENT}
         ctaLabel="Book a Clean"

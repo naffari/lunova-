@@ -79,8 +79,8 @@ const SERVICES = [
     icon: Trash2,
     title: "Trash Bin Cleaning",
     price: startingAtLabel(SERVICE_BY_ID.bin),
-    desc: "200° hot-water sanitization to eliminate bacteria and odors from curbside bins.",
-    bullets: ["Kills 99.9% of bacteria", "Deodorizing treatment", "Curbside route schedule"],
+    desc: "Curbside bins pressure washed with biodegradable detergent, then deodorized.",
+    bullets: ["Biodegradable detergents", "Deodorizing treatment", "Curbside route schedule"],
     link: "/services/bin-cleaning",
   },
 ];

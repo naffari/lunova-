@@ -29,7 +29,7 @@ const serviceCategories = [
     items: [
       { to: "/services/residential-cleaning", label: "Residential Cleaning", icon: Home, desc: "Standard, deep clean, move-in/out" },
       { to: "/services/commercial-cleaning", label: "Commercial Janitorial", icon: Building2, desc: "Offices, retail & facilities" },
-      { to: "/services/bin-cleaning", label: "Trash Bin Cleaning", icon: Trash2, desc: "Curbside 200° hot water wash" },
+      { to: "/services/bin-cleaning", label: "Trash Bin Cleaning", icon: Trash2, desc: "Curbside pressure wash and deodorize" },
     ],
   },
   {

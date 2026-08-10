@@ -199,22 +199,38 @@ export const GUIDES: Guide[] = [
     slug: "trash-bin-cleaning-worth-it",
     title: "Is Trash Bin Cleaning Worth It? An Honest Look",
     description:
-      "What a garbage can sanitizing service actually does, what it costs in Kansas City, and the three situations where it is genuinely worth paying for.",
+      "What a bin cleaning service actually removes, what it costs in Kansas City, and the three situations where it is genuinely worth paying someone to do it.",
     heading: "Is trash bin cleaning actually worth paying for?",
     standfirst:
-      "What the hot-water wash really removes, what it costs per year, and when you should just do it yourself with a hose.",
+      "What the wash really removes, what it costs per year, and when you should just do it yourself with a hose.",
     published: "2026-08-09",
+    updated: "2026-08-10",
     category: "Bin cleaning",
     service: "bin",
+    /*
+     * REWRITTEN 2026-08-10.
+     *
+     * The original version of this guide argued that heat was the whole point —
+     * "water at around 200°F", "the heat is the whole point", a FAQ answering
+     * "how hot is the water". Our rig is not heated, so the guide was selling a
+     * service we do not run and arguing against our own product in the DIY
+     * section. Every temperature claim is gone.
+     *
+     * What replaced it is the true mechanism: the smell is a film, and a film
+     * comes off with pressure, detergent and contact time. That argument does
+     * not need a number we cannot stand behind, and it survives a customer
+     * asking us a direct question about our equipment.
+     */
     answer:
-      "For most households, yes — but on a recurring plan, not as one-off cleans. A professional bin wash uses water at around 200°F, which kills the bacteria and fly larvae a garden hose leaves behind, and removes the smell rather than covering it. It is worth paying for if you have wheelie bins that live near the house, pets or small children, or a raccoon problem. It is not worth it if your bins sit at the far end of a driveway and you are happy to hose them out twice a year.",
+      "For most households, yes — but on a recurring plan, not as one-off cleans. The smell in a bin is a film of dried residue on the walls and lid, and it takes pressure, a detergent and a few minutes of contact to lift it; a rinse with a garden hose mostly moves it around. It is worth paying for if your bins live near the house, you have pets or kids in diapers, or you have a raccoon problem. It is not worth it if your bins sit at the end of a long driveway and you are happy to tip them over and scrub them twice a year.",
     sections: [
       {
         heading: "What the service actually does",
         body: [
-          "The crew comes the day after your collection, while the bin is empty. The bin goes onto the truck, gets blasted inside and out with water at roughly 200°F, gets a sanitising detergent, and comes back to your kerb clean and dry. The wastewater is captured on the truck rather than run down the storm drain, which is the part that matters legally and the part cheap operators skip.",
-          "The heat is the whole point. A garden hose runs at whatever temperature comes out of the tap, which moves the visible mess around and leaves the bacterial film that causes the smell. Water at 200°F does not.",
+          "The crew comes on or after your collection day, while the bin is empty. The bin goes onto the truck, gets pressure washed inside and out with a biodegradable detergent — walls, base, rim and lid — and comes back to your curb washed and draining. The detergent is biodegradable, which is the part that matters for what ends up on your driveway and in the gutter.",
+          "The mechanism is worth understanding, because it tells you whether you are being sold something real. What smells is not loose trash; it is a thin film of dried organic residue bonded to the plastic, and the bacteria living in it. Pressure breaks the film up, detergent lifts what pressure alone leaves bonded, and contact time lets the detergent work. A garden hose gives you water at low pressure with no detergent and no dwell, which is why the smell comes back within a day.",
         ],
+        note: "Our rig runs unheated. Some operators use heated water, which does help lift grease faster — if one quotes you a temperature, that is a fair question to ask them to back up. We would rather tell you what ours does than claim a number we have not measured.",
       },
       {
         heading: "What it costs",
@@ -226,7 +242,7 @@ export const GUIDES: Guide[] = [
           columns: ["Frequency", "Best for", "Roughly"],
           rows: [
             ["One-off", "After a pest problem, a spill, or before selling", "$20–$25 per bin"],
-            ["Monthly", "Households with pets, nappies, or bins near the house", "$180–$300 a year"],
+            ["Monthly", "Households with pets, diapers, or bins near the house", "$180–$300 a year"],
             ["Quarterly", "Most households — the sensible default", "$80–$120 a year"],
           ],
         },
@@ -235,23 +251,27 @@ export const GUIDES: Guide[] = [
         heading: "The three cases where it clearly pays",
         list: [
           "Bins stored close to the house, a side door, or under a window. Smell travels, and in a Kansas City July it travels a lot.",
-          "Households with dogs, cats, or children in nappies. Both put protein waste in the bin every single day, which is what maggots need.",
+          "Households with dogs, cats, or children in diapers. Both put protein waste in the bin every single day, which is what maggots need.",
           "A raccoon or rodent problem. Animals are drawn by residue, not by the bin. Clean the residue and you remove the reason they keep coming back.",
         ],
       },
       {
         heading: "When to skip it",
         body: [
-          "If your bins live at the end of a long driveway, you bag everything, and you are willing to tip them on their side and hose them out on a warm day twice a year — that genuinely covers it. You will not get the sanitising, but you will get most of the smell reduction for the cost of ten minutes and some water.",
+          "If your bins live at the end of a long driveway, you bag everything, and you are willing to tip them on their side, scrub them with a stiff brush and some detergent and let them dry in the sun twice a year — that genuinely covers it. You will spend ten minutes and some water and get most of the benefit.",
           "The honest version: a cleaned bin does not stay clean. It gets dirty again the next time you fill it. What a recurring plan buys is a ceiling on how bad it gets, not a permanently pristine bin. Anyone selling it as the latter is overselling it.",
         ],
-        note: "Skip any operator who cannot tell you where the wastewater goes. Rinsing bin slurry into a storm drain is both a pollution problem and a sign of how the rest of the job gets done.",
+        note: "Ask any operator what they put in the bin. A biodegradable detergent and a rinse is a different thing from a solvent, and it is the question worth asking before you let someone spray something onto the ground next to your house.",
       },
     ],
     faqs: [
       {
-        q: "How hot is the water in a professional bin cleaning?",
-        a: "Around 200°F. That is the temperature that kills bacteria and fly larvae rather than just rinsing them somewhere else, and it is the main thing separating the service from a garden hose.",
+        q: "Does the water have to be hot?",
+        a: "No. Heat speeds up grease removal, but the work is done by pressure, detergent and contact time — that is what breaks up the dried film the smell comes from. Our rig runs unheated, and we would rather say so than quote a temperature we have not measured.",
+      },
+      {
+        q: "What do you actually put in the bin?",
+        a: "A biodegradable detergent for the wash, and a biodegradable deodorizing treatment afterwards. Nothing that needs to be kept away from pets, kids or planting beds. We do not publish a bacterial kill rate, because we have not had ours tested and a number nobody measured is worth nothing.",
       },
       {
         q: "How often should trash bins be cleaned?",
@@ -259,15 +279,11 @@ export const GUIDES: Guide[] = [
       },
       {
         q: "Do I need to be home for bin cleaning?",
-        a: "No. We come the day after your collection while the bins are still at the kerb, clean them there, and leave them where we found them. Nothing needs unlocking and nobody needs to be in.",
-      },
-      {
-        q: "Where does the dirty water go?",
-        a: "Onto the truck, in a capture tank, and to a proper disposal point. It does not go down the storm drain. If a service cannot answer that question, use a different service.",
+        a: "No. We come on or after your collection day while the bins are still at the curb, clean them there, and leave them where we found them. Nothing needs unlocking and nobody needs to be in.",
       },
       {
         q: "Can I just clean my own bin?",
-        a: "Yes, and for some households that is the right answer. Tip it over, hose it out, use a stiff brush and a disinfectant, and let it dry in the sun. You will not get the 200°F sanitising, but you will get a lot of the benefit for free.",
+        a: "Yes, and for some households that is the right answer. Tip it over, hose it out, use a stiff brush and a detergent, and let it dry in the sun. You will not get the pressure or the dwell time we get, but you will get a lot of the benefit for free.",
       },
     ],
   },
@@ -282,6 +298,7 @@ export const GUIDES: Guide[] = [
     standfirst:
       "Three different jobs that get used as one word. Choosing wrong is how vinyl siding cracks and concrete comes back striped.",
     published: "2026-08-09",
+    updated: "2026-08-10",
     category: "Exterior",
     service: "power",
     answer:
@@ -312,6 +329,7 @@ export const GUIDES: Guide[] = [
         body: [
           "In everyday use \"power washing\" and \"pressure washing\" get swapped around freely, including by companies that should know better. What matters is not the label on the van. It is whether the person holding the wand changes method when they move from your driveway to your siding.",
         ],
+        note: "Ours included, to be straight about it: our service is listed as power washing because that is what people search for, but the rig runs unheated. That means pressure washing and soft washing on our equipment, and it is why the section below on oil stains tells you to get a specialist rather than telling you to book us.",
       },
       {
         heading: "What goes wrong when the method is wrong",
@@ -328,9 +346,16 @@ export const GUIDES: Guide[] = [
         body: [
           "Most properties here need both methods in one visit, which is exactly why the distinction matters.",
           "The north-facing side of a house grows green algae because it stays damp. That is a soft wash with a cleaning solution — the growth is biological, and killing it is what stops it coming straight back. Blasting it off with pressure removes what you can see and leaves what you cannot, which is why it returns within a season.",
-          "Driveways and paths are the opposite problem: no delicate surface to protect, and stains that need force. Oil and rust want heat. Moss and general grime want pressure and a decent surface cleaner rather than a wand, which is what stops the striping.",
+          "Driveways and paths are the opposite problem: no delicate surface to protect, and stains that need force. Moss, algae and general grime want pressure and a decent surface cleaner rather than a wand, which is what stops the striping. Set oil and rust aside — they are the one case on a driveway where cold pressure genuinely will not finish the job, and they are covered below.",
         ],
         note: "A useful test when you get a quote: ask what pressure they will use on the siding. If the answer is the same as for the driveway, keep calling.",
+      },
+      {
+        heading: "The one job we turn down",
+        body: [
+          "Set-in motor oil and rust on concrete need heat, and our rig does not have it. Cold water and pressure will lighten an oil patch and leave a shadow, and the shadow is what you will notice every time you park.",
+          "So if that is the job, hire someone running a heated machine, or budget for a degreaser and a poultice rather than a wash. We would rather say that here than take the booking and hand back a driveway with a grey ghost on it.",
+        ],
       },
       {
         heading: "What we charge",
@@ -343,7 +368,7 @@ export const GUIDES: Guide[] = [
     faqs: [
       {
         q: "Is power washing the same as pressure washing?",
-        a: "Almost. The difference is heat: a power washer heats the water, a pressure washer does not. Heat is what breaks down oil, grease and gum, so it matters on a stained driveway and matters very little on general dirt.",
+        a: "Almost. The difference is heat: a power washer heats the water, a pressure washer does not. Heat is what breaks down oil, grease and gum, so it matters on a stained driveway and matters very little on general dirt. Ours runs unheated, so on a set-in oil patch we will tell you to call someone with a heated rig rather than take your money and leave a shadow.",
       },
       {
         q: "Can you pressure wash vinyl siding?",

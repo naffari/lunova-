@@ -8,6 +8,7 @@ import StatBand from "../../components/StatBand";
 import ServiceEstimator from "../../components/ServiceEstimator";
 import PackageGrid from "../../components/PackageGrid";
 import CrossSellRow from "../../components/CrossSellRow";
+import ServicePolicySection from "../../components/ServicePolicySection";
 import WorkGallery from "../../components/WorkGallery";
 import { SERVICE_THEMES } from "../../constants/theme";
 import { BRAND } from "../../constants/brand";
@@ -111,6 +112,10 @@ export default function ResidentialCleaning() {
 
       {/* The two services this one is usually booked with, from `upsells`. */}
       <CrossSellRow serviceKey="cleaning" primaryColor={PRIMARY} accentColor={ACCENT} />
+
+      {/* Access, prep and hard refusals, from constants/servicePolicy.ts.
+          Only blocks with confirmed facts behind them render. */}
+      <ServicePolicySection serviceKey="cleaning" primaryColor={PRIMARY} accentColor={ACCENT} />
 
       {/* WHAT DONE LOOKS LIKE — real job photography, see constants/serviceGallery.ts */}
       <WorkGallery

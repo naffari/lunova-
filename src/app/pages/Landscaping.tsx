@@ -9,6 +9,7 @@ import StatBand from "../components/StatBand";
 import ServiceEstimator from "../components/ServiceEstimator";
 import PackageGrid from "../components/PackageGrid";
 import CrossSellRow from "../components/CrossSellRow";
+import ServicePolicySection from "../components/ServicePolicySection";
 import WorkGallery from "../components/WorkGallery";
 import { SERVICE_THEMES } from "../constants/theme";
 import { BRAND } from "../constants/brand";
@@ -134,6 +135,10 @@ export default function Landscaping() {
 
       {/* The two services this one is usually booked with, from `upsells`. */}
       <CrossSellRow serviceKey="landscaping" primaryColor={PRIMARY} accentColor={ACCENT} />
+
+      {/* Access, prep and hard refusals, from constants/servicePolicy.ts.
+          Only blocks with confirmed facts behind them render. */}
+      <ServicePolicySection serviceKey="landscaping" primaryColor={PRIMARY} accentColor={ACCENT} />
       {/* FEATURE HIGHLIGHTS */}
       <section className="py-20 px-4 sm:px-6" style={{ backgroundColor: BG }}>
         <div className="max-w-7xl mx-auto">
