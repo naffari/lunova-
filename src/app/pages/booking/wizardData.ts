@@ -9,13 +9,30 @@
  * It previously carried its own copy of all eight services and their prices,
  * which had already drifted from the homepage and the service pages.
  */
-import { SERVICES, SERVICE_BY_ID, SERVICE_NAME_BY_ID, startingAtLabel } from "../../constants/services";
+import {
+  ACTIVE_SERVICES,
+  SERVICES,
+  SERVICE_BY_ID,
+  SERVICE_NAME_BY_ID,
+  startingAtLabel,
+} from "../../constants/services";
 import { SERVICE_AREA_CITIES } from "../../constants/serviceArea";
 
 export { SERVICES, SERVICE_BY_ID, SERVICE_NAME_BY_ID };
 
-/** Service picker tiles for step 1, in catalogue order. */
-export const CATEGORIES = SERVICES.map((s) => ({
+/**
+ * Service picker tiles for step 1.
+ *
+ * Active services only. A parked line in this list is a booking the crew
+ * cannot turn up for, taken from someone who then stops looking — the most
+ * expensive way to lose a customer, because it costs the referral as well as
+ * the job.
+ *
+ * `SERVICE_BY_ID` is still exported whole, because a deep link carrying a
+ * parked id has to be recognised in order to be rejected. See the guard in
+ * BookingWizard.
+ */
+export const CATEGORIES = ACTIVE_SERVICES.map((s) => ({
   id: s.id,
   name: s.name,
   price: startingAtLabel(s),

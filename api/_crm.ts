@@ -16,6 +16,13 @@ const CRM_BASE_URL = (process.env.CRM_API_URL || "https://crm.lunovaservices.com
  * `landscaping` is absent on purpose — see `resolveServiceSlug`. The CRM's
  * `hardscape-demolition-adjacent` service has no wizard category and stays
  * unmapped.
+ *
+ * Every mapping is kept, including the ones for services the website has
+ * parked (see the `active` flag in src/app/constants/services.ts). The site no
+ * longer offers those, but the CRM still has the services configured, and a
+ * lead can reach this endpoint by other routes — a phone call typed in by hand,
+ * a stale link, a job taken as a favour. Deleting a mapping would not prevent
+ * any of that; it would only mean the lead arrives unclassified.
  */
 const SERVICE_SLUG_MAP: Record<string, string> = {
   cleaning: "residential-cleaning",

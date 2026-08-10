@@ -16,6 +16,8 @@ import {
   SERVICE_NAME_BY_ID,
   cheapestSubservice,
   formatDollars,
+  isActive,
+  MINIMUM_CHARGE,
   startingAtLabel,
   FREQUENCY_DISCOUNT,
   discountRate,
@@ -215,7 +217,17 @@ export default function BookingWizard() {
 
     setState((s) => {
       const next = { ...s };
-      if (service && CATEGORY_LABELS[service]) {
+      /*
+        `isActive`, not just "is a known id".
+
+        Old links, bookmarks, indexed URLs and anything shared before the
+        catalogue was narrowed still carry `?service=power`. That id resolves
+        fine — it is a real catalogue entry — so a label check alone would
+        happily preselect a service the crew cannot deliver, and the visitor
+        would reach the review step before anyone noticed. Falling through
+        leaves them on step 1 picking from what is actually bookable.
+      */
+      if (service && CATEGORY_LABELS[service] && isActive(service)) {
         next.category = service;
         next.step = Math.max(next.step, 2);
         next.answers = { ...defaultAnswers(service), ...next.answers };
@@ -340,6 +352,19 @@ export default function BookingWizard() {
     */
     const rate = discountRate(serviceCount, state.frequency);
     const discount = Math.round(subtotal * rate);
+    const total = subtotal - discount;
+
+    /*
+      Whether the discounted total has dropped under the call-out minimum.
+
+      Travel is the hidden cost in a mobile trade: twenty minutes each way is
+      most of an hour before anyone picks up a cloth. The discounts made this
+      reachable — an express wash on a recurring frequency can price below what
+      the drive costs — so it is surfaced in the estimate rather than discovered
+      by the crew on the day, which is the version where somebody has to phone a
+      customer back and re-quote a job they already booked.
+    */
+    const belowMinimum = !detailPrice.needsVisit && !bundleNeedsVisit && total > 0 && total < MINIMUM_CHARGE;
 
     return {
       ...detailPrice,
@@ -347,11 +372,12 @@ export default function BookingWizard() {
       subtotal,
       discount,
       discountRate: rate,
-      total: subtotal - discount,
+      total,
       serviceCount,
+      belowMinimum,
       needsVisit: detailPrice.needsVisit || bundleNeedsVisit,
     };
-  }, [state.category, state.packageId, state.answers, state.extras, state.bundles]);
+  }, [state.category, state.packageId, state.answers, state.extras, state.bundles, state.frequency]);
 
   const coverage = state.zip.length === 5 ? checkCoverage(state.zip) : null;
 
@@ -713,7 +739,8 @@ export default function BookingWizard() {
               onAnswer={setAnswer}
               onToggleAddOn={toggleExtra}
               packageError={errorFor("packageId")}
-              upsells={service?.upsells ?? []}
+              // Bundling into a parked service would book work nobody can do.
+              upsells={(service?.upsells ?? []).filter(isActive)}
               bundles={state.bundles}
               onToggleBundle={toggleBundle}
               bundlePriceLabel={bundlePriceLabel}
@@ -1078,6 +1105,24 @@ export default function BookingWizard() {
                     ? "Some of what you've picked needs a look at the property before we can price it. We'll confirm the full figure on the phone."
                     : "A starting figure, not a quote. We confirm the final price before any work begins."}
                 </p>
+
+                {/*
+                  Said here rather than on the phone afterwards.
+
+                  The alternative is a booking that gets taken, routed, and then
+                  re-quoted by someone calling to explain the minimum — which
+                  reads as a price that went up after the customer committed,
+                  whatever the reason. Stated up front it is just a call-out
+                  charge, which everyone in a mobile trade has.
+                */}
+                {estimate.belowMinimum && (
+                  <p className="text-[11px] leading-relaxed mt-3 pt-3 text-foreground/80" style={{ borderTop: "1px solid var(--border)" }}>
+                    <strong className="font-semibold">Heads up:</strong> our call-out minimum is{" "}
+                    {formatDollars(MINIMUM_CHARGE)}, so this job would be billed at that. Adding
+                    anything else — or booking it alongside another service — puts the difference
+                    into work rather than travel.
+                  </p>
+                )}
               </div>
             )}
 
