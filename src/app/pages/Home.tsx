@@ -13,6 +13,7 @@ import { PHONE, PHONE_DISPLAY } from "../constants/contact";
 import { BRAND } from "../constants/brand";
 import { GUARANTEE } from "../constants/proof";
 import { SERVICES, startingAtLabel, bookPath } from "../constants/services";
+import { DEFAULT_OG_IMAGE_ALT, heroSize } from "../constants/seo";
 import { preloadRoute } from "../routeModules";
 import { HIGH_FETCH_PRIORITY } from "../utils/dom";
 import {
@@ -110,13 +111,19 @@ export default function Home() {
       />
       <div className="font-sans-modern min-h-screen" style={{ backgroundColor: BG, color: BRAND.ink }}>
         {/*
-          HERO — split layout, image right, single-input coverage check left.
-          Replaces a centred text-only hero whose two buttons sent cold traffic
-          straight into a five-step wizard. The ZIP field is the researched
-          pattern (LawnStarter's hero-as-form, Homeaglow's single ZIP + price
-          headline) and it qualifies the visitor before they invest any effort.
+          HERO — the same shape every other page uses.
+
+          Copy on the chrome-toned ground, then the photograph full bleed
+          underneath it, uncovered. This page used to open on the cream ground
+          instead, which made the homepage the one page whose first screen did
+          not look like the rest of the site, and forced the fixed navbar to
+          carry a second colour scheme for that route alone.
+
+          The ZIP field stays. It is the researched pattern (LawnStarter's
+          hero-as-form, Homeaglow's single ZIP) and it qualifies the visitor
+          before they invest any effort in a five-step wizard.
         */}
-        <section className="relative pt-[5.5rem] pb-10 px-4 sm:px-6 overflow-hidden" style={{ backgroundColor: BG }}>
+        <section className="pt-28 pb-12 px-4 sm:px-6" style={{ backgroundColor: BRAND.raised }}>
           {/*
             Two columns from lg up, one below.
 
@@ -129,20 +136,20 @@ export default function Home() {
           <div className="max-w-7xl mx-auto grid lg:grid-cols-[minmax(0,1fr)_22rem] gap-10 lg:gap-16 items-start">
             <div>
               <div
-                className="inline-flex items-center gap-2 text-xs font-semibold px-3.5 py-1.5 rounded-full mb-6 border"
-                style={{ backgroundColor: withAlpha(ACCENT, 0.07), color: ACCENT, borderColor: withAlpha(ACCENT, 0.19) }}
+                className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest mb-4"
+                style={{ color: ACCENT_2 }}
               >
-                <span className="w-2 h-2 rounded-full" style={{ backgroundColor: ACCENT }} />
+                <MapPin size={14} />
                 <span>Serving the Kansas City Metro</span>
               </div>
 
               <h1
                 className="font-serif-display text-[2.75rem] sm:text-6xl lg:text-[4.25rem] font-normal leading-[1.02] mb-5 tracking-tight"
-                style={{ color: PRIMARY }}
+                style={{ color: "#ffffff" }}
               >
                 Clean. Cut. Haul.
                 <br />
-                <span style={{ color: ACCENT }}>One call.</span>
+                <span style={{ color: ACCENT_2 }}>One call.</span>
               </h1>
 
               {/*
@@ -156,33 +163,33 @@ export default function Home() {
                 business in the opening line, next to the metro it works in, is
                 the cheapest possible signal that this page is the answer.
               */}
-              <p className="text-base sm:text-lg max-w-xl mb-7 leading-relaxed" style={{ color: withAlpha(BRAND.ink, 0.69) }}>
+              <p className="text-base sm:text-lg max-w-xl mb-7 leading-relaxed" style={{ color: "rgba(255,255,255,0.72)" }}>
                 Lunova Services is one local crew for eight home jobs, on both sides of the state
                 line in Kansas City. Check your ZIP and book a same-week slot in about two minutes.
               </p>
 
-              <ZipCheck variant="section" className="max-w-xl mb-6" />
+              <ZipCheck variant="hero" className="max-w-xl mb-6" />
 
-              <ProofStrip variant="light" className="mb-6" />
+              <ProofStrip variant="hero" className="mb-6" />
 
               <div className="flex flex-wrap items-center gap-x-5 gap-y-3">
                 <Link
                   to="/book"
                   className="inline-flex items-center gap-2 text-sm font-bold transition-colors"
-                  style={{ color: PRIMARY }}
+                  style={{ color: "#ffffff" }}
                   onMouseEnter={() => preloadRoute("/book")}
                   onFocus={() => preloadRoute("/book")}
                 >
                   Or browse services and book directly
-                  <ArrowUpRight size={15} style={{ color: ACCENT }} />
+                  <ArrowUpRight size={15} style={{ color: ACCENT_2 }} />
                 </Link>
                 <a
                   href={`tel:+1${PHONE}`}
                   onClick={() => trackCall("home_hero")}
                   className="inline-flex items-center gap-2 text-sm font-semibold"
-                  style={{ color: withAlpha(BRAND.ink, 0.6) }}
+                  style={{ color: "rgba(255,255,255,0.7)" }}
                 >
-                  <Phone size={14} style={{ color: ACCENT }} />
+                  <Phone size={14} style={{ color: ACCENT_2 }} />
                   {PHONE_DISPLAY}
                 </a>
               </div>
@@ -199,9 +206,9 @@ export default function Home() {
             */}
             <aside
               className="hidden lg:block rounded-3xl p-6 border"
-              style={{ backgroundColor: SURFACE, borderColor: BRAND.hairline }}
+              style={{ backgroundColor: "rgba(255,255,255,0.05)", borderColor: "rgba(255,255,255,0.16)" }}
             >
-              <p className="text-[11px] font-bold uppercase tracking-widest mb-4" style={{ color: ACCENT }}>
+              <p className="text-[11px] font-bold uppercase tracking-widest mb-4" style={{ color: ACCENT_2 }}>
                 What it costs to start
               </p>
 
@@ -210,14 +217,13 @@ export default function Home() {
                   <li key={service.id} className="flex items-baseline justify-between gap-4">
                     <Link
                       to={service.to}
-                      className="text-sm font-semibold hover:underline"
-                      style={{ color: PRIMARY }}
+                      className="text-sm font-semibold text-white hover:underline"
                       onMouseEnter={() => preloadRoute(service.to)}
                       onFocus={() => preloadRoute(service.to)}
                     >
                       {service.name}
                     </Link>
-                    <span className="text-sm font-bold shrink-0" style={{ color: ACCENT }}>
+                    <span className="text-sm font-bold shrink-0" style={{ color: ACCENT_2 }}>
                       {startingAtLabel(service)}
                     </span>
                   </li>
@@ -226,28 +232,26 @@ export default function Home() {
 
               <p
                 className="mt-5 pt-4 text-xs leading-relaxed"
-                style={{ borderTop: `1px solid ${BRAND.hairline}`, color: withAlpha(BRAND.ink, 0.62) }}
+                style={{ borderTop: "1px solid rgba(255,255,255,0.16)", color: "rgba(255,255,255,0.68)" }}
               >
                 Flat rates, confirmed by phone before any work starts. Book two or more services
                 and 10% comes off the combined total.
               </p>
 
-              <p className="mt-3 text-xs font-semibold" style={{ color: PRIMARY }}>
-                {GUARANTEE.short}.
-              </p>
+              <p className="mt-3 text-xs font-semibold text-white">{GUARANTEE.short}.</p>
             </aside>
           </div>
         </section>
 
         {/*
           The three services the headline names, in the order it names them:
-          clean, cut, haul. Full bleed and uncovered.
+          clean, cut, haul.
 
-          It used to be one portrait crop of a cleaner in the right-hand column,
-          which showed a third of the business and squeezed the ZIP field into
-          half the width on desktop. A single wide band shows all three trades,
-          gives the copy the full column back, and needs no scrim because
-          nothing sits on top of it.
+          Full bleed and completely uncovered — no scrim, no caption laid over
+          it. A gradient used to run along the bottom carrying the guarantee,
+          which darkened the one panel of the photograph doing the most work.
+          The guarantee moved to the strip below, where it is readable text
+          rather than white type on a photo.
         */}
         <figure className="relative w-full overflow-hidden m-0" style={{ backgroundColor: BRAND.raised }}>
           <picture>
@@ -263,25 +267,26 @@ export default function Home() {
             />
             <img
               src="/images/hero/lunova-services-hero-1280.jpg"
-              alt="Three sides of the business, side by side: a cleaner wiping down interior window glass, a freshly mown back lawn, and a cleared household load stacked ready for hauling"
+              alt={DEFAULT_OG_IMAGE_ALT}
               className="block w-full object-cover h-[42vw] min-h-[190px] max-h-[460px]"
-              width={2400}
-              height={864}
+              width={heroSize("lunova-services-hero").width}
+              height={heroSize("lunova-services-hero").height}
               loading="eager"
               decoding="async"
               {...HIGH_FETCH_PRIORITY}
             />
           </picture>
-          <figcaption
-            className="absolute inset-x-0 bottom-0 px-4 sm:px-6 py-4"
-            style={{ background: `linear-gradient(to top, ${withAlpha(PRIMARY, 0.85)}, transparent)` }}
-          >
-            <div className="max-w-7xl mx-auto">
-              <p className="text-xs font-semibold text-white/95">{GUARANTEE.name}</p>
-              <p className="text-[11px] mt-0.5 text-white/70">{GUARANTEE.short} on every job.</p>
-            </div>
-          </figcaption>
         </figure>
+
+        {/* The guarantee, off the photograph and onto its own ground. */}
+        <div className="px-4 sm:px-6 py-4" style={{ backgroundColor: BRAND.raised }}>
+          <div className="max-w-7xl mx-auto flex flex-wrap items-baseline gap-x-3 gap-y-1">
+            <p className="text-xs font-semibold text-white">{GUARANTEE.name}</p>
+            <p className="text-[11px]" style={{ color: "rgba(255,255,255,0.7)" }}>
+              {GUARANTEE.short} on every job.
+            </p>
+          </div>
+        </div>
 
         <Marquee items={MARQUEE_ITEMS} backgroundColor={ACCENT} textColor={"#ffffff"} />
 

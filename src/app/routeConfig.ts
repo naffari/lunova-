@@ -36,7 +36,7 @@ export interface RouteConfigEntry {
 }
 
 export const ROUTE_CONFIG: RouteConfigEntry[] = [
-  { path: "/", module: "home", prerender: true, chrome: "light" },
+  { path: "/", module: "home", prerender: true },
   { path: "/cleaning", module: "cleaning", prerender: true },
   { path: "/services/residential-cleaning", module: "residentialCleaning", prerender: true },
   { path: "/services/commercial-cleaning", module: "commercialCleaning", prerender: true },
