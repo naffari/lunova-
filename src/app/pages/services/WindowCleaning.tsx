@@ -14,10 +14,11 @@ import StatBand from "../../components/StatBand";
 import ServiceEstimator from "../../components/ServiceEstimator";
 import PackageGrid from "../../components/PackageGrid";
 import CrossSellRow from "../../components/CrossSellRow";
+import ServiceWaitlist from "../../components/ServiceWaitlist";
 import { buildBreadcrumbSchema, buildFaqSchema, buildServiceSchema } from "../../utils/structuredData";
 import { SERVICE_THEMES } from "../../constants/theme";
 import { BRAND } from "../../constants/brand";
-import { SERVICE_BY_ID, startingAtLabel, bookPath } from "../../constants/services";
+import { SERVICE_BY_ID, startingAtLabel, serviceCtaPath } from "../../constants/services";
 import Marquee from "../../components/Marquee";
 import { withAlpha } from "../../utils/color";
 import { heroOgImage } from "../../constants/seo";
@@ -117,8 +118,8 @@ export default function WindowCleaning() {
         description="Interior and exterior window washing, screen scrubbing, track cleaning, and hard water stain removal for homes and businesses."
         primaryColor={GROUND}
         accentColor={ACCENT}
-        ctaLabel="Book a Clean"
-        ctaTo={bookPath("window")}
+        ctaLabel="Join the waitlist"
+        ctaTo={serviceCtaPath("window")}
         trustItems={["Streak-Free Guarantee", "Interior & Exterior", "Eco-Safe Solution"]}
         heroImage="window-cleaning-hero"
         heroImageAlt="A squeegee pulling a clean stripe through soap on a window, blue sky visible through the glass"
@@ -130,6 +131,7 @@ export default function WindowCleaning() {
           constants/serviceDetails.ts, priced live and handed to the wizard
           through the URL so step 2 opens already answered. Sits above the
           package grid: price first, then the detail behind the price. */}
+      <ServiceWaitlist serviceKey="window" primaryColor={PRIMARY} accentColor={ACCENT} />
       <ServiceEstimator serviceKey="window" primaryColor={PRIMARY} accentColor={ACCENT} />
 
       {/* WHAT'S INCLUDED — shared PackageGrid, sourced from constants/serviceDetails.ts.
@@ -208,8 +210,8 @@ export default function WindowCleaning() {
         subtext="Book your interior, exterior, or full-service window clean today. Flat-rate pricing and a streak-free guarantee on every pane."
         primaryColor={GROUND}
         accentColor={ACCENT}
-        ctaLabel="Book a Clean"
-        ctaTo={bookPath("window")}
+        ctaLabel="Join the waitlist"
+        ctaTo={serviceCtaPath("window")}
       />
 
     </div>

@@ -14,11 +14,12 @@ import StatBand from "../../components/StatBand";
 import ServiceEstimator from "../../components/ServiceEstimator";
 import PackageGrid from "../../components/PackageGrid";
 import CrossSellRow from "../../components/CrossSellRow";
+import ServiceWaitlist from "../../components/ServiceWaitlist";
 import ServicePolicySection from "../../components/ServicePolicySection";
 import { buildBreadcrumbSchema, buildFaqSchema, buildServiceSchema } from "../../utils/structuredData";
 import { SERVICE_THEMES } from "../../constants/theme";
 import { BRAND } from "../../constants/brand";
-import { SERVICE_BY_ID, startingAtLabel, bookPath } from "../../constants/services";
+import { SERVICE_BY_ID, startingAtLabel, serviceCtaPath } from "../../constants/services";
 import Marquee from "../../components/Marquee";
 import { withAlpha } from "../../utils/color";
 import { heroOgImage } from "../../constants/seo";
@@ -137,8 +138,8 @@ export default function BinCleaning() {
         description="We pull up to your curb after trash day, pressure wash your bins inside and out with a biodegradable detergent, and finish with a deodorizing treatment. No mess, no hassle."
         primaryColor={GROUND}
         accentColor={ACCENT}
-        ctaLabel="Book a Clean"
-        ctaTo={bookPath("bin")}
+        ctaLabel="Join the waitlist"
+        ctaTo={serviceCtaPath("bin")}
         trustItems={["Biodegradable Detergents", "Curbside — Nothing To Do", "Monthly Route Service"]}
         heroImage="bin-cleaning-hero"
         heroImageAlt="A wheelie bin tipped on its side at the curb being pressure-rinsed, water spraying out through the open lid"
@@ -150,6 +151,7 @@ export default function BinCleaning() {
           constants/serviceDetails.ts, priced live and handed to the wizard
           through the URL so step 2 opens already answered. Sits above the
           package grid: price first, then the detail behind the price. */}
+      <ServiceWaitlist serviceKey="bin" primaryColor={PRIMARY} accentColor={ACCENT} />
       <ServiceEstimator serviceKey="bin" primaryColor={PRIMARY} accentColor={ACCENT} />
 
       {/* WHAT'S INCLUDED — shared PackageGrid, sourced from constants/serviceDetails.ts.
@@ -232,8 +234,8 @@ export default function BinCleaning() {
         subtext="Join our monthly route and never scrub a filthy bin again. Washed, deodorized, and back at your curb before you know it."
         primaryColor={GROUND}
         accentColor={ACCENT}
-        ctaLabel="Book a Clean"
-        ctaTo={bookPath("bin")}
+        ctaLabel="Join the waitlist"
+        ctaTo={serviceCtaPath("bin")}
       />
 
     </div>

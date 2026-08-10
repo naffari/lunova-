@@ -104,6 +104,21 @@ export function bookPath(service: ServiceId, packageId?: string): string {
   return packageId ? `/book?service=${service}&package=${packageId}` : `/book?service=${service}`;
 }
 
+/**
+ * Where a service page's call-to-action should point.
+ *
+ * Active services go to the wizard. Parked ones go to the waitlist section on
+ * their own page, because the alternative — a booking button for work that
+ * cannot be done — costs the referral as well as the job.
+ *
+ * Every CTA on a service page routes through this rather than calling
+ * `bookPath` directly, so parking a line cannot leave a live booking button
+ * behind on the one page most likely to be found by someone searching for it.
+ */
+export function serviceCtaPath(service: ServiceId, packageId?: string): string {
+  return isActive(service) ? bookPath(service, packageId) : "#waitlist";
+}
+
 export const SERVICES: ServiceDef[] = [
   {
     id: "cleaning",

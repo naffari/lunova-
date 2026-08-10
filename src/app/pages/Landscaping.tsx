@@ -9,11 +9,12 @@ import StatBand from "../components/StatBand";
 import ServiceEstimator from "../components/ServiceEstimator";
 import PackageGrid from "../components/PackageGrid";
 import CrossSellRow from "../components/CrossSellRow";
+import ServiceWaitlist from "../components/ServiceWaitlist";
 import ServicePolicySection from "../components/ServicePolicySection";
 import WorkGallery from "../components/WorkGallery";
 import { SERVICE_THEMES } from "../constants/theme";
 import { BRAND } from "../constants/brand";
-import { SERVICE_BY_ID, startingAtLabel, bookPath } from "../constants/services";
+import { SERVICE_BY_ID, startingAtLabel, serviceCtaPath } from "../constants/services";
 import { buildBreadcrumbSchema, buildFaqSchema, buildServiceSchema } from "../utils/structuredData";
 import Marquee from "../components/Marquee";
 import { withAlpha } from "../utils/color";
@@ -113,8 +114,8 @@ export default function Landscaping() {
         description="Whether you need routine lawn maintenance, bush trimming, mulch application, or urgent yard cleanup, our team delivers fast, affordable, and professional outdoor care."
         primaryColor={GROUND}
         accentColor={ACCENT}
-        ctaLabel="Book Landscaping"
-        ctaTo={bookPath("landscaping")}
+        ctaLabel="Join the waitlist"
+        ctaTo={serviceCtaPath("landscaping")}
         trustItems={["Locally Owned", "Same-Week Appointments", "100% Satisfaction"]}
         heroImage="landscaping-hero"
         heroImageAlt="A wide, freshly mown back lawn with trimmed shrub beds running down to a pool and patio"
@@ -126,6 +127,7 @@ export default function Landscaping() {
           constants/serviceDetails.ts, priced live and handed to the wizard
           through the URL so step 2 opens already answered. Sits above the
           package grid: price first, then the detail behind the price. */}
+      <ServiceWaitlist serviceKey="landscaping" primaryColor={PRIMARY} accentColor={ACCENT} />
       <ServiceEstimator serviceKey="landscaping" primaryColor={PRIMARY} accentColor={ACCENT} />
 
       {/* WHAT'S INCLUDED — shared PackageGrid, sourced from constants/serviceDetails.ts.
@@ -177,7 +179,7 @@ export default function Landscaping() {
         primaryColor={GROUND}
         accentColor={ACCENT}
         bgColor={BG}
-        bookTo={bookPath("landscaping")}
+        bookTo={serviceCtaPath("landscaping")}
       />
 
       {/* HOW IT WORKS */}
@@ -217,8 +219,8 @@ export default function Landscaping() {
         subtext="Book mowing, cleanup, or a full landscape refresh today. Flat-rate pricing and same-week appointments across the KC metro."
         primaryColor={GROUND}
         accentColor={ACCENT}
-        ctaLabel="Book Landscaping"
-        ctaTo={bookPath("landscaping")}
+        ctaLabel="Join the waitlist"
+        ctaTo={serviceCtaPath("landscaping")}
       />
 
     </div>

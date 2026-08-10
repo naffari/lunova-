@@ -12,7 +12,7 @@ import Seo from "../components/common/Seo";
 import { PHONE, PHONE_DISPLAY } from "../constants/contact";
 import { BRAND } from "../constants/brand";
 import { GUARANTEE } from "../constants/proof";
-import { SERVICES, startingAtLabel, bookPath } from "../constants/services";
+import { ACTIVE_SERVICES, BIN_ADDON, formatDollars, startingAtLabel, bookPath } from "../constants/services";
 import { DEFAULT_OG_IMAGE_ALT, heroSize } from "../constants/seo";
 import { preloadRoute } from "../routeModules";
 import { HIGH_FETCH_PRIORITY } from "../utils/dom";
@@ -50,17 +50,17 @@ const SURFACE = BRAND.surface;
 */
 
 /**
- * The four services shown in the hero price card, in the order the headline
- * names them plus the subscription. Pulled from the catalogue by id so the
- * figures stay in step with the service pages and the wizard.
+ * The services shown in the hero price card.
+ *
+ * Reads the active catalogue rather than a hand-written id list, which is what
+ * it did before — and that list named landscaping and junk removal, so the
+ * first price a visitor saw was for work nobody could do.
  */
-const HERO_PRICE_ROWS = ["cleaning", "landscaping", "junk", "bin"]
-  .map((id) => SERVICES.find((service) => service.id === id))
-  .filter((service): service is (typeof SERVICES)[number] => service !== undefined);
+const HERO_PRICE_ROWS = ACTIVE_SERVICES;
 
 /** Written once; Marquee doubles it for the seamless loop. */
 const MARQUEE_ITEMS = [
-  "Cleaning Services", "Junk Removal", "Landscaping", "Locally Owned", "Same-Week Slots", "100% Satisfaction", "Locally Owned", "Kansas City Metro",
+  "House Cleaning", "Mobile Detailing", "Locally Owned", "Same-Week Slots", "Flat-Rate Quotes", "Nothing Charged At Booking", "Locally Owned", "Kansas City Metro",
 ];
 
 const HOW_IT_WORKS_STEPS = [
@@ -79,16 +79,16 @@ const WHY_LUNOVA = [
 
 const FAQS = [
   {
-    q: "Do you offer recurring service plans?",
-    a: "Yes. Cleaning, bin sanitation, and landscaping are all available on weekly, bi-weekly, or monthly recurring plans, and recurring customers get priority scheduling plus bundle pricing.",
+    q: "Do you offer recurring cleaning plans?",
+    a: "Yes. Cleaning runs weekly, bi-weekly or monthly, and recurring customers get the same crew, priority scheduling and a discount that comes off automatically in the booking flow. Detailing is booked as you need it — most people land on somewhere between twice and four times a year.",
   },
   {
     q: "What areas do you serve?",
     a: "We serve the greater Kansas City metro, including Overland Park, Olathe, Shawnee, Lenexa, Leawood, Prairie Village, Lee's Summit, Independence, Blue Springs, and Raytown. Enter your ZIP in the checker above, and if we're not on your street yet we'll tell you straight away.",
   },
   {
-    q: "How do I get a quote for commercial cleaning?",
-    a: "Book online and select Commercial Cleaning, or give us a call. We'll ask a few quick questions about your space and get you a custom quote, usually same day.",
+    q: "Can you clean the house and detail the car on the same visit?",
+    a: `That is the point of booking both. The drive is already paid for, so the second job is cheaper to do — which is why 10% comes off the combined total. We can also wash and deodorise your bins while we're there for ${formatDollars(BIN_ADDON.price)}.`,
   },
   {
     q: "What if I need to reschedule?",
@@ -100,8 +100,8 @@ export default function Home() {
   return (
     <>
       <Seo
-        title="Lunova Services | Kansas City Cleaning, Landscaping & More"
-        description="Lunova Services offers professional cleaning, power washing, junk removal, landscaping, auto detailing, and more across Kansas City."
+        title="Lunova Services | KC House Cleaning & Mobile Detailing"
+        description="Lunova Services cleans homes and details cars across the Kansas City metro. Flat-rate quotes confirmed before we start, nothing charged at booking."
         jsonLd={[
           buildLocalBusinessSchema(),
           buildOrganizationSchema(),
@@ -147,7 +147,7 @@ export default function Home() {
                 className="font-serif-display text-[2.75rem] sm:text-6xl lg:text-[4.25rem] font-normal leading-[1.02] mb-5 tracking-tight"
                 style={{ color: "#ffffff" }}
               >
-                Clean. Cut. Haul.
+                Clean home. Clean car.
                 <br />
                 <span style={{ color: ACCENT_2 }}>One call.</span>
               </h1>
@@ -298,16 +298,23 @@ export default function Home() {
                 <span className="w-6 h-0.5" style={{ backgroundColor: ACCENT }} />
                 <span>What We Do</span>
               </div>
+              {/*
+                This said "Eight services. One call." while the business could
+                deliver two of them. Narrowing is easier to sell as a choice
+                than to explain as a shortfall — and for a company nobody has
+                heard of, doing two things properly is a better claim than doing
+                eight things somehow.
+              */}
               <h2 className="font-serif-display text-4xl sm:text-5xl mb-3" style={{ color: PRIMARY }}>
-                Eight services. One call.
+                Two services. Both done properly.
               </h2>
               <p className="text-sm" style={{ color: withAlpha(BRAND.ink, 0.6) }}>
-                Book two or more and 10% comes off the combined total.
+                Book both and 10% comes off the combined total.
               </p>
             </div>
 
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
-              {SERVICES.map((svc, idx) => {
+            <div className="grid sm:grid-cols-2 gap-6 max-w-4xl mx-auto">
+              {ACTIVE_SERVICES.map((svc, idx) => {
                 const Icon = svc.icon;
                 const iconBg = idx % 2 === 0 ? withAlpha(ACCENT, 0.1) : withAlpha(ACCENT_2, 0.1);
                 const iconColor = idx % 2 === 0 ? ACCENT : ACCENT_2;

@@ -1,57 +1,32 @@
 import { useState, useRef, useEffect } from "react";
 import { Link, useLocation } from "react-router";
-import {
-  Menu,
-  X,
-  MessageSquare,
-  ChevronDown,
-  Home,
-  Building2,
-  Droplets,
-  AppWindow,
-  Car,
-  Trash2,
-  Truck,
-  Leaf,
-  Calendar,
-} from "lucide-react";
+import { Menu, X, MessageSquare, Calendar } from "lucide-react";
 
 import { PHONE } from "../constants/contact";
+import { ACTIVE_SERVICES } from "../constants/services";
 import { preloadRoute } from "../routeModules";
 import { CHROME, CHROME_LIGHT } from "../constants/brand";
 import { chromeToneFor } from "../routeConfig";
 import { withAlpha } from "../utils/color";
 import { PhoneLink } from "./common/ContactLinks";
 
-const serviceCategories = [
-  {
-    title: "Cleaning Services",
-    items: [
-      { to: "/services/residential-cleaning", label: "Residential Cleaning", icon: Home, desc: "Standard, deep clean, move-in/out" },
-      { to: "/services/commercial-cleaning", label: "Commercial Janitorial", icon: Building2, desc: "Offices, retail & facilities" },
-      { to: "/services/bin-cleaning", label: "Trash Bin Cleaning", icon: Trash2, desc: "Curbside pressure wash and deodorize" },
-    ],
-  },
-  {
-    title: "Exterior & Auto",
-    items: [
-      { to: "/services/power-washing", label: "Power Washing", icon: Droplets, desc: "Siding, driveways & decks" },
-      { to: "/services/window-cleaning", label: "Window Cleaning", icon: AppWindow, desc: "Streak-free interior & exterior" },
-      { to: "/services/auto-detailing", label: "Auto Detailing", icon: Car, desc: "Mobile interior & exterior wash" },
-    ],
-  },
-  {
-    title: "Hauling & Lawn Care",
-    items: [
-      { to: "/junk-removal", label: "Junk Removal", icon: Truck, desc: "Single item to full truckload" },
-      { to: "/landscaping", label: "Landscaping & Lawn", icon: Leaf, desc: "Mowing, edging & yard cleanup" },
-    ],
-  },
-];
-
-/** Flattened service list for the mobile menu, derived from the same source as
- *  the desktop dropdown so the two can no longer disagree. */
-const ALL_SERVICES = serviceCategories.flatMap((cat) => cat.items);
+/**
+ * The service links, derived from the catalogue rather than typed out here.
+ *
+ * This used to be three hand-written categories holding eight links, which is
+ * how the navigation ended up advertising work the business could not do: the
+ * catalogue is the thing that knows what is sellable, and the navbar had its
+ * own opinion. Reading `ACTIVE_SERVICES` means parking a line removes it from
+ * the bar, and bringing one back puts it there, with no edit to this file.
+ *
+ * Two services do not need a mega-menu. They are rendered as two plain links.
+ */
+const NAV_SERVICES = ACTIVE_SERVICES.map((service) => ({
+  to: service.to,
+  label: service.name,
+  icon: service.icon,
+  desc: service.bullets.join(" · "),
+}));
 
 const FOCUSABLE_SELECTOR =
   'a[href], button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])';
@@ -59,9 +34,7 @@ const FOCUSABLE_SELECTOR =
 export default function Navbar() {
   const location = useLocation();
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [dropdownOpen, setDropdownOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
   const mobilePanelRef = useRef<HTMLDivElement>(null);
   const mobileToggleRef = useRef<HTMLButtonElement>(null);
 
@@ -79,12 +52,9 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Close dropdown/mobile menu on outside click
+  // Close the mobile menu on outside click
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setDropdownOpen(false);
-      }
       if (
         mobilePanelRef.current &&
         !mobilePanelRef.current.contains(event.target as Node) &&
@@ -98,13 +68,12 @@ export default function Navbar() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // Close menus on route change
+  // Close the menu on route change
   useEffect(() => {
-    setDropdownOpen(false);
     setMobileOpen(false);
   }, [location.pathname]);
 
-  // Close menus on Escape, returning focus to the toggle button
+  // Close the menu on Escape, returning focus to the toggle button
   useEffect(() => {
     function handleKeyDown(event: KeyboardEvent) {
       if (event.key !== "Escape") return;
@@ -112,11 +81,10 @@ export default function Navbar() {
         setMobileOpen(false);
         mobileToggleRef.current?.focus();
       }
-      if (dropdownOpen) setDropdownOpen(false);
     }
     document.addEventListener("keydown", handleKeyDown);
     return () => document.removeEventListener("keydown", handleKeyDown);
-  }, [mobileOpen, dropdownOpen]);
+  }, [mobileOpen]);
 
   // Lock background scroll and trap focus while the mobile menu is open
   useEffect(() => {
@@ -149,13 +117,7 @@ export default function Navbar() {
     };
   }, [mobileOpen]);
 
-  const isServicesActive =
-    location.pathname.startsWith("/services") ||
-    location.pathname === "/cleaning" ||
-    location.pathname === "/junk-removal" ||
-    location.pathname === "/landscaping";
-
-  const showSolidBg = scrolled || mobileOpen || dropdownOpen;
+  const showSolidBg = scrolled || mobileOpen;
 
   /*
     Which palette the bar wears, from the route table rather than a guess.
@@ -246,75 +208,27 @@ export default function Navbar() {
             Home
           </Link>
 
-          {/* Services Dropdown */}
-          <div className="relative" ref={dropdownRef}>
-            <button
-              onClick={() => setDropdownOpen((v) => !v)}
-              className="nav-link flex items-center gap-1 text-sm font-medium py-2"
-              data-active={isServicesActive}
-              aria-expanded={dropdownOpen}
-              aria-haspopup="true"
-            >
-              <span>Services</span>
-              <ChevronDown size={14} className={`transition-transform duration-200 ${dropdownOpen ? "rotate-180" : ""}`} style={{ color: dropdownOpen ? NAV_ACCENT : "inherit" }} />
-            </button>
+          {/*
+            The two services, as two links.
 
-            {dropdownOpen && (
-              <div
-                className="absolute top-full left-0 mt-2 w-[min(420px,calc(100vw-2rem))] lg:w-[min(680px,calc(100vw-2rem))] rounded-xl shadow-2xl p-6 grid grid-cols-1 lg:grid-cols-3 gap-6 z-50 animate-in fade-in slide-in-from-top-2 duration-150"
-                style={{ backgroundColor: NAV_PANEL, border: `1px solid ${NAV_BORDER}` }}
-              >
-                {serviceCategories.map((cat, idx) => (
-                  <div key={idx} className="space-y-3">
-                    <p className="text-[11px] font-bold uppercase tracking-wider pb-1.5" style={{ color: NAV_ACCENT, borderBottom: `1px solid ${NAV_BORDER}` }}>
-                      {cat.title}
-                    </p>
-                    <div className="space-y-1">
-                      {cat.items.map((item) => {
-                        const Icon = item.icon;
-                        const active = location.pathname === item.to;
-                        return (
-                          <Link
-                            key={item.to}
-                            to={item.to}
-                            className="nav-menu-item flex items-start gap-2.5 p-2 rounded-lg group"
-                            data-active={active}
-                            onMouseEnter={() => preloadRoute(item.to)}
-                            onFocus={() => preloadRoute(item.to)}
-                          >
-                            <Icon size={16} style={{ color: NAV_ACCENT }} className="shrink-0 mt-0.5" />
-                            <div>
-                              <p className="text-xs font-bold leading-tight">
-                                {item.label}
-                              </p>
-                              <p className="text-[10px] mt-0.5 line-clamp-1" style={{ color: NAV_MUTED }}>
-                                {item.desc}
-                              </p>
-                            </div>
-                          </Link>
-                        );
-                      })}
-                    </div>
-                  </div>
-                ))}
-                <div
-                  className="col-span-1 lg:col-span-3 pt-3 flex items-center justify-between -mx-6 -mb-6 p-4 rounded-b-xl"
-                  style={{ borderTop: `1px solid ${NAV_BORDER}`, backgroundColor: chrome.hover }}
-                >
-                  <span className="text-xs" style={{ color: NAV_MUTED }}>Looking for an umbrella overview?</span>
-                  <Link
-                    to="/cleaning"
-                    className="text-xs font-bold hover:underline flex items-center gap-1"
-                    style={{ color: NAV_ACCENT }}
-                    onMouseEnter={() => preloadRoute("/cleaning")}
-                    onFocus={() => preloadRoute("/cleaning")}
-                  >
-                    View Services Hub →
-                  </Link>
-                </div>
-              </div>
-            )}
-          </div>
+            This was a mega-menu: a click target that opened three columns of
+            eight links across a 680px panel. Two services do not need to be
+            discovered — hiding them behind a disclosure adds a click and
+            removes the one thing a home page visitor is scanning for, which is
+            whether this company does the job they came here about.
+          */}
+          {NAV_SERVICES.map((item) => (
+            <Link
+              key={item.to}
+              to={item.to}
+              className="nav-link text-sm font-medium"
+              data-active={location.pathname === item.to}
+              onMouseEnter={() => preloadRoute(item.to)}
+              onFocus={() => preloadRoute(item.to)}
+            >
+              {item.label}
+            </Link>
+          ))}
 
           {/*
             Areas and About in the primary nav, not just the footer.
@@ -432,20 +346,29 @@ export default function Navbar() {
             <Calendar size={16} /> Book Online Directly
           </Link>
           <div className="space-y-4 pt-2" style={{ borderTop: `1px solid ${NAV_BORDER}` }}>
-            <p className="text-xs font-bold uppercase tracking-wider" style={{ color: NAV_ACCENT }}>All Services</p>
-            {/* Derived from serviceCategories — this was previously a second,
-                hand-maintained copy of the same eight links. */}
-            <div className="grid grid-cols-2 gap-2 text-xs">
-              {ALL_SERVICES.map((item) => (
-                <Link
-                  key={item.to}
-                  to={item.to}
-                  className="p-2 rounded"
-                  style={{ backgroundColor: NAV_FILL, border: `1px solid ${NAV_BORDER}`, color: NAV_TEXT }}
-                >
-                  {item.label}
-                </Link>
-              ))}
+            <p className="text-xs font-bold uppercase tracking-wider" style={{ color: NAV_ACCENT }}>What we do</p>
+            {/* Same source as the desktop bar. This was previously a second,
+                hand-maintained copy of the same links. */}
+            <div className="grid grid-cols-1 gap-2">
+              {NAV_SERVICES.map((item) => {
+                const Icon = item.icon;
+                return (
+                  <Link
+                    key={item.to}
+                    to={item.to}
+                    className="flex items-start gap-2.5 p-3 rounded-lg"
+                    style={{ backgroundColor: NAV_FILL, border: `1px solid ${NAV_BORDER}`, color: NAV_TEXT }}
+                  >
+                    <Icon size={16} style={{ color: NAV_ACCENT }} className="shrink-0 mt-0.5" />
+                    <span>
+                      <span className="block text-sm font-bold leading-tight">{item.label}</span>
+                      <span className="block text-[11px] mt-0.5" style={{ color: NAV_MUTED }}>
+                        {item.desc}
+                      </span>
+                    </span>
+                  </Link>
+                );
+              })}
             </div>
           </div>
 

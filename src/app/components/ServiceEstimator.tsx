@@ -9,7 +9,7 @@ import {
   type Answers,
 } from "../constants/serviceDetails";
 import { estimateBookingPath } from "../constants/estimatorLink";
-import { formatDollars, type ServiceId } from "../constants/services";
+import { formatDollars, isActive, type ServiceId } from "../constants/services";
 import { PHONE, PHONE_DISPLAY } from "../constants/contact";
 import { useCrmPricing } from "../hooks/useCrmPricing";
 import { preloadRoute } from "../routeModules";
@@ -43,6 +43,15 @@ interface ServiceEstimatorProps {
  * shows a number for a tier that genuinely needs a site visit.
  */
 export default function ServiceEstimator({ serviceKey, primaryColor, accentColor }: ServiceEstimatorProps) {
+  /*
+    Parked services get no estimator.
+
+    It quotes a real number and hands that number to the wizard, which is
+    exactly the promise a page for unavailable work must not make.
+    ServiceWaitlist takes this slot instead — see `active` in
+    constants/services.ts.
+  */
+  const bookable = isActive(serviceKey);
   const base = getServiceDetail(serviceKey);
   const { overrides } = useCrmPricing(serviceKey);
   const detail = useMemo(() => withLivePrices(base, overrides), [base, overrides]);
@@ -58,7 +67,7 @@ export default function ServiceEstimator({ serviceKey, primaryColor, accentColor
     [detail, packageId, answers, addOnIds]
   );
 
-  if (!detail || detail.packages.length === 0) return null;
+  if (!detail || detail.packages.length === 0 || !bookable) return null;
 
   const selected = detail.packages.find((pkg) => pkg.id === packageId);
   const isMonthly = selected?.unit === "month";

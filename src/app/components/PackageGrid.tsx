@@ -1,7 +1,7 @@
 import { Link } from "react-router";
 import { Check, X, ArrowUpRight } from "lucide-react";
 import { getServiceDetail } from "../constants/serviceDetails";
-import { formatDollars, bookPath, type ServiceId } from "../constants/services";
+import { formatDollars, bookPath, isActive, type ServiceId } from "../constants/services";
 import { preloadRoute } from "../routeModules";
 import { withAlpha } from "../utils/color";
 
@@ -34,6 +34,14 @@ interface PackageGridProps {
 export default function PackageGrid({ serviceKey, primaryColor, accentColor }: PackageGridProps) {
   const detail = getServiceDetail(serviceKey);
   if (!detail) return null;
+  /*
+    Parked services render no package grid at all.
+
+    Every tile in it carries a "Book this" button, and the tiers are priced from
+    a catalogue nobody can currently deliver against. ServiceWaitlist takes this
+    slot on those pages instead. See the `active` flag in constants/services.ts.
+  */
+  if (!isActive(serviceKey)) return null;
 
 
   return (

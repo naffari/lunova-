@@ -8,10 +8,11 @@ import StatBand from "../../components/StatBand";
 import ServiceEstimator from "../../components/ServiceEstimator";
 import PackageGrid from "../../components/PackageGrid";
 import CrossSellRow from "../../components/CrossSellRow";
+import ServiceWaitlist from "../../components/ServiceWaitlist";
 import { buildBreadcrumbSchema, buildFaqSchema, buildServiceSchema } from "../../utils/structuredData";
 import { SERVICE_THEMES } from "../../constants/theme";
 import { BRAND } from "../../constants/brand";
-import { bookPath } from "../../constants/services";
+import { serviceCtaPath } from "../../constants/services";
 import Marquee from "../../components/Marquee";
 import { heroOgImage } from "../../constants/seo";
 
@@ -87,8 +88,8 @@ export default function CommercialCleaning() {
         description="Scheduled nightly janitorial for offices, medical facilities, retail stores, and restaurants. After-hours crews, quoted after a walk-through, run to your standards."
         primaryColor={GROUND}
         accentColor={ACCENT}
-        ctaLabel="Book a Clean"
-        ctaTo={bookPath("commercial")}
+        ctaLabel="Join the waitlist"
+        ctaTo={serviceCtaPath("commercial")}
         trustItems={["After-Hours Service", "Quoted On Site", "Satisfaction Guarantee"]}
         heroImage="commercial-cleaning-hero"
         heroImageAlt="A cleaner in protective coveralls sweeping up paint and plaster debris during a post-renovation clean"
@@ -100,6 +101,7 @@ export default function CommercialCleaning() {
           constants/serviceDetails.ts, priced live and handed to the wizard
           through the URL so step 2 opens already answered. Sits above the
           package grid: price first, then the detail behind the price. */}
+      <ServiceWaitlist serviceKey="commercial" primaryColor={PRIMARY} accentColor={ACCENT} />
       <ServiceEstimator serviceKey="commercial" primaryColor={PRIMARY} accentColor={ACCENT} />
 
       {/* WHAT'S INCLUDED — shared PackageGrid, sourced from constants/serviceDetails.ts.
@@ -153,8 +155,8 @@ export default function CommercialCleaning() {
         subtext="Get a custom contract quote for your facility. After-hours crews, dedicated team leads, and no long-term lock-in required."
         primaryColor={GROUND}
         accentColor={ACCENT}
-        ctaLabel="Request a Quote"
-        ctaTo={bookPath("commercial")}
+        ctaLabel="Join the waitlist"
+        ctaTo={serviceCtaPath("commercial")}
       />
 
     </div>

@@ -9,10 +9,11 @@ import StatBand from "../components/StatBand";
 import ServiceEstimator from "../components/ServiceEstimator";
 import PackageGrid from "../components/PackageGrid";
 import CrossSellRow from "../components/CrossSellRow";
+import ServiceWaitlist from "../components/ServiceWaitlist";
 import ServicePolicySection from "../components/ServicePolicySection";
 import { SERVICE_THEMES } from "../constants/theme";
 import { BRAND } from "../constants/brand";
-import { SERVICE_BY_ID, startingAtLabel, bookPath } from "../constants/services";
+import { SERVICE_BY_ID, startingAtLabel, serviceCtaPath } from "../constants/services";
 import { buildBreadcrumbSchema, buildFaqSchema, buildServiceSchema } from "../utils/structuredData";
 import { withAlpha } from "../utils/color";
 import Marquee from "../components/Marquee";
@@ -112,8 +113,8 @@ export default function JunkRemoval() {
         description="Furniture, appliances, construction debris, and full estate cleanouts. Our crew shows up fast, lifts everything, and leaves your space spotless."
         primaryColor={GROUND}
         accentColor={ACCENT}
-        ctaLabel="Book a Haul"
-        ctaTo={bookPath("junk")}
+        ctaLabel="Join the waitlist"
+        ctaTo={serviceCtaPath("junk")}
         trustItems={["Locally Owned", "Same-Day Service", "Eco-Friendly Recycling"]}
         heroImage="junk-removal-hero"
         heroImageAlt="A curbside pile of household junk cleared in one load: cardboard boxes, bagged waste, a broken dresser and a filing cabinet"
@@ -125,6 +126,7 @@ export default function JunkRemoval() {
           constants/serviceDetails.ts, priced live and handed to the wizard
           through the URL so step 2 opens already answered. Sits above the
           package grid: price first, then the detail behind the price. */}
+      <ServiceWaitlist serviceKey="junk" primaryColor={PRIMARY} accentColor={ACCENT} />
       <ServiceEstimator serviceKey="junk" primaryColor={PRIMARY} accentColor={ACCENT} />
 
       {/* WHAT'S INCLUDED — shared PackageGrid, sourced from constants/serviceDetails.ts.
@@ -207,8 +209,8 @@ export default function JunkRemoval() {
         subtext="Get a free instant estimate and same-day hauling. Our crew handles the heavy lifting so you don't have to."
         primaryColor={GROUND}
         accentColor={ACCENT}
-        ctaLabel="Book a Haul"
-        ctaTo={bookPath("junk")}
+        ctaLabel="Join the waitlist"
+        ctaTo={serviceCtaPath("junk")}
       />
 
     </div>

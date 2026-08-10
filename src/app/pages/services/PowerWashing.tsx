@@ -14,12 +14,13 @@ import StatBand from "../../components/StatBand";
 import ServiceEstimator from "../../components/ServiceEstimator";
 import PackageGrid from "../../components/PackageGrid";
 import CrossSellRow from "../../components/CrossSellRow";
+import ServiceWaitlist from "../../components/ServiceWaitlist";
 import ServicePolicySection from "../../components/ServicePolicySection";
 import WorkGallery from "../../components/WorkGallery";
 import { buildBreadcrumbSchema, buildFaqSchema, buildServiceSchema } from "../../utils/structuredData";
 import { SERVICE_THEMES } from "../../constants/theme";
 import { BRAND } from "../../constants/brand";
-import { SERVICE_BY_ID, startingAtLabel, bookPath } from "../../constants/services";
+import { SERVICE_BY_ID, startingAtLabel, serviceCtaPath } from "../../constants/services";
 import Marquee from "../../components/Marquee";
 import { withAlpha } from "../../utils/color";
 import { heroOgImage } from "../../constants/seo";
@@ -119,8 +120,8 @@ export default function PowerWashing() {
         description="Pressure washing, soft washing, gutter cleaning, and surface restoration across Kansas City. Flat rates, and the Done-Right Promise on every job."
         primaryColor={GROUND}
         accentColor={ACCENT}
-        ctaLabel="Book a Clean"
-        ctaTo={bookPath("power")}
+        ctaLabel="Join the waitlist"
+        ctaTo={serviceCtaPath("power")}
         trustItems={["Locally Owned", "Soft Wash Available", "Free Estimates"]}
         heroImage="power-washing-hero"
         heroImageAlt="A pressure washer stripping grey weathering off a wooden deck, leaving a clean stripe of bare timber"
@@ -132,6 +133,7 @@ export default function PowerWashing() {
           constants/serviceDetails.ts, priced live and handed to the wizard
           through the URL so step 2 opens already answered. Sits above the
           package grid: price first, then the detail behind the price. */}
+      <ServiceWaitlist serviceKey="power" primaryColor={PRIMARY} accentColor={ACCENT} />
       <ServiceEstimator serviceKey="power" primaryColor={PRIMARY} accentColor={ACCENT} />
 
       {/* WHAT'S INCLUDED — shared PackageGrid, sourced from constants/serviceDetails.ts.
@@ -183,7 +185,7 @@ export default function PowerWashing() {
         primaryColor={GROUND}
         accentColor={ACCENT}
         bgColor={BG}
-        bookTo={bookPath("power")}
+        bookTo={serviceCtaPath("power")}
       />
 
       {/* HOW IT WORKS */}
@@ -223,8 +225,8 @@ export default function PowerWashing() {
         subtext="Book a free on-site estimate and get your driveway, siding, or deck looking brand new. Same-week slots available across Kansas City."
         primaryColor={GROUND}
         accentColor={ACCENT}
-        ctaLabel="Book a Clean"
-        ctaTo={bookPath("power")}
+        ctaLabel="Join the waitlist"
+        ctaTo={serviceCtaPath("power")}
       />
 
     </div>

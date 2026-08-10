@@ -28,7 +28,16 @@ interface CrossSellRowProps {
  */
 export default function CrossSellRow({ serviceKey, primaryColor, accentColor }: CrossSellRowProps) {
   const service = SERVICE_BY_ID[serviceKey];
-  const pairs = (service?.upsells ?? []).map((id) => SERVICE_BY_ID[id]).filter(Boolean);
+  /*
+    Parked services are filtered out, not just left out of `upsells`.
+
+    A cross-sell is a booking invitation, so pointing one at a line the business
+    cannot currently deliver is the exact failure this narrowing exists to
+    prevent — and it would happen on the pages most likely to convert.
+  */
+  const pairs = (service?.upsells ?? [])
+    .map((id) => SERVICE_BY_ID[id])
+    .filter((pair) => pair?.active);
   if (pairs.length === 0) return null;
 
   const percent = Math.round(BUNDLE_DISCOUNT * 100);
@@ -56,7 +65,11 @@ export default function CrossSellRow({ serviceKey, primaryColor, accentColor }: 
           </p>
         </div>
 
-        <div className="grid sm:grid-cols-2 gap-px" style={{ backgroundColor: "var(--border)", border: "1px solid var(--border)" }}>
+        {/* One pair renders full width rather than as a lonely half-row. */}
+        <div
+          className={`grid gap-px ${pairs.length > 1 ? "sm:grid-cols-2" : "grid-cols-1"}`}
+          style={{ backgroundColor: "var(--border)", border: "1px solid var(--border)" }}
+        >
           {pairs.map((pair) => (
             <Link
               key={pair.id}
