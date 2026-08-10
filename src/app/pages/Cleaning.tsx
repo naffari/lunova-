@@ -1,15 +1,4 @@
-import {
-  ArrowUpRight,
-  ShieldCheck,
-  Sparkles,
-  CheckCircle2,
-  Home,
-  Building2,
-  Droplets,
-  AppWindow,
-  Car,
-  Trash2,
-} from "lucide-react";
+import { ArrowUpRight, ShieldCheck, Sparkles, CheckCircle2 } from "lucide-react";
 import { Link } from "react-router";
 import ServiceHero from "../components/ServiceHero";
 import HowItWorks from "../components/HowItWorks";
@@ -20,7 +9,7 @@ import Seo from "../components/common/Seo";
 import StatBand from "../components/StatBand";
 import { SERVICE_THEMES } from "../constants/theme";
 import { BRAND } from "../constants/brand";
-import { SERVICE_BY_ID, startingAtLabel, bookPath } from "../constants/services";
+import { ACTIVE_SERVICES, SERVICE_BY_ID, startingAtLabel, bookPath } from "../constants/services";
 import { buildBreadcrumbSchema, buildFaqSchema, buildServiceSchema } from "../utils/structuredData";
 import Marquee from "../components/Marquee";
 import CrossSellRow from "../components/CrossSellRow";
@@ -34,56 +23,31 @@ const { primary: PRIMARY, accent: ACCENT, ground: GROUND, bg: BG } = SERVICE_THE
  * previously carried a third independent set of numbers that agreed with
  * neither the service pages nor the wizard.
  */
-const SERVICES = [
-  {
-    icon: Home,
-    title: "Residential Cleaning",
-    price: startingAtLabel(SERVICE_BY_ID.cleaning),
-    desc: "Weekly, bi-weekly, or one-time deep cleans for homes of all sizes.",
-    bullets: ["Recurring & deep cleans", "Move-in/out service", "Eco-friendly supplies"],
-    link: "/services/residential-cleaning",
-  },
-  {
-    icon: Building2,
-    title: "Commercial Janitorial",
-    price: startingAtLabel(SERVICE_BY_ID.commercial),
-    desc: "Nightly or scheduled janitorial for offices, medical, retail, and restaurants.",
-    bullets: ["After-hours scheduling", "Sanitization & restocking", "Contract pricing"],
-    link: "/services/commercial-cleaning",
-  },
-  {
-    icon: Droplets,
-    title: "Power Washing",
-    price: startingAtLabel(SERVICE_BY_ID.power),
-    desc: "High-pressure cleaning for driveways, siding, patios, and decks.",
-    bullets: ["Vinyl & stucco soft-wash", "Driveway grime removal", "Deck & patio refresh"],
-    link: "/services/power-washing",
-  },
-  {
-    icon: AppWindow,
-    title: "Window Cleaning",
-    price: startingAtLabel(SERVICE_BY_ID.window),
-    desc: "Interior & exterior streak-free window cleaning for homes and offices.",
-    bullets: ["Interior & exterior panes", "Screen & track cleaning", "Hard water treatment"],
-    link: "/services/window-cleaning",
-  },
-  {
-    icon: Car,
-    title: "Auto Detailing",
-    price: startingAtLabel(SERVICE_BY_ID.auto),
-    desc: "Mobile vehicle detailing brought to your home or office driveway.",
-    bullets: ["Exterior wash & wax", "Interior vacuum & steam", "Sedan, SUV & truck packages"],
-    link: "/services/auto-detailing",
-  },
-  {
-    icon: Trash2,
-    title: "Trash Bin Cleaning",
-    price: startingAtLabel(SERVICE_BY_ID.bin),
-    desc: "Curbside bins pressure washed with biodegradable detergent, then deodorized.",
-    bullets: ["Biodegradable detergents", "Deodorizing treatment", "Curbside route schedule"],
-    link: "/services/bin-cleaning",
-  },
-];
+/** One-line pitch per active service. Longer than `bullets`, shorter than the page. */
+const SERVICE_BLURB: Record<string, string> = {
+  cleaning: "Weekly, bi-weekly or one-time deep cleans for homes of all sizes.",
+  auto: "Mobile detailing brought to your driveway, from an express wash to a full interior and exterior.",
+};
+
+/*
+  The hub's service cards, derived rather than hand-written.
+
+  This was six hardcoded entries, four of which the business cannot currently
+  deliver. Reading ACTIVE_SERVICES means the hub cannot advertise a line the
+  booking flow refuses, and a service coming back needs no edit here.
+
+  The copy comes from the catalogue too: `bullets` is the same three
+  capabilities the homepage cards and the navigation show, so the three places
+  a visitor might compare them can no longer disagree.
+*/
+const SERVICES = ACTIVE_SERVICES.map((service) => ({
+  icon: service.icon,
+  title: service.name,
+  price: startingAtLabel(service),
+  desc: SERVICE_BLURB[service.id],
+  bullets: service.bullets,
+  link: service.to,
+}));
 
 const HOW_IT_WORKS_STEPS = [
   {
@@ -127,7 +91,7 @@ const CLEANING_FAQS = [
 
 /** Written once; Marquee doubles it for the seamless loop. */
 const MARQUEE_ITEMS = [
-  "Residential Cleaning", "Commercial Janitorial", "Power Washing", "Window Cleaning", "Auto Detailing", "Bin Cleaning", "Locally Owned", "Satisfaction Guarantee",
+  "House Cleaning", "Mobile Detailing", "Standard & Deep Cleans", "Move-In / Move-Out", "Interior & Exterior Detailing", "Locally Owned", "Flat-Rate Quotes", "Same-Week Slots",
 ];
 
 export default function Cleaning() {
@@ -150,8 +114,8 @@ export default function Cleaning() {
       <div data-theme="cleaning" className="font-sans-modern min-h-screen" style={{ backgroundColor: BG, color: BRAND.ink }}>
       <ServiceHero
         badge="Now Booking in Kansas City"
-        titleContent={<>We Clean <span className="italic" style={{ color: ACCENT }}>Everything.</span> <br />So You Don't Have To.</>}
-        description="From home deep cleans to commercial janitorial, power washing, and auto detailing, Lunova brings professional-grade results to every surface."
+        titleContent={<>We Clean It <span className="italic" style={{ color: ACCENT }}>Properly.</span> <br />So You Don't Have To.</>}
+        description="Two services, done properly: house cleaning from a standard visit to a landlord-ready move-out, and mobile detailing from an express wash to a full interior and exterior."
         primaryColor={GROUND}
         accentColor={ACCENT}
         ctaLabel="Book a Clean"

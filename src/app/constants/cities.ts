@@ -90,43 +90,33 @@ export const SERVICE_CITIES: ServiceCity[] = [
       "Crossroads", "the Northland", "Union Hill", "Columbus Park",
     ],
     metaDescription:
-      "Cleaning, junk removal, power washing and landscaping in Kansas City, MO. Brookside to the Northland. Flat-rate quotes, local crews, same-week slots.",
+      "House cleaning and mobile detailing in Kansas City, MO. Brookside to the Northland. Flat-rate quotes, nothing charged at booking.",
     intro:
-      "Lunova Services works across Kansas City, Missouri, from the century homes of Hyde Park and Brookside out to the newer subdivisions north of the river. Cleaning, junk removal, power washing, window cleaning, auto detailing, bin cleaning and landscaping, all flat-rate and booked online in about two minutes.",
+      "Lunova Services cleans homes and details cars across Kansas City, Missouri, from the century houses of Hyde Park and Brookside out to the newer subdivisions north of the river. Two services, both flat-rate, both booked online in about two minutes.",
     localNotes: [
       {
         heading: "Two kinds of housing stock in one city",
-        body: "A pre-war four-square in Hyde Park and a 2015 build in Briarcliff have almost nothing in common. The old core means painted wood trim, storm windows, radiators, plaster, and basements that have been filling up since the Truman administration. The Northland means vinyl, engineered surfaces, and finished basements that flooded once. We quote them as the different jobs they are.",
-      },
-      {
-        heading: "Street parking and alley access decide the crew size",
-        body: "Junk removal in Westport or the Crossroads is a loading problem before it is a lifting problem. Narrow streets, permit parking, and alley dumpsters a 20-foot truck cannot reach. We plan the approach at the quote instead of discovering it on the day, which is why our Kansas City quotes ask where the truck can stop.",
+        body: "A pre-war four-square in Hyde Park and a 2015 build in Briarcliff have almost nothing in common. The old core means plaster, painted wood trim and hundred-year-old floors that will not tolerate what a new build shrugs off. The Northland means engineered surfaces and finished basements. We quote them as the different jobs they are, because they take different products and different amounts of time.",
       },
       {
         heading: "Loft and rental turnovers move fast",
         body: "Downtown and River Market run short turnarounds between tenants. Move-out cleans there usually get booked with 48 hours notice and have to pass a property manager's checklist rather than a homeowner's eye. We hold same-week slots across 64105 to 64111 for that reason.",
+      },
+      {
+        heading: "Where the car sits decides the detail",
+        body: "Westport, the Crossroads and Columbus Park mostly park on the street, and a mobile detail needs room to open every door plus access to an outdoor tap. That is a real constraint in the old core rather than a formality. Tell us where the car actually sits when you book and we will tell you straight away whether it works.",
       },
     ],
     serviceFocus: [
       {
         serviceId: "cleaning",
         heading: "Deep cleans for older homes",
-        body: "Plaster dust, painted woodwork and hundred-year-old hardwood need gentler chemistry than a new build. Deep cleans in Brookside and Waldo are our most-booked Kansas City job.",
+        body: "Plaster dust, painted woodwork and hundred-year-old hardwood need gentler chemistry and more time than a new build. Deep cleans in Brookside and Waldo are our most-booked Kansas City job.",
       },
       {
-        serviceId: "junk",
-        heading: "Basement and attic clear-outs",
-        body: "Century homes come with century basements. Most of our junk work here is a full-basement clear-out with a stair carry, not a curbside pickup.",
-      },
-      {
-        serviceId: "window",
-        heading: "Divided-lite and storm windows",
-        body: "Original wood windows with true divided lites take three times as long as a modern slider. We price by pane count in the older neighborhoods so the quote holds.",
-      },
-      {
-        serviceId: "commercial",
-        heading: "Crossroads offices and studios",
-        body: "Converted warehouse space with polished concrete and exposed brick. Evening and weekend cleans so we are not working around your team.",
+        serviceId: "auto",
+        heading: "Detailing without a driveway",
+        body: "Most of central Kansas City parks on the street. We work around it where we can, but we need a space with room to open every door and, for now, a tap we can reach.",
       },
     ],
     faqs: [
@@ -135,12 +125,12 @@ export const SERVICE_CITIES: ServiceCity[] = [
         a: "Yes. We cover the Northland ZIPs from 64116 to 64158 as well as the central and southern city. Northland jobs run on their own routes, so booking two or three days ahead gets you a better slot than same-day.",
       },
       {
-        q: "Can you get a junk truck down a Westport alley?",
-        a: "Usually, but tell us when you book. If the alley is too tight we bring a smaller vehicle and do more trips. Price stays the same, we just need to know first.",
-      },
-      {
         q: "Do you clean downtown lofts and apartments?",
         a: "Yes, including move-out cleans against a property manager's checklist. If your building requires a loading dock or freight elevator booking, mention it so we can reserve the time.",
+      },
+      {
+        q: "Can you detail my car if I park on the street?",
+        a: "Usually. We need room to open every door and access to an outdoor tap. Street parking in Brookside or Waldo is normally fine. Permit blocks in Westport are the ones worth checking with us before you book.",
       },
     ],
     nearby: ["kansas-city-ks", "independence", "raytown", "prairie-village"],
@@ -156,53 +146,47 @@ export const SERVICE_CITIES: ServiceCity[] = [
     geo: { lat: 39.1141, lng: -94.6275 },
     neighborhoods: ["Strawberry Hill", "Argentine", "Turner", "Piper", "Rosedale", "the Legends"],
     metaDescription:
-      "Home and property services in Kansas City, KS. Strawberry Hill to Piper. Cleaning, junk removal, pressure washing and landscaping at flat rates.",
+      "House cleaning and mobile detailing in Kansas City, KS. Strawberry Hill to Piper. Flat-rate quotes, nothing charged at booking.",
     intro:
-      "Lunova Services covers Wyandotte County, from the hillside bungalows of Strawberry Hill out to the newer builds around Piper. Housing here runs older and more owner-occupied than Johnson County, and most of what we do is exterior work and clear-outs rather than recurring maid service.",
+      "Lunova Services cleans homes and details cars across Kansas City, Kansas, from Strawberry Hill and Argentine through Turner and Rosedale out to the newer builds at Piper. Flat rate, confirmed before we start, nothing taken at booking.",
     localNotes: [
       {
-        heading: "Hillside lots turn exterior work into a rigging job",
-        body: "Strawberry Hill and Rosedale are built into slopes. A driveway wash there runs downhill into a neighbor's yard unless it is staged properly, and gutter work on the low side of a hillside house often needs ladder standoffs rather than a straight set. We build that into the time, not into a surprise upcharge.",
-      },
-      {
         heading: "Detached garages and gravel alleys",
-        body: "Much of the older grid has a detached garage off a rear alley, which is where thirty years of stored things end up. Garage clear-outs are the most common junk removal call we take in 66102 and 66104.",
+        body: "A lot of Kansas City, Kansas parks behind the house rather than beside it, down an alley, on gravel. That matters more for detailing than people expect: the tap is at the house and the car is sixty feet away. We carry hose, but it is worth saying at the booking rather than finding out on the day.",
       },
       {
-        heading: "Piper builds need a different service list",
-        body: "The 66109 and 66111 subdivisions are newer, larger and vinyl-clad, so they generate siding washes, bin cleaning and recurring lawn care. The older core generates one-time deep cleans. Same city, two sets of work.",
+        heading: "Piper needs a different service list from Strawberry Hill",
+        body: "The west side of the city is fifteen years old and the east side is a hundred. Piper books standard recurring cleans on newer finishes. Strawberry Hill and Argentine book deep cleans on original wood, plaster and floors that have been refinished more than once.",
+      },
+      {
+        heading: "Rental turnovers run to a checklist, not a preference",
+        body: "There is a lot of small-landlord housing here, and a turnover clean is judged against a written standard rather than how it looks. We quote those flat by bedroom count so the number drops into a budget, and we can invoice per property.",
       },
     ],
     serviceFocus: [
       {
-        serviceId: "junk",
-        heading: "Garage and estate clear-outs",
-        body: "Detached garages, sheds and full-property estate cleanouts. We sort out what can be donated before anything goes in the truck.",
-      },
-      {
-        serviceId: "power",
-        heading: "Driveways, steps and retaining walls",
-        body: "Concrete on a slope holds algae on the shaded side. Most washes here cover drive, steps and front walk together, which costs less than booking them separately.",
-      },
-      {
-        serviceId: "landscaping",
-        heading: "Overgrowth and lot cleanup",
-        body: "Mature trees and long-neglected fence lines. Brush clearing and haul-away in one visit, so you do not need a second junk booking.",
-      },
-      {
         serviceId: "cleaning",
-        heading: "Rental turnovers",
-        body: "Move-out cleans between tenants, priced flat by home size so a landlord can budget the same number every turn.",
+        heading: "Turnover and move-out cleans",
+        body: "Quoted flat by bedroom count against a landlord's checklist, not a homeowner's eye. We can invoice per property so the accounting stays clean.",
+      },
+      {
+        serviceId: "auto",
+        heading: "Detailing at a detached garage",
+        body: "We bring hose length for a car parked off a rear alley. Tell us the tap is at the house and it is a non-event; leave it out and it is a problem on the day.",
       },
     ],
     faqs: [
       {
-        q: "Do you charge more to work in Wyandotte County?",
-        a: "No. Pricing is flat across the metro. What changes the price is the job. A hillside driveway takes longer than a flat one, and we quote the work rather than the ZIP code.",
+        q: "Do you cover Piper and the western ZIPs?",
+        a: "Yes. Piper runs on the same routes as the rest of Wyandotte County. Newer construction out there usually books a standard recurring clean rather than a deep clean, which is the cheaper starting point.",
       },
       {
-        q: "Can you haul away brush and yard waste as well as junk?",
-        a: "Yes, and combining them saves money. Brush clearing plus haul-away in one visit costs less than booking landscaping and junk removal separately.",
+        q: "Can you clean a rental between tenants on short notice?",
+        a: "Usually within the same week. Turnovers are quoted flat by bedroom count so the price is the same every time, which is the part landlords actually care about.",
+      },
+      {
+        q: "My car is parked on gravel behind the house. Is that a problem?",
+        a: "No, as long as there is room to open the doors and a tap we can reach with hose. Gravel is only an issue if it is loose enough that we would be kicking dust onto wet paint, and we will tell you if it is.",
       },
     ],
     nearby: ["kansas-city-mo", "shawnee", "overland-park", "lenexa"],
@@ -221,57 +205,47 @@ export const SERVICE_CITIES: ServiceCity[] = [
       "Brookridge", "Corporate Woods",
     ],
     metaDescription:
-      "House cleaning, window cleaning, power washing and lawn care in Overland Park, KS. Recurring plans for Blue Valley, Deer Creek and downtown OP.",
+      "House cleaning and mobile detailing in Overland Park, KS. Deer Creek to Corporate Woods. Flat-rate quotes, nothing charged at booking.",
     intro:
-      "Overland Park is our busiest service area, and almost all of it is recurring work. Biweekly house cleaning, seasonal window washing, and driveway and siding washes that keep HOA letters out of the mailbox. We run standing routes through 66210, 66213, 66221 and 66223, so a regular slot on a fixed weekday is usually available.",
+      "Lunova Services cleans homes and details cars across Overland Park, from the older streets around downtown OP out through Nottingham, Deer Creek and the Blue Valley subdivisions. Flat-rate pricing, confirmed before anyone starts work.",
     localNotes: [
       {
-        heading: "HOA standards set the exterior calendar",
-        body: "South OP associations write letters about algae streaks on north-facing siding and oil staining on driveways. Both are washing jobs with a season: siding in late spring once the pollen finishes, concrete before winter. Booking the two together on one visit is the cheapest way to stay off the list.",
+        heading: "Recurring is the default here, not the exception",
+        body: "More of our Overland Park cleaning is on a weekly or bi-weekly slot than anywhere else we work. That changes what the job is: on a standing clean the house never gets far enough behind to need a reset, which is why the recurring rate exists and why the first visit is usually a deep clean and the rest are not.",
       },
       {
-        heading: "Big two-storeys make access the real cost",
-        body: "The Blue Valley and Deer Creek builds are two and three storeys with tall gable ends. Exterior window cleaning and gutter work there is priced on access and storey count rather than square footage. A 3,000 square foot ranch and a 3,000 square foot three-storey are not the same job.",
+        heading: "Big two-storeys make square footage the real cost",
+        body: "A five-bedroom in Blue Valley is not a three-bedroom with two more rooms. It is more bathrooms, more floor, more stairs and a longer day. Our counters price bedrooms and bathrooms separately for exactly that reason, so a big house is quoted as a big house rather than absorbed into a flat rate that then has to be renegotiated.",
       },
       {
-        heading: "Downtown OP is the older half of the city",
-        body: "North of I-435 around Santa Fe, the homes are 1950s ranches on small lots with original windows and mature trees. Those book gutter clearing and one-time deep cleans instead of the recurring exterior programme the southern subdivisions run.",
+        heading: "Three cars in the driveway is normal",
+        body: "Overland Park households run more vehicles than most of the metro, and they are usually garage-kept and in decent shape, which makes them express-wash and interior work rather than heavy correction. Doing two or three in one visit is the cheapest way to buy it, because we are only paying for the drive once.",
       },
     ],
     serviceFocus: [
       {
         serviceId: "cleaning",
-        heading: "Biweekly recurring cleans",
-        body: "Our most-requested Overland Park service. Same crew, same weekday, flat rate. Most households here run biweekly rather than weekly.",
+        heading: "Bi-weekly recurring cleans",
+        body: "The most-booked job in Overland Park. First visit is usually a deep clean to set the baseline, then a standard clean on a standing slot to hold it.",
       },
       {
-        serviceId: "window",
-        heading: "Two and three-storey exteriors",
-        body: "Inside and out, screens and tracks included. Priced by storey and access rather than a flat per-window rate.",
-      },
-      {
-        serviceId: "power",
-        heading: "Siding, driveways and HOA compliance",
-        body: "North-facing siding algae and driveway oil staining, the two things OP associations write letters about.",
-      },
-      {
-        serviceId: "landscaping",
-        heading: "Maintained-lawn standards",
-        body: "Edging, bed maintenance and seasonal cleanup to the standard the covenants expect.",
+        serviceId: "auto",
+        heading: "Two or three cars at once",
+        body: "Garage-kept family vehicles, done in the driveway on one visit. The travel is already paid for by the first car, which is what makes the second one worth doing.",
       },
     ],
     faqs: [
       {
-        q: "Can you work around an HOA's contractor rules?",
-        a: "Not yet. General liability cover is being put in place, and until it is we cannot produce a certificate of insurance — so if your HOA requires one on file for exterior work, we are not the right call for that job today. Work at your own property that does not need a COI, we can take now.",
+        q: "Do I need a deep clean before starting a recurring plan?",
+        a: "Usually, and only once. A standard clean is written to maintain a house that is already on top of things. If it has been a while, the first visit does the reset and every visit after that is the standard rate.",
       },
       {
-        q: "Do you offer a fixed weekday for recurring cleans?",
-        a: "Yes, and in Overland Park we can usually hold it. We run standing routes here, so a biweekly Tuesday stays a biweekly Tuesday instead of drifting.",
+        q: "Can you work around an HOA?",
+        a: "For cleaning and detailing there is very little to work around, since both happen at your house rather than to the outside of it. If your association has rules about washing vehicles in a driveway, check them before you book and we will work to whatever they say.",
       },
       {
-        q: "Is a three-storey window clean priced differently?",
-        a: "Yes. Storey count and access drive the price on exterior glass, not the size of the house. We confirm the count at the quote so nothing changes on the day.",
+        q: "Do you detail more than one car in a visit?",
+        a: "Yes, and it is the sensible way to do it. The drive is the fixed cost, so the second and third vehicle are much better value than booking them on separate days.",
       },
     ],
     nearby: ["leawood", "lenexa", "prairie-village", "olathe"],
@@ -287,53 +261,47 @@ export const SERVICE_CITIES: ServiceCity[] = [
     geo: { lat: 38.8814, lng: -94.8191 },
     neighborhoods: ["Cedar Creek", "Stonebridge", "Downtown Olathe", "Havencroft", "Brougham"],
     metaDescription:
-      "Cleaning, move-in/move-out, bin cleaning and lawn care in Olathe, KS. Serving Cedar Creek, Stonebridge and downtown Olathe with flat-rate booking.",
+      "House cleaning and mobile detailing in Olathe, KS. Cedar Creek to Havencroft. Flat-rate quotes, nothing charged at booking.",
     intro:
-      "Olathe is the metro's fastest-growing suburb and it books like one. Move-in and move-out cleans, first deep cleans in newly bought homes, and recurring service for households with young kids and not enough weekend. We cover 66061, 66062 and 66063 with same-week availability most weeks.",
+      "Lunova Services cleans homes and details cars across Olathe, from the new construction at Cedar Creek and Stonebridge to the established streets around downtown and Havencroft. Flat-rate, booked online, confirmed before we start.",
     localNotes: [
       {
         heading: "Move-in cleans are the volume job here",
-        body: "Olathe turns over more houses than anywhere else we work. A move-in clean has a different scope from a recurring clean: inside cabinets and drawers, appliance interiors, and the previous owner's baseboards. It gets priced as its own package rather than as a deep clean with extras bolted on.",
+        body: "Olathe turns over more houses than most of the metro, and a move-in clean is a different animal from a maintenance clean: every cabinet, every drawer, inside the oven and the fridge, window glass and tracks. It is quoted as its own tier because it takes most of a day, not because it sounds more thorough.",
       },
       {
-        heading: "New construction leaves fine dust for months",
-        body: "Homes in the newer Cedar Creek and Stonebridge phases carry drywall dust in the HVAC returns, window tracks and light fixtures long after the builder's clean. Post-construction detail is slower work than it looks, so we quote it separately instead of pretending a standard clean will get it.",
+        heading: "New construction sheds drywall dust for months",
+        body: "A house that has just been finished keeps releasing fine dust from cavities and vents long after the builder's clean. It settles on everything, and one pass does not end it. First cleans in Cedar Creek and Stonebridge are booked as deep cleans for that reason, and it is worth knowing before you assume the builder handled it.",
       },
       {
-        heading: "Bins sit close to the house",
-        body: "Several newer Olathe developments store bins near the back door rather than out of sight. Bin cleaning makes obvious sense here in a way it does not in older parts of the metro, and it is our cheapest recurring service.",
+        heading: "That dust lands on the car too",
+        body: "Anyone who parked in a driveway through a build knows this: fine construction dust bonds to paint and cannot be safely wiped off dry. It needs washing rather than rubbing, and rubbing is how it turns into scratches. We see more of that here than anywhere else we work.",
       },
     ],
     serviceFocus: [
       {
         serviceId: "cleaning",
         heading: "Move-in and move-out cleans",
-        body: "Cabinet interiors, appliance interiors, and everything the last owner left behind. Our highest-volume Olathe booking.",
+        body: "Inside every cabinet and drawer, inside the oven and fridge, glass and tracks. Landlord-ready or ready to hand over, and quoted as the full day it takes.",
       },
       {
-        serviceId: "bin",
-        heading: "Recurring bin cleaning",
-        body: "Monthly or quarterly. Cheap, fast, and it earns its keep when the bins live within smelling distance of a door you use.",
-      },
-      {
-        serviceId: "landscaping",
-        heading: "Young-lawn maintenance",
-        body: "Newer sod on graded clay needs different care than an established lawn. Mowing, edging and seasonal cleanup.",
-      },
-      {
-        serviceId: "power",
-        heading: "New concrete and vinyl siding",
-        body: "Newer concrete stains faster than people expect. Low-pressure siding washing that will not force water behind the vinyl.",
+        serviceId: "auto",
+        heading: "Construction dust and new paint",
+        body: "New builds shed fine dust for months and it does not come off dry. Washed properly rather than wiped, which is what stops it becoming swirl marks.",
       },
     ],
     faqs: [
       {
-        q: "How far ahead should I book a move-out clean in Olathe?",
-        a: "Three to five days if you can. Olathe closings cluster at month-end and the last week books out first. If you are inside 48 hours, call instead of booking online and we will tell you what is left.",
+        q: "We just moved in and the builder already cleaned. Do we need another?",
+        a: "Usually yes, and not because the builder did a bad job. New construction keeps shedding fine dust from cavities and vents for months, so the first clean after you move in is doing a different job from the one at handover.",
       },
       {
-        q: "Is a post-construction clean the same as a deep clean?",
-        a: "No. Construction dust sits in HVAC returns, window tracks and fixtures and needs its own pass. We quote it as a separate job so the estimate matches the hours it takes.",
+        q: "How far ahead should I book a move-out clean?",
+        a: "Three or four days if you can. Move-outs run five to eight hours, so they take most of a working day and there are fewer of those slots than there are two-hour ones.",
+      },
+      {
+        q: "Is it worth detailing a brand-new car?",
+        a: "The exterior, yes, if it has sat in a driveway through construction. New paint is soft and construction dust is abrasive, so getting it off properly is worth more than it sounds.",
       },
     ],
     nearby: ["lenexa", "overland-park", "shawnee", "leawood"],
@@ -349,53 +317,47 @@ export const SERVICE_CITIES: ServiceCity[] = [
     geo: { lat: 39.0417, lng: -94.7203 },
     neighborhoods: ["Downtown Shawnee", "Shawnee Mission Park area", "Bristol Highlands", "Clear Creek", "Nieman"],
     metaDescription:
-      "Deck and fence washing, gutter clearing, cleaning and yard cleanup in Shawnee, KS. Serving downtown Shawnee, Clear Creek and the Shawnee Mission Park area.",
+      "House cleaning and mobile detailing in Shawnee, KS. Nieman to Clear Creek. Flat-rate quotes, nothing charged at booking.",
     intro:
-      "Shawnee splits in two: the older grid around Nieman and downtown, and the newer western subdivisions past K-7. Both halves have trees. Shawnee holds more mature canopy than most of Johnson County, which makes gutters, decks and shaded concrete the work we do most here.",
+      "Lunova Services cleans homes and details cars across Shawnee, from the older streets off Nieman through Bristol Highlands and Clear Creek out toward Shawnee Mission Park. Flat rate, confirmed before we start.",
     localNotes: [
       {
-        heading: "Tree canopy sets the maintenance calendar",
-        body: "Gutters here fill twice a year rather than once, and shaded north-side concrete and decking grow algae that a driveway in an open subdivision never gets. Booking a gutter clear in late November, after the oaks finally drop, beats booking it in October and doing it twice.",
+        heading: "The tree canopy sets the calendar",
+        body: "Shawnee has more mature tree cover than most of the metro and it drives the work in both directions. Indoors it means more dust and more pollen through spring. On a car parked under it, it means sap, and sap is the one thing that gets worse the longer it is left.",
       },
       {
-        heading: "Decks and fences, not just siding",
-        body: "Shawnee's older builds have a lot of wooden deck and cedar fence. Both wash at much lower pressure than concrete. A driveway-pressure wand will fur the grain and leave permanent lap marks. We soft wash timber, and we will say no to a pressure setting that would wreck it.",
+        heading: "Tree sap is not a wash, it is a removal",
+        body: "Sap bonds to clear coat and hardens, and by high summer it has usually etched the surface underneath. It comes off with solvent and clay rather than pressure, and a car that has sat under a mature oak all season needs that step rather than a rinse. This is the most common reason a Shawnee exterior detail runs long.",
       },
       {
         heading: "Two street grids, two access realities",
-        body: "The Nieman-area streets are narrow with short driveways. The Clear Creek and 66226 builds have wide approaches and three-car garages. It changes how a junk truck or trailer stages, which is the first thing we ask about on a Shawnee quote.",
+        body: "The older grid around Nieman has narrow drives and detached garages. The newer subdivisions out west have wide drives and attached ones. It changes almost nothing for cleaning and a fair amount for detailing, which needs space around the vehicle.",
       },
     ],
     serviceFocus: [
       {
-        serviceId: "power",
-        heading: "Deck, fence and shaded concrete",
-        body: "Soft wash on timber, full pressure on concrete. Two different jobs that should not be quoted as one.",
-      },
-      {
-        serviceId: "landscaping",
-        heading: "Leaf and canopy cleanup",
-        body: "Seasonal cleanup on properties with real tree cover, including haul-away so the bags are not your problem.",
+        serviceId: "auto",
+        heading: "Sap, pollen and canopy fallout",
+        body: "The signature Shawnee detailing job. Sap needs solvent and clay rather than pressure, and by late summer it has usually started etching the clear coat underneath.",
       },
       {
         serviceId: "cleaning",
         heading: "Recurring and one-off home cleans",
-        body: "Standard, deep and move-out cleans across both halves of the city.",
-      },
-      {
-        serviceId: "junk",
-        heading: "Shed, deck teardown and debris",
-        body: "Old decking, fence panels and shed contents hauled in one trip.",
+        body: "Heavy canopy means more dust and a harder pollen season. Bi-weekly holds it; a one-off deep clean resets it.",
       },
     ],
     faqs: [
       {
-        q: "Will pressure washing damage my cedar deck or fence?",
-        a: "It will if it is done at concrete pressure. That is what causes furred grain and permanent lap lines. We soft wash timber at much lower pressure and let a cleaning solution do the work. If a deck is too far gone to wash safely we will tell you rather than take the booking.",
+        q: "There is sap all over my car. Can you get it off?",
+        a: "Usually, yes. Sap needs solvent and a clay bar rather than pressure, and it is a normal part of an exterior detail here. If it has been baking on since spring it may have etched the clear coat underneath, and we will tell you honestly whether polishing will lift that or not.",
       },
       {
-        q: "When should I book gutter clearing in Shawnee?",
-        a: "Late November. Shawnee's oaks hold their leaves longer than the maples do, so an October clear usually needs a second visit.",
+        q: "Do you cover the streets near Shawnee Mission Park?",
+        a: "Yes, the whole city including Clear Creek and Bristol Highlands. The west side runs on the same routes as Lenexa, so a mid-week slot is usually easier to get than a Saturday.",
+      },
+      {
+        q: "Does the pollen season change what a clean costs?",
+        a: "No. The price comes from the size and condition of the house, not the time of year. It does mean a bi-weekly slot earns its keep more obviously in April than in January.",
       },
     ],
     nearby: ["lenexa", "olathe", "kansas-city-ks", "overland-park"],
@@ -411,57 +373,47 @@ export const SERVICE_CITIES: ServiceCity[] = [
     geo: { lat: 38.9536, lng: -94.7336 },
     neighborhoods: ["Lenexa City Center", "Old Town Lenexa", "Falcon Ridge", "Canyon Creek", "the 87th Street corridor"],
     metaDescription:
-      "Commercial and residential cleaning in Lenexa, KS. Offices, warehouses and homes, plus fleet detailing around City Center and the 87th Street corridor.",
+      "House cleaning and mobile detailing in Lenexa, KS. City Center to Falcon Ridge. Flat-rate quotes, nothing charged at booking.",
     intro:
-      "Lenexa is the one part of the metro where our commercial work outweighs our residential work. The business parks along 87th Street and around City Center generate office cleaning, warehouse and breakroom work, and fleet vehicle detailing. Those jobs run after hours and on a contract rather than as a one-off booking.",
+      "Lunova Services cleans homes and details cars across Lenexa, from Old Town and City Center out through Falcon Ridge and Canyon Creek. Flat rate, confirmed before we start, nothing charged at booking.",
     localNotes: [
       {
-        heading: "Commercial work runs on your clock",
-        body: "Every office and warehouse account we hold in Lenexa is cleaned outside business hours: evenings, early mornings or weekends. That is a scheduling commitment more than a cleaning one, and it is why commercial gets quoted per site after a walkthrough rather than from a price list.",
+        heading: "Detailing at the office beats detailing at home",
+        body: "Lenexa has more people who work along the 87th Street corridor and at City Center than anywhere else we cover, and a car sitting in a work lot for eight hours is a car we can detail without anyone losing their Saturday. It is the single best use of a mobile service and the most common way Lenexa books it.",
       },
       {
-        heading: "Warehouse floors are not office floors",
-        body: "Light-industrial space around 87th and Renner means sealed concrete, loading-dock grime and breakrooms that take more abuse than a corporate kitchen. Different equipment, different chemistry, and usually more frequent visits on less square footage.",
+        heading: "A work lot needs checking first, not assuming",
+        body: "Two things stop a lot from working: no outdoor tap within reach, and a property manager who has not been asked. Neither is hard to solve, but both are much easier to solve the week before than on the morning. Ask your building, then tell us what they said.",
       },
       {
-        heading: "Fleet detailing beats a wash bay on a company account",
-        body: "Several Lenexa businesses run vans or light trucks. Detailing them on site on a rotation costs less in staff time than sending drivers out to a wash bay, and we can work through a whole yard in one visit.",
+        heading: "Old Town and the newer subdivisions clean differently",
+        body: "Old Town Lenexa is small older houses with less floor and more corners. Falcon Ridge and Canyon Creek are bigger, newer and simpler to clean per square foot. Our counters price by bedroom and bathroom rather than by postcode, which is what keeps that fair in both directions.",
       },
     ],
     serviceFocus: [
       {
-        serviceId: "commercial",
-        heading: "Offices, warehouses and breakrooms",
-        body: "After-hours janitorial on contract, quoted per site after a walkthrough. Square footage alone does not price a warehouse.",
-      },
-      {
         serviceId: "auto",
-        heading: "On-site fleet detailing",
-        body: "Vans and light trucks detailed in your lot on a rotation. No driver time lost to a wash bay.",
+        heading: "Detailing while you are at work",
+        body: "Park it, hand over the keys, get it back done. Needs a tap within reach and a nod from whoever runs the lot, both worth sorting the week before.",
       },
       {
         serviceId: "cleaning",
-        heading: "Residential across Falcon Ridge and Canyon Creek",
-        body: "Standard and deep cleans for the western subdivisions, at the same flat rates as the rest of the metro.",
-      },
-      {
-        serviceId: "power",
-        heading: "Entrances, dumpster pads and walkways",
-        body: "The parts of a commercial property customers look at, plus the dumpster pad they smell.",
+        heading: "Recurring cleans across Falcon Ridge and Canyon Creek",
+        body: "Newer, larger and simpler per square foot than Old Town. Bi-weekly is the usual slot.",
       },
     ],
     faqs: [
       {
-        q: "Do you clean offices outside business hours?",
-        a: "Yes. Every commercial account we hold in Lenexa is serviced after hours or at weekends. Tell us your access arrangement at the walkthrough, whether that is a fob, a code or an on-site contact, and we build the schedule around it.",
+        q: "Can you detail my car in my office parking lot?",
+        a: "Often, yes, and it is the best thing about a mobile service. We need access to an outdoor tap and permission from whoever manages the lot. Ask them first, then tell us what they said, and we will fit around it.",
       },
       {
-        q: "Can you detail a fleet on site?",
-        a: "Yes. We come to your lot and work through the vehicles in one visit. Give us a rough count and vehicle type and we will quote per rotation.",
+        q: "Do you do commercial cleaning for offices?",
+        a: "Not at the moment. Lunova is two people and we are doing house cleaning and mobile detailing properly rather than taking on a nightly contract we could not staff. There is a waitlist on the commercial page if you want to be told when that changes.",
       },
       {
-        q: "How is commercial cleaning priced?",
-        a: "Per site, after a walkthrough. A warehouse and an office of identical square footage need different equipment and different frequency, so a per-square-foot rate would be wrong for one of them.",
+        q: "Is Old Town cheaper to clean than Canyon Creek?",
+        a: "Often, but because the houses are smaller rather than because of where they are. We price by bedroom and bathroom count, so a compact Old Town house and a compact Canyon Creek house quote the same.",
       },
     ],
     nearby: ["olathe", "shawnee", "overland-park", "kansas-city-ks"],
@@ -477,57 +429,47 @@ export const SERVICE_CITIES: ServiceCity[] = [
     geo: { lat: 38.92, lng: -94.6169 },
     neighborhoods: ["Town Center Plaza area", "Leawood Estates", "Hallbrook", "Ironhorse", "Old Leawood"],
     metaDescription:
-      "Detail-focused house cleaning, window cleaning and auto detailing in Leawood, KS. Serving Old Leawood, Hallbrook and Ironhorse with flat-rate quotes.",
+      "House cleaning and mobile detailing in Leawood, KS. Hallbrook to Old Leawood. Flat-rate quotes, nothing charged at booking.",
     intro:
-      "Leawood work is detail work. The homes are larger, the finishes are less forgiving, and the standard gets set by what the last cleaner missed rather than by a checklist. Most of what we do here is recurring cleaning with a longer scope, exterior glass on big elevations, and paint-safe auto detailing at the house.",
+      "Lunova Services cleans homes and details cars across Leawood, from Old Leawood and the streets around Town Center through Leawood Estates, Ironhorse and Hallbrook. Flat rate, agreed before anyone starts.",
     localNotes: [
       {
         heading: "Finishes decide the chemistry",
-        body: "Natural stone counters, unlacquered brass, wide-plank hardwood and marble baths all fail under a general-purpose spray, and etching on stone is permanent. Leawood cleans start with a walkthrough of the finishes, and we bring pH-neutral products by default rather than on request.",
+        body: "Leawood has more natural stone, more unlacquered brass, more specialist timber and more genuinely delicate surfaces per house than anywhere else in the metro. The wrong product on marble or on an oiled floor does damage that cleaning cannot undo. If there is something in the house that needs a particular product, leave it out with a note and we will use it.",
       },
       {
-        heading: "Big elevations mean real glass footage",
-        body: "Two-storey entry windows and rear walls of glass in Hallbrook and Ironhorse are why exterior window cleaning here is quoted on access and pane count. It is a bigger job than the same-priced house a few miles north, and pretending otherwise produces a quote we would have to revise on site.",
+        heading: "Garage-kept cars need correction, not cleaning",
+        body: "A car that lives in a garage is rarely dirty. What it has instead is swirl marks in the paint from years of being washed badly, which is a different job: single-stage machine polish rather than a heavier wash. That is the Leawood detail, and it is the one where the difference is visible from across the driveway.",
       },
       {
         heading: "Discretion is part of the service",
-        body: "Every crew member is background-checked before their first job, we work to a fixed arrival window, and we do not photograph a client's home for marketing without written permission. That last one matters more in Leawood than anywhere else we work.",
+        body: "Households here are more likely to want the work done without a conversation about it, and more likely to be out while it happens. Codes and key handling go in the booking notes, they stay with the two of us because there is nobody else, and we do not post a customer's house or car without being asked to.",
       },
     ],
     serviceFocus: [
       {
         serviceId: "cleaning",
         heading: "Recurring cleans with an extended scope",
-        body: "pH-neutral on stone, dry methods on unfinished timber, and a scope agreed at walkthrough rather than assumed.",
-      },
-      {
-        serviceId: "window",
-        heading: "Large-elevation exterior glass",
-        body: "Two-storey entries and rear glass walls, inside and out. Quoted by pane count and access.",
+        body: "Stone, specialist timber and delicate finishes. If something needs a particular product, leave it out and say so in the notes and we will use it.",
       },
       {
         serviceId: "auto",
-        heading: "Paint-safe detailing at the house",
-        body: "Two-bucket wash, decontamination and interior detail in your driveway. No wash-tunnel swirl marks.",
-      },
-      {
-        serviceId: "landscaping",
-        heading: "Bed and border maintenance",
-        body: "Mature planting kept to the standard the street sets, including seasonal cleanup.",
+        heading: "Paint correction on garage-kept cars",
+        body: "Single-stage machine polish to lift the swirl marks that years of bad washing leave behind. The work is in the paint, not the dirt.",
       },
     ],
     faqs: [
       {
-        q: "Do you use products that are safe on marble and natural stone?",
-        a: "Yes, pH-neutral by default in Leawood rather than on request. Acidic and alkaline general-purpose cleaners etch stone permanently, and no amount of polishing takes it back out.",
+        q: "Do you use your own products or mine?",
+        a: "Ours by default, and they are biodegradable. On stone, oiled timber or anything with a maintenance product of its own, leave yours out with a note and we will use it instead. That is the safer answer and we would rather be asked than guess.",
       },
       {
-        q: "Will the same crew come each visit?",
-        a: "For recurring accounts, yes, wherever scheduling allows. A crew that already knows which surfaces need which product is the reason a recurring plan is worth having.",
+        q: "What is the difference between a wash and paint correction?",
+        a: "A wash removes what is sitting on the paint. Correction removes what is in it: the fine swirl marks that build up from years of washing with the wrong cloth. It is a machine polish, it takes hours rather than minutes, and on a garage-kept car it is usually the only thing that will make a visible difference.",
       },
       {
-        q: "Do you photograph homes for marketing?",
-        a: "Only with written permission from the homeowner. Our gallery is real jobs, and every one of them was cleared first.",
+        q: "Will you be discreet about the work?",
+        a: "Yes. Access codes go in the booking notes and stay between the two of us, because there is nobody else in the company. We do not photograph or post a customer's house or vehicle unless you have told us we can.",
       },
     ],
     nearby: ["overland-park", "prairie-village", "kansas-city-mo", "olathe"],
@@ -543,53 +485,47 @@ export const SERVICE_CITIES: ServiceCity[] = [
     geo: { lat: 38.9917, lng: -94.6358 },
     neighborhoods: ["Prairie Village shops area", "Corinth", "Meadowbrook", "Fairway border", "Mission Valley"],
     metaDescription:
-      "Window cleaning, gutter work and home cleaning in Prairie Village, KS. Original wood windows and mid-century homes around Corinth and Meadowbrook.",
+      "House cleaning and mobile detailing in Prairie Village, KS. Corinth to Meadowbrook. Flat-rate quotes, nothing charged at booking.",
     intro:
-      "Prairie Village is a mid-century neighborhood that mostly still has its original windows, and that one fact shapes our work here. Divided-lite wood sashes, small basements, mature trees and compact lots make this a window cleaning, gutter clearing and one-off deep clean market rather than a big-exterior one.",
+      "Lunova Services cleans homes and details cars across Prairie Village, from Corinth and the shops area through Meadowbrook and the Fairway border. Flat rate, confirmed before we start, nothing taken at booking.",
     localNotes: [
       {
-        heading: "Divided lites get counted, then priced",
-        body: "A 1950s Cape Cod with eight-over-eight wood sashes has more individual panes in one window than a modern house has in a whole elevation. Quoting that per window instead of per pane produces a number we would have to walk back, so we count first and quote after.",
+        heading: "Mid-century houses are more work per square foot",
+        body: "Prairie Village is full of well-kept 1950s houses, and they are not simply small modern houses. Original wood trim, more separate rooms rather than open plan, more corners, more thresholds. A 1,600 square foot house here takes longer than a 1,600 square foot new build in Olathe, and it is worth knowing that before comparing quotes.",
       },
       {
-        heading: "Original wood needs care, not pressure",
-        body: "Old glazing putty and painted sashes come apart under a pressure washer, and under too much water generally. Exterior glass on these homes is hand-washed and squeegeed with the sills dried. Slower, but it does not cost you a re-glaze in spring.",
+        heading: "Original wood needs care rather than force",
+        body: "Painted and stained woodwork of this age has usually been through several finishes. It cleans with gentle chemistry and a cloth, and it is damaged by anything abrasive. Our standard clean is written to that assumption throughout the older Johnson County streets.",
       },
       {
-        heading: "Small basements fill up faster",
-        body: "The compact floorplans here have small basements and small garages, so clear-outs come around more often and are smaller each time. We quote junk by load fraction rather than assuming a full truck, which means a half-basement is a half price.",
+        heading: "Narrow drives change what is possible outside",
+        body: "A lot of the housing here has a single-width drive or a detached garage set back off an alley. For detailing that is the only thing that matters: we need room to open every door fully. Cars usually end up done on the street out front, which is fine as long as the block allows it.",
       },
     ],
     serviceFocus: [
       {
-        serviceId: "window",
-        heading: "Original wood and divided-lite glass",
-        body: "Hand-washed, squeegeed, sills dried. Counted per pane so the quote survives contact with the house.",
-      },
-      {
         serviceId: "cleaning",
         heading: "Deep cleans in mid-century homes",
-        body: "Painted trim, original hardwood, and tiled baths that predate modern grout sealers.",
+        body: "More rooms, more corners and original woodwork that needs gentle chemistry rather than abrasion. Slower per square foot than a new build, and priced that way.",
       },
       {
-        serviceId: "junk",
-        heading: "Small-load basement and garage clear-outs",
-        body: "Priced by load fraction. A half-load is a half price, not a rounded-up truck.",
-      },
-      {
-        serviceId: "landscaping",
-        heading: "Compact lots and mature trees",
-        body: "Tight-lot mowing, edging and leaf cleanup where a full-size mower does not fit.",
+        serviceId: "auto",
+        heading: "Detailing on a narrow drive",
+        body: "Single-width drives and set-back garages usually mean working on the street out front. It needs room to open every door, and a tap we can reach.",
       },
     ],
     faqs: [
       {
-        q: "Can you clean original wood windows without damaging them?",
-        a: "Yes, by hand rather than with a pressure washer. Old glazing putty fails under pressure and under standing water, so we squeegee and dry the sills instead of flooding them.",
+        q: "Why would a smaller house cost the same as a bigger one?",
+        a: "Because layout matters as much as floor area. Mid-century houses have more separate rooms, more corners and more trim than an open-plan build of the same size, and all of that is time. We price bedrooms and bathrooms rather than square footage for exactly this reason.",
       },
       {
-        q: "Do I have to pay for a full junk truck if I only have a few items?",
-        a: "No. We price by the fraction of the truck you fill, which suits Prairie Village's smaller basements and garages.",
+        q: "Is your standard clean safe on original woodwork?",
+        a: "Yes. Gentle chemistry and cloths, nothing abrasive, which is the default across the older Johnson County streets rather than something you have to ask for. If a finish is fragile enough to worry you, say so in the notes and we will leave it alone.",
+      },
+      {
+        q: "My drive is too narrow to open the doors. Can you still detail?",
+        a: "We would do it on the street out front, assuming your block allows parking long enough. It is worth a message before booking so we can check rather than turn up and improvise.",
       },
     ],
     nearby: ["leawood", "overland-park", "kansas-city-mo", "shawnee"],
@@ -605,53 +541,47 @@ export const SERVICE_CITIES: ServiceCity[] = [
     geo: { lat: 38.9108, lng: -94.3822 },
     neighborhoods: ["Downtown Lee's Summit", "Lakewood", "Longview", "Raintree Lake", "Winterset"],
     metaDescription:
-      "House cleaning, siding and driveway washing, and lawn care in Lee's Summit, MO. Serving Lakewood, Longview, Raintree Lake and downtown.",
+      "House cleaning and mobile detailing in Lee's Summit, MO. Lakewood to Winterset. Flat-rate quotes, nothing charged at booking.",
     intro:
-      "Lee's Summit is large, spread out and mostly vinyl-clad, which makes soft washing, recurring cleaning and lawn care the core of our work here. The lake communities around Lakewood and Raintree add a seasonal layer: dock-adjacent decks, boat and trailer detailing, and heavier spring pollen than the rest of the metro.",
+      "Lunova Services cleans homes and details cars across Lee's Summit, from downtown out through Lakewood, Raintree Lake, Longview and Winterset. Flat rate, agreed before we start work.",
     localNotes: [
       {
-        heading: "Vinyl siding needs soft wash, not pressure",
-        body: "Most of Lee's Summit is vinyl, and vinyl is the material people most often ruin with a pressure washer. Water forced up behind a lap course ends up in the wall cavity, and you find out about that months later. Every siding wash we do here is low pressure with a cleaning solution doing the work.",
+        heading: "Lake-adjacent properties get more of everything",
+        body: "Lakewood, Raintree Lake and Longview generate more of both services than the rest of the city. Houses near water carry more dust, more damp and more traffic through the door. Vehicles carry the rest of it: launch ramp grit, lake water spotting and a boat trailer that never gets rinsed.",
       },
       {
-        heading: "Lake-adjacent properties get more of everything",
-        body: "Homes near Lakewood and Raintree collect more pollen, more algae on shaded decking and more silt on hard surfaces than the rest of the city. One annual exterior wash usually is not enough there. Twice a year is realistic, and we say so rather than selling one and letting it look bad by August.",
+        heading: "Water spotting is a mineral problem, not a dirt problem",
+        body: "A car that gets splashed at a ramp and then dries in the sun leaves mineral deposits bonded to the paint and glass. Washing does not lift those. They need a dedicated treatment, and left long enough through a summer they etch the surface. Lake cars are the most common reason an exterior detail here needs more than a wash.",
       },
       {
         heading: "Distance means routing, and routing means notice",
-        body: "The 64082 and 64086 ZIPs sit at the far edge of our range. We serve them fully and at the same rates, but a job booked three or four days out gets a much better slot than a same-day request, because we route the south-east runs together.",
+        body: "Lee's Summit is the far side of our range from most of the Johnson County work. We can be here, but a booking made two or three days ahead gets a slot on a route rather than a special trip, and that is the difference between a good time and whatever is left.",
       },
     ],
     serviceFocus: [
       {
-        serviceId: "power",
-        heading: "Soft-wash siding, drives and decks",
-        body: "Low pressure on vinyl and timber, full pressure on concrete. Twice a year near the lakes.",
+        serviceId: "auto",
+        heading: "Lake water spotting and ramp grit",
+        body: "Mineral deposits bond to paint and glass and do not wash off. Treated properly rather than scrubbed, which is what stops it becoming permanent.",
       },
       {
         serviceId: "cleaning",
         heading: "Recurring family-home cleans",
-        body: "Weekly and biweekly plans for the larger Lakewood and Winterset floorplans.",
-      },
-      {
-        serviceId: "landscaping",
-        heading: "Larger lots and seasonal cleanup",
-        body: "Mowing, edging, bed work and spring and fall cleanup on the bigger suburban plots.",
-      },
-      {
-        serviceId: "auto",
-        heading: "Boats, trailers and daily drivers",
-        body: "Detailing at the house, including the trailer that has been sitting since October.",
+        body: "Larger houses, more traffic through the door, and near the water more dust and damp than the rest of the city. Bi-weekly is the usual slot.",
       },
     ],
     faqs: [
       {
-        q: "Is pressure washing safe on vinyl siding?",
-        a: "Not at high pressure. Water gets forced behind the lap courses and into the wall. Vinyl should be soft washed at low pressure with a cleaning solution, which is what we do by default in Lee's Summit, where most of the housing stock is vinyl.",
+        q: "How much notice do you need out here?",
+        a: "Two or three days gets you a real slot rather than a special trip. Lee's Summit is the far side of our range from the Johnson County work, so it runs on planned routes rather than same-day availability.",
       },
       {
-        q: "Do you serve the far south-east ZIPs like 64082 and 64086?",
-        a: "Yes, at the same rates as everywhere else. Book three or four days out if you can. We route the south-east together, so advance bookings get the better time slots.",
+        q: "My car has white spots that will not wash off. What is that?",
+        a: "Mineral deposits, usually from lake water drying in the sun. They are bonded to the surface rather than sitting on it, so washing does nothing. There is a specific treatment for it, and the sooner it is done the better, because left through a summer they start etching the clear coat.",
+      },
+      {
+        q: "Do you detail boats or trailers?",
+        a: "Not at the moment. Cars, trucks, SUVs and vans. A boat is a different set of surfaces and a different set of products, and we would rather say no than learn on yours.",
       },
     ],
     nearby: ["blue-springs", "raytown", "independence", "kansas-city-mo"],
@@ -667,57 +597,47 @@ export const SERVICE_CITIES: ServiceCity[] = [
     geo: { lat: 39.0911, lng: -94.4155 },
     neighborhoods: ["Truman Heritage District", "Englewood", "Fairmount", "Sugar Creek border", "Hartman Heritage area"],
     metaDescription:
-      "Estate cleanouts, rental turnovers, cleaning and pressure washing in Independence, MO. Serving the Truman district, Englewood and Fairmount.",
+      "House cleaning and mobile detailing in Independence, MO. Truman Heritage to Englewood. Flat-rate quotes, nothing charged at booking.",
     intro:
-      "Independence has some of the oldest housing in the metro and a high share of rentals, and our work reflects both. Estate cleanouts in long-held family homes, turnover cleans between tenants, and exterior washing on brick and painted wood that has been through a lot of Missouri winters.",
+      "Lunova Services cleans homes and details cars across Independence, from the Truman Heritage District through Englewood and Fairmount out to the Hartman Heritage area. Flat rate, confirmed before we start.",
     localNotes: [
       {
-        heading: "Estate cleanouts are a sorting job first",
-        body: "A full-house clearance after a death or a move into care is not a junk run. We work room by room, set aside anything a family flags, route what is usable to donation, and only then load what is waste. It takes longer than a straight haul and we schedule it that way.",
-      },
-      {
-        heading: "Historic-district exteriors need a lighter hand",
-        body: "The Truman Heritage District has soft-fired historic brick and lime mortar. High pressure strips the fired face off old brick and blows out mortar joints, and repairing that costs far more than the wash did. We soft wash there, without exception.",
-      },
-      {
         heading: "Landlord turnovers run on a fixed number",
-        body: "Independence has a lot of small landlords who need the same clean at the same price every time a tenant leaves. We quote turnovers flat by bedroom count so it drops straight into a budget, and we can invoice per property.",
+        body: "Independence has a lot of small landlords, and what they need from a turnover clean is not thoroughness so much as predictability: the same clean, to the same standard, for the same price, every time a tenant leaves. We quote those flat by bedroom count so it drops straight into a budget, and we can invoice per property.",
+      },
+      {
+        heading: "Long-held houses need a reset, not a maintenance clean",
+        body: "A house someone has lived in for thirty years is not dirty in the way a busy family house is dirty. It is layered: behind appliances, inside cabinets, on trim nobody has reached in years. That is a deep clean or a move-out clean, and quoting it as a standard clean does nobody a favour.",
+      },
+      {
+        heading: "Older cars are about condition, not neglect",
+        body: "A lot of the vehicles here have been owned a long time and looked after. What they have is age: dulled paint, dried trim, headlight lenses that have hazed over. Those respond well and cheaply, and headlight restoration in particular changes how a car looks for less than most people expect.",
       },
     ],
     serviceFocus: [
       {
-        serviceId: "junk",
-        heading: "Estate and full-property cleanouts",
-        body: "Sorted room by room, donations routed, waste hauled. Scheduled with the time the job needs.",
-      },
-      {
         serviceId: "cleaning",
         heading: "Tenant turnover cleans",
-        body: "Flat rate by bedroom count so a landlord can budget the same figure every turn.",
+        body: "Flat by bedroom count against a landlord's checklist so the number is the same every time, and invoiced per property if you run more than one.",
       },
       {
-        serviceId: "power",
-        heading: "Soft washing older brick and painted wood",
-        body: "Low pressure on historic masonry. High pressure on old brick is permanent damage, not a shortcut.",
-      },
-      {
-        serviceId: "landscaping",
-        heading: "Overgrown lot recovery",
-        body: "Vacant and between-tenant properties brought back to lettable condition, with haul-away included.",
+        serviceId: "auto",
+        heading: "Older cars, honestly assessed",
+        body: "Hazed headlights, dried trim and dulled paint respond well and cheaply. We will tell you which of those is worth doing on your car and which is not.",
       },
     ],
     faqs: [
       {
-        q: "Can you pressure wash a historic brick home?",
-        a: "Not at pressure. Soft-fired historic brick and lime mortar take permanent damage from high-pressure washing. The fired face comes off and the joints blow out. We soft wash historic masonry at low pressure with a longer dwell time.",
+        q: "Do you invoice per property for rentals?",
+        a: "Yes. Turnovers are quoted flat by bedroom count and billed per address, which is what keeps the accounting straightforward when you are running several.",
       },
       {
-        q: "Do you handle full estate cleanouts?",
-        a: "Yes, and we treat them as a sorting job before a hauling job. Tell us what matters and we set it aside. Usable goods go to donation and we haul the rest.",
+        q: "Is a deep clean worth it on a house that has been lived in for decades?",
+        a: "Usually more than on any other kind of house. The dirt in a long-held home is layered rather than surface, and a standard clean is not written to reach it. Book it once as a deep clean and a standard clean will hold it afterwards.",
       },
       {
-        q: "Do you work with landlords on multiple properties?",
-        a: "Yes. Turnovers are quoted flat by bedroom count and we can invoice per property so the accounting stays clean.",
+        q: "Can you fix cloudy headlights?",
+        a: "Yes, that is a restoration rather than a clean: wet-sanded, polished and sealed against UV. It is one of the cheapest things you can do to an older car and one of the most visible.",
       },
     ],
     nearby: ["kansas-city-mo", "blue-springs", "raytown", "lees-summit"],
@@ -733,53 +653,47 @@ export const SERVICE_CITIES: ServiceCity[] = [
     geo: { lat: 39.0169, lng: -94.2816 },
     neighborhoods: ["Downtown Blue Springs", "Adams Dairy Parkway area", "Lake Remembrance", "Woods Chapel"],
     metaDescription:
-      "Deck and siding washing, bin cleaning, house cleaning and lawn care in Blue Springs, MO. Serving Woods Chapel, Lake Remembrance and downtown.",
+      "House cleaning and mobile detailing in Blue Springs, MO. Woods Chapel to Adams Dairy. Flat-rate quotes, nothing charged at booking.",
     intro:
-      "Blue Springs is family-suburban: decks, fenced yards, vinyl siding and two cars on the drive. The work follows. Exterior washing in spring, recurring cleaning year-round, bin cleaning for households that keep the bins by the garage, and lawn care through the growing season.",
+      "Lunova Services cleans homes and details cars across Blue Springs, from downtown and Woods Chapel out past Lake Remembrance and the Adams Dairy Parkway corridor. Flat rate, confirmed before we start.",
     localNotes: [
       {
-        heading: "Everyone has a deck, and most are due",
-        body: "Deck washing is our most-booked Blue Springs exterior job, and the one people most often try to do themselves with a rented pressure washer. Timber washes at a fraction of concrete pressure. Above that, the wand furs the grain and leaves stripes only sanding will remove.",
+        heading: "This is a commuter town, and the cars show it",
+        body: "More of Blue Springs drives I-70 daily than anywhere else we work, and highway miles leave a specific mess: bug splatter baked onto the front end, road film across the lower panels, brake dust welded to the wheels. None of it is neglect and all of it needs more than a rinse.",
       },
       {
-        heading: "Bins live by the garage here",
-        body: "Blue Springs collection means most households store bins on the drive or beside the garage, a few feet from a door people use daily. That is why bin cleaning sells here and barely registers in neighborhoods with alley storage. Quarterly suits most households, monthly through summer.",
+        heading: "Bug residue is acidic and does not wait",
+        body: "Insect residue is mildly acidic and starts etching paint within days in summer heat. Left across a season it leaves marks on a front bumper that polishing cannot fully remove. It is the most common avoidable damage we see on this side of the metro, and the fix is doing it sooner rather than harder.",
       },
       {
         heading: "This is the eastern edge of our range",
-        body: "We serve 64013, 64014 and 64015 in full and at standard rates, but they sit at the far east of the metro and we route them with Lee's Summit and Independence. Booking a few days ahead gets a much better slot than a same-day call.",
+        body: "We work Blue Springs regularly, but it sits at the far end of the routes. Booking a few days out gets a proper slot rather than whatever is left, and mid-week is usually easier here than a Saturday.",
       },
     ],
     serviceFocus: [
       {
-        serviceId: "power",
-        heading: "Decks, fences and siding",
-        body: "Soft wash on timber and vinyl, full pressure on concrete. Spring is the booking season.",
-      },
-      {
-        serviceId: "bin",
-        heading: "Quarterly and monthly bin cleaning",
-        body: "Worth it when the bins live by the garage door. Monthly through summer, quarterly otherwise.",
+        serviceId: "auto",
+        heading: "Highway film, bug splatter and brake dust",
+        body: "The commuter detail. Bug residue is acidic and starts etching paint within days in summer, so it is a job that rewards doing sooner rather than harder.",
       },
       {
         serviceId: "cleaning",
         heading: "Recurring family-home cleaning",
-        body: "Standard and deep cleans on a weekly or biweekly rhythm.",
-      },
-      {
-        serviceId: "landscaping",
-        heading: "Mowing and seasonal cleanup",
-        body: "Fenced-yard mowing, edging, and spring and fall cleanups.",
+        body: "Larger houses and busy weeks. A bi-weekly slot holds a family home better than an occasional deep clean does, and costs less over a year.",
       },
     ],
     faqs: [
       {
-        q: "Can I just rent a pressure washer for my deck?",
-        a: "You can, and it is the most common way decks get damaged around here. Timber needs a fraction of concrete pressure. Go above it and the wand furs the grain and leaves lap stripes that only sanding takes out. If you do rent one, keep it low and keep it moving.",
+        q: "The front of my car is covered in bugs. Will they come off?",
+        a: "Almost always, if it has been weeks rather than a whole summer. Insect residue is mildly acidic and starts working on the paint quickly in heat, so the honest answer is that the sooner we see it the better the result. We will tell you what has already etched rather than promise it all comes out.",
       },
       {
-        q: "How often should bins be cleaned?",
-        a: "Quarterly suits most Blue Springs households, monthly through summer if the bins sit in sun near a door you use. It is our cheapest recurring service, so people usually run it alongside something else.",
+        q: "How much notice do you need in Blue Springs?",
+        a: "A few days. It is the eastern edge of our range, so it runs on planned routes. Mid-week is usually easier to get than a Saturday.",
+      },
+      {
+        q: "Is a bi-weekly clean actually cheaper than a deep clean now and then?",
+        a: "Over a year, yes, and it is also a better result. A house on a standing slot never gets far enough behind to need a reset, which is the expensive tier.",
       },
     ],
     nearby: ["lees-summit", "independence", "raytown", "kansas-city-mo"],
@@ -795,53 +709,47 @@ export const SERVICE_CITIES: ServiceCity[] = [
     geo: { lat: 39.0086, lng: -94.4636 },
     neighborhoods: ["Downtown Raytown", "Little Blue", "Raytown South", "63rd Street corridor"],
     metaDescription:
-      "Junk removal, gutter clearing and one-time deep cleans in Raytown, MO. Small-load pricing and honest quotes for mid-century homes in 64133 and 64138.",
+      "House cleaning and mobile detailing in Raytown, MO. Little Blue to the 63rd Street corridor. Flat-rate quotes, nothing charged at booking.",
     intro:
-      "Raytown is a compact, mostly mid-century city of single-storey ranches on modest lots, and many of those homes have had the same owner for decades. The work here skews to one-time jobs rather than recurring plans: a basement or garage cleared, gutters done before winter, a deep clean before family visits or before a sale.",
+      "Lunova Services cleans homes and details cars across Raytown, from downtown and the 63rd Street corridor through Little Blue and Raytown South. Flat rate, confirmed before we start, nothing taken at booking.",
     localNotes: [
       {
-        heading: "Single-storey makes gutter work quick and cheap",
-        body: "Almost everything in Raytown is a one-storey ranch, so gutter clearing is a short-ladder job rather than a roof-line one. It costs less here than in a two-storey suburb, and we price it that way instead of charging the metro average.",
+        heading: "Pre-sale deep cleans are half the work here",
+        body: "A lot of what we do in Raytown is getting a house ready to list or ready for a family visit. That is a deep clean rather than a standard one, and the difference is real: baseboards, inside the appliances, light fixtures, the parts a photograph picks up and a walkthrough notices.",
       },
       {
-        heading: "Long-held homes generate one big clear-out",
-        body: "Thirty or forty years in the same house fills a basement. Most Raytown junk calls are a single large clear-out rather than a recurring need, so we quote the whole job up front, bring enough crew to finish in one visit, and sort donations before loading.",
+        heading: "Carports are not garages, and cars know it",
+        body: "Raytown has a lot of carports, which keep the rain off and nothing else. A car under one gets the full run of pollen, sap, dust and temperature swing while everyone assumes it is protected. Those vehicles usually need more exterior work than a garage-kept car and less than one that lives outdoors.",
       },
       {
-        heading: "Pre-sale deep cleans are the other half of the work",
-        body: "When a long-held Raytown home goes on the market it usually needs a deep clean rather than a standard one. Original kitchens, decades-old grout, appliance interiors nobody has opened. We book those as deep cleans and say so, because quoting a standard clean and upgrading on the day is the wrong way to treat a seller.",
+        heading: "Single-storey houses are quicker, and the price says so",
+        body: "Most of the housing here is one level, which takes stairs out of the job entirely. Stairs are a surprising share of the time in a clean, so a three-bedroom ranch generally quotes at the lower end for its size. That is not a discount, it is just what the work is.",
       },
     ],
     serviceFocus: [
       {
-        serviceId: "junk",
-        heading: "Whole-basement and garage clear-outs",
-        body: "Quoted as one job, finished in one visit, donations sorted before anything is loaded.",
-      },
-      {
         serviceId: "cleaning",
         heading: "Pre-sale and pre-visit deep cleans",
-        body: "Original kitchens, old grout, appliance interiors. Quoted as a deep clean from the start.",
+        body: "Baseboards, inside the appliances, light fixtures and the details a walkthrough notices. Booked most often before a listing or before family arrive.",
       },
       {
-        serviceId: "landscaping",
-        heading: "Gutter clearing and yard tidy-up",
-        body: "Short-ladder gutter work on single-storey ranches, priced accordingly.",
-      },
-      {
-        serviceId: "power",
-        heading: "Drives, walks and carports",
-        body: "Concrete washing on the small, well-shaded lots typical of 64133 and 64138.",
+        serviceId: "auto",
+        heading: "Carport cars",
+        body: "Sheltered from rain and nothing else. Pollen, sap and dust build up on paint that everyone assumes is protected, and it comes off easily if it is caught.",
       },
     ],
     faqs: [
       {
-        q: "Is gutter clearing cheaper on a single-storey house?",
-        a: "Yes, and in Raytown that is most houses. It is a short-ladder job rather than a roof-line one, so it takes less time and less setup, and the price reflects that instead of the metro average.",
+        q: "What is the difference between a standard and a deep clean before selling?",
+        a: "A standard clean is written to maintain a house. A deep clean reaches what a standard one skips: baseboards, door frames, inside the microwave, cabinet fronts, light fixtures, window sills. For a listing it is the deep clean you want, because those are exactly the details a photograph picks up.",
       },
       {
-        q: "My parents' house has forty years of stuff in the basement. Can you handle that in one go?",
-        a: "Yes. We quote the whole clear-out up front and bring enough crew to finish in a single visit. Anything you flag gets set aside, usable goods go to donation, and we haul the rest.",
+        q: "Is a single-storey house cheaper to clean?",
+        a: "Often, yes, because stairs are a real share of the time in a clean and there are none. We price by bedroom and bathroom count, so a three-bedroom ranch usually lands at the lower end for its size.",
+      },
+      {
+        q: "My car lives under a carport. Does it need detailing?",
+        a: "More than most people assume. A carport stops rain and nothing else, so pollen, sap and dust build up on paint everyone thinks is protected. The good news is it usually comes off easily if it has not been left for years.",
       },
     ],
     nearby: ["kansas-city-mo", "independence", "lees-summit", "blue-springs"],

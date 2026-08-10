@@ -81,6 +81,6 @@ export const DEFAULT_OG_IMAGE = heroOgImage("lunova-services-hero");
 export const DEFAULT_OG_IMAGE_ALT =
   "Lunova Services in Kansas City: interior window cleaning, a freshly mown lawn, and a cleared household load ready for hauling";
 
-export const DEFAULT_TITLE = "Lunova Services | Cleaning, Junk Removal & Landscaping in KC";
+export const DEFAULT_TITLE = "Lunova Services | KC House Cleaning & Mobile Detailing";
 export const DEFAULT_DESCRIPTION =
-  "Lunova Services offers professional cleaning, junk removal, and landscaping solutions in the Kansas City metro area.";
+  "Lunova Services cleans homes and details cars across the Kansas City metro. Flat-rate quotes, confirmed before we start, nothing charged at booking.";

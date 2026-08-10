@@ -16,7 +16,7 @@ const PRIMARY = BRAND.primary;
 const ACCENT = BRAND.accent;
 
 const DESCRIPTION =
-  "Locally owned Kansas City home services — not a franchise, not a lead broker. Cleaning, junk removal, power washing and lawn care at flat, published rates.";
+  "Locally owned Kansas City house cleaning and mobile detailing. Not a franchise, not a lead broker. Two people, flat rates, nothing charged at booking.";
 
 /**
  * The about page.

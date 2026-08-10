@@ -11,7 +11,7 @@ import {
 } from "../constants/business";
 import { SERVICE_CITIES, cityPath } from "../constants/cities";
 import type { ServiceCity } from "../constants/cities";
-import { SERVICES } from "../constants/services";
+import { ACTIVE_SERVICES, SERVICES } from "../constants/services";
 
 /** A JSON-LD document. Kept loose (schema.org has no static TS types) but never `any`. */
 export type JsonLdSchema = Record<string, unknown>;
@@ -62,7 +62,11 @@ function hasOfferCatalog(): JsonLdSchema {
   return {
     "@type": "OfferCatalog",
     name: `${COMPANY_NAME} Services`,
-    itemListElement: SERVICES.map((service) => ({
+    // ACTIVE_SERVICES, not SERVICES. This is the block Google and the AI
+    // answer engines read to decide what the business does, so listing a
+    // parked line here would have the schema advertising work the site itself
+    // refuses to book.
+    itemListElement: ACTIVE_SERVICES.map((service) => ({
       "@type": "Offer",
       itemOffered: {
         "@type": "Service",

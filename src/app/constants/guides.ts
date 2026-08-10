@@ -478,6 +478,116 @@ export const GUIDES: Guide[] = [
       },
     ],
   },
+
+  /*
+    The detailing guide. Added because the site had four guides and every one
+    of them pointed at cleaning or at a service that is now parked — so half
+    the business had no content answering the question people actually search
+    before they book it, which is what it costs.
+  */
+  {
+    slug: "mobile-detailing-cost-kansas-city",
+    title: "Mobile Detailing Prices in Kansas City (2026)",
+    description:
+      "What mobile detailing costs in Kansas City, what separates a wash from a full detail, and when the cheaper option is genuinely the right one.",
+    heading: "What mobile detailing actually costs in Kansas City",
+    standfirst:
+      "The real price ranges in this metro, what each tier includes, and the three jobs where paying more changes nothing.",
+    published: "2026-08-10",
+    category: "Auto detailing",
+    service: "auto",
+    answer:
+      `In Kansas City, a mobile exterior wash runs roughly ${price("auto", "express")} to $150, an interior detail ${price("auto", "interior")} to $400, and a full interior-and-exterior detail ${price("auto", "full")} to $450. Vehicle size and interior condition move the number more than anything else: a three-row SUV that has carried a dog and two children is a materially longer job than a garage-kept sedan, and any quote that ignores both is a quote that will change on the day.`,
+    sections: [
+      {
+        heading: "The three tiers, and what actually separates them",
+        body: [
+          "Almost every detailer sells some version of the same three tiers, under different names. What changes between them is not thoroughness in the abstract — it is which surfaces get touched and whether anything is done to the paint itself.",
+        ],
+        table: {
+          columns: ["Tier", "What it covers", "Typical KC price"],
+          rows: [
+            [
+              "Wash / express",
+              "Exterior hand wash, wheels, glass, tyre dressing. Nothing inside.",
+              `${price("auto", "express")}–$150`,
+            ],
+            [
+              "Interior detail",
+              "Full vacuum, seats and carpets cleaned, plastics and vents detailed, glass. Nothing outside.",
+              `${price("auto", "interior")}–$400`,
+            ],
+            [
+              "Full detail",
+              "Both of the above, plus decontamination and a machine polish, plus protection on the paint.",
+              `${price("auto", "full")}–$450`,
+            ],
+          ],
+        },
+        note:
+          "Paint correction and ceramic coating are a separate category, not a tier. Those run several hundred to a few thousand dollars, take one or two days, and are worth buying only from someone who can show you their work. We do not currently offer them.",
+      },
+      {
+        heading: "What actually moves the price",
+        list: [
+          "Vehicle size. A large SUV or van has roughly twice the interior surface of a coupe, and it is time rather than product that costs.",
+          "Interior condition. Pet hair, ground-in food and smoke are the three that add real hours, and pet hair in particular is charged separately by most detailers because it is genuinely slow.",
+          "Where the vehicle is. A mobile detailer needs space to open every door and, unless they carry a tank, an outdoor tap. A car in a parking garage may be a no rather than a surcharge.",
+          "How long it has been. This is the one people underestimate. Sap, bug residue and hard-water spotting all bond to the surface and, given a season, start etching what is underneath.",
+        ],
+      },
+      {
+        heading: "Mobile or a shop?",
+        body: [
+          "A shop has power, lighting, water and a controlled space, which genuinely matters for heavy correction work. Mobile has one advantage that beats all of that for ordinary jobs: the car gets done while you are doing something else, and you never lose a Saturday to sitting in a waiting room.",
+          "The honest rule is that anything short of multi-stage paint correction is well suited to mobile. Correction is not, and anyone offering to do a two-day ceramic coating in your driveway in February is describing a job that will not cure properly.",
+        ],
+      },
+      {
+        heading: "When not to pay for a detail",
+        body: [
+          "This is the section most detailers will not write, so here it is.",
+        ],
+        list: [
+          "If you are selling the car this month, an exterior wash and a solid interior vacuum gets you most of the visible gain. A full detail rarely returns its cost on a private sale.",
+          "If the paint has clear-coat failure — flaking or peeling rather than dull — polishing cannot fix that, and anyone who says otherwise is selling you a result they cannot deliver. That is a respray.",
+          "If it is a lease return, check the wear standard first. It is usually far cheaper than a detail, and it is the actual thing you will be judged against.",
+          "If the car is genuinely clean and garage-kept, an express wash every few weeks holds it. You do not need the full tier three times a year.",
+        ],
+      },
+      {
+        heading: "The things that are worth paying for",
+        list: [
+          "Headlight restoration on anything over about eight years old. Hazed lenses are the single most visible sign of age on a car and among the cheapest to fix.",
+          "Pet hair removal, if you have it. It is slow, unpleasant work and it is the one job where paying someone is obviously worth it.",
+          "Getting bug residue and sap off sooner rather than later. Both are acidic or bonding, and both etch paint if left a season. The cheap job now avoids the expensive one later.",
+          "A sealant after any full detail. It is the difference between the result lasting weeks and lasting months.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: "How long does a full detail take?",
+        a: "Three to four hours for a normal vehicle in normal condition, and longer for a large SUV or a heavy interior. Anyone promising a full interior-and-exterior detail in an hour is describing a wash.",
+      },
+      {
+        q: "Do you need my water and power?",
+        a: "For now we need access to an outdoor tap. We bring everything else. That means a driveway or a lot with a spigot within reach — it is the one thing worth checking before you book.",
+      },
+      {
+        q: "How often should a car be detailed?",
+        a: "Twice a year covers most people, with a wash in between. A car that lives outdoors under trees or does heavy highway miles benefits from more; a garage-kept car that is washed properly needs less.",
+      },
+      {
+        q: "Is machine polishing safe on my paint?",
+        a: "A single-stage polish on a dual-action machine is low risk, which is why it is the standard step in a full detail. Multi-stage correction removes materially more clear coat and is not something to buy from someone without a portfolio, ourselves included — we do not offer it.",
+      },
+      {
+        q: "What is the cheapest useful thing I can buy?",
+        a: `An express wash, at ${price("auto", "express")}. It will not fix paint, but a properly hand-washed car with clean wheels and glass looks dramatically better than most people expect, and it does not put swirl marks in the paint the way an automatic wash does.`,
+      },
+    ],
+  },
 ];
 
 export const GUIDE_BY_SLUG: Record<string, Guide> = Object.fromEntries(

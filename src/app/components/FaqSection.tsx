@@ -13,24 +13,24 @@ export const GENERAL_FAQS: FaqItem[] = [
   // request" on every page of an uninsured business.
   insuranceFaq(),
   {
-    q: "Do I need to be home for the service?",
-    a: "Not for most jobs. Provide entry instructions and we'll text you before we arrive and again when we leave. We do ask someone be reachable for junk removal to confirm what gets hauled.",
+    q: "Do I need to be home?",
+    a: "Not for a clean. Leave entry instructions in the booking notes and we'll text you before we arrive and again when we leave. For a detail it helps if you're reachable, since the car needs unlocking and we'd rather ask about a stain than guess at it.",
   },
   {
     q: "What is your cancellation policy?",
-    a: "Free cancellation or rescheduling up to 24 hours before your appointment. Inside 24 hours a $25 fee applies to cover the crew slot.",
+    a: "Free cancellation or rescheduling up to 24 hours before your appointment. Inside 24 hours a $25 fee applies to cover the slot, because there are two of us and a late cancellation is half a day we can't refill.",
   },
   {
     q: "Do you bring your own supplies and equipment?",
-    a: "Always. Cleaning crews bring eco-friendly products, landscaping crews bring their own mowers and trimmers, and junk removal includes all hauling tools.",
+    a: "Yes, everything — products, cloths, vacuum, extractor, polisher. Detailing is the one exception: for now we need access to an outdoor tap at the property, because the water tank isn't on the truck yet. If you'd rather we used a specific product on a particular surface, leave it out and say so in the notes.",
   },
   {
-    q: "Can I bundle multiple services?",
-    a: "Book 2 or more services and receive 10% off the combined total. Every cleaning or power washing quote surfaces bin cleaning or window washing as a discounted add-on.",
+    q: "Can I book both services at once?",
+    a: "Yes, and it's the cheapest way to buy either. Book the house and the car together and 10% comes off the combined total — the drive is already paid for by the first job, so the second one costs us less to do. Bin cleaning rides along as an add-on for the same reason.",
   },
   {
     q: "How fast can you come out?",
-    a: "We offer same-day and next-day slots for most services in the Kansas City metro. Call or text and we'll confirm exact availability in minutes.",
+    a: "Often the same week, sometimes sooner. We're a two-person company rather than a call centre, so the honest answer is that it depends on what's already on the calendar. Call or text and you'll get a real answer rather than a placeholder.",
   },
 ];
 

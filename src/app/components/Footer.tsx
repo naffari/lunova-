@@ -6,6 +6,7 @@ import { CHROME } from "../constants/brand";
 import { HOURS_DISPLAY } from "../constants/business";
 import { SERVICE_CITIES, cityPath } from "../constants/cities";
 import { GUIDES, guidePath } from "../constants/guides";
+import { ACTIVE_SERVICES } from "../constants/services";
 import { EmailLink, PhoneLink } from "./common/ContactLinks";
 
 const FT_BG = CHROME.bg;
@@ -17,14 +18,14 @@ const FT_BORDER = CHROME.border;
 export default function Footer() {
   return (
     <footer role="contentinfo" className="pt-12 pb-6" style={{ backgroundColor: FT_BG, borderTop: `1px solid ${FT_BORDER}` }}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-7 gap-8 mb-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-8 mb-10">
         {/* Brand */}
         <div className="lg:col-span-2">
           <span style={{ fontFamily: "var(--font-display)", color: FT_TEXT }} className="text-2xl font-bold tracking-wide">
             LUNOVA
           </span>
           <p className="text-sm mt-3 leading-relaxed max-w-sm" style={{ color: FT_MUTED }}>
-            Professional house cleaning, janitorial, junk removal, power washing, window cleaning, auto detailing, bin sanitation, and landscaping in the Kansas City metro.
+            House cleaning and mobile auto detailing across the Kansas City metro. Flat-rate quotes, confirmed before we start, nothing charged at booking.
           </p>
           <div className="mt-5 flex items-center gap-3">
             <Link
@@ -43,26 +44,24 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Specialized Cleaning */}
-        <div>
-          <p className="font-semibold text-xs uppercase tracking-wider mb-3" style={{ color: FT_TEXT }}>Cleaning Services</p>
-          <ul className="space-y-2 text-xs" style={{ color: FT_MUTED }}>
-            <li><Link to="/services/residential-cleaning" className="hover:text-white transition-colors">Residential Cleaning</Link></li>
-            <li><Link to="/services/commercial-cleaning" className="hover:text-white transition-colors">Commercial Cleaning</Link></li>
-            <li><Link to="/services/bin-cleaning" className="hover:text-white transition-colors">Trash Bin Cleaning</Link></li>
-            <li><Link to="/cleaning" className="font-medium transition-colors hover:text-white">View Services Hub →</Link></li>
-          </ul>
-        </div>
+        {/*
+          What we sell, from the catalogue.
 
-        {/* Exterior & Hauling */}
+          This was two hand-written columns listing eight services, six of
+          which the business cannot currently deliver — the footer is on every
+          page, so it was the most-rendered wrong claim on the site. It reads
+          ACTIVE_SERVICES now, which means it cannot say yes to something the
+          booking flow says no to.
+        */}
         <div>
-          <p className="font-semibold text-xs uppercase tracking-wider mb-3" style={{ color: FT_TEXT }}>Exterior &amp; Hauling</p>
+          <p className="font-semibold text-xs uppercase tracking-wider mb-3" style={{ color: FT_TEXT }}>What We Do</p>
           <ul className="space-y-2 text-xs" style={{ color: FT_MUTED }}>
-            <li><Link to="/services/power-washing" className="hover:text-white transition-colors">Power Washing</Link></li>
-            <li><Link to="/services/window-cleaning" className="hover:text-white transition-colors">Window Cleaning</Link></li>
-            <li><Link to="/services/auto-detailing" className="hover:text-white transition-colors">Auto Detailing</Link></li>
-            <li><Link to="/junk-removal" className="hover:text-white transition-colors">Junk Removal</Link></li>
-            <li><Link to="/landscaping" className="hover:text-white transition-colors">Landscaping</Link></li>
+            {ACTIVE_SERVICES.map((service) => (
+              <li key={service.id}>
+                <Link to={service.to} className="hover:text-white transition-colors">{service.name}</Link>
+              </li>
+            ))}
+            <li><Link to="/book" className="font-medium transition-colors hover:text-white">Get a price →</Link></li>
           </ul>
         </div>
 
