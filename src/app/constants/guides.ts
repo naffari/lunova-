@@ -443,7 +443,7 @@ export const GUIDES: Guide[] = [
           "A price quoted with no questions about bathroom count or condition. It will be revised on the day, upward.",
           "Hourly with no cap and no estimate of hours.",
           "No proof of insurance when you ask. Ask. A general liability certificate should arrive by email within the hour.",
-          "A price far under the range above. Someone is uninsured, unvetted, being paid badly, or all three, and none of those are your problem until something goes wrong in your house.",
+          "A price far under the range above. Someone is unvetted, being paid badly, or cutting the time on site to nothing, and none of those are your problem until something goes wrong in your house.",
           "No written list of what is included. \"Deep clean\" means whatever the company decides it means once they are standing in your kitchen.",
         ],
       },

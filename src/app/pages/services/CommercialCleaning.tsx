@@ -22,7 +22,7 @@ const STATS = [
   { val: "Custom", label: "Pricing" },
   { val: "After-Hours", label: "Available" },
   { val: "100%", label: "Satisfaction Guarantee" },
-  { val: "Licensed", label: "& Insured" },
+  { val: "Locally", label: "Owned" },
 ];
 
 const HOW_IT_WORKS_STEPS = [
@@ -49,13 +49,13 @@ const HOW_IT_WORKS_STEPS = [
 ];
 
 const COMMERCIAL_CLEANING_DESCRIPTION =
-  "Scheduled nightly janitorial for offices, medical facilities, retail stores, and restaurants across Kansas City. Fully insured, contract-ready crews.";
+  "Scheduled nightly janitorial for offices, medical facilities, retail stores, and restaurants across Kansas City. After-hours crews, quoted after a walk-through.";
 
 const COMMERCIAL_CLEANING_FAQS = [
   { q: "Do you offer after-hours cleaning?", a: "Yes. We specialize in after-hours and overnight cleaning so your business is ready to open each morning." },
   { q: "Can you handle large commercial spaces?", a: "Absolutely. We serve offices, retail stores, medical facilities, and industrial spaces." },
   { q: "Do you provide cleaning contracts?", a: "Yes. We offer weekly, bi-weekly, and monthly contracts with discounted rates for long-term commitments." },
-  { q: "Are your cleaners insured?", a: "Yes. Lunova Services is fully licensed and insured. We carry liability coverage for all commercial jobs." },
+  { q: "Are your cleaners insured?", a: "Not yet, and for commercial work that matters more than it does for a house clean. General liability cover is being put in place. Until it is bound we cannot issue a certificate of insurance, so if your property manager requires a COI on file we will not be able to bid that contract yet — ask us and we will tell you where it stands rather than stalling you." },
 ];
 
 /** Written once; Marquee doubles it for the seamless loop. */
@@ -84,12 +84,12 @@ export default function CommercialCleaning() {
       <ServiceHero
         badge="Now Accepting Commercial Contracts in KC"
         titleContent={<>Professional Janitorial.<br /><span style={{ color: ACCENT }} className="italic">Every Night. On Time.</span></>}
-        description="Scheduled nightly janitorial for offices, medical facilities, retail stores, and restaurants. Fully insured, contract-ready, and dedicated to your standards."
+        description="Scheduled nightly janitorial for offices, medical facilities, retail stores, and restaurants. After-hours crews, quoted after a walk-through, run to your standards."
         primaryColor={GROUND}
         accentColor={ACCENT}
         ctaLabel="Book a Clean"
         ctaTo={bookPath("commercial")}
-        trustItems={["Fully Insured", "After-Hours Service", "Satisfaction Guarantee"]}
+        trustItems={["After-Hours Service", "Quoted On Site", "Satisfaction Guarantee"]}
         heroImage="commercial-cleaning-hero"
         heroImageAlt="A cleaner in protective coveralls sweeping up paint and plaster debris during a post-renovation clean"
       />

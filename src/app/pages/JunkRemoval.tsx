@@ -48,7 +48,7 @@ const STATS = [
   { val: startingAtLabel(SERVICE_BY_ID.junk), label: "Starting Price" },
   { val: "Same-Day", label: "Service" },
   { val: "Eco-Friendly", label: "Disposal" },
-  { val: "Licensed", label: "& Insured" },
+  { val: "Locally", label: "Owned" },
 ];
 
 const HOW_IT_WORKS_STEPS = [
@@ -76,7 +76,7 @@ const HOW_IT_WORKS_STEPS = [
 
 /** Written once; Marquee doubles it for the seamless loop. */
 const MARQUEE_ITEMS = [
-  "Single-Item Pickup", "Full Truckload", "Same-Day Service", "Eco-Friendly Recycling", "Estate Cleanouts", "Licensed & Insured", "Free Estimates", "Satisfaction Guarantee",
+  "Single-Item Pickup", "Full Truckload", "Same-Day Service", "Eco-Friendly Recycling", "Estate Cleanouts", "Locally Owned", "Free Estimates", "Satisfaction Guarantee",
 ];
 
 const JUNK_REMOVAL_DESCRIPTION =
@@ -114,7 +114,7 @@ export default function JunkRemoval() {
         accentColor={ACCENT}
         ctaLabel="Book a Haul"
         ctaTo={bookPath("junk")}
-        trustItems={["Licensed & Insured", "Same-Day Service", "Eco-Friendly Recycling"]}
+        trustItems={["Locally Owned", "Same-Day Service", "Eco-Friendly Recycling"]}
         heroImage="junk-removal-hero"
         heroImageAlt="A curbside pile of household junk cleared in one load: cardboard boxes, bagged waste, a broken dresser and a filing cabinet"
       />

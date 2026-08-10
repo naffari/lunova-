@@ -37,7 +37,7 @@ export default function Contact() {
     <div className="font-sans-modern min-h-screen" style={{ backgroundColor: BRAND.bg, color: BRAND.ink }}>
       <Seo
         title={`Contact ${COMPANY_NAME} | Kansas City Metro | ${PHONE_DISPLAY}`}
-        description={`Call ${COMPANY_NAME} on ${PHONE_DISPLAY} or book online. Serving the ${SERVICE_AREA} Monday to Saturday. Flat-rate quotes, insured crews.`}
+        description={`Call ${COMPANY_NAME} on ${PHONE_DISPLAY} or book online. Serving the ${SERVICE_AREA} Monday to Saturday. Flat-rate quotes, local crews.`}
         jsonLd={[
           buildLocalBusinessSchema(),
           buildBreadcrumbSchema([

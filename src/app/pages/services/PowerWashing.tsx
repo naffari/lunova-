@@ -30,7 +30,7 @@ const { primary: PRIMARY, accent: ACCENT, ground: GROUND, bg: BG } = SERVICE_THE
 const FEATURES = [
   {
     icon: Droplets,
-    title: "Licensed & Insured",
+    title: "Locally Owned",
     desc: "Full commercial liability coverage on every job. Your property is protected, no exceptions.",
   },
   {
@@ -54,7 +54,7 @@ const STATS = [
   { val: startingAtLabel(SERVICE_BY_ID.power), label: "Starting Price" },
   { val: "Same-Day", label: "Service" },
   { val: "100%", label: "Satisfaction Guarantee" },
-  { val: "Licensed", label: "& Insured" },
+  { val: "Locally", label: "Owned" },
 ];
 
 const HOW_IT_WORKS_STEPS = [
@@ -81,7 +81,7 @@ const HOW_IT_WORKS_STEPS = [
 ];
 
 const POWER_WASHING_DESCRIPTION =
-  "Professional pressure washing, soft washing, gutter cleaning, and surface restoration for homes and businesses across Kansas City. Licensed and insured.";
+  "Pressure washing, soft washing, gutter cleaning and surface restoration for homes and businesses across Kansas City. Flat rates, confirmed before we start.";
 
 const POWER_WASHING_FAQS = [
   { q: "What surfaces can you power wash?", a: "Driveways, sidewalks, decks, patios, siding, fences, and commercial parking lots." },
@@ -92,7 +92,7 @@ const POWER_WASHING_FAQS = [
 
 /** Written once; Marquee doubles it for the seamless loop. */
 const MARQUEE_ITEMS = [
-  "Driveway Cleaning", "House Soft Wash", "Deck Restoration", "Oil & Rust Removal", "Licensed & Insured", "Soft Wash Available", "Free Estimates", "Satisfaction Guarantee",
+  "Driveway Cleaning", "House Soft Wash", "Deck Restoration", "Oil & Rust Removal", "Locally Owned", "Soft Wash Available", "Free Estimates", "Satisfaction Guarantee",
 ];
 
 export default function PowerWashing() {
@@ -116,12 +116,12 @@ export default function PowerWashing() {
       <ServiceHero
         badge="Power Washing by Lunova"
         titleContent={<>Exterior Cleaning<br />for Homes &amp; <span className="italic" style={{ color: ACCENT }}>Businesses.</span></>}
-        description="Professional pressure washing, soft washing, gutter cleaning, and surface restoration across Kansas City. Licensed, insured, and results-guaranteed."
+        description="Pressure washing, soft washing, gutter cleaning, and surface restoration across Kansas City. Flat rates, and the Done-Right Promise on every job."
         primaryColor={GROUND}
         accentColor={ACCENT}
         ctaLabel="Book a Clean"
         ctaTo={bookPath("power")}
-        trustItems={["Licensed & Insured", "Soft Wash Available", "Free Estimates"]}
+        trustItems={["Locally Owned", "Soft Wash Available", "Free Estimates"]}
         heroImage="power-washing-hero"
         heroImageAlt="A pressure washer stripping grey weathering off a wooden deck, leaving a clean stripe of bare timber"
       />

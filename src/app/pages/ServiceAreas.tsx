@@ -8,6 +8,7 @@ import { BRAND } from "../constants/brand";
 import { SERVICE_CITIES, cityPath } from "../constants/cities";
 import { SERVICE_AREA } from "../constants/contact";
 import { buildBreadcrumbSchema, buildLocalBusinessSchema } from "../utils/structuredData";
+import { trustBadges } from "../constants/credentials";
 
 const PRIMARY = BRAND.primary;
 const ACCENT = BRAND.accent;
@@ -55,7 +56,7 @@ export default function ServiceAreas() {
           </>
         }
         lead={`Cleaners inside, groundskeepers out front, and a truck for whatever has to go. ${SERVICE_CITIES.length} cities across the Kansas City metro, on both sides of the state line, at the same flat rates in every one of them.`}
-        meta={[`${SERVICE_CITIES.length} cities covered`, "Licensed & insured", "Booked in 2 minutes"]}
+        meta={[`${SERVICE_CITIES.length} cities covered`, trustBadges(1)[0], "Booked in 2 minutes"]}
       />
 
       <section className="py-12 px-4 sm:px-6" style={{ backgroundColor: BRAND.surface }}>

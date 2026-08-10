@@ -224,6 +224,56 @@ export const SERVICE_NAME_BY_ID: Record<string, string> = Object.fromEntries(
 export const BUNDLE_DISCOUNT = 0.1;
 
 /**
+ * Discount for committing to a recurring slot, by frequency.
+ *
+ * The wizard has always asked "how often?" and then charged the same either
+ * way, so the question read as data collection rather than an offer, and the
+ * one lever that turns a one-off customer into a route was doing nothing.
+ *
+ * These are deliberately below the ladder the big maid franchises publish
+ * (commonly 20/15/10). Those numbers are funded by route density Lunova does
+ * not have yet — a weekly customer is only cheaper to serve once there are
+ * several of them on the same street on the same morning. Starting at 15%
+ * leaves room to go up as routes fill, which is a much easier conversation
+ * than cutting an advertised discount later.
+ *
+ * Keys must match FREQUENCY_OPTIONS in pages/booking/wizardData.ts.
+ */
+export const FREQUENCY_DISCOUNT: Record<string, number> = {
+  "One-Time": 0,
+  Weekly: 0.15,
+  "Bi-Weekly": 0.1,
+  Monthly: 0.05,
+};
+
+/**
+ * Ceiling on everything stacked together.
+ *
+ * A weekly two-service booking would otherwise take 25% off, which is past the
+ * point where the job is worth doing at all for a crew that still has to
+ * travel to it.
+ */
+export const MAX_DISCOUNT = 0.2;
+
+/**
+ * The combined rate for a booking. Bundle and frequency stack, then cap.
+ *
+ * Returns a RATE, not an amount, so a caller that needs to show the two
+ * components separately still can — see the review step, which itemises them.
+ */
+export function discountRate(serviceCount: number, frequency: string): number {
+  const bundle = serviceCount > 1 ? BUNDLE_DISCOUNT : 0;
+  const recurring = FREQUENCY_DISCOUNT[frequency] ?? 0;
+  return Math.min(bundle + recurring, MAX_DISCOUNT);
+}
+
+/** "15% off" / "" — for labelling a frequency control. */
+export function frequencyDiscountLabel(frequency: string): string {
+  const rate = FREQUENCY_DISCOUNT[frequency] ?? 0;
+  return rate > 0 ? `${Math.round(rate * 100)}% off` : "";
+}
+
+/**
  * Price of a single subservice, as display text.
  * "$120" · "$15/mo" · "$45/visit" · "+$60" · "Custom quote"
  */

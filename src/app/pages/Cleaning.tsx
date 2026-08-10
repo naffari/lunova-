@@ -112,7 +112,7 @@ const STATS = [
   { val: startingAtLabel(SERVICE_BY_ID.cleaning), label: "Starting Price" },
   { val: "Eco-Friendly", label: "Products" },
   { val: "100%", label: "Satisfaction Guarantee" },
-  { val: "Licensed", label: "& Insured" },
+  { val: "Locally", label: "Owned" },
 ];
 
 const CLEANING_DESCRIPTION =
@@ -127,7 +127,7 @@ const CLEANING_FAQS = [
 
 /** Written once; Marquee doubles it for the seamless loop. */
 const MARQUEE_ITEMS = [
-  "Residential Cleaning", "Commercial Janitorial", "Power Washing", "Window Cleaning", "Auto Detailing", "Bin Cleaning", "Licensed & Insured", "Satisfaction Guarantee",
+  "Residential Cleaning", "Commercial Janitorial", "Power Washing", "Window Cleaning", "Auto Detailing", "Bin Cleaning", "Locally Owned", "Satisfaction Guarantee",
 ];
 
 export default function Cleaning() {
@@ -156,7 +156,7 @@ export default function Cleaning() {
         accentColor={ACCENT}
         ctaLabel="Book a Clean"
         ctaTo={bookPath("cleaning")}
-        trustItems={["Eco-Friendly Supplies", "Licensed & Insured", "Same-Week Slots"]}
+        trustItems={["Eco-Friendly Supplies", "Locally Owned", "Same-Week Slots"]}
         heroImage="cleaning-hero"
         heroImageAlt="A cleaner in gloves and a face mask wiping down the window frame and shutters of a Kansas City home"
       />

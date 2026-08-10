@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { ChevronDown } from "lucide-react";
+import { insuranceFaq } from "../constants/credentials";
 
 export interface FaqItem {
   q: string;
@@ -7,10 +8,10 @@ export interface FaqItem {
 }
 
 export const GENERAL_FAQS: FaqItem[] = [
-  {
-    q: "Are you licensed and insured?",
-    a: "Yes. Lunova and every crew member are fully licensed and carry general liability insurance. Proof of insurance is available on request before your job.",
-  },
+  // Answer comes from constants/credentials.ts, which knows whether there is
+  // actually a policy. This used to promise "proof of insurance available on
+  // request" on every page of an uninsured business.
+  insuranceFaq(),
   {
     q: "Do I need to be home for the service?",
     a: "Not for most jobs. Provide entry instructions and we'll text you before we arrive and again when we leave. We do ask someone be reachable for junk removal to confirm what gets hauled.",

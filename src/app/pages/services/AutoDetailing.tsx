@@ -54,7 +54,7 @@ const STATS = [
   { val: startingAtLabel(SERVICE_BY_ID.auto), label: "Starting Price" },
   { val: "Mobile", label: "Service" },
   { val: "100%", label: "Satisfaction Guarantee" },
-  { val: "Licensed", label: "& Insured" },
+  { val: "Locally", label: "Owned" },
 ];
 
 const HOW_IT_WORKS_STEPS = [
@@ -92,7 +92,7 @@ const AUTO_DETAILING_FAQS = [
 
 /** Written once; Marquee doubles it for the seamless loop. */
 const MARQUEE_ITEMS = [
-  "Full Detail", "Ceramic Coating", "Interior Steam Clean", "Headlight Restoration", "Mobile Service", "Licensed & Insured", "Satisfaction Guarantee", "We Come to You",
+  "Full Detail", "Ceramic Coating", "Interior Steam Clean", "Headlight Restoration", "Mobile Service", "Locally Owned", "Satisfaction Guarantee", "We Come to You",
 ];
 
 export default function AutoDetailing() {

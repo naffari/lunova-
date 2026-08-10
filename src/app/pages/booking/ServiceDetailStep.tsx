@@ -1,6 +1,6 @@
 import { Check, Minus, Plus, X } from "lucide-react";
 import type { Answers, ServiceDetail } from "../../constants/serviceDetails";
-import { formatDollars, SERVICE_NAME_BY_ID, BUNDLE_DISCOUNT } from "../../constants/services";
+import { formatDollars, SERVICE_NAME_BY_ID, BUNDLE_DISCOUNT, frequencyDiscountLabel } from "../../constants/services";
 import { FREQUENCY_OPTIONS } from "./wizardData";
 
 interface ServiceDetailStepProps {
@@ -401,21 +401,36 @@ export default function ServiceDetailStep({
               users open a drop-down purely to see what's inside, and with
               four options a drop-down saves nothing. */}
           <div className="grid grid-cols-2 gap-2">
-            {FREQUENCY_OPTIONS.map((freq) => (
-              <button
-                key={freq}
-                type="button"
-                onClick={() => onFrequency(freq)}
-                aria-pressed={frequency === freq}
-                className={`py-3 rounded-xl text-sm font-semibold border-2 transition-colors ${
-                  frequency === freq
-                    ? "border-primary bg-primary text-primary-foreground"
-                    : "border-border bg-card text-foreground hover:border-primary/30"
-                }`}
-              >
-                {freq}
-              </button>
-            ))}
+            {FREQUENCY_OPTIONS.map((freq) => {
+              // The saving goes ON the control. A discount the customer only
+              // discovers on the review screen does not change the choice they
+              // made three steps earlier.
+              const saving = frequencyDiscountLabel(freq);
+              return (
+                <button
+                  key={freq}
+                  type="button"
+                  onClick={() => onFrequency(freq)}
+                  aria-pressed={frequency === freq}
+                  className={`py-3 px-2 rounded-xl text-sm font-semibold border-2 transition-colors ${
+                    frequency === freq
+                      ? "border-primary bg-primary text-primary-foreground"
+                      : "border-border bg-card text-foreground hover:border-primary/30"
+                  }`}
+                >
+                  <span className="block">{freq}</span>
+                  {saving && (
+                    <span
+                      className={`block text-[11px] font-bold mt-0.5 ${
+                        frequency === freq ? "text-primary-foreground/85" : "text-primary"
+                      }`}
+                    >
+                      {saving}
+                    </span>
+                  )}
+                </button>
+              );
+            })}
           </div>
         </Tile>
 

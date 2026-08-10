@@ -110,7 +110,7 @@ const BIN_CLEANING_FAQS = [
 
 /** Written once; Marquee doubles it for the seamless loop. */
 const MARQUEE_ITEMS = [
-  "Pressure Washed", "Monthly Route Service", "Biodegradable Detergents", "Deodorizing Treatment", "Curbside Service", "No Contracts", "Licensed & Insured", "Satisfaction Guarantee",
+  "Pressure Washed", "Monthly Route Service", "Biodegradable Detergents", "Deodorizing Treatment", "Curbside Service", "No Contracts", "Locally Owned", "Satisfaction Guarantee",
 ];
 
 export default function BinCleaning() {

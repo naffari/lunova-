@@ -206,7 +206,7 @@ export default function Guide() {
                   {service.name} across the Kansas City metro
                 </h2>
                 <p className="text-sm leading-relaxed mb-5" style={{ color: BRAND.muted }}>
-                  {startingAtLabel(service)}. Flat rates confirmed before any work starts, insured and
+                  {startingAtLabel(service)}. Flat rates confirmed before any work starts, local and
                   background-checked crews, and no charge for the quote.
                 </p>
                 <div className="flex flex-wrap items-center gap-3">

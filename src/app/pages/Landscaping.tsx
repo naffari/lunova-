@@ -35,7 +35,7 @@ const FEATURES = [
   },
   {
     icon: Check,
-    title: "Licensed & Fully Insured",
+    title: "Locally Owned, Not a Franchise",
     desc: "Every job is backed by full liability insurance. Your property is protected from start to finish.",
   },
   {
@@ -49,7 +49,7 @@ const STATS = [
   { val: startingAtLabel(SERVICE_BY_ID.landscaping), label: "Starting Price" },
   { val: "Same-Week", label: "Availability" },
   { val: "100%", label: "Satisfaction Guarantee" },
-  { val: "Licensed", label: "& Insured" },
+  { val: "Locally", label: "Owned" },
 ];
 
 const HOW_IT_WORKS_STEPS = [
@@ -87,7 +87,7 @@ const LANDSCAPING_FAQS = [
 
 /** Written once; Marquee doubles it for the seamless loop. */
 const MARQUEE_ITEMS = [
-  "Lawn Mowing", "Hedge Trimming", "Mulch & Edging", "Seasonal Cleanup", "Aeration & Seeding", "Licensed & Insured", "Same-Week Slots", "Satisfaction Guarantee",
+  "Lawn Mowing", "Hedge Trimming", "Mulch & Edging", "Seasonal Cleanup", "Aeration & Seeding", "Locally Owned", "Same-Week Slots", "Satisfaction Guarantee",
 ];
 
 export default function Landscaping() {
@@ -115,7 +115,7 @@ export default function Landscaping() {
         accentColor={ACCENT}
         ctaLabel="Book Landscaping"
         ctaTo={bookPath("landscaping")}
-        trustItems={["Licensed & Insured", "Same-Week Appointments", "100% Satisfaction"]}
+        trustItems={["Locally Owned", "Same-Week Appointments", "100% Satisfaction"]}
         heroImage="landscaping-hero"
         heroImageAlt="A wide, freshly mown back lawn with trimmed shrub beds running down to a pool and patio"
       />

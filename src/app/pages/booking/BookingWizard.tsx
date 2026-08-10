@@ -17,7 +17,8 @@ import {
   cheapestSubservice,
   formatDollars,
   startingAtLabel,
-  BUNDLE_DISCOUNT,
+  FREQUENCY_DISCOUNT,
+  discountRate,
 } from "../../constants/services";
 import {
   defaultAnswers,
@@ -332,13 +333,20 @@ export default function BookingWizard() {
 
     const serviceCount = (state.packageId ? 1 : 0) + state.bundles.length;
     const subtotal = detailPrice.subtotal + bundleTotal;
-    const discount = serviceCount > 1 ? Math.round(subtotal * BUNDLE_DISCOUNT) : 0;
+    /*
+      Bundle and recurring frequency stack, then cap. The wizard asked "how
+      often?" for months and charged the same either way, so the question read
+      as data collection rather than an offer.
+    */
+    const rate = discountRate(serviceCount, state.frequency);
+    const discount = Math.round(subtotal * rate);
 
     return {
       ...detailPrice,
       bundleTotal,
       subtotal,
       discount,
+      discountRate: rate,
       total: subtotal - discount,
       serviceCount,
       needsVisit: detailPrice.needsVisit || bundleNeedsVisit,
@@ -1040,7 +1048,12 @@ export default function BookingWizard() {
                     {estimate.discount > 0 && (
                       <li className="flex justify-between gap-4 text-xs">
                         <span className="text-primary font-semibold">
-                          Bundle discount, {Math.round(BUNDLE_DISCOUNT * 100)}%
+                          {estimate.serviceCount > 1 && FREQUENCY_DISCOUNT[state.frequency]
+                            ? `Bundle + ${state.frequency.toLowerCase()} discount`
+                            : estimate.serviceCount > 1
+                              ? "Bundle discount"
+                              : `${state.frequency} discount`}
+                          , {Math.round(estimate.discountRate * 100)}%
                         </span>
                         <span className="font-bold text-primary tabular-nums whitespace-nowrap">
                           −{formatDollars(estimate.discount)}

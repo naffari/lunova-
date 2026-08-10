@@ -24,7 +24,7 @@ const STATS = [
   { val: startingAtLabel(SERVICE_BY_ID.cleaning), label: "Starting Price" },
   { val: "Eco-Friendly", label: "Products" },
   { val: "100%", label: "Satisfaction Guarantee" },
-  { val: "Licensed", label: "& Insured" },
+  { val: "Locally", label: "Owned" },
 ];
 
 const HOW_IT_WORKS_STEPS = [
@@ -51,7 +51,7 @@ const HOW_IT_WORKS_STEPS = [
 ];
 
 const RESIDENTIAL_CLEANING_DESCRIPTION =
-  "Standard cleans, deep cleans, and move-in/out cleaning services for Kansas City homes. Fully insured crews, eco-friendly products, and flat-rate pricing.";
+  "Standard cleans, deep cleans, and move-in/out cleaning services for Kansas City homes. Biodegradable products, flat-rate pricing, and a published checklist.";
 
 const RESIDENTIAL_CLEANING_FAQS = [
   { q: "Do I need to be home during the cleaning?", a: "No. Many of our clients provide a key or door code. We clean while you're at work and you come home to a spotless house." },
@@ -92,7 +92,7 @@ export default function ResidentialCleaning() {
         accentColor={ACCENT}
         ctaLabel="Book a Clean"
         ctaTo={bookPath("cleaning")}
-        trustItems={["Fully Insured", "Satisfaction Guarantee", "Eco Products"]}
+        trustItems={["Published Checklist", "Satisfaction Guarantee", "Biodegradable Products"]}
         heroImage="cleaning-hero"
         heroImageAlt="A cleaner in gloves and a face mask wiping down the window frame and shutters of a Kansas City home"
       />

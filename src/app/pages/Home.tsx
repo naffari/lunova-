@@ -60,18 +60,18 @@ const HERO_PRICE_ROWS = ["cleaning", "landscaping", "junk", "bin"]
 
 /** Written once; Marquee doubles it for the seamless loop. */
 const MARQUEE_ITEMS = [
-  "Cleaning Services", "Junk Removal", "Landscaping", "Licensed & Insured", "Same-Week Slots", "100% Satisfaction", "Locally Owned", "Kansas City Metro",
+  "Cleaning Services", "Junk Removal", "Landscaping", "Locally Owned", "Same-Week Slots", "100% Satisfaction", "Locally Owned", "Kansas City Metro",
 ];
 
 const HOW_IT_WORKS_STEPS = [
   { step: "1", title: "Check your ZIP", desc: "One field tells you if we run routes on your street." },
   { step: "2", title: "Tell us what you need", desc: "Pick a service and the details, one-time or recurring." },
   { step: "3", title: "We confirm a time", desc: "Our team calls to lock in a date and time that works for you." },
-  { step: "4", title: "We show up & handle it", desc: "Licensed, insured and local. You cross it off the list." },
+  { step: "4", title: "We show up & handle it", desc: "Local crew, flat rate, confirmed before we start. You cross it off the list." },
 ];
 
 const WHY_LUNOVA = [
-  { icon: ShieldCheck, title: "Licensed & insured", desc: "Every job, every crew member, covered." },
+  { icon: ShieldCheck, title: "The Done-Right Promise", desc: "Not happy? Tell us inside 24 hours and we come back and fix it free." },
   { icon: ThumbsUp, title: GUARANTEE.short, desc: GUARANTEE.terms },
   { icon: CalendarClock, title: "Flexible scheduling", desc: "One-time visits or recurring plans, on your calendar." },
   { icon: MapPin, title: "Local KC crew", desc: "Based here, on your street more than most." },

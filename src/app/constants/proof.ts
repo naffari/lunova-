@@ -1,3 +1,5 @@
+import { CREDENTIALS, trustBadges } from "./credentials";
+
 /**
  * Trust signals — the substitute for customer reviews.
  *
@@ -34,15 +36,18 @@ export const GUARANTEE = {
 } as const;
 
 export const PROOF_POINTS: ProofPoint[] = [
+  // `verified` is doing its job here at last. This block shipped with
+  // verified: true underneath a TODO saying to confirm the policy first — see
+  // constants/credentials.ts for what that cost.
   {
     label: "Licensed & insured",
     detail: "General liability cover on every job. Certificate available on request before we start.",
-    verified: true,
+    verified: CREDENTIALS.insured,
   },
   {
     label: "Background-checked crews",
     detail: "Every crew member is checked before their first job. Nobody unvetted enters your home.",
-    verified: true,
+    verified: CREDENTIALS.backgroundChecked,
   },
   {
     label: "Locally owned, Kansas City",
@@ -61,7 +66,7 @@ export const PROOF_POINTS: ProofPoint[] = [
  * the researched sites all put exactly three short proofs at the CTA and save
  * detail for further down.
  */
-export const HERO_PROOF = ["Licensed & insured", "Background-checked crews", GUARANTEE.short];
+export const HERO_PROOF = [...trustBadges(2), GUARANTEE.short];
 
 /**
  * Aggregate review data, rendered only once real reviews exist.

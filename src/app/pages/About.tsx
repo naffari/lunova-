@@ -10,12 +10,13 @@ import { GUARANTEE, PROOF_POINTS } from "../constants/proof";
 import { SERVICES } from "../constants/services";
 import { SERVICE_CITIES } from "../constants/cities";
 import { buildBreadcrumbSchema, buildLocalBusinessSchema } from "../utils/structuredData";
+import { trustBadges } from "../constants/credentials";
 
 const PRIMARY = BRAND.primary;
 const ACCENT = BRAND.accent;
 
 const DESCRIPTION =
-  "Locally owned Kansas City home services — not a franchise, not a lead broker. Cleaning, junk removal, power washing and lawn care by insured, vetted crews.";
+  "Locally owned Kansas City home services — not a franchise, not a lead broker. Cleaning, junk removal, power washing and lawn care at flat, published rates.";
 
 /**
  * The about page.
@@ -62,7 +63,7 @@ export default function About() {
           </>
         }
         lead={`Same crew inside the house, on the lawn, and loading the truck. ${COMPANY_NAME} covers the ${SERVICE_AREA} on both sides of the state line, and we do the work ourselves. No lead broker in the middle, no subcontractor you have never met turning up in an unmarked van.`}
-        meta={["Licensed & insured", "Background-checked crews", GUARANTEE.short]}
+        meta={[...trustBadges(2), GUARANTEE.short]}
         ctaLabel="Get a quote"
       />
 

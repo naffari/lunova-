@@ -90,7 +90,7 @@ export const SERVICE_CITIES: ServiceCity[] = [
       "Crossroads", "the Northland", "Union Hill", "Columbus Park",
     ],
     metaDescription:
-      "Cleaning, junk removal, power washing and landscaping in Kansas City, MO. Brookside to the Northland. Flat-rate quotes, insured crews, same-week slots.",
+      "Cleaning, junk removal, power washing and landscaping in Kansas City, MO. Brookside to the Northland. Flat-rate quotes, local crews, same-week slots.",
     intro:
       "Lunova Services works across Kansas City, Missouri, from the century homes of Hyde Park and Brookside out to the newer subdivisions north of the river. Cleaning, junk removal, power washing, window cleaning, auto detailing, bin cleaning and landscaping, all flat-rate and booked online in about two minutes.",
     localNotes: [
@@ -263,7 +263,7 @@ export const SERVICE_CITIES: ServiceCity[] = [
     faqs: [
       {
         q: "Can you work around an HOA's contractor rules?",
-        a: "Yes. We are licensed and insured and can send a certificate of insurance to your association before we start. Some Overland Park HOAs require one on file for exterior work.",
+        a: "Not yet. General liability cover is being put in place, and until it is we cannot produce a certificate of insurance — so if your HOA requires one on file for exterior work, we are not the right call for that job today. Work at your own property that does not need a COI, we can take now.",
       },
       {
         q: "Do you offer a fixed weekday for recurring cleans?",
@@ -477,7 +477,7 @@ export const SERVICE_CITIES: ServiceCity[] = [
     geo: { lat: 38.92, lng: -94.6169 },
     neighborhoods: ["Town Center Plaza area", "Leawood Estates", "Hallbrook", "Ironhorse", "Old Leawood"],
     metaDescription:
-      "Detail-focused house cleaning, window cleaning and auto detailing in Leawood, KS. Serving Old Leawood, Hallbrook and Ironhorse with insured crews.",
+      "Detail-focused house cleaning, window cleaning and auto detailing in Leawood, KS. Serving Old Leawood, Hallbrook and Ironhorse with flat-rate quotes.",
     intro:
       "Leawood work is detail work. The homes are larger, the finishes are less forgiving, and the standard gets set by what the last cleaner missed rather than by a checklist. Most of what we do here is recurring cleaning with a longer scope, exterior glass on big elevations, and paint-safe auto detailing at the house.",
     localNotes: [

@@ -52,7 +52,7 @@ const STATS = [
   { val: startingAtLabel(SERVICE_BY_ID.window), label: "Starting Price" },
   { val: "Streak-Free", label: "Guarantee" },
   { val: "100%", label: "Satisfaction" },
-  { val: "Licensed", label: "& Insured" },
+  { val: "Locally", label: "Owned" },
 ];
 
 const HOW_IT_WORKS_STEPS = [
@@ -90,7 +90,7 @@ const WINDOW_CLEANING_FAQS = [
 
 /** Written once; Marquee doubles it for the seamless loop. */
 const MARQUEE_ITEMS = [
-  "Interior Windows", "Exterior Windows", "Screen Cleaning", "Hard Water Removal", "Streak-Free Guarantee", "Water-Fed Pole", "Licensed & Insured", "Free Estimates",
+  "Interior Windows", "Exterior Windows", "Screen Cleaning", "Hard Water Removal", "Streak-Free Guarantee", "Water-Fed Pole", "Locally Owned", "Free Estimates",
 ];
 
 export default function WindowCleaning() {

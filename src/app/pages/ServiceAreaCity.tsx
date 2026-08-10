@@ -12,6 +12,7 @@ import type { ServiceCity } from "../constants/cities";
 import { SERVICE_BY_ID, startingAtLabel } from "../constants/services";
 import type { ServiceId } from "../constants/services";
 import { withAlpha } from "../utils/color";
+import { trustBadges } from "../constants/credentials";
 import {
   buildBreadcrumbSchema,
   buildCityServiceSchemas,
@@ -135,7 +136,7 @@ function CityPage({ city }: { city: ServiceCity }) {
           </>
         }
         lead={city.intro}
-        meta={["Licensed & insured", "Flat-rate quotes", "Same-week slots"]}
+        meta={[trustBadges(1)[0], "Flat-rate quotes", "Same-week slots"]}
         /*
           This city's photo, not the site composite.
 
@@ -338,7 +339,7 @@ function CityPage({ city }: { city: ServiceCity }) {
 
       <ContactStrip
         heading={`Book a service in ${city.label}`}
-        subtext={`Flat-rate quotes, insured crews and same-week slots across ${city.label}. Booking takes about two minutes.`}
+        subtext={`Flat-rate quotes, local crews and same-week slots across ${city.label}. Booking takes about two minutes.`}
         primaryColor={BRAND.raised}
         accentColor={ACCENT}
         ctaLabel="Get a quote"
