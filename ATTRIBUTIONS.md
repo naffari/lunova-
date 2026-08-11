@@ -23,6 +23,46 @@ Hero photography is self-hosted: full-size originals live in `assets-src/hero/`
 (not deployed) and `pnpm images` generates the responsive AVIF/WebP/JPG variants
 into `public/images/hero/`. Nothing is hotlinked.
 
+### `home-hero.jpg` — buy this one
+
+The homepage hero is now a full-bleed photograph with the headline laid over
+it, which is what all five of the strongest competitor homepages do. It reads
+`assets-src/hero/home-hero.jpg` and nothing else, so replacing it is:
+
+```bash
+# save the purchased file over the seed, then
+pnpm images
+```
+
+Nothing in `Home.tsx` changes. The one thing that does not follow automatically
+is `HERO_IMAGE_ALT` in that file — update the sentence to describe what is
+actually in the new frame.
+
+**It is currently a copy of `auto-detailing-hero.jpg`, which is free Unsplash
+stock.** It works, and it is not the photo this page should ship with.
+
+What to buy, in order of how much it matters:
+
+| | Why |
+| --- | --- |
+| **Landscape, 2200px wide or more** | `pnpm images` emits 640w and 1280w variants; anything narrower upscales and softens. |
+| **Subject in the RIGHT half of the frame** | The scrim is heaviest on the left, where the headline, ZIP field and proof strip sit. A subject on the left gets buried under it. |
+| **A person, mid-job** | The single strongest competitor hero in this market ([eyedetailmobile.com](https://www.eyedetailmobile.com/)) is the owner detailing a car at dusk. Not a finished car — a car being worked on. |
+| **Quiet upper-left corner** | Sky, a wall, a garage door. That is where the largest type lands. |
+| **Warm light** | Late afternoon. The site's ground is cream (`#F1EBD9`) and its accents are sage and olive; a cold blue-grey photo fights all three. |
+
+Avoid: heavily colour-graded teal-and-orange stock, anything with legible
+foreign branding or a licence plate, a spotless studio car on a black
+background (reads as a dealership, not a mobile service), and anyone in
+disposable gloves and a hairnet (reads as a franchise).
+
+Search terms that land closest: *"mobile car detailing driveway"*,
+*"car wash by hand outdoors"*, *"house cleaner living room natural light"*.
+
+The best version of this file is not bought at all — it is one photograph of
+you or your partner working, taken on a phone in late afternoon light. That is
+literally what the competitor beating you on this is using.
+
 ### Two files worth replacing
 
 Both are named for a service they do not show. Nothing is broken — the pages

@@ -13,7 +13,7 @@ import { PHONE, PHONE_DISPLAY } from "../constants/contact";
 import { BRAND } from "../constants/brand";
 import { GUARANTEE } from "../constants/proof";
 import { ACTIVE_SERVICES, BIN_ADDON, formatDollars, startingAtLabel, bookPath } from "../constants/services";
-import { DEFAULT_OG_IMAGE_ALT, heroSize } from "../constants/seo";
+
 import { preloadRoute } from "../routeModules";
 import { HIGH_FETCH_PRIORITY } from "../utils/dom";
 import {
@@ -57,6 +57,20 @@ const SURFACE = BRAND.surface;
  * first price a visitor saw was for work nobody could do.
  */
 const HERO_PRICE_ROWS = ACTIVE_SERVICES;
+
+/**
+ * Alt text for the hero photograph.
+ *
+ * Declared here rather than reusing DEFAULT_OG_IMAGE_ALT, which describes the
+ * three-panel share composite and not this image. They were the same picture
+ * until the hero became full-bleed; they are not the same picture now, and a
+ * screen reader should not be told about two panels that are not on screen.
+ *
+ * Update this when home-hero.jpg is replaced. It is the one thing that does not
+ * follow automatically from swapping the file.
+ */
+const HERO_IMAGE_ALT =
+  "A car being detailed by hand on a Kansas City driveway";
 
 /** Written once; Marquee doubles it for the seamless loop. */
 const MARQUEE_ITEMS = [
@@ -111,19 +125,81 @@ export default function Home() {
       />
       <div className="font-sans-modern min-h-screen" style={{ backgroundColor: BG, color: BRAND.ink }}>
         {/*
-          HERO — the same shape every other page uses.
+          HERO — photograph behind the copy, not underneath it.
 
-          Copy on the chrome-toned ground, then the photograph full bleed
-          underneath it, uncovered. This page used to open on the cream ground
-          instead, which made the homepage the one page whose first screen did
-          not look like the rest of the site, and forced the fixed navbar to
-          carry a second colour scheme for that route alone.
+          This page used to put the copy on a flat chrome-toned block with the
+          photograph in a band below it. On a laptop that meant the first screen
+          of the homepage was type on a solid colour and nothing else.
+
+          Every competitor worth copying does the opposite. Seven Kansas City and
+          national cleaning and detailing homepages were read for this: all seven
+          put the image INSIDE the first screen, five of them full-bleed with the
+          headline laid over it (Eye Detail, Matrix Mobile, NY Little Elves), two
+          split beside it (Red Line KC, Better Life). The only two with no hero
+          photograph at all — KC Pro, which uses a neon logo, and Sunflower Maids,
+          which uses a bare form — are the two weakest pages of the set.
 
           The ZIP field stays. It is the researched pattern (LawnStarter's
           hero-as-form, Homeaglow's single ZIP) and it qualifies the visitor
           before they invest any effort in a five-step wizard.
+
+          THE PHOTOGRAPH: `home-hero`. It has its own manifest key rather than
+          borrowing a service's, so replacing it is one file and one command —
+          drop the new image at assets-src/hero/home-hero.jpg and run
+          `pnpm images`. Nothing in this file changes. It is currently seeded
+          with a copy of the detailing photo, which is Unsplash stock, and it
+          should be replaced.
         */}
-        <section className="pt-28 pb-12 px-4 sm:px-6" style={{ backgroundColor: BRAND.raised }}>
+        <section
+          className="relative flex items-center min-h-[38rem] sm:min-h-[44rem] pt-28 pb-14 px-4 sm:px-6 overflow-hidden"
+          style={{ backgroundColor: BRAND.raised }}
+        >
+          <picture>
+            <source
+              type="image/avif"
+              sizes="100vw"
+              srcSet="/images/hero/home-hero-640.avif 640w, /images/hero/home-hero-1280.avif 1280w"
+            />
+            <source
+              type="image/webp"
+              sizes="100vw"
+              srcSet="/images/hero/home-hero-640.webp 640w, /images/hero/home-hero-1280.webp 1280w"
+            />
+            <img
+              src="/images/hero/home-hero-1280.jpg"
+              alt={HERO_IMAGE_ALT}
+              className="absolute inset-0 w-full h-full object-cover z-0"
+              loading="eager"
+              decoding="async"
+              {...HIGH_FETCH_PRIORITY}
+            />
+          </picture>
+
+          {/*
+            Two stacked scrims, the same treatment every service page uses.
+
+            The first runs left to right and is heaviest where the headline sits,
+            thinning to almost nothing on the right so the photograph is still a
+            photograph rather than a tinted rectangle. The second lifts from the
+            bottom, which is what keeps the ZIP field and the proof strip legible
+            over whatever happens to be in the lower third of the frame.
+
+            They are the reason a purchased photo can be dropped in without
+            re-tuning anything: the copy never depends on the image being dark in
+            the right places.
+          */}
+          <div
+            className="absolute inset-0 z-0"
+            style={{
+              background: `linear-gradient(100deg, ${withAlpha(BRAND.raised, 0.96)} 0%, ${withAlpha(BRAND.raised, 0.9)} 32%, ${withAlpha(BRAND.raised, 0.6)} 58%, ${withAlpha(BRAND.raised, 0.2)} 82%)`,
+            }}
+          />
+          <div
+            className="absolute inset-0 z-0"
+            style={{
+              background: `linear-gradient(to top, ${withAlpha(BRAND.raised, 0.92)} 0%, transparent 38%)`,
+            }}
+          />
           {/*
             Two columns from lg up, one below.
 
@@ -133,7 +209,7 @@ export default function Home() {
             half rather than as deliberate space. The prices that belong next
             to this headline now live there instead.
           */}
-          <div className="max-w-7xl mx-auto grid lg:grid-cols-[minmax(0,1fr)_22rem] gap-10 lg:gap-16 items-start">
+          <div className="relative z-10 max-w-7xl mx-auto w-full grid lg:grid-cols-[minmax(0,1fr)_22rem] gap-10 lg:gap-16 items-start">
             <div>
               <div
                 className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest mb-4"
@@ -164,8 +240,9 @@ export default function Home() {
                 the cheapest possible signal that this page is the answer.
               */}
               <p className="text-base sm:text-lg max-w-xl mb-7 leading-relaxed" style={{ color: "rgba(255,255,255,0.72)" }}>
-                Lunova Services is one local crew for eight home jobs, on both sides of the state
-                line in Kansas City. Check your ZIP and book a same-week slot in about two minutes.
+                Lunova Services cleans homes and details cars across the Kansas City metro, on
+                both sides of the state line. Check your ZIP and book a same-week slot in about
+                two minutes.
               </p>
 
               <ZipCheck variant="hero" className="max-w-xl mb-6" />
@@ -205,8 +282,14 @@ export default function Home() {
               column is full width and the service cards are one scroll away.
             */}
             <aside
-              className="hidden lg:block rounded-3xl p-6 border"
-              style={{ backgroundColor: "rgba(255,255,255,0.05)", borderColor: "rgba(255,255,255,0.16)" }}
+              className="hidden lg:block rounded-3xl p-6 border backdrop-blur-md"
+              style={{
+                // Darker and blurred, because this card now sits over a
+                // photograph instead of a flat panel. At the old 5% white wash
+                // the price rows read against whatever was behind them.
+                backgroundColor: withAlpha(BRAND.raised, 0.72),
+                borderColor: "rgba(255,255,255,0.18)",
+              }}
             >
               <p className="text-[11px] font-bold uppercase tracking-widest mb-4" style={{ color: ACCENT_2 }}>
                 What it costs to start
@@ -242,41 +325,6 @@ export default function Home() {
             </aside>
           </div>
         </section>
-
-        {/*
-          The three services the headline names, in the order it names them:
-          clean, cut, haul.
-
-          Full bleed and completely uncovered — no scrim, no caption laid over
-          it. A gradient used to run along the bottom carrying the guarantee,
-          which darkened the one panel of the photograph doing the most work.
-          The guarantee moved to the strip below, where it is readable text
-          rather than white type on a photo.
-        */}
-        <figure className="relative w-full overflow-hidden m-0" style={{ backgroundColor: BRAND.raised }}>
-          <picture>
-            <source
-              type="image/avif"
-              sizes="100vw"
-              srcSet="/images/hero/lunova-services-hero-640.avif 640w, /images/hero/lunova-services-hero-1280.avif 1280w"
-            />
-            <source
-              type="image/webp"
-              sizes="100vw"
-              srcSet="/images/hero/lunova-services-hero-640.webp 640w, /images/hero/lunova-services-hero-1280.webp 1280w"
-            />
-            <img
-              src="/images/hero/lunova-services-hero-1280.jpg"
-              alt={DEFAULT_OG_IMAGE_ALT}
-              className="block w-full object-cover h-[42vw] min-h-[190px] max-h-[460px]"
-              width={heroSize("lunova-services-hero").width}
-              height={heroSize("lunova-services-hero").height}
-              loading="eager"
-              decoding="async"
-              {...HIGH_FETCH_PRIORITY}
-            />
-          </picture>
-        </figure>
 
         {/* The guarantee, off the photograph and onto its own ground. */}
         <div className="px-4 sm:px-6 py-4" style={{ backgroundColor: BRAND.raised }}>
