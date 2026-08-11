@@ -11,32 +11,12 @@
     "width": 2200,
     "height": 1467
   },
-  "commercial-cleaning-hero": {
-    "width": 1890,
-    "height": 892
-  },
-  "junk-removal-hero": {
-    "width": 1901,
-    "height": 874
-  },
-  "landscaping-hero": {
-    "width": 2200,
-    "height": 1469
-  },
   "lunova-services-hero": {
     "width": 2400,
     "height": 864
   },
-  "power-washing-hero": {
-    "width": 2200,
-    "height": 1100
-  },
   "residential-cleaning-hero": {
     "width": 1726,
     "height": 920
-  },
-  "window-cleaning-hero": {
-    "width": 2200,
-    "height": 943
   }
 }

@@ -48,7 +48,7 @@ export default function Contact() {
       />
 
       {/* Lead copy runs in the same order as the three panels in the photo
-          below it: cleaning, lawn care, hauling. */}
+          below it: the house, the car, the bins. */}
       <PageHero
         eyebrow={
           <>

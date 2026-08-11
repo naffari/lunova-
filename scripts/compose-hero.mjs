@@ -24,15 +24,22 @@ const ROOT = path.resolve(HERE, "..");
 const SRC_DIR = path.join(ROOT, "assets-src/hero");
 
 /**
- * Left to right: clean, cut, haul. This order is load-bearing — the homepage
- * headline ("Clean. Cut. Haul.") and PageHero's lead copy both read across the
- * panels, so reordering here silently desyncs the picture from the sentence.
+ * Left to right: the house, the car, the bins.
+ *
+ * This order is load-bearing — PageHero's lead copy reads across the panels, so
+ * reordering here silently desyncs the picture from the sentence.
+ *
+ * It used to be cleaning, lawn care, hauling, composed when the business sold
+ * eight services. Two of those three panels advertised work Lunova does not do,
+ * on the image that previews EVERY share of the homepage, the about page, the
+ * contact page, the booking wizard and all twelve city pages — the first thing
+ * anyone sees of the company in a text message or a Facebook post.
  */
 const PANELS = [
   // She stands in the left third of the frame; a centre crop cuts her in half.
   { file: "cleaning-hero.jpg", focus: "left" },
-  { file: "landscaping-hero.jpg", focus: "centre" },
-  { file: "junk-removal-hero.jpg", focus: "centre" },
+  { file: "auto-detailing-hero.jpg", focus: "centre" },
+  { file: "bin-cleaning-hero.jpg", focus: "centre" },
 ];
 
 /**

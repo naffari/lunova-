@@ -72,14 +72,20 @@ export function ogImageDimensions(url: string): { width: number; height: number 
 }
 
 /**
- * Site-wide share image: the composite hero showing all three lines of the
- * business side by side. Used for pages with no hero of their own (about,
- * contact, privacy, the booking wizard). It replaced a close-up of a kitchen
- * clean, which mis-sold every non-cleaning page that fell back to it.
+ * Site-wide share image: the composite hero showing what the business does,
+ * side by side. Used for pages with no hero of their own (about, contact,
+ * privacy, the booking wizard, the twelve city pages).
+ *
+ * It has been wrong twice. First it was a close-up of a kitchen clean, which
+ * mis-sold every non-cleaning page that fell back to it. Then it was a
+ * three-panel composite of cleaning, LAWN CARE and HAULING — two thirds of the
+ * first image anyone sees of the company in a text message advertising work
+ * Lunova does not do. Recomposed from the house, the car and the bins, which
+ * is the actual line-up. See scripts/compose-hero.mjs.
  */
 export const DEFAULT_OG_IMAGE = heroOgImage("lunova-services-hero");
 export const DEFAULT_OG_IMAGE_ALT =
-  "Lunova Services in Kansas City: interior window cleaning, a freshly mown lawn, and a cleared household load ready for hauling";
+  "Lunova Services in Kansas City: a cleaner working inside a home, a car being detailed, and a wheelie bin being washed out";
 
 export const DEFAULT_TITLE = "Lunova Services | KC House Cleaning & Mobile Detailing";
 export const DEFAULT_DESCRIPTION =

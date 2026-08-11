@@ -16,7 +16,7 @@ const HERO_PATH = "/images/hero";
  * Built differently from ServiceHero on purpose. ServiceHero lays the copy over
  * a full-bleed photo and needs two stacked gradient scrims to keep the text
  * legible, which costs the photo most of its contrast. The image used here is a
- * three-panel set (cleaning, lawn care, junk hauling) where each panel has a
+ * three-panel set (the house, the car, the bins) where each panel has a
  * subject near the middle, so a scrim across it would bury the exact thing the
  * picture is there to show.
  *
@@ -60,7 +60,7 @@ export default function PageHero({
   ctaLabel = "Get a flat-rate quote",
   ctaTo = "/book",
   image = "lunova-services-hero",
-  imageAlt = "Three sides of the business, side by side: a cleaner wiping down interior window glass, a freshly mown back lawn, and a cleared household load stacked ready for hauling",
+  imageAlt = "Three sides of the business, side by side: a cleaner working inside a Kansas City home, a car being detailed on a driveway, and a wheelie bin being washed out",
   aside,
 }: PageHeroProps) {
   const { width, height } = heroSize(image);

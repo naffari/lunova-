@@ -131,7 +131,7 @@ function CityPage({ city }: { city: ServiceCity }) {
         }
         title={
           <>
-            Cleaning, lawn care and hauling in{" "}
+            House cleaning and car detailing in{" "}
             <span className="italic" style={{ color: ACCENT }}>{city.label}</span>
           </>
         }

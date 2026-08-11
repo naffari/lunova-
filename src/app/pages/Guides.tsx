@@ -13,7 +13,7 @@ const PRIMARY = BRAND.primary;
 const ACCENT = BRAND.accent;
 
 const DESCRIPTION =
-  "Straight answers on move-out cleaning, bin sanitising, power washing and what home services actually cost in the Kansas City metro.";
+  "Straight answers on move-out cleaning, trash bin cleaning, and what house cleaning and car detailing actually cost in the Kansas City metro.";
 
 /**
  * Guides index.

@@ -79,8 +79,15 @@ const STATS = [
   { val: "Locally", label: "Owned" },
 ];
 
+/*
+  Rewritten twice over. It advertised COMMERCIAL cleaning, which was withdrawn,
+  and "eco-friendly products", which is exactly the kind of unsubstantiated
+  environmental claim constants/servicePolicy.ts exists to keep off the site —
+  the detergents are biodegradable, which is a specific thing that is true, and
+  that is what it should have said in the first place.
+*/
 const CLEANING_DESCRIPTION =
-  "Professional residential and commercial cleaning services in Kansas City. Deep cleaning, move-in/out, and recurring cleaning with eco-friendly products.";
+  "House cleaning across the Kansas City metro: standard visits, deep cleans, move-outs and Airbnb turnovers. Flat-rate quotes, biodegradable products.";
 
 const CLEANING_FAQS = [
   { q: "Do I need to be home during the cleaning?", a: "No. Many of our clients provide a key or door code. We clean while you're at work and you come home to a spotless house." },
