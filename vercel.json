@@ -8,23 +8,12 @@
     { "source": "/blog", "destination": "/guides", "permanent": true },
     { "source": "/blog/:slug*", "destination": "/guides", "permanent": true },
 
-    {
-      "//": "Five service lines were withdrawn in August 2026 — see docs/parked-services.md. Their pages are deleted rather than left up unlinked, because an unlinked page is still a page Google serves and still a form somebody fills in for work that cannot be delivered. 301 rather than 404 so a bookmark or an old search result lands on something real. When a line comes back, delete its redirect in the same commit that restores its route.",
-      "source": "/junk-removal",
-      "destination": "/",
-      "permanent": true
-    },
+    { "source": "/junk-removal", "destination": "/", "permanent": true },
     { "source": "/landscaping", "destination": "/", "permanent": true },
     { "source": "/services/power-washing", "destination": "/", "permanent": true },
     { "source": "/services/window-cleaning", "destination": "/", "permanent": true },
     { "source": "/services/commercial-cleaning", "destination": "/", "permanent": true },
-
-    {
-      "//": "The power-washing explainer went with the service that funded it. Its CTA had nowhere left to point.",
-      "source": "/guides/power-washing-vs-pressure-washing",
-      "destination": "/guides",
-      "permanent": true
-    }
+    { "source": "/guides/power-washing-vs-pressure-washing", "destination": "/guides", "permanent": true }
   ],
   "headers": [
     {

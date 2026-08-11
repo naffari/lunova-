@@ -48,6 +48,11 @@ export const ROUTE_CONFIG: RouteConfigEntry[] = [
     a bookmark lands somewhere real instead of on a page selling work nobody
     can do. `docs/parked-services.md` has the relaunch procedure and names the
     branch the pages still live on.
+
+    The redirects carry no explanatory comment of their own: vercel.json is
+    schema-validated on deploy and a `"//"` key inside a redirect object is
+    rejected, which fails the build rather than the lint. This is the comment
+    for them.
   */
   { path: "/service-areas", module: "serviceAreas", prerender: true },
   // One route, twelve prerendered URLs. `prerender: false` here means "not a
