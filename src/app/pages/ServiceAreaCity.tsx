@@ -86,7 +86,7 @@ function CityPage({ city }: { city: ServiceCity }) {
   // Kept under 60 characters with the longest label ("Prairie Village",
   // "Kansas City, MO") substituted in — past that Google truncates and the
   // brand, which is the part doing the trust work, is what gets cut.
-  const title = `${city.label} Cleaning & Junk Removal | Lunova Services`;
+  const title = `${city.label} House Cleaning & Car Detailing | Lunova`;
 
   return (
     <div className="font-sans-modern min-h-screen" style={{ backgroundColor: BRAND.bg, color: BRAND.ink }}>

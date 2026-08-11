@@ -74,8 +74,21 @@ export type QuestionDef =
       default: number;
       /** This many are covered by the base price. */
       includedUpTo: number;
-      /** Dollars per unit beyond `includedUpTo`. */
+      /** Dollars per unit beyond `includedUpTo`. Ignored when `percentOfBase` is set. */
       pricePerUnit: number;
+      /**
+       * Charge each extra unit as a share of the chosen package instead of a
+       * flat fee, expressed 0–1.
+       *
+       * Exists for one case: a second car on the same driveway. A flat
+       * per-vehicle figure cannot work when the packages run $119 to $269 —
+       * it would either give away a full detail or overcharge for an express
+       * wash. Setting this to 0.8 means the second car is the same package at
+       * 20% off, which is roughly what the Kansas City market discounts a
+       * multi-vehicle booking by, and it is honest money: the drive, the
+       * setup and the pack-down are already paid for by the first car.
+       */
+      percentOfBase?: number;
       /** Singular noun for the summary line, e.g. "bedroom". */
       noun: string;
     };
@@ -164,7 +177,17 @@ export const SERVICE_DETAILS: Record<string, ServiceDetail> = {
         id: "turnover",
         name: "Airbnb Turnover",
         tagline: "Fast reset between guests, on a short window.",
-        from: 120,
+        /*
+          Was $120. Short-term-rental turnovers bill 30–50% above the
+          equivalent residential clean in every market where the rate is
+          published, and Kansas City runs $85–130 for a one-bed up to
+          $180–250 for a three-bed. $120 flat sat under the bottom of that
+          band for work that is harder than a standard clean, not easier —
+          linens stripped and remade, consumables restocked, a damage report
+          sent, and all of it inside a fixed checkout-to-checkin window with a
+          guest arriving whether or not the job ran long.
+        */
+        from: 150,
         duration: "1–2 hours",
         includes: [
           "Full linen change and beds made",
@@ -230,6 +253,8 @@ export const SERVICE_DETAILS: Record<string, ServiceDetail> = {
       { id: "laundry", name: "Laundry, wash & fold", price: 30, note: "Per load, on-site machines." },
       { id: "pet-hair", name: "Pet hair treatment", price: 40, note: "Rubber-brush lift on upholstery and carpet." },
       { id: "basement", name: "Finished basement", price: 55, note: "Treated as an extra living area." },
+      { id: "cabinets", name: "Inside kitchen cabinets", price: 55, note: "Emptied, wiped out and restacked. Included free in a move-out." },
+      { id: "garage", name: "Garage sweep-out", price: 45, note: "Swept, cobwebs down, bins wiped. Not a clear-out — we sweep, we don't haul." },
       // Bin cleaning is only worth this rate because the truck is already on the
       // drive. See BIN_ADDON in services.ts.
       { id: "bin", name: "Trash bin cleaning", price: 29, note: "Two bins washed and deodorised while we're here. $10 per extra bin." },
@@ -272,7 +297,7 @@ export const SERVICE_DETAILS: Record<string, ServiceDetail> = {
           "Interior glass and mirrors",
           "Odour neutraliser",
         ],
-        excludes: ["Exterior wash", "Ozone treatment (add below)", "Pet hair removal (add below)"],
+        excludes: ["Exterior wash", "Paint correction", "Pet hair removal (add below)"],
       },
       {
         id: "full",
@@ -331,6 +356,20 @@ export const SERVICE_DETAILS: Record<string, ServiceDetail> = {
         ],
       },
       {
+        id: "vehicles",
+        kind: "counter",
+        label: "How many vehicles?",
+        help: "Same package, same address, same visit. Every car after the first is 20% off.",
+        min: 1,
+        max: 4,
+        default: 1,
+        includedUpTo: 1,
+        // Unused — percentOfBase takes over. Kept because the type requires it.
+        pricePerUnit: 0,
+        percentOfBase: 0.8,
+        noun: "vehicle",
+      },
+      {
         id: "site",
         kind: "choice",
         label: "Where will we be working?",
@@ -357,540 +396,44 @@ export const SERVICE_DETAILS: Record<string, ServiceDetail> = {
       detail, and all of it is fast, low-risk work with gear that is already on
       the truck.
     */
+    /*
+      Repriced and extended in August 2026 against the published menus of four
+      Kansas City mobile detailers. Two of ours were ABOVE the local market
+      (engine bay at $59 against $35–50; the old headliner charge was under it
+      at $39 against $55) and four things every competitor sells were missing
+      entirely.
+
+      The four additions are deliberately all short, low-risk work with tools
+      already on the truck — a car seat, a trim dressing, a glass treatment, a
+      spot extraction. None of them costs a slot the way an ozone treatment
+      did. The test for anything else joining this list is the same: does it
+      finish inside half an hour, and can it be done badly without damaging
+      the car?
+    */
     addOns: [
-      { id: "engine", name: "Engine bay deep clean", price: 59, note: "Degreased, rinsed and plastics dressed." },
-      { id: "headlights", name: "Headlight restoration", price: 79, note: "Wet-sanded, polished and UV sealed." },
+      { id: "engine", name: "Engine bay deep clean", price: 49, note: "Degreased, rinsed and plastics dressed." },
+      { id: "headlights", name: "Headlight restoration", price: 89, note: "Wet-sanded, polished and UV sealed. Both lenses." },
       { id: "pet-hair", name: "Pet hair removal", price: 49, note: "Embedded hair, charged separately from vacuuming." },
+      { id: "pet-hair-heavy", name: "Heavy pet hair", price: 119, note: "A shedding breed in a car it lives in. Ask us if you're not sure which one you need — we'd rather quote it right." },
+      { id: "stain", name: "Spot & stain extraction", price: 59, note: "Hot-water extraction on a specific spill. Set-in dye and bleach marks may not lift, and we'll say so before we start." },
       { id: "leather", name: "Leather clean & condition", price: 49, note: "Seats and trim cleaned, then fed so they stop drying out." },
-      { id: "headliner", name: "Headliner spot clean", price: 39, note: "Marks lifted by hand. Headliners delaminate if they are soaked." },
+      { id: "headliner", name: "Headliner spot clean", price: 49, note: "Marks lifted by hand. Headliners delaminate if they are soaked." },
+      { id: "carseat", name: "Child seat deep clean", price: 39, note: "Per seat. Cover off where the manufacturer allows it, harness wiped, crumbs out of the shell." },
+      { id: "trim", name: "Exterior trim restoration", price: 35, note: "Faded black plastic cleaned and dressed. Lasts months, not years." },
+      { id: "glass", name: "Rain-repellent glass treatment", price: 25, note: "Windscreen and front doors. Water beads and clears instead of smearing." },
       { id: "sealant", name: "Ceramic spray sealant", price: 69, note: "Hand-applied. Around 6 months of protection instead of 3." },
       { id: "bin", name: "Trash bin cleaning", price: 29, note: "Two bins washed and deodorised while we're here. $10 per extra bin." },
     ],
   },
 
-  // ─────────────────────────────────────────────────────────────────────
-  landscaping: {
-    heading: "What does the yard need?",
-    blurb:
-      "Lot size and how overgrown things are drive the price more than anything else, so we ask up front rather than re-quoting on the day.",
-    packageLabel: "Choose your service",
-    packages: [
-      {
-        id: "recurring",
-        name: "Recurring Lawn Care",
-        tagline: "Weekly or bi-weekly upkeep on a fixed route day.",
-        from: 45,
-        unit: "visit",
-        popular: true,
-        duration: "30–60 minutes",
-        includes: [
-          "Mow all turf areas",
-          "String trim fence lines, beds and obstacles",
-          "Edge walkways and driveway",
-          "Blow clippings off all hard surfaces",
-          "Gates re-latched, pet waste checked before mowing",
-        ],
-        excludes: ["Bed weeding", "Shrub trimming", "Leaf haul-away", "Fertiliser or weed control"],
-      },
-      {
-        id: "cleanup",
-        name: "One-Time Clean-Up",
-        tagline: "Getting a neglected yard back under control.",
-        from: 150,
-        duration: "2–4 hours",
-        includes: [
-          "Overgrown mow, double-cut where needed",
-          "Full trim and edge",
-          "Bed weeding and defining",
-          "Shrub trim under 8 feet",
-          "Leaf and debris removal",
-          "All green waste hauled away",
-        ],
-        excludes: ["Tree work above 8 feet", "Stump or root removal", "Mulch supply (add below)"],
-      },
-      {
-        id: "seasonal",
-        name: "Seasonal Package",
-        tagline: "Spring or fall programme. Priced after we see the property.",
-        custom: true,
-        duration: "Scheduled across the season",
-        includes: [
-          "Spring or fall programme built around your yard",
-          "Bed refresh and mulch installation",
-          "Structural pruning",
-          "Gutter clearing",
-          "Aeration and overseed option",
-          "Priority scheduling all season",
-        ],
-        excludes: ["Irrigation repair", "Hardscaping", "Tree removal"],
-      },
-    ],
-    questions: [
-      {
-        id: "lot",
-        kind: "choice",
-        label: "Lot size",
-        options: [
-          { value: "small", label: "Under 1/4 acre", delta: 0 },
-          { value: "medium", label: "1/4 to 1/2 acre", delta: 20 },
-          { value: "large", label: "1/2 to 1 acre", delta: 45 },
-          { value: "acreage", label: "Over 1 acre", custom: true },
-        ],
-      },
-      {
-        id: "growth",
-        kind: "choice",
-        label: "Current condition",
-        help: "Tall or wet grass means a slower cut and sometimes two passes.",
-        options: [
-          { value: "maintained", label: "Cut in the last two weeks", delta: 0 },
-          { value: "shaggy", label: "Getting away from us", delta: 30 },
-          { value: "overgrown", label: "Over a month, properly overgrown", delta: 80 },
-        ],
-      },
-    ],
-    addOns: [
-      { id: "mulch", name: "Mulch installation", price: 85, note: "Per yard, supplied and spread." },
-      { id: "shrubs", name: "Shrub and hedge trim", price: 60, note: "Under 8 feet, clippings removed." },
-      { id: "weeding", name: "Bed weeding", price: 45, note: "Hand-pulled, beds re-edged." },
-      { id: "gutters", name: "Gutter clearing", price: 95, note: "Single storey, debris bagged." },
-      { id: "leaves", name: "Leaf haul-away", price: 50, note: "Bagged and taken off site." },
-      { id: "aeration", name: "Core aeration", price: 75, note: "Best paired with overseeding." },
-    ],
-  },
-
-  // ─────────────────────────────────────────────────────────────────────
-  bin: {
-    heading: "How many bins, how often?",
-    blurb:
-      "We clean curbside on your regular pickup day, so your bins are empty when we arrive. Wastewater is captured, not left on your driveway.",
-    packageLabel: "Choose your plan",
-    packages: [
-      {
-        id: "onetime",
-        name: "One-Time Clean",
-        tagline: "Try it once. No commitment.",
-        from: 25,
-        duration: "10 minutes on site",
-        includes: [
-          "High-pressure hot wash, inside and out",
-          "Sanitising treatment",
-          "Deodoriser applied",
-          "Curbside, no need to be home",
-          "Wastewater captured and removed",
-        ],
-        excludes: ["Recurring scheduling", "Priority route slot"],
-      },
-      {
-        id: "monthly",
-        name: "Monthly Plan",
-        tagline: "One clean a month, on route. Most popular.",
-        from: 15,
-        unit: "month",
-        popular: true,
-        duration: "10 minutes, same day each month",
-        includes: [
-          "One clean per month after your pickup",
-          "Sanitise and deodorise every visit",
-          "Reminder text the day before",
-          "Same crew, same route day",
-          "Cancel any time, no fee",
-        ],
-        excludes: ["Mid-month extra visits"],
-      },
-      {
-        id: "biweekly",
-        name: "Bi-Weekly Plan",
-        tagline: "Two cleans a month. For heavy or shared bins.",
-        from: 22,
-        unit: "month",
-        duration: "10 minutes, twice monthly",
-        includes: [
-          "Two cleans per month",
-          "Sanitise and deodorise every visit",
-          "Priority route slot",
-          "Reminder text before each visit",
-          "Cancel any time, no fee",
-        ],
-        excludes: ["Weekly service, ask us if you need it"],
-      },
-    ],
-    questions: [
-      {
-        id: "bins",
-        kind: "counter",
-        label: "How many bins?",
-        help: "Two are covered by the base price. Recycling and yard waste count.",
-        min: 1,
-        max: 8,
-        default: 2,
-        includedUpTo: 2,
-        pricePerUnit: 8,
-        noun: "bin",
-      },
-      {
-        id: "state",
-        kind: "choice",
-        label: "Condition of the bins",
-        help: "First cleans on long-neglected bins take considerably longer.",
-        options: [
-          { value: "normal", label: "Normal use", delta: 0 },
-          { value: "heavy", label: "Heavy build-up or maggots", delta: 15 },
-        ],
-      },
-    ],
-    addOns: [
-      { id: "driveway", name: "Driveway rinse after service", price: 20, note: "Quick wash-down of the bin area." },
-    ],
-  },
-
-  // ─────────────────────────────────────────────────────────────────────
-  power: {
-    heading: "What are we washing?",
-    blurb:
-      "We match pressure to the surface: soft wash for siding, high pressure for concrete. Area and staining level set the price.",
-    packageLabel: "Choose your surface",
-    packages: [
-      {
-        id: "driveway",
-        name: "Driveway & Sidewalk",
-        tagline: "Concrete, pavers and asphalt.",
-        from: 120,
-        duration: "1–2 hours",
-        includes: [
-          "Oil and rust spots pre-treated",
-          "Surface-cleaner pass for an even finish",
-          "Wand-trimmed edges and borders",
-          "Full rinse down",
-          "Walk-through before we leave",
-        ],
-        excludes: ["Sealing", "Crack repair", "Guaranteed removal of set-in stains"],
-      },
-      {
-        id: "house",
-        name: "House Soft Wash",
-        tagline: "Siding, stucco and brick. Low pressure, safe for paint.",
-        from: 180,
-        popular: true,
-        duration: "2–4 hours",
-        includes: [
-          "Low-pressure soft wash across all siding",
-          "Mould, algae and mildew treatment",
-          "Gutter faces brightened",
-          "Windows and doors rinsed",
-          "Plants wetted down and protected",
-        ],
-        excludes: ["Interior gutter clearing (add below)", "Roof washing", "Window glass detailing"],
-      },
-      {
-        id: "deck",
-        name: "Deck & Patio",
-        tagline: "Wood and composite, at a pressure that won't furr the grain.",
-        from: 150,
-        duration: "2–3 hours",
-        includes: [
-          "Pressure matched to wood or composite",
-          "Mildew and greying treatment",
-          "Railings, spindles and steps",
-          "Paver sand checked and noted",
-          "Rinse and seasonal prep",
-        ],
-        excludes: ["Staining or sealing", "Board replacement", "Structural repair"],
-      },
-    ],
-    questions: [
-      {
-        id: "area",
-        kind: "choice",
-        label: "Roughly how big?",
-        options: [
-          { value: "small", label: "Small: 1-car drive or small patio", delta: 0 },
-          { value: "medium", label: "Medium: 2-car drive or standard patio", delta: 40 },
-          { value: "large", label: "Large: 3-car, wraparound or long drive", delta: 95 },
-        ],
-      },
-      {
-        id: "stories",
-        kind: "choice",
-        label: "How many storeys?",
-        help: "Only affects siding and gutter work.",
-        options: [
-          { value: "1", label: "Single storey", delta: 0 },
-          { value: "2", label: "Two storeys", delta: 50 },
-          { value: "3", label: "Three or more", custom: true },
-        ],
-      },
-      {
-        id: "staining",
-        kind: "choice",
-        label: "How bad is the staining?",
-        options: [
-          { value: "light", label: "Light: general dirt", delta: 0 },
-          { value: "moderate", label: "Moderate: visible green or black", delta: 35 },
-          { value: "heavy", label: "Heavy: years of build-up", delta: 90 },
-        ],
-      },
-    ],
-    addOns: [
-      { id: "gutters", name: "Gutter interior clearing", price: 95, note: "Debris removed and downspouts flushed." },
-      { id: "fence", name: "Fence washing", price: 75, note: "Per standard run, wood or vinyl." },
-      { id: "rust", name: "Rust removal treatment", price: 55, note: "Irrigation and fertiliser staining." },
-      { id: "concrete-seal", name: "Concrete sealing", price: 0, note: "Quoted after the wash. Depends on porosity." },
-    ],
-  },
-
-  // ─────────────────────────────────────────────────────────────────────
-  window: {
-    heading: "Inside, outside, or both?",
-    blurb: "Priced on pane count and reach. Storeys matter more than window size.",
-    packageLabel: "Choose your service",
-    packages: [
-      {
-        id: "exterior",
-        name: "Exterior Only",
-        tagline: "No access needed indoors. Nobody has to be home.",
-        from: 110,
-        duration: "1–2 hours",
-        includes: [
-          "All exterior glass hand-washed",
-          "Frames wiped down",
-          "Sills brushed clear",
-          "Screens rinsed in place",
-          "Streak-free squeegee finish",
-        ],
-        excludes: ["Interior glass", "Screen removal and deep clean", "Hard water stain removal"],
-      },
-      {
-        id: "both",
-        name: "Interior & Exterior",
-        tagline: "The full job. Most booked.",
-        from: 180,
-        popular: true,
-        duration: "2–4 hours",
-        includes: [
-          "Everything in Exterior Only",
-          "All interior glass",
-          "Interior sills and tracks detailed",
-          "Screens removed, washed and refitted",
-          "Shoe covers and drop cloths indoors",
-        ],
-        excludes: ["Hard water stain removal (add below)", "Skylights (add below)", "Blind or curtain cleaning"],
-      },
-    ],
-    questions: [
-      {
-        id: "panes",
-        kind: "choice",
-        label: "Roughly how many windows?",
-        help: "Count openings, not panes. A sliding door counts as one.",
-        options: [
-          { value: "10", label: "Up to 10", delta: 0 },
-          { value: "20", label: "11 to 20", delta: 45 },
-          { value: "30", label: "21 to 30", delta: 95 },
-          { value: "more", label: "More than 30", custom: true },
-        ],
-      },
-      {
-        id: "stories",
-        kind: "choice",
-        label: "How many storeys?",
-        options: [
-          { value: "1", label: "Single storey", delta: 0 },
-          { value: "2", label: "Two storeys", delta: 40 },
-          { value: "3", label: "Three or more", custom: true },
-        ],
-      },
-    ],
-    addOns: [
-      { id: "hardwater", name: "Hard water stain treatment", price: 60, note: "Mineral etching from sprinkler overspray." },
-      { id: "screens", name: "Screen deep clean", price: 35, note: "Removed, scrubbed and dried rather than rinsed." },
-      { id: "skylights", name: "Skylights", price: 50, note: "Interior and exterior, reachable ones." },
-      { id: "french", name: "French or divided panes", price: 40, note: "Individual panes take considerably longer." },
-      { id: "tracks", name: "Track and channel detail", price: 30, note: "Vacuumed and scrubbed, not just wiped." },
-    ],
-  },
-
-  // ─────────────────────────────────────────────────────────────────────
-  junk: {
-    heading: "What are we hauling?",
-    blurb:
-      "Priced by how much room it takes in the truck, plus how far we have to carry it. Disposal fees are included in every tier.",
-    packageLabel: "Choose your load",
-    packages: [
-      {
-        id: "single",
-        name: "Single Item",
-        tagline: "One thing gone: sofa, mattress, appliance.",
-        from: 75,
-        duration: "30 minutes",
-        includes: [
-          "One item, from any floor",
-          "Disassembly where needed",
-          "Loaded and hauled",
-          "Area swept after",
-          "Disposal fees included",
-        ],
-        excludes: ["Hazardous waste", "Paint or chemicals", "Construction debris by weight"],
-      },
-      {
-        id: "partial",
-        name: "Partial Truckload",
-        tagline: "A room's worth, or a decent garage clear.",
-        from: 175,
-        popular: true,
-        duration: "1–2 hours",
-        includes: [
-          "Up to half a truck",
-          "Multi-room pickup",
-          "Loaded and hauled",
-          "Area swept after",
-          "Disposal and recycling sorted",
-          "Donatable items dropped off",
-        ],
-        excludes: ["Hazardous waste", "Asbestos or chemicals"],
-      },
-      {
-        id: "full",
-        name: "Full Truckload",
-        tagline: "Whole-property cleanout.",
-        from: 395,
-        duration: "3–5 hours",
-        includes: [
-          "Full truck capacity",
-          "Whole-property or estate cleanout",
-          "Loaded and hauled",
-          "Area swept after",
-          "Disposal and recycling sorted",
-          "Donation drop-off with receipt",
-        ],
-        excludes: ["Hazardous waste", "Asbestos", "Anything requiring a permit"],
-      },
-    ],
-    questions: [
-      {
-        id: "access",
-        kind: "choice",
-        label: "Where is it now?",
-        help: "Carrying distance is most of the labour on a haul.",
-        options: [
-          { value: "curb", label: "Curbside or garage", delta: 0 },
-          { value: "ground", label: "Inside, ground floor", delta: 25 },
-          { value: "stairs", label: "Upstairs or basement", delta: 50 },
-        ],
-      },
-      {
-        id: "heavy",
-        kind: "choice",
-        label: "Anything unusually heavy?",
-        help: "Pianos, safes, hot tubs and gun cabinets need extra crew.",
-        options: [
-          { value: "none", label: "Nothing unusual", delta: 0 },
-          { value: "some", label: "One or two heavy items", delta: 75 },
-          { value: "many", label: "Three or more", custom: true },
-        ],
-      },
-    ],
-    addOns: [
-      { id: "rush", name: "Same-day rush", price: 75, note: "Subject to availability. We'll confirm by phone." },
-      { id: "freon", name: "Appliance freon recovery", price: 30, note: "Required for fridges, freezers and AC units." },
-      { id: "mattress", name: "Mattress disposal fee", price: 25, note: "Per mattress. Charged by the transfer station." },
-      { id: "ewaste", name: "E-waste handling", price: 20, note: "TVs, monitors and computers." },
-    ],
-  },
-
-  // ─────────────────────────────────────────────────────────────────────
-  commercial: {
-    heading: "Tell us about the facility",
-    blurb:
-      "Commercial work is always quoted after a walk-through. Square footage, frequency and access vary too much to price online. This gets us ready for that call.",
-    packageLabel: "What kind of facility?",
-    packages: [
-      {
-        id: "office",
-        name: "Office Janitorial",
-        tagline: "Nightly or weekly, after hours.",
-        custom: true,
-        duration: "Scheduled around your hours",
-        includes: [
-          "Trash and recycling collection",
-          "Restroom sanitisation and restocking",
-          "Break room and common areas",
-          "Vacuum and hard-floor care",
-          "Surface disinfection at touch points",
-          "Monthly quality audit with your account manager",
-        ],
-      },
-      {
-        id: "medical",
-        name: "Medical Facility",
-        tagline: "Clinics, dental and outpatient.",
-        custom: true,
-        duration: "Scheduled around your hours",
-        includes: [
-          "Hospital-grade disinfectants",
-          "Exam room turnover protocol",
-          "Waiting area and reception",
-          "Compliant waste handling",
-          "Restroom sanitisation and restocking",
-          "Documented cleaning log",
-        ],
-      },
-      {
-        id: "restaurant",
-        name: "Restaurant",
-        tagline: "After-close reset, ready for the morning crew.",
-        custom: true,
-        duration: "After close",
-        includes: [
-          "Kitchen degreasing, floors and drains",
-          "Hood and grease-trap surrounds",
-          "Dining room reset",
-          "Restroom deep clean",
-          "Bin area wash-down",
-          "Inspection-ready standard",
-        ],
-      },
-      {
-        id: "retail",
-        name: "Retail or Other",
-        tagline: "Storefronts, gyms, dealerships, anything else.",
-        custom: true,
-        duration: "Scheduled around your hours",
-        includes: [
-          "Sales floor and fitting rooms",
-          "Glass and entry doors",
-          "Restroom sanitisation",
-          "Hard-floor care and matting",
-          "Back-of-house and stock areas",
-        ],
-      },
-    ],
-    questions: [
-      {
-        id: "sqft",
-        kind: "choice",
-        label: "Approximate square footage",
-        options: [
-          { value: "s", label: "Under 2,000 sq ft", custom: true },
-          { value: "m", label: "2,000 – 10,000 sq ft", custom: true },
-          { value: "l", label: "10,000 – 25,000 sq ft", custom: true },
-          { value: "xl", label: "Over 25,000 sq ft", custom: true },
-        ],
-      },
-      {
-        id: "access",
-        kind: "choice",
-        label: "When can we work?",
-        options: [
-          { value: "after", label: "After hours", custom: true },
-          { value: "before", label: "Before opening", custom: true },
-          { value: "during", label: "During business hours", custom: true },
-          { value: "weekend", label: "Weekends only", custom: true },
-        ],
-      },
-    ],
-    addOns: [],
-  },
+  /*
+    Five more blocks used to sit here — landscaping, bin, power, window and
+    commercial. Four of those services were withdrawn in August 2026 (see
+    docs/parked-services.md); bin cleaning is still sold, but as an add-on
+    rather than a wizard category, so it has packages nobody can choose and
+    questions nobody is asked. Keeping dead configuration around is how a
+    price list drifts out of step with what is actually for sale.
+  */
 };
 
 export function getServiceDetail(categoryId: string): ServiceDetail | undefined {
@@ -993,7 +536,12 @@ export function priceDetail(
       const count = Number(answer);
       const over = Math.max(0, count - question.includedUpTo);
       if (over > 0) {
-        const amount = over * question.pricePerUnit;
+        // `base` is the package floor set immediately above, so a
+        // percentOfBase counter prices against the tier actually chosen.
+        const unit = question.percentOfBase
+          ? Math.round(base * question.percentOfBase)
+          : question.pricePerUnit;
+        const amount = over * unit;
         adjustments += amount;
         lines.push({
           label: `${over} extra ${question.noun}${over === 1 ? "" : "s"}`,

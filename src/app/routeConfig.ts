@@ -39,13 +39,16 @@ export const ROUTE_CONFIG: RouteConfigEntry[] = [
   { path: "/", module: "home", prerender: true },
   { path: "/cleaning", module: "cleaning", prerender: true },
   { path: "/services/residential-cleaning", module: "residentialCleaning", prerender: true },
-  { path: "/services/commercial-cleaning", module: "commercialCleaning", prerender: true },
-  { path: "/services/power-washing", module: "powerWashing", prerender: true },
-  { path: "/services/window-cleaning", module: "windowCleaning", prerender: true },
   { path: "/services/auto-detailing", module: "autoDetailing", prerender: true },
   { path: "/services/bin-cleaning", module: "binCleaning", prerender: true },
-  { path: "/junk-removal", module: "junkRemoval", prerender: true },
-  { path: "/landscaping", module: "landscaping", prerender: true },
+  /*
+    /junk-removal, /landscaping, /services/power-washing,
+    /services/window-cleaning and /services/commercial-cleaning were removed in
+    August 2026. They are 301s to / in vercel.json, so an old Google result or
+    a bookmark lands somewhere real instead of on a page selling work nobody
+    can do. `docs/parked-services.md` has the relaunch procedure and names the
+    branch the pages still live on.
+  */
   { path: "/service-areas", module: "serviceAreas", prerender: true },
   // One route, twelve prerendered URLs. `prerender: false` here means "not a
   // static path". expandPrerenderPaths() below turns it into a real page per

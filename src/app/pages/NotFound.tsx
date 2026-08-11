@@ -5,6 +5,7 @@ import { PHONE, PHONE_DISPLAY } from "../constants/contact";
 import Seo from "../components/common/Seo";
 import { BRAND } from "../constants/brand";
 import { trackCall } from "../utils/analytics";
+import { ACTIVE_SERVICES } from "../constants/services";
 
 const PRIMARY = BRAND.ink;
 const ACCENT = BRAND.primary;
@@ -15,7 +16,7 @@ export default function NotFound() {
     <div className="font-sans-modern min-h-screen flex flex-col items-center justify-center px-4" style={{ backgroundColor: BG, color: PRIMARY }}>
       <Seo
         title="Page Not Found | Lunova Services"
-        description="The page you're looking for doesn't exist or has been moved. Explore Lunova's cleaning, junk removal, and landscaping services in Kansas City."
+        description="The page you're looking for doesn't exist or has been moved. Explore Lunova's house cleaning and mobile detailing across Kansas City."
         noIndex
       />
       <div className="text-center max-w-lg">
@@ -69,35 +70,23 @@ export default function NotFound() {
           <p className="text-sm mb-4" style={{ color: withAlpha(PRIMARY, 0.733) }}>
             Looking for a specific service?
           </p>
+          {/*
+            Derived from the catalogue, not hand-written. Three of the four
+            links here used to point at services that no longer exist, so the
+            404 page — the one page a visitor reaches precisely because a URL
+            was wrong — offered them three more wrong URLs.
+          */}
           <div className="grid grid-cols-2 gap-3 text-sm">
-            <Link
-              to="/services/residential-cleaning"
-              className="px-4 py-2 rounded-lg text-center transition-colors"
-              style={{ backgroundColor: 'white', border: `1px solid ${withAlpha(PRIMARY, 0.125)}`, color: PRIMARY }}
-            >
-              Residential Cleaning
-            </Link>
-            <Link
-              to="/services/power-washing"
-              className="px-4 py-2 rounded-lg text-center transition-colors"
-              style={{ backgroundColor: 'white', border: `1px solid ${withAlpha(PRIMARY, 0.125)}`, color: PRIMARY }}
-            >
-              Power Washing
-            </Link>
-            <Link
-              to="/junk-removal"
-              className="px-4 py-2 rounded-lg text-center transition-colors"
-              style={{ backgroundColor: 'white', border: `1px solid ${withAlpha(PRIMARY, 0.125)}`, color: PRIMARY }}
-            >
-              Junk Removal
-            </Link>
-            <Link
-              to="/landscaping"
-              className="px-4 py-2 rounded-lg text-center transition-colors"
-              style={{ backgroundColor: 'white', border: `1px solid ${withAlpha(PRIMARY, 0.125)}`, color: PRIMARY }}
-            >
-              Landscaping
-            </Link>
+            {ACTIVE_SERVICES.map((service) => (
+              <Link
+                key={service.id}
+                to={service.to}
+                className="px-4 py-2 rounded-lg text-center transition-colors"
+                style={{ backgroundColor: 'white', border: `1px solid ${withAlpha(PRIMARY, 0.125)}`, color: PRIMARY }}
+              >
+                {service.name}
+              </Link>
+            ))}
           </div>
         </div>
       </div>

@@ -1,4 +1,4 @@
-import { Sparkles, Truck, Droplets, AppWindow, Car, Trash2, Leaf, Building2 } from "lucide-react";
+import { Sparkles, Car, Trash2 } from "lucide-react";
 import type { ElementType } from "react";
 import type { HeroName } from "./seo";
 
@@ -33,27 +33,26 @@ export interface SubserviceDef {
 }
 
 /**
- * The eight catalogue ids, as a closed set.
+ * The catalogue ids, as a closed set.
  *
- * These are the values the booking wizard matches on — `?service=power`, not
- * `?service=power-washing`. The two vocabularies look similar enough that four
+ * These are the values the booking wizard matches on — `?service=auto`, not
+ * `?service=auto-detailing`. The two vocabularies look similar enough that four
  * service pages shipped hero CTAs carrying their own URL slug instead, which
  * the wizard silently dropped (see the guard in BookingWizard's deep-link
- * effect): the visitor clicked "Book a Clean" on the power washing page and
- * landed on step 1 with nothing selected.
+ * effect): the visitor clicked "Book a Clean" and landed on step 1 with nothing
+ * selected.
  *
  * Declaring the union and routing every link through `bookPath` below turns
  * that from a silent runtime no-op into a compile error.
+ *
+ * This union was eight ids until August 2026. Junk removal, power washing,
+ * window cleaning, landscaping and commercial cleaning were removed with their
+ * pages — see `docs/parked-services.md` for why, and for the branch that still
+ * holds every line of their copy. Narrowing the union is deliberate: it turns
+ * "is there anything still pointing at a service we deleted?" into a build
+ * failure instead of a dead link somebody finds in six months.
  */
-export type ServiceId =
-  | "cleaning"
-  | "junk"
-  | "power"
-  | "window"
-  | "auto"
-  | "bin"
-  | "landscaping"
-  | "commercial";
+export type ServiceId = "cleaning" | "auto" | "bin";
 
 export interface ServiceDef {
   id: ServiceId;
@@ -76,19 +75,17 @@ export interface ServiceDef {
   /** IDs of two other services offered as bundle add-ons during booking. */
   upsells: ServiceId[];
   /**
-   * Whether this service can actually be delivered today.
+   * Whether this service can be booked on its own.
    *
-   * Lunova is two people with a cleaning kit, an extractor and a polisher. It
-   * can sell residential cleaning and mobile detailing. It cannot sell power
-   * washing (no machine, no experience), junk removal (no disposal account),
-   * landscaping (push mower only), window cleaning, or a commercial janitorial
-   * contract — and a booking it cannot service costs a referral, not just a job.
+   * Only two things clear this bar: residential cleaning and mobile detailing.
+   * Bin cleaning is real work Lunova does and sells, but only as an attach to a
+   * job it is already parked at (see BIN_ADDON), so it is `false` here — the
+   * booking wizard must not offer it as a standalone category, because a
+   * $29 job twenty minutes away loses money.
    *
-   * Inactive services are NOT deleted. Their pages, city copy and guides stay
-   * indexed and reachable, because rebuilding that ranking later costs months.
-   * What changes is that they leave the navigation, the homepage grid and every
-   * cross-sell, and their page CTA becomes a waitlist capture instead of a
-   * booking link. Flip one flag to bring a line back everywhere at once.
+   * `false` therefore means "not a wizard category", NOT "not offered". The
+   * bin page reads it that way and points at the add-on; do not wire a waitlist
+   * to it without checking which of the two cases you are in.
    */
   active: boolean;
 }
@@ -107,17 +104,27 @@ export function bookPath(service: ServiceId, packageId?: string): string {
 /**
  * Where a service page's call-to-action should point.
  *
- * Active services go to the wizard. Parked ones go to the waitlist section on
- * their own page, because the alternative — a booking button for work that
- * cannot be done — costs the referral as well as the job.
- *
- * Every CTA on a service page routes through this rather than calling
- * `bookPath` directly, so parking a line cannot leave a live booking button
- * behind on the one page most likely to be found by someone searching for it.
+ * Bookable services go to the wizard. Bin cleaning is not a wizard category —
+ * it is an attach — so its page sends people to book the job it rides along
+ * with. Every service-page CTA routes through this rather than calling
+ * `bookPath` directly, so a line that stops being independently bookable
+ * cannot leave a dead booking button behind on the one page most likely to be
+ * found by someone searching for it.
  */
 export function serviceCtaPath(service: ServiceId, packageId?: string): string {
-  return isActive(service) ? bookPath(service, packageId) : "#waitlist";
+  return isActive(service) ? bookPath(service, packageId) : bookPath("cleaning");
 }
+
+/**
+ * Bin cleaning's two numbers, hoisted above the catalogue.
+ *
+ * The catalogue entry and `BIN_ADDON` below have to quote the same figures —
+ * the bin page reads one and the wizard's add-on list reads the other, and a
+ * visitor who sees $29 on the page and $34 in the estimate does not conclude
+ * they misread the page.
+ */
+const BIN_ADDON_PRICE = 29;
+const BIN_ADDON_PER_EXTRA = 10;
 
 export const SERVICES: ServiceDef[] = [
   {
@@ -147,55 +154,20 @@ export const SERVICES: ServiceDef[] = [
       { name: "Standard Clean", from: 175 },
       { name: "Deep Clean", from: 280 },
       { name: "Move-In / Move-Out", from: 350 },
-      { name: "Airbnb Turnover", from: 120 },
+      /*
+        Raised from $120 in August 2026. Short-term-rental turnovers bill
+        30–50% ABOVE the equivalent residential clean everywhere the rate is
+        published, and the Kansas City range runs $85–130 for a 1-bed up to
+        $180–250 for a 3-bed. $120 flat was under the bottom of that band for
+        work that is harder than a standard clean, not easier: linens stripped
+        and remade, consumables restocked, a photo set sent to the host, and
+        all of it inside a fixed checkout-to-checkin window with a guest
+        arriving whether or not the job went long.
+      */
+      { name: "Airbnb Turnover", from: 150 },
     ],
     upsells: ["auto"],
     active: true,
-  },
-  {
-    id: "junk",
-    name: "Junk Removal",
-    to: "/junk-removal",
-    hero: "junk-removal-hero",
-    icon: Truck,
-    bullets: ["Single item", "Partial truckload", "Full truckload"],
-    subservices: [
-      { name: "Single Item", from: 75 },
-      { name: "Partial Truckload", from: 175 },
-      { name: "Full Truckload", from: 395 },
-    ],
-    upsells: ["cleaning", "auto"],
-    active: false,
-  },
-  {
-    id: "power",
-    name: "Power Washing",
-    to: "/services/power-washing",
-    hero: "power-washing-hero",
-    icon: Droplets,
-    bullets: ["Siding", "Driveway", "Deck / patio"],
-    subservices: [
-      { name: "Siding", from: 180 },
-      { name: "Driveway", from: 120 },
-      { name: "Deck / Patio", from: 150 },
-    ],
-    upsells: ["cleaning", "auto"],
-    active: false,
-  },
-  {
-    id: "window",
-    name: "Window Cleaning",
-    to: "/services/window-cleaning",
-    hero: "window-cleaning-hero",
-    icon: AppWindow,
-    bullets: ["Interior & exterior", "Exterior only", "Hard water treatment"],
-    subservices: [
-      { name: "Interior & Exterior", from: 180 },
-      { name: "Exterior Only", from: 110 },
-      { name: "Hard Water Treatment", from: 60, surcharge: true },
-    ],
-    upsells: ["cleaning", "auto"],
-    active: false,
   },
   {
     id: "auto",
@@ -232,11 +204,11 @@ export const SERVICES: ServiceDef[] = [
     to: "/services/bin-cleaning",
     hero: "bin-cleaning-hero",
     icon: Trash2,
-    bullets: ["One-time 2-bin clean", "Recurring monthly plan", "Recurring bi-weekly plan"],
+    bullets: ["Two bins washed out", "Deodorised, not just rinsed", "Added to any job"],
     /*
-      Bin cleaning is inactive AS A STANDALONE SERVICE and sold as an add-on
-      instead — see BIN_ADDON below and the `bin` entry in each active service's
-      add-on list in serviceDetails.ts.
+      Bin cleaning is not a wizard category, and is sold as an add-on instead —
+      see BIN_ADDON below and the `bin` entry in each bookable service's add-on
+      list in serviceDetails.ts.
 
       The reason is route density. A subscription bin round is structurally a
       collection business: the rig is a fixed cost and the only variable that
@@ -244,41 +216,14 @@ export const SERVICES: ServiceDef[] = [
       routes before it clears its own equipment. Sold as a $29 attach on a job
       you are already parked at, the drive is already paid for by the cleaning
       or the detail, and the same fifteen minutes earns about $60 an hour.
+
+      The subservice list is the add-on, priced as the add-on. It used to
+      advertise $15/mo and $22/mo subscription plans, which is the collection
+      business nobody is running.
     */
     subservices: [
-      { name: "One-Time 2-Bin Clean", from: 25 },
-      { name: "Recurring Monthly Plan", from: 15, unit: "month" },
-      { name: "Recurring Bi-Weekly Plan", from: 22, unit: "month" },
-    ],
-    upsells: ["cleaning", "auto"],
-    active: false,
-  },
-  {
-    id: "landscaping",
-    name: "Landscaping",
-    to: "/landscaping",
-    hero: "landscaping-hero",
-    icon: Leaf,
-    bullets: ["One-time clean-up", "Recurring lawn care", "Seasonal package"],
-    subservices: [
-      { name: "One-Time Clean-Up", from: 150 },
-      { name: "Recurring Lawn Care", from: 45, unit: "visit" },
-      { name: "Seasonal Package", custom: true },
-    ],
-    upsells: ["cleaning", "auto"],
-    active: false,
-  },
-  {
-    id: "commercial",
-    name: "Commercial Cleaning",
-    to: "/services/commercial-cleaning",
-    hero: "commercial-cleaning-hero",
-    icon: Building2,
-    bullets: ["Offices", "Restaurants", "Dealerships"],
-    subservices: [
-      { name: "Office Cleaning", custom: true },
-      { name: "Restaurant Cleaning", custom: true },
-      { name: "Dealership Cleaning", custom: true },
+      { name: "Two Bins, Added To Any Job", from: BIN_ADDON_PRICE },
+      { name: "Each Additional Bin", from: BIN_ADDON_PER_EXTRA, surcharge: true },
     ],
     upsells: ["cleaning", "auto"],
     active: false,
@@ -311,9 +256,9 @@ export const BIN_ADDON = {
   id: "bin",
   name: "Trash bin cleaning",
   /** Two bins, washed and deodorised while we are already at the property. */
-  price: 29,
+  price: BIN_ADDON_PRICE,
   /** Each bin past the first two. */
-  perExtraBin: 10,
+  perExtraBin: BIN_ADDON_PER_EXTRA,
   note: "Two bins washed out and deodorised while we're already there. $10 for each extra bin.",
 } as const;
 

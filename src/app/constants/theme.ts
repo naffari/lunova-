@@ -34,13 +34,8 @@ const bg = BRAND.bg;
 export const SERVICE_THEMES = {
   cleaning: { department: "Cleaning", primary: "#101E2C", accent: "#E8A830", ground: "#101E2C", bg },
   "residential-cleaning": { department: "Residential Cleaning", primary: "#101E2C", accent: "#E8A830", ground: "#101E2C", bg },
-  "commercial-cleaning": { department: "Commercial Cleaning", primary: "#141F29", accent: "#C97B3C", ground: "#141F29", bg },
-  "power-washing": { department: "Power Washing", primary: "#101C2C", accent: "#2BA8E0", ground: "#101C2C", bg },
-  "window-cleaning": { department: "Window Cleaning", primary: "#171B22", accent: "#F0B429", ground: "#171B22", bg },
   "auto-detailing": { department: "Auto Detailing", primary: "#17100F", accent: "#D8402F", ground: "#17100F", bg },
-  landscaping: { department: "Landscaping", primary: "#0A2119", accent: BRAND.accent, ground: "#0A2119", bg },
   "bin-cleaning": { department: "Bin Cleaning", primary: "#0F1D14", accent: "#8DC63F", ground: "#0F1D14", bg },
-  "junk-removal": { department: "Junk Removal", primary: "#191410", accent: "#F97316", ground: "#191410", bg },
 } as const satisfies Record<string, ServiceTheme>;
 
 export type ServiceThemeKey = keyof typeof SERVICE_THEMES;

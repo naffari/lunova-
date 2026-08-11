@@ -63,9 +63,9 @@ const guideEntries = [
 const lines = [
   `# ${COMPANY_NAME}`,
   "",
-  `> Home services across the Kansas City metro: cleaning, junk removal, power washing,`,
-  `> window cleaning, auto detailing, trash bin cleaning and landscaping. Locally owned,`,
-  `> licensed and insured, serving both sides of the state line. Phone: ${PHONE_DISPLAY}`,
+  `> House cleaning and mobile auto detailing across the Kansas City metro, with trash`,
+  `> bin cleaning as an add-on. Locally owned and owner-operated, serving both sides of`,
+  `> the state line. Phone: ${PHONE_DISPLAY}`,
   "",
   `${COMPANY_NAME} is a service-area business with no storefront — crews travel to the`,
   "customer. Prices shown on the site are flat-rate floors confirmed by phone before any",

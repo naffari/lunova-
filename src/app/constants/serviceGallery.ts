@@ -48,33 +48,6 @@ export interface ServiceGallery {
 }
 
 export const SERVICE_GALLERIES: Record<string, ServiceGallery> = {
-  "power-washing": {
-    own: true,
-    heading: "What done looks like",
-    blurb:
-      "Same driveway, same day. Drag the slider to see moss and algae lifted off aggregate concrete without etching the surface.",
-    photos: [],
-    beforeAfter: {
-      before: "driveway-before",
-      after: "driveway-after",
-      beforeAlt: "Concrete driveway covered in moss and algae growth before pressure washing",
-      afterAlt: "The same concrete driveway cleaned to an even finish after pressure washing",
-    },
-  },
-
-  landscaping: {
-    own: true,
-    heading: "What done looks like",
-    blurb: "Recurring lawn care on a Lunova route: cut, edged, and cleaned up.",
-    photos: [
-      {
-        file: "lawn-front-yard",
-        alt: "A dense, evenly mown front lawn with a cleanly edged sidewalk line",
-        caption: "Recurring lawn care, mown, edged, and blown clean",
-      },
-    ],
-  },
-
   "auto-detailing": {
     own: true,
     heading: "What done looks like",

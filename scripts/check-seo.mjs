@@ -30,16 +30,7 @@ const TITLE_MIN = 30;
 const TITLE_MAX = 60;
 
 /** Must stay in step with the ServiceId union in constants/services.ts. */
-const SERVICE_IDS = new Set([
-  "cleaning",
-  "junk",
-  "power",
-  "window",
-  "auto",
-  "bin",
-  "landscaping",
-  "commercial",
-]);
+const SERVICE_IDS = new Set(["cleaning", "auto", "bin"]);
 
 async function walk(dir) {
   const out = [];

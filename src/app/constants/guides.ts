@@ -1,5 +1,5 @@
-import { SERVICE_BY_ID, formatDollars, type ServiceId } from "./services";
-import { getServiceDetail, findPackage } from "./serviceDetails";
+import { BIN_ADDON, formatDollars, type ServiceId } from "./services";
+import { findPackage } from "./serviceDetails";
 
 /**
  * LONG-FORM GUIDES.
@@ -83,13 +83,6 @@ export interface Guide {
 function price(service: ServiceId, packageId: string): string {
   const pkg = findPackage(service, packageId);
   return pkg?.from === undefined ? "custom quote" : formatDollars(pkg.from);
-}
-
-function cheapest(service: ServiceId): string {
-  const detail = getServiceDetail(service);
-  const priced = (detail?.packages ?? []).filter((p) => !p.custom && p.from !== undefined);
-  if (priced.length === 0) return "custom quote";
-  return formatDollars(Math.min(...priced.map((p) => p.from as number)));
 }
 
 export const GUIDES: Guide[] = [
@@ -208,42 +201,49 @@ export const GUIDES: Guide[] = [
     category: "Bin cleaning",
     service: "bin",
     /*
-     * REWRITTEN 2026-08-10.
+     * REWRITTEN TWICE.
      *
-     * The original version of this guide argued that heat was the whole point —
-     * "water at around 200°F", "the heat is the whole point", a FAQ answering
-     * "how hot is the water". Our rig is not heated, so the guide was selling a
-     * service we do not run and arguing against our own product in the DIY
-     * section. Every temperature claim is gone.
+     * The first version argued that heat was the whole point — "water at around
+     * 200F", "the heat is the whole point", a FAQ answering "how hot is the
+     * water". No rig here is heated, so the guide was selling a service nobody
+     * runs and arguing against its own product in the DIY section.
      *
-     * What replaced it is the true mechanism: the smell is a film, and a film
-     * comes off with pressure, detergent and contact time. That argument does
-     * not need a number we cannot stand behind, and it survives a customer
-     * asking us a direct question about our equipment.
+     * The second version fixed the temperature and left everything else: a crew
+     * arriving on collection day, a bin going ONTO THE TRUCK, a PRESSURE WASH,
+     * and recurring plans priced per month. None of that exists either. There
+     * is no pressure washer, no truck rig and no route with subscribers on it.
+     *
+     * This version describes the only thing that is real: two bins scrubbed out
+     * by hand while the crew is already at the property for a clean or a
+     * detail. The argument for the service did not actually need any of the
+     * equipment — the mechanism is the film, and a stiff brush with detergent
+     * and contact time removes a film. That case stands on its own and survives
+     * a customer asking a direct question about the gear.
      */
     answer:
-      "For most households, yes — but on a recurring plan, not as one-off cleans. The smell in a bin is a film of dried residue on the walls and lid, and it takes pressure, a detergent and a few minutes of contact to lift it; a rinse with a garden hose mostly moves it around. It is worth paying for if your bins live near the house, you have pets or kids in diapers, or you have a raccoon problem. It is not worth it if your bins sit at the end of a long driveway and you are happy to tip them over and scrub them twice a year.",
+      "For most households, twice a year, and as an add-on rather than a standalone visit. The smell in a bin is a film of dried organic residue bonded to the plastic, and lifting it takes a detergent, a stiff brush and a few minutes of contact — a rinse with a garden hose mostly moves it around. It is worth paying for if your bins live near the house, or you have pets or children in diapers. It is not worth a special trip from anybody, ours included: at $20-30 a bin, the drive costs more than the job.",
     sections: [
       {
         heading: "What the service actually does",
         body: [
-          "The crew comes on or after your collection day, while the bin is empty. The bin goes onto the truck, gets pressure washed inside and out with a biodegradable detergent — walls, base, rim and lid — and comes back to your curb washed and draining. The detergent is biodegradable, which is the part that matters for what ends up on your driveway and in the gutter.",
-          "The mechanism is worth understanding, because it tells you whether you are being sold something real. What smells is not loose trash; it is a thin film of dried organic residue bonded to the plastic, and the bacteria living in it. Pressure breaks the film up, detergent lifts what pressure alone leaves bonded, and contact time lets the detergent work. A garden hose gives you water at low pressure with no detergent and no dwell, which is why the smell comes back within a day.",
+          "The bin gets tipped, and every interior face plus the rim and the lid gets worked over with a stiff brush and a biodegradable detergent, then rinsed out and treated with a deodoriser. That is the whole job, and it takes about fifteen minutes for two bins.",
+          "The mechanism is worth understanding, because it tells you whether you are being sold something real. What smells is not loose trash; it is a thin film of dried organic residue bonded to the plastic, and the bacteria living in it. Agitation breaks the film up, detergent lifts what the brush leaves bonded, and contact time lets the detergent work. A garden hose gives you water with no detergent and no dwell, which is why the smell is back within a day.",
         ],
-        note: "Our rig runs unheated. Some operators use heated water, which does help lift grease faster — if one quotes you a temperature, that is a fair question to ask them to back up. We would rather tell you what ours does than claim a number we have not measured.",
+        note: "We scrub by hand. We do not own a pressure washer and we do not run a truck-mounted rig, and you should assume any operator who does not tell you what their equipment is does not want you to ask. Pressure is faster than a brush, but it is not the ingredient doing the work.",
       },
       {
-        heading: "What it costs",
+        heading: "What it costs, and why nobody should drive across town for it",
         body: [
-          `One-off cleans run around $20–$25 per bin nationally. Recurring plans are where the price drops: ours start at ${cheapest("bin")} a month, and a one-time two-bin clean is ${price("bin", "onetime")}.`,
-          "Annually that is somewhere between $180 and $320 a bin depending on frequency — real money, and the reason to be honest about whether you need it.",
+          `One-off cleans run around $20-25 a bin nationally. Ours is ${formatDollars(BIN_ADDON.price)} for two and ${formatDollars(BIN_ADDON.perExtraBin)} for each one after that, and it is only available added onto a house clean or a car detail.`,
+          "That restriction is the honest part of the pricing rather than a catch. Two bins is fifteen minutes of work. A round trip across the Kansas City metro is most of an hour of committed time before anyone picks up a brush, so a standalone bin visit either costs four times as much or gets done in four minutes. Bolted onto a job at the same address, the drive is already paid for, and the fifteen minutes earns a fair rate.",
+          "Subscription bin rounds — the ones that quote you a monthly figure — work on exactly the same logic in reverse. They need hundreds of subscribers packed onto tight routes before the rig pays for itself, which is why they sell contracts rather than visits. It is a real business; it is just a different one, and it is not this one.",
         ],
         table: {
-          columns: ["Frequency", "Best for", "Roughly"],
+          columns: ["How you buy it", "Best for", "Roughly"],
           rows: [
-            ["One-off", "After a pest problem, a spill, or before selling", "$20–$25 per bin"],
-            ["Monthly", "Households with pets, diapers, or bins near the house", "$180–$300 a year"],
-            ["Quarterly", "Most households — the sensible default", "$80–$120 a year"],
+            ["Added to a clean or a detail", "Anyone already booking us", "$29 for two bins"],
+            ["A subscription route", "Households wanting it handled monthly, hands-off", "$180-300 a year"],
+            ["Yourself, twice a year", "Bins at the end of a long driveway", "Ten minutes and some water"],
           ],
         },
       },
@@ -258,133 +258,36 @@ export const GUIDES: Guide[] = [
       {
         heading: "When to skip it",
         body: [
-          "If your bins live at the end of a long driveway, you bag everything, and you are willing to tip them on their side, scrub them with a stiff brush and some detergent and let them dry in the sun twice a year — that genuinely covers it. You will spend ten minutes and some water and get most of the benefit.",
-          "The honest version: a cleaned bin does not stay clean. It gets dirty again the next time you fill it. What a recurring plan buys is a ceiling on how bad it gets, not a permanently pristine bin. Anyone selling it as the latter is overselling it.",
+          "If your bins live at the end of a long driveway, you bag everything, and you are willing to tip them on their side, scrub them with a stiff brush and some detergent and let them dry in the sun twice a year - that genuinely covers it. You will spend ten minutes and some water and get most of the benefit. It is the same method we use.",
+          "The honest version: a cleaned bin does not stay clean. It gets dirty again the next time you fill it. What the service buys is a ceiling on how bad it gets, not a permanently pristine bin. Anyone selling it as the latter is overselling it.",
         ],
         note: "Ask any operator what they put in the bin. A biodegradable detergent and a rinse is a different thing from a solvent, and it is the question worth asking before you let someone spray something onto the ground next to your house.",
       },
     ],
     faqs: [
       {
+        q: "Can I book bin cleaning on its own?",
+        a: "Not from us. Two bins is about fifteen minutes and a round trip across the metro is closer to an hour, so a standalone visit would have to cost four times as much to be worth doing. Add it to a house clean or a car detail and the drive is already covered. If bins are genuinely all you want, a subscription route operator is the right call and we will say so.",
+      },
+      {
         q: "Does the water have to be hot?",
-        a: "No. Heat speeds up grease removal, but the work is done by pressure, detergent and contact time — that is what breaks up the dried film the smell comes from. Our rig runs unheated, and we would rather say so than quote a temperature we have not measured.",
+        a: "No. Heat speeds up grease removal, but the work is done by detergent, agitation and contact time - that is what breaks up the dried film the smell comes from. Ours is scrubbed by hand with cold water, and we would rather say so than quote a temperature nobody has measured.",
       },
       {
         q: "What do you actually put in the bin?",
-        a: "A biodegradable detergent for the wash, and a biodegradable deodorizing treatment afterwards. Nothing that needs to be kept away from pets, kids or planting beds. We do not publish a bacterial kill rate, because we have not had ours tested and a number nobody measured is worth nothing.",
+        a: "A biodegradable detergent for the wash, and a biodegradable deodorising treatment afterwards. Nothing that needs to be kept away from pets, kids or planting beds. We do not publish a bacterial kill rate, because we have not had ours tested and a number nobody measured is worth nothing.",
       },
       {
         q: "How often should trash bins be cleaned?",
-        a: "Quarterly suits most households. Monthly is worth it if you have pets, small children, or bins stored close to the house. Anything more frequent than monthly is hard to justify unless something has gone wrong.",
+        a: "Twice a year suits most households, and once more in high summer if you have a dog or put food waste in the bin. Anything more frequent than monthly is hard to justify unless something has gone wrong.",
       },
       {
-        q: "Do I need to be home for bin cleaning?",
-        a: "No. We come on or after your collection day while the bins are still at the curb, clean them there, and leave them where we found them. Nothing needs unlocking and nobody needs to be in.",
+        q: "Do the bins need to be empty?",
+        a: "Yes. Anytime after your collection day is the easy window. A bin with a full bag still in it cannot be washed, and if we arrive to one we will take the bin cleaning off the invoice rather than charge you for a rinse.",
       },
       {
         q: "Can I just clean my own bin?",
-        a: "Yes, and for some households that is the right answer. Tip it over, hose it out, use a stiff brush and a detergent, and let it dry in the sun. You will not get the pressure or the dwell time we get, but you will get a lot of the benefit for free.",
-      },
-    ],
-  },
-
-  /* ------------------------------------------------------------------ */
-  {
-    slug: "power-washing-vs-pressure-washing",
-    title: "Power Washing vs Pressure Washing vs Soft Wash",
-    description:
-      "The difference is heat and pressure, and picking wrong cracks siding or etches concrete. Which method suits which surface on a Kansas City home.",
-    heading: "Power washing, pressure washing, soft washing: which one your house needs",
-    standfirst:
-      "Three different jobs that get used as one word. Choosing wrong is how vinyl siding cracks and concrete comes back striped.",
-    published: "2026-08-09",
-    updated: "2026-08-10",
-    category: "Exterior",
-    service: "power",
-    answer:
-      "Pressure washing is high-pressure unheated water. Power washing is the same thing with heat added, which is what breaks down grease and oil. Soft washing is low pressure — around 150 to 300 PSI — with a cleaning solution doing the work instead of force. Concrete and brick can take pressure. Vinyl siding, painted wood and roofs need soft wash, and hitting them with a pressure washer is how panels crack and paint comes off.",
-    sections: [
-      {
-        heading: "The actual difference",
-        table: {
-          columns: ["Method", "How it works", "Right for"],
-          rows: [
-            [
-              "Pressure washing",
-              "Unheated water, roughly 1,300–3,100 PSI",
-              "Concrete drives, sidewalks, brick, stone",
-            ],
-            [
-              "Power washing",
-              "The same, with heated water",
-              "Oil stains, grease, gum, rust marks on concrete",
-            ],
-            [
-              "Soft washing",
-              "150–300 PSI plus a cleaning solution",
-              "Vinyl and painted siding, roofs, decks, fences",
-            ],
-          ],
-        },
-        body: [
-          "In everyday use \"power washing\" and \"pressure washing\" get swapped around freely, including by companies that should know better. What matters is not the label on the van. It is whether the person holding the wand changes method when they move from your driveway to your siding.",
-        ],
-        note: "Ours included, to be straight about it: our service is listed as power washing because that is what people search for, but the rig runs unheated. That means pressure washing and soft washing on our equipment, and it is why the section below on oil stains tells you to get a specialist rather than telling you to book us.",
-      },
-      {
-        heading: "What goes wrong when the method is wrong",
-        list: [
-          "Vinyl siding: high pressure cracks panels and forces water up behind them, where it sits against the sheathing. The damage does not show up until it is expensive.",
-          "Painted wood: pressure strips paint. You will see it immediately, in stripes.",
-          "Roof shingles: pressure lifts granules off asphalt shingles and takes years off the roof. Roofs are a soft wash job, always.",
-          "Concrete: too much pressure held too long etches the surface and leaves visible wand marks. Aggregate finishes are especially unforgiving.",
-          "Old mortar: pressure blows out soft joints in older brickwork, which is common on the pre-war housing stock across the KC metro.",
-        ],
-      },
-      {
-        heading: "What a Kansas City house typically needs",
-        body: [
-          "Most properties here need both methods in one visit, which is exactly why the distinction matters.",
-          "The north-facing side of a house grows green algae because it stays damp. That is a soft wash with a cleaning solution — the growth is biological, and killing it is what stops it coming straight back. Blasting it off with pressure removes what you can see and leaves what you cannot, which is why it returns within a season.",
-          "Driveways and paths are the opposite problem: no delicate surface to protect, and stains that need force. Moss, algae and general grime want pressure and a decent surface cleaner rather than a wand, which is what stops the striping. Set oil and rust aside — they are the one case on a driveway where cold pressure genuinely will not finish the job, and they are covered below.",
-        ],
-        note: "A useful test when you get a quote: ask what pressure they will use on the siding. If the answer is the same as for the driveway, keep calling.",
-      },
-      {
-        heading: "The one job we turn down",
-        body: [
-          "Set-in motor oil and rust on concrete need heat, and our rig does not have it. Cold water and pressure will lighten an oil patch and leave a shadow, and the shadow is what you will notice every time you park.",
-          "So if that is the job, hire someone running a heated machine, or budget for a degreaser and a poultice rather than a wash. We would rather say that here than take the booking and hand back a driveway with a grey ghost on it.",
-        ],
-      },
-      {
-        heading: "What we charge",
-        body: [
-          `Siding starts at ${formatDollars(SERVICE_BY_ID.power.subservices.find((s) => s.name === "Siding")?.from ?? 0)}, driveways at ${formatDollars(SERVICE_BY_ID.power.subservices.find((s) => s.name === "Driveway")?.from ?? 0)}, decks and patios at ${formatDollars(SERVICE_BY_ID.power.subservices.find((s) => s.name === "Deck / Patio")?.from ?? 0)}. Those are floor prices for a typical suburban property — square footage and how bad the staining is move the number, which is why we look before we commit to it.`,
-          "Doing siding and the driveway in one visit is cheaper than two visits, because most of the cost is setup and water, not time on the wand.",
-        ],
-      },
-    ],
-    faqs: [
-      {
-        q: "Is power washing the same as pressure washing?",
-        a: "Almost. The difference is heat: a power washer heats the water, a pressure washer does not. Heat is what breaks down oil, grease and gum, so it matters on a stained driveway and matters very little on general dirt. Ours runs unheated, so on a set-in oil patch we will tell you to call someone with a heated rig rather than take your money and leave a shadow.",
-      },
-      {
-        q: "Can you pressure wash vinyl siding?",
-        a: "You should not. High pressure cracks the panels and drives water behind them. Vinyl is a soft wash job — low pressure and a cleaning solution that kills the algae rather than just knocking it off.",
-      },
-      {
-        q: "How often should a house be washed in Kansas City?",
-        a: "Siding roughly once a year, usually spring, because our humidity grows algae on shaded elevations. Driveways every year or two depending on tree cover and how much oil they see.",
-      },
-      {
-        q: "Will pressure washing damage my concrete driveway?",
-        a: "It can, if the pressure is too high or the wand is held in one place too long. That is what causes etching and visible stripes. A surface cleaner attachment rather than a bare wand is what keeps the finish even.",
-      },
-      {
-        q: "Do you need to use my water?",
-        a: "Yes, an outside spigot. We bring everything else. If the water is off at the property, tell us beforehand and we will plan around it.",
+        a: "Yes, and for some households that is the right answer. Tip it over, hose it out, use a stiff brush and a detergent, and let it dry in the sun. That is the same method we use - what you are buying from us is not a secret technique, it is fifteen minutes you do not spend and a job you do not have to think about.",
       },
     ],
   },

@@ -33,34 +33,14 @@ export interface ServicePolicy {
 }
 
 export const SERVICE_POLICY: Partial<Record<ServiceId, ServicePolicy>> = {
-  junk: {
-    prepare: [
-      "Point at it and we do the rest. Nothing needs to be moved to the curb first — carrying distance is priced in the estimate, not sprung on you on the day.",
-      "If a piece has to come apart to get through a door or down a stairwell, tell us when you book so the right crew size turns up.",
-      "Park a car off the driveway if you can. The truck needs the space more than the street does.",
-    ],
-    cannotTake: {
-      heading: "What we cannot haul",
-      intro:
-        "These are refused on every job, without exception. It is not fussiness — hazardous waste has its own disposal chain, and a transfer station will reject an entire truckload over one item of it.",
-      items: [
-        "Chemicals, solvents and oils",
-        "Asbestos, or anything suspected of containing it",
-        "Storage and oil drums",
-        "Oil and waste storage tanks",
-      ],
-      footer:
-        "If you are not sure what something is, send a photo before the booking rather than on the day. We would rather answer a question than turn up and leave it on your driveway.",
-    },
-  },
-
   bin: {
     prepare: [
-      "Leave the bins at the curb, empty, on or right after your collection day. That is the whole job on your side.",
-      "You do not need to be home, and nothing needs unlocking.",
+      "Have the bins empty. Anytime after your collection day is the easy window — a bin with a full bag in it cannot be washed.",
+      "Leave them somewhere we can get to them. You do not need to be home for this part.",
+      "Tell us the number of bins when you book. Two are in the price and the rest are cheap, but they are not free and they are not instant.",
     ],
     chemicals:
-      "A biodegradable detergent for the wash and a biodegradable deodorizing treatment afterwards. No solvents. The water is not heated, and we do not publish a bacterial kill rate because ours has never been tested — what the wash removes is the built-up film and the smell that comes with it.",
+      "A biodegradable detergent for the wash and a biodegradable deodorising treatment afterwards. No solvents. Scrubbed by hand rather than pressure washed — we do not own a pressure washer — and we do not publish a bacterial kill rate because ours has never been tested. What the wash removes is the built-up film and the smell that comes with it.",
   },
 
   auto: {
@@ -74,18 +54,6 @@ export const SERVICE_POLICY: Partial<Record<ServiceId, ServicePolicy>> = {
     ],
   },
 
-  power: {
-    siteNeeds: [
-      "Access to an outdoor water spigot, and a clear path to the surface being washed.",
-    ],
-    prepare: [
-      "Close the windows on the elevation we are washing, and move planters, cushions and door mats clear.",
-      "Point out any cracked or lifting siding before we start. Water gets behind it and we would rather adjust the method than find out afterwards.",
-    ],
-    chemicals:
-      "Biodegradable detergents, and low pressure on anything that can be damaged by force. Our rig runs unheated, which is why we turn down set-in oil and rust rather than leaving a shadow on your concrete.",
-  },
-
   cleaning: {
     prepare: [
       "Pick up clutter and personal items so the crew is cleaning surfaces rather than tidying around them. It is the single biggest thing that changes how much gets done in the time.",
@@ -96,13 +64,6 @@ export const SERVICE_POLICY: Partial<Record<ServiceId, ServicePolicy>> = {
       "We bring all products and equipment, and the detergents are biodegradable. If you would rather we used something of yours, leave it out and say so in the notes.",
   },
 
-  landscaping: {
-    prepare: [
-      "Unlock the side gate, or leave us the code. A locked gate is the most common reason a crew leaves without doing the job.",
-      "Clear toys, hoses and furniture off the lawn. Anything left out gets mown around rather than moved.",
-      "Secure pets, and tell us about anything buried shallow — irrigation heads, dog fencing, cable runs.",
-    ],
-  },
 };
 
 export function getServicePolicy(serviceKey: ServiceId): ServicePolicy | undefined {

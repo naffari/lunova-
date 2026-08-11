@@ -1,8 +1,8 @@
 import {
-  Star,
   ShieldCheck,
   Trash2,
-  MapPin,
+  Sparkles,
+  Car,
 } from "lucide-react";
 import ServiceHero from "../../components/ServiceHero";
 import HowItWorks from "../../components/HowItWorks";
@@ -11,15 +11,12 @@ import FaqSection from "../../components/FaqSection";
 import ContactStrip from "../../components/common/ContactStrip";
 import Seo from "../../components/common/Seo";
 import StatBand from "../../components/StatBand";
-import ServiceEstimator from "../../components/ServiceEstimator";
-import PackageGrid from "../../components/PackageGrid";
 import CrossSellRow from "../../components/CrossSellRow";
-import ServiceWaitlist from "../../components/ServiceWaitlist";
 import ServicePolicySection from "../../components/ServicePolicySection";
 import { buildBreadcrumbSchema, buildFaqSchema, buildServiceSchema } from "../../utils/structuredData";
 import { SERVICE_THEMES } from "../../constants/theme";
 import { BRAND } from "../../constants/brand";
-import { SERVICE_BY_ID, startingAtLabel, serviceCtaPath } from "../../constants/services";
+import { BIN_ADDON, formatDollars, serviceCtaPath } from "../../constants/services";
 import Marquee from "../../components/Marquee";
 import { withAlpha } from "../../utils/color";
 import { heroOgImage } from "../../constants/seo";
@@ -30,98 +27,124 @@ const { primary: PRIMARY, accent: ACCENT, ground: GROUND, bg: BG } = SERVICE_THE
 /**
  * WHAT THIS PAGE MAY AND MAY NOT SAY.
  *
- * This page used to advertise "200° pressurized hot water" and "kills 99.9% of
- * bacteria", in the hero, the stat band, the marquee, the feature cards, the
- * meta description and the nav dropdown. Neither is true: the rig runs
- * unheated, and no kill rate has ever been measured for it.
+ * Two separate rounds of untrue claims have been taken off this page.
  *
- * A specific efficacy percentage and a specific temperature are exactly the
- * kind of claim that has to be substantiated before it is published, so both
- * are gone rather than softened. What replaced them is the honest version of
- * the same argument — pressure and detergent and dwell time do remove the film
- * a garden hose leaves, and that stands on its own without a fake number.
+ * First: it advertised "200° pressurized hot water" and "kills 99.9% of
+ * bacteria" — in the hero, the stat band, the marquee, the feature cards and
+ * the meta description. Neither was true. A specific temperature and a specific
+ * efficacy percentage both have to be substantiated before publication.
  *
- * If the rig is ever heated, or a lab result ever exists, put the claim back
- * with the evidence behind it. Until then: no temperature, no percentage, no
- * "sanitised", no "disinfectant" (a regulated term for an EPA-registered
- * product, which a biodegradable detergent is not).
+ * Second, and worse: everything that replaced them still described PRESSURE
+ * WASHING, on a curbside subscription route, performed by a truck-mounted rig.
+ * Lunova does not own a pressure washer. There is no route, there are no
+ * subscribers, and no bin has ever gone on the truck. The page was selling a
+ * business that does not exist.
+ *
+ * What it sells now is the thing that is real: two bins scrubbed out by hand
+ * with a detergent and deodorised, done while the crew is already at the
+ * property for a clean or a detail. That is why there is no standalone price
+ * and no "book bin cleaning" button — see BIN_ADDON in constants/services.ts,
+ * and the `active: false` on the catalogue entry, which here means "not a
+ * wizard category" rather than "not offered".
+ *
+ * If a pressure washer is ever bought, or a route ever has subscribers on it,
+ * put those claims back with the equipment behind them. Until then: no
+ * temperature, no percentage, no "sanitised", no "disinfectant" (a regulated
+ * term for an EPA-registered product, which a biodegradable detergent is not),
+ * and no "pressure washed".
  */
 const FEATURES = [
   {
     icon: Trash2,
-    title: "Pressure Washed, Not Rinsed",
-    desc: "High-pressure jets plus a biodegradable detergent, worked over every interior face. That is what lifts the film a garden hose pushes around.",
+    title: "Scrubbed Out, Not Rinsed",
+    desc: "Tipped, worked over every interior face with a stiff brush and a detergent, and rinsed clean. That is what lifts the film a garden hose pushes around.",
   },
   {
     icon: ShieldCheck,
     title: "Biodegradable Detergents",
-    desc: "The only thing we put in your bin breaks down on its own. No solvents, nothing that needs a hazard label.",
+    desc: "The only thing that goes in your bin breaks down on its own. No solvents, nothing that needs a hazard label.",
   },
   {
-    icon: Star,
-    title: "Deodorizing Treatment",
+    icon: Sparkles,
+    title: "Deodorising Treatment",
     desc: "A biodegradable finishing treatment after the wash, so the bin stops smelling instead of smelling like something else.",
   },
   {
-    icon: MapPin,
-    title: "Curbside Route Service",
-    desc: "We do all the work at the curb after trash day. You don't have to be home or do anything at all.",
+    icon: Car,
+    title: "Added To A Job You Already Booked",
+    desc: "We do it while we are already at your address for a clean or a detail. The drive is paid for, which is the only reason it costs what it costs.",
   },
 ];
 
 const STATS = [
-  { val: startingAtLabel(SERVICE_BY_ID.bin), label: "Starting Price" },
-  { val: "Curbside", label: "Nothing To Do" },
+  { val: formatDollars(BIN_ADDON.price), label: "Two Bins, Added On" },
+  { val: `+${formatDollars(BIN_ADDON.perExtraBin)}`, label: "Each Extra Bin" },
+  { val: "~15 min", label: "Added To Your Visit" },
   { val: "Biodegradable", label: "Detergents" },
-  { val: "Monthly", label: "Routes" },
 ];
 
 const HOW_IT_WORKS_STEPS = [
   {
     step: "1",
-    title: "Sign Up for Route",
-    desc: "Add your address to your neighborhood's route. We'll notify you of your clean day.",
+    title: "Book A Clean Or A Detail",
+    desc: "Bin cleaning rides along with another job. Start with the house or the car — the bins are a tick box in the wizard.",
   },
   {
     step: "2",
-    title: "Leave Bins Curbside",
-    desc: "After trash pickup, leave your empty bins at the curb. We handle the rest.",
+    title: "Tick The Bins",
+    desc: "Two bins are included in the add-on price. Tell us if you have more and we will price the extras before we come out.",
   },
   {
     step: "3",
-    title: "Pressure Wash & Detergent",
-    desc: "The bin goes on the truck and gets pressure washed inside and out with a biodegradable detergent, lid and rim included.",
+    title: "Leave Them Emptied",
+    desc: "Anytime after your collection day is ideal. A bin with a full bag still in it cannot be washed, and we would rather say that now than at your gate.",
   },
   {
     step: "4",
-    title: "Deodorize & Return",
-    desc: "We apply deodorizing treatment and return your bins to the curb spotless and fresh.",
+    title: "Washed And Put Back",
+    desc: "Scrubbed inside and out, lid and rim included, deodorised, and returned where we found them.",
   },
 ];
 
 const BIN_CLEANING_DESCRIPTION =
-  "Curbside trash bin cleaning across Kansas City, on or after your pickup day. Pressure washed with biodegradable detergent, deodorized, and back at your curb.";
+  "Trash bin cleaning in Kansas City, added to a house clean or a car detail. Two bins scrubbed out with a biodegradable detergent and deodorised.";
 
 const BIN_CLEANING_FAQS = [
-  { q: "When do you clean the bins?", a: "We schedule service after your regular trash pickup so the bins are empty when we arrive." },
-  { q: "What do you use to clean the bins?", a: "Pressure washing with a biodegradable detergent, then a biodegradable deodorizing treatment. The water is not heated, and we do not claim a bacterial kill rate we have not had measured — what the wash removes is the built-up film and the smell that comes with it." },
-  { q: "How often should I schedule bin cleaning?", a: "Monthly service is recommended to keep odors and bacteria under control, especially in summer." },
-  { q: "How many bins can you clean?", a: "We can clean trash, recycling, and yard waste bins in a single visit." },
+  {
+    q: "Can I book bin cleaning on its own?",
+    a: `No, and the reason is the drive rather than the work. Two bins is about fifteen minutes. A round trip across the metro for a ${formatDollars(BIN_ADDON.price)} job costs more in fuel and time than the job pays, so we would either have to charge four times as much or do it badly. Add it to a clean or a detail and the drive is already paid for — that is the whole reason the price is what it is.`,
+  },
+  {
+    q: "What do you actually do to the bin?",
+    a: "Tip it, scrub every interior face and the lid and rim with a stiff brush and a biodegradable detergent, rinse it out, then apply a biodegradable deodorising treatment. We do not pressure wash — we do not own a pressure washer, and we would rather tell you that than let you picture a rig we do not have. We also do not publish a bacterial kill rate, because nobody has ever measured ours. What the wash removes is the built-up film and the smell that comes with it.",
+  },
+  {
+    q: "How many bins does the price cover?",
+    a: `Two. Trash, recycling, yard waste — whichever two you want done. Each bin after that is ${formatDollars(BIN_ADDON.perExtraBin)}, and it is worth telling us the number when you book rather than on the day, so the visit is scheduled with the extra time in it.`,
+  },
+  {
+    q: "Does the bin need to be empty?",
+    a: "Yes. Anytime after your collection day is the easy window. A bin with a full bag still in it cannot be washed, and if we arrive to one we will do the rest of the job and take the bin cleaning off the invoice rather than charge you for a rinse.",
+  },
+  {
+    q: "How often is worth doing?",
+    a: "Twice a year for most households, and once in high summer if you have a dog or put food waste in the bin — that is when the smell stops being a smell and starts being flies. There is no subscription to sign; add it whenever you have us out.",
+  },
 ];
 
 /** Written once; Marquee doubles it for the seamless loop. */
 const MARQUEE_ITEMS = [
-  "Pressure Washed", "Monthly Route Service", "Biodegradable Detergents", "Deodorizing Treatment", "Curbside Service", "No Contracts", "Locally Owned", "Satisfaction Guarantee",
+  "Scrubbed, Not Rinsed", "Lid And Rim Included", "Biodegradable Detergents", "Deodorising Treatment", "Added To Any Job", "No Subscription", "Locally Owned", "Two Bins Included",
 ];
 
 export default function BinCleaning() {
   return (
     <div data-theme="bin-cleaning" className="font-sans-modern min-h-screen" style={{ backgroundColor: BG, color: BRAND.ink }}>
       <Seo
-        title="Trash Bin Cleaning Services | Lunova Services"
+        title="Trash Bin Cleaning in Kansas City | Lunova Services"
         description={BIN_CLEANING_DESCRIPTION}
         image={heroOgImage("bin-cleaning-hero")}
-        imageAlt="A wheelie bin tipped on its side at the curb being pressure-rinsed, water spraying out through the open lid"
+        imageAlt="A wheelie bin tipped on its side at the curb being rinsed out, water running from the open lid"
         jsonLd={[
           buildServiceSchema({ name: "Trash Bin Cleaning", description: BIN_CLEANING_DESCRIPTION, path: "/services/bin-cleaning" }),
           buildBreadcrumbSchema([
@@ -133,33 +156,27 @@ export default function BinCleaning() {
         ]}
       />
       <ServiceHero
-        badge="KC's Curbside Trash Bin Cleaning Service"
+        badge={`Add-on · ${formatDollars(BIN_ADDON.price)} for two bins`}
         titleContent={<><span className="italic" style={{ color: ACCENT }}>Clean</span> Bins. <br />No More Stench.</>}
-        description="We pull up to your curb after trash day, pressure wash your bins inside and out with a biodegradable detergent, and finish with a deodorizing treatment. No mess, no hassle."
+        description={`While we are already at your address for a clean or a detail, we will tip your bins, scrub them out with a biodegradable detergent, and deodorise them. ${formatDollars(BIN_ADDON.price)} for two, ${formatDollars(BIN_ADDON.perExtraBin)} for each one after that.`}
         primaryColor={GROUND}
         accentColor={ACCENT}
-        ctaLabel="Join the waitlist"
+        ctaLabel="Book a job and add it"
         ctaTo={serviceCtaPath("bin")}
-        trustItems={["Biodegradable Detergents", "Curbside — Nothing To Do", "Monthly Route Service"]}
+        trustItems={["Biodegradable Detergents", "Lid And Rim Included", "No Subscription"]}
         heroImage="bin-cleaning-hero"
-        heroImageAlt="A wheelie bin tipped on its side at the curb being pressure-rinsed, water spraying out through the open lid"
+        heroImageAlt="A wheelie bin tipped on its side at the curb being rinsed out, water running from the open lid"
       />
 
       <Marquee items={MARQUEE_ITEMS} backgroundColor={ACCENT} textColor={BRAND.ink} />
 
-      {/* INSTANT ESTIMATE — the packages, questions and add-on prices from
-          constants/serviceDetails.ts, priced live and handed to the wizard
-          through the URL so step 2 opens already answered. Sits above the
-          package grid: price first, then the detail behind the price. */}
-      <ServiceWaitlist serviceKey="bin" primaryColor={PRIMARY} accentColor={ACCENT} />
-      <ServiceEstimator serviceKey="bin" primaryColor={PRIMARY} accentColor={ACCENT} />
-
-      {/* WHAT'S INCLUDED — shared PackageGrid, sourced from constants/serviceDetails.ts.
-          Same packages, same checklist, same prices the booking wizard shows — clicking
-          "Book this" pre-selects the exact package in the wizard via ?package=. */}
-      <PackageGrid serviceKey="bin" primaryColor={PRIMARY} accentColor={ACCENT} />
-
-      {/* The two services this one is usually booked with, from `upsells`. */}
+      {/*
+        No estimator and no package grid here, and that is on purpose rather
+        than an omission: bin cleaning is an add-on, not a wizard category, so
+        there is nothing to configure and nothing to price. Both components
+        return null for it anyway — the CrossSellRow below is the real call to
+        action, because booking one of those two jobs is how you get this one.
+      */}
       <CrossSellRow serviceKey="bin" primaryColor={PRIMARY} accentColor={ACCENT} />
 
       {/* Access, prep and hard refusals, from constants/servicePolicy.ts.
@@ -174,7 +191,7 @@ export default function BinCleaning() {
               <span>Why Choose Us</span>
             </div>
             <h2 className="font-serif-display text-4xl sm:text-5xl" style={{ color: PRIMARY }}>
-              The Bin Comes To Us. You Don't Lift Anything.
+              Fifteen Minutes You Will Never Spend Again.
             </h2>
           </div>
 
@@ -199,7 +216,7 @@ export default function BinCleaning() {
 
       {/* HOW IT WORKS */}
       <HowItWorks
-        heading="Our Proven Bin Cleaning Process"
+        heading="How The Bins Actually Get Done"
         steps={HOW_IT_WORKS_STEPS}
         primaryColor={GROUND}
         accentColor={ACCENT}
@@ -224,17 +241,17 @@ export default function BinCleaning() {
           <FaqSection
             items={BIN_CLEANING_FAQS}
             title="Frequently Asked Questions"
-            subtitle="Before you join a route"
+            subtitle="Before you add it on"
           />
         </div>
       </section>
 
       <ContactStrip
         heading="Ready to Ditch the Stink?"
-        subtext="Join our monthly route and never scrub a filthy bin again. Washed, deodorized, and back at your curb before you know it."
+        subtext={`Book a house clean or a car detail and tick the bins. ${formatDollars(BIN_ADDON.price)} for two, done while we are already there, and nothing to sign up to.`}
         primaryColor={GROUND}
         accentColor={ACCENT}
-        ctaLabel="Join the waitlist"
+        ctaLabel="Book a job and add it"
         ctaTo={serviceCtaPath("bin")}
       />
 

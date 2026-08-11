@@ -4,7 +4,7 @@ import { buildBreadcrumbSchema } from "../utils/structuredData";
 import { BRAND } from "../constants/brand";
 
 const BOOKING_DESCRIPTION =
-  "Book cleaning, power washing, junk removal, landscaping, auto detailing, and more online in Kansas City. Fast booking with bundle savings.";
+  "Book house cleaning or mobile auto detailing online across Kansas City. See your price as you build the job. Nothing is charged at booking.";
 
 export default function Booking() {
   return (

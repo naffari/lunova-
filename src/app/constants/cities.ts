@@ -409,7 +409,7 @@ export const SERVICE_CITIES: ServiceCity[] = [
       },
       {
         q: "Do you do commercial cleaning for offices?",
-        a: "Not at the moment. Lunova is two people and we are doing house cleaning and mobile detailing properly rather than taking on a nightly contract we could not staff. There is a waitlist on the commercial page if you want to be told when that changes.",
+        a: "Not at the moment. Lunova is two people and we are doing house cleaning and mobile detailing properly rather than taking on a nightly contract we could not staff. Small offices that want the same treatment as a house — one visit, flat rate — are worth a call, and if it is a nightly janitorial contract you need we will say so rather than waste your time.",
       },
       {
         q: "Is Old Town cheaper to clean than Canyon Creek?",

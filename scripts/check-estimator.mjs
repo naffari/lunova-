@@ -104,12 +104,45 @@ check("unknown choice value is dropped", hostile.answers.condition, undefined);
 check("unknown add-on is dropped, known one kept once", hostile.addOnIds, ["oven"]);
 
 // ── A tier that needs a site visit must never show a number ─────────────────
-const commercial = getServiceDetail("commercial");
-check(
-  "commercial stays quote-only",
-  priceDetail(commercial, commercial.packages[0].id, defaultAnswers("commercial"), []).needsVisit,
-  true
-);
+// This used to be asserted against the commercial cleaning service, which was
+// the only quote-only tier in the catalogue and no longer exists. The RULE
+// still has to hold for the next `custom` package anyone adds, so it is
+// asserted against a fixture instead of against whichever service happens to
+// have a custom tier this month.
+const quoteOnly = {
+  heading: "",
+  blurb: "",
+  packageLabel: "",
+  packages: [{ id: "site-visit", name: "Site visit", tagline: "", custom: true, includes: [] }],
+  questions: [],
+  addOns: [],
+};
+const quoteOnlyEstimate = priceDetail(quoteOnly, "site-visit", {}, []);
+check("a custom tier defers to a visit", quoteOnlyEstimate.needsVisit, true);
+check("  and shows no number", quoteOnlyEstimate.subtotal, 0);
+
+// ── Multi-vehicle pricing is a share of the package, not a flat fee ─────────
+// The `percentOfBase` counter is the only place a question's unit price depends
+// on the package chosen. A flat per-vehicle figure would either give away a
+// full detail or overcharge for an express wash, so the relationship is what
+// matters and the relationship is what is asserted.
+const auto = getServiceDetail("auto");
+const oneCar = { vehicle: "sedan", condition: "clean", vehicles: 1, site: "full" };
+const twoCars = { ...oneCar, vehicles: 2 };
+
+for (const packageId of ["express", "full"]) {
+  const base = auto.packages.find((pkg) => pkg.id === packageId).from;
+  const single = priceDetail(auto, packageId, oneCar, []).subtotal;
+  const pair = priceDetail(auto, packageId, twoCars, []).subtotal;
+
+  check(`${packageId}: one vehicle is just the package`, single, base);
+  check(`${packageId}: second vehicle is the package at 20% off`, pair - single, Math.round(base * 0.8));
+  // The discount has to be real from the customer's side too: two cars must
+  // cost less than booking the same package twice.
+  if (pair >= base * 2) {
+    failures.push(`${packageId}: two vehicles (${pair}) is not cheaper than two bookings (${base * 2})`);
+  }
+}
 
 // ── Live CRM floors replace the price and nothing else ──────────────────────
 const live = withLivePrices(cleaning, { "deep clean": 249 });
